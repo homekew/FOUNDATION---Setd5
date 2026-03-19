@@ -207,6 +207,39 @@ strong { color: var(--text); }
 }
 .nav-donate:hover { background: #b05e54 !important; color: var(--white) !important; }
 
+/* ===== NAV DROPDOWNS ===== */
+.nav-item-dropdown { position: relative; }
+.nav-dropdown-trigger { display: flex !important; align-items: center; gap: 3px; cursor: pointer; }
+.nav-caret { font-size: 0.65rem; transition: transform 0.2s; display: inline-block; margin-left: 1px; }
+.nav-item-dropdown:hover .nav-caret,
+.nav-item-dropdown.open .nav-caret { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  min-width: 160px;
+  padding: 6px;
+  list-style: none;
+  z-index: 1001;
+}
+.nav-dropdown-menu li a {
+  display: block;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  background: none;
+}
+.nav-dropdown-menu li a:hover { background: var(--teal-light); color: var(--teal); }
+.nav-item-dropdown:hover .nav-dropdown-menu { display: block; }
+
 /* Mobile nav toggle */
 .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
 .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--teal); border-radius: 2px; transition: all 0.2s; }
@@ -309,7 +342,7 @@ strong { color: var(--text); }
 /* ===== IMPACT STATS BAR ===== */
 .stats-bar {
   background: var(--white);
-  padding: 64px 0;
+  padding: 40px 0;
   border-bottom: 1px solid var(--border);
 }
 .stats-bar-inner {
@@ -432,8 +465,8 @@ strong { color: var(--text); }
 
 /* ===== DONATE CTA BAND ===== */
 .cta-band {
-  background: var(--cream);
-  padding: 44px 0;
+  background: var(--teal-dark);
+  padding: 56px 0;
   text-align: center;
 }
 .cta-band > .container > h2 { color: var(--white); font-size: 2rem; margin-bottom: 12px; }
@@ -876,6 +909,12 @@ footer {
   .stat-divider { display: none; }
   .newsletter-form { flex-direction: column; }
   .donate-tier { margin-bottom: 16px; }
+  /* Mobile dropdowns */
+  .nav-item-dropdown { width: 100%; }
+  .nav-item-dropdown:hover .nav-dropdown-menu { display: none; }
+  .nav-item-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu { position: static; box-shadow: none; border: none; background: var(--teal-light); margin: 4px 0 0; border-radius: 6px; min-width: unset; }
+  .nav-dropdown-trigger { width: 100%; justify-content: space-between; }
 }
 
 /* ===== UTILS ===== */
@@ -907,11 +946,19 @@ footer {
       </a>
       <ul class="nav-links" id="nav-links">
         <li><a href="#" onclick="showPage('home')" data-page="home" class="active">Home</a></li>
-        <li><a href="#" onclick="showPage('about')" data-page="about">About SETD5 Syndrome</a></li>
-        <li><a href="#" onclick="showPage('resources')" data-page="resources">Resources</a></li>
+        <li class="nav-item-dropdown" id="dropdown-about">
+          <a href="#" onclick="showPage('about')" data-page="about" class="nav-dropdown-trigger" onmousedown="toggleDropdown(event,'dropdown-about')">About SETD5 Syndrome <span class="nav-caret">▾</span></a>
+          <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('resources')" data-page="resources">Resources</a></li>
+          </ul>
+        </li>
         <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
-        <li><a href="#" onclick="showPage('who')" data-page="who">Our Team</a></li>
-        <li><a href="#" onclick="showPage('partners')" data-page="partners">Partners</a></li>
+        <li class="nav-item-dropdown" id="dropdown-who">
+          <a href="#" onclick="showPage('who')" data-page="who" class="nav-dropdown-trigger" onmousedown="toggleDropdown(event,'dropdown-who')">Our Team <span class="nav-caret">▾</span></a>
+          <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('partners')" data-page="partners">Partners</a></li>
+          </ul>
+        </li>
         <li><a href="#" onclick="showPage('donate')" data-page="donate" class="nav-donate">Donate</a></li>
       </ul>
       <div class="nav-toggle" id="nav-toggle" onclick="toggleNav()">
@@ -1002,7 +1049,7 @@ footer {
         <img src="image.png" alt="Children with SETD5 Syndrome" style="width:100%; max-height:340px; border-radius:12px; display:block; object-fit:cover; object-position:center;">
       </div>
       <!-- Text below -->
-      <div class="what-is-content" style="max-width:780px; margin:0 auto; text-align:center;">
+      <div class="what-is-content" style="max-width:780px; margin:0 auto; text-align:left;">
         <span class="subhead">What is SETD5 Syndrome?</span>
         <h2>A Rare Genetic Condition with a Growing Community</h2>
         <p>SETD5 Syndrome is caused by changes (variants or deletions) in the <em>SETD5</em> gene. This gene plays a critical role in brain development, and when it doesn't work as expected, it can affect many areas of development. Common features include intellectual disability, autism spectrum disorder, speech and language delays, and behavioral differences such as attention and hyperactivity challenges. SETD5 Syndrome can also lead to a range of physical symptoms, which vary from person to person.</p>
@@ -1057,7 +1104,7 @@ footer {
   </section>
 
   <!-- Family Story -->
-  <section class="section section--white">
+  <section class="section section--teal-light">
     <div class="container--narrow">
       <div class="section-header">
         <span class="subhead">Family Stories</span>
@@ -1085,9 +1132,9 @@ footer {
   <!-- Donate CTA Band -->
   <section class="cta-band">
     <div class="container">
-      <div class="cta-band-card" style="background:#fdf5e8 !important; border-radius:16px; padding:48px 52px; max-width:680px; margin:0 auto; text-align:center; border:4px solid var(--coral); box-shadow: inset 0 0 0 3px #2F5361;">
+      <div class="cta-band-card" style="background:#fdf5e8 !important; border-radius:16px; padding:48px 52px; max-width:680px; margin:0 auto; text-align:center; border:3px solid var(--coral);">
         <div style="width:48px; height:4px; background:var(--coral); border-radius:2px; margin:0 auto 24px;"></div>
-        <h2 style="color:var(--teal); font-size:1.7rem; line-height:1.2; margin-bottom:16px;">Every Gift Funds<br>a Breakthrough</h2>
+        <h2 style="color:var(--teal); font-size:2.2rem; line-height:1.15; margin-bottom:16px;">Every Gift Funds<br>a Breakthrough</h2>
         <p style="color:var(--text-mid); font-size:1rem; line-height:1.7; max-width:480px; margin:0 auto 32px;">Research doesn't wait. Neither do our families. A donation today keeps scientists at the bench and gives hope to hundreds of families around the world.</p>
         <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
           <a href="#" class="btn btn-primary btn-lg" onclick="showPage('donate')">Make a Donation</a>
@@ -1806,7 +1853,7 @@ footer {
             </div>
             <div class="value-card">
               <div class="value-icon" style="background:var(--coral-light);">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 19s-8-5.5-8-10a5 5 0 0110 0 5 5 0 0110 0c0 4.5-8 10-8 10z" stroke="#d17e64" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" stroke="#d17e64" stroke-width="1.8" stroke-linejoin="round"/></svg>
               </div>
               <h3>Family-Led</h3>
               <p>Every decision is made with the lived experience of families at the center.</p>
@@ -2133,6 +2180,23 @@ footer {
   function toggleNav() {
     document.getElementById('nav-links').classList.toggle('open');
   }
+
+  // Dropdown toggle (mobile only — desktop uses CSS :hover)
+  function toggleDropdown(e, id) {
+    if (window.innerWidth > 640) return; // desktop uses hover
+    e.preventDefault();
+    const el = document.getElementById(id);
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-item-dropdown')) {
+      document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.remove('open'));
+    }
+  });
 
   // FAQ accordion
   function toggleFaq(el) {
