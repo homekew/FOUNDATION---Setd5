@@ -919,10 +919,8 @@ footer {
   .nav-links.open li:last-child { border-bottom: none; }
   .nav-links.open a { display: block; padding: 12px 8px; font-size: 1rem; }
   .nav-toggle { display: flex; }
-  /* Shrink logo so name fits on one line */
-  .logo-svg { width: 48px; height: 48px; }
   .nav-logo-text .name { font-size: 1.1rem; }
-  .nav-logo-text .tagline { font-size: 0.82rem; }
+  .nav-logo-text .tagline { font-size: 0.9rem; }
   /* Mobile dropdowns */
   .nav-item-dropdown { width: 100%; }
   .nav-item-dropdown:hover .nav-dropdown-menu { display: none; }
@@ -930,11 +928,6 @@ footer {
   .nav-dropdown-menu { position: static; box-shadow: none; border: none; background: var(--teal-light); margin: 4px 0 4px; border-radius: 6px; min-width: unset; }
   .nav-dropdown-menu a { padding: 10px 16px !important; font-size: 0.9rem !important; }
   .nav-dropdown-trigger { width: 100%; justify-content: space-between; }
-}
-/* Hide tagline on very small phones to keep logo on one line */
-@media (max-width: 400px) {
-  .nav-logo-text .tagline { display: none; }
-  .nav-logo-text .name { font-size: 1rem; }
 }
 @media (max-width: 640px) {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
@@ -981,14 +974,14 @@ footer {
       <ul class="nav-links" id="nav-links">
         <li><a href="#" onclick="showPage('home')" data-page="home" class="active">Home</a></li>
         <li class="nav-item-dropdown" id="dropdown-about">
-          <a href="#" onclick="showPage('about')" data-page="about" class="nav-dropdown-trigger" onmousedown="toggleDropdown(event,'dropdown-about')">About SETD5 Syndrome <span class="nav-caret">▾</span></a>
+          <a href="#" onclick="handleDropdownNav(event,'dropdown-about','about')" data-page="about" class="nav-dropdown-trigger">About SETD5 Syndrome <span class="nav-caret">▾</span></a>
           <ul class="nav-dropdown-menu">
             <li><a href="#" onclick="showPage('resources')" data-page="resources">Resources</a></li>
           </ul>
         </li>
         <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
         <li class="nav-item-dropdown" id="dropdown-who">
-          <a href="#" onclick="showPage('who')" data-page="who" class="nav-dropdown-trigger" onmousedown="toggleDropdown(event,'dropdown-who')">Our Team <span class="nav-caret">▾</span></a>
+          <a href="#" onclick="handleDropdownNav(event,'dropdown-who','who')" data-page="who" class="nav-dropdown-trigger">Our Team <span class="nav-caret">▾</span></a>
           <ul class="nav-dropdown-menu">
             <li><a href="#" onclick="showPage('partners')" data-page="partners">Partners</a></li>
           </ul>
@@ -2214,14 +2207,17 @@ footer {
     document.getElementById('nav-links').classList.toggle('open');
   }
 
-  // Dropdown toggle (mobile only — desktop uses CSS :hover)
-  function toggleDropdown(e, id) {
-    if (window.innerWidth > 820) return; // desktop uses hover
-    e.preventDefault();
-    const el = document.getElementById(id);
-    const isOpen = el.classList.contains('open');
-    document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.remove('open'));
-    if (!isOpen) el.classList.add('open');
+  // Dropdown nav handler: mobile = toggle dropdown, desktop = navigate
+  function handleDropdownNav(e, dropdownId, pageId) {
+    if (window.innerWidth <= 820) {
+      e.preventDefault();
+      const el = document.getElementById(dropdownId);
+      const isOpen = el.classList.contains('open');
+      document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.remove('open'));
+      if (!isOpen) el.classList.add('open');
+    } else {
+      showPage(pageId);
+    }
   }
 
   // Close dropdowns when clicking outside
