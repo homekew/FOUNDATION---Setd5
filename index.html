@@ -973,6 +973,56 @@ footer {
 </head>
 <body>
 
+<!-- PASSWORD GATE — remove this block when ready to go public -->
+<div id="password-gate" style="
+  position:fixed; inset:0; z-index:99999;
+  background:var(--teal);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Open Sans',sans-serif;
+">
+  <div style="text-align:center; padding:40px 32px; max-width:380px; width:100%;">
+    <div style="margin-bottom:28px;">
+      <div style="font-size:1.5rem; font-weight:800; color:var(--white); letter-spacing:0.01em; line-height:1.2;">SETD5 Syndrome<br>Foundation</div>
+      <div style="font-size:0.85rem; color:rgba(255,255,255,0.65); margin-top:8px; letter-spacing:0.08em;">research · advocacy · community</div>
+    </div>
+    <p style="color:rgba(255,255,255,0.8); font-size:0.9rem; margin-bottom:24px; line-height:1.6;">This site is currently under review.<br>Enter the password to continue.</p>
+    <input id="pw-input" type="password" placeholder="Password"
+      style="width:100%; padding:12px 16px; border-radius:8px; border:2px solid rgba(255,255,255,0.2);
+             background:rgba(255,255,255,0.1); color:var(--white); font-size:1rem; font-family:inherit;
+             outline:none; text-align:center; letter-spacing:0.05em; margin-bottom:12px;"
+      onkeydown="if(event.key==='Enter') checkPassword()"
+    >
+    <div id="pw-error" style="color:#f4a88a; font-size:0.85rem; margin-bottom:12px; min-height:20px;"></div>
+    <button onclick="checkPassword()"
+      style="width:100%; padding:13px; border-radius:8px; border:none; cursor:pointer;
+             background:var(--coral); color:var(--white); font-size:1rem; font-weight:700;
+             font-family:inherit; transition:background 0.2s;"
+      onmouseover="this.style.background='#b05e54'" onmouseout="this.style.background='var(--coral)'">
+      Enter Site
+    </button>
+  </div>
+</div>
+<script>
+  (function() {
+    if (sessionStorage.getItem('ssf_auth') === '1') {
+      document.getElementById('password-gate').style.display = 'none';
+    }
+    document.getElementById('pw-input').focus();
+  })();
+  function checkPassword() {
+    var val = document.getElementById('pw-input').value;
+    if (val === 'foundation') {
+      sessionStorage.setItem('ssf_auth', '1');
+      document.getElementById('password-gate').style.display = 'none';
+    } else {
+      document.getElementById('pw-error').textContent = 'Incorrect password. Try again.';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
+</script>
+<!-- END PASSWORD GATE -->
+
 <!-- ===== NAV ===== -->
 <nav id="site-nav">
   <div class="container">
