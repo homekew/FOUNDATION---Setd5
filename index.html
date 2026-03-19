@@ -2203,7 +2203,7 @@ footer {
 
   // Dropdown toggle (mobile only — desktop uses CSS :hover)
   function toggleDropdown(e, id) {
-    if (window.innerWidth > 640) return; // desktop uses hover
+    if (window.innerWidth > 820) return; // desktop uses hover
     e.preventDefault();
     const el = document.getElementById(id);
     const isOpen = el.classList.contains('open');
