@@ -177,7 +177,7 @@ strong { color: var(--text); }
 }
 .nav-logo-text .tagline {
   font-family: 'Open Sans Condensed', 'Open Sans', sans-serif;
-  font-weight: 550;
+  font-weight: 525;
   font-size: 1.05rem;
   margin-top: 4px;
   margin-bottom: 0;
@@ -2155,6 +2155,173 @@ footer {
 </div><!-- /partners -->
 
 
+<!-- ========================================================
+     PAGE: BOARD PORTAL (hidden — access via #board)
+======================================================== -->
+<div id="board" class="page">
+
+  <!-- Board password gate overlay -->
+  <div id="board-gate" style="
+    position:fixed; inset:0; z-index:9999;
+    background:var(--teal-dark, #1e3a45);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Open Sans',sans-serif;
+  ">
+    <div style="text-align:center; padding:40px 32px; max-width:380px; width:100%;">
+      <div style="margin-bottom:28px;">
+        <div style="font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.5); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px;">Board Portal</div>
+        <div style="font-size:1.4rem; font-weight:800; color:var(--white); line-height:1.2;">SETD5 Syndrome Foundation</div>
+      </div>
+      <p style="color:rgba(255,255,255,0.75); font-size:0.9rem; margin-bottom:24px; line-height:1.6;">This area is for board members and authorized committee members only.</p>
+      <input id="board-pw-input" type="password" placeholder="Board password"
+        style="width:100%; padding:12px 16px; border-radius:8px; border:2px solid rgba(255,255,255,0.2);
+               background:rgba(255,255,255,0.1); color:var(--white); font-size:1rem; font-family:inherit;
+               outline:none; text-align:center; letter-spacing:0.05em; margin-bottom:12px;"
+        onkeydown="if(event.key==='Enter') checkBoardPassword()"
+      >
+      <div id="board-pw-error" style="color:#f4a88a; font-size:0.85rem; margin-bottom:12px; min-height:20px;"></div>
+      <button onclick="checkBoardPassword()"
+        style="width:100%; padding:13px; border-radius:8px; border:none; cursor:pointer;
+               background:var(--coral); color:var(--white); font-size:1rem; font-weight:700;
+               font-family:inherit;"
+        onmouseover="this.style.background='#b05e54'" onmouseout="this.style.background='var(--coral)'">
+        Enter Board Portal
+      </button>
+      <p style="margin-top:20px;"><a href="#" onclick="showPage('home')" style="color:rgba(255,255,255,0.5); font-size:0.82rem;">← Back to main site</a></p>
+    </div>
+  </div>
+
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">Internal</span>
+      <h1>Board Portal</h1>
+      <p>Board of Directors and committee documents for authorized members only.</p>
+    </div>
+  </div>
+
+  <!-- Board Meeting Materials -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Governance</span>
+        <h2>Board Meeting Materials</h2>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Minutes</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Agendas</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Presentations</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Financial Documents -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Finance</span>
+        <h2>Financial Documents</h2>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Budgets &amp; Reports</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--gold);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Tax Filings</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--gold);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Audit &amp; Compliance</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--gold);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Governance Documents -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Policies</span>
+        <h2>Governance Documents</h2>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Bylaws &amp; Articles</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--coral);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Policies</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--coral);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Conflict of Interest Forms</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--coral);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Committee Documents -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Committees</span>
+        <h2>Committee Documents</h2>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Research Committee</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Finance Committee</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Other Committees</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /board -->
+
+
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="container">
@@ -2226,16 +2393,41 @@ footer {
     document.getElementById('nav-links').classList.remove('open');
     // Update URL hash so refresh stays on this page
     history.replaceState(null, '', '#' + id);
+    // Show board gate if navigating to board page
+    if (id === 'board') showBoardGate();
   }
 
   // On load, restore page from URL hash
   (function() {
     const hash = window.location.hash.replace('#', '');
-    const validPages = ['home','about','research','donate','who','resources','partners'];
+    const validPages = ['home','about','research','donate','who','resources','partners','board'];
     if (hash && validPages.includes(hash)) {
       showPage(hash);
     }
   })();
+
+  // Board portal auth
+  function showBoardGate() {
+    const gate = document.getElementById('board-gate');
+    if (gate) {
+      if (sessionStorage.getItem('ssf_board_auth') === '1') {
+        gate.style.display = 'none';
+      } else {
+        gate.style.display = 'flex';
+        setTimeout(() => document.getElementById('board-pw-input').focus(), 50);
+      }
+    }
+  }
+  function checkBoardPassword() {
+    if (document.getElementById('board-pw-input').value === 'board2026') {
+      sessionStorage.setItem('ssf_board_auth', '1');
+      document.getElementById('board-gate').style.display = 'none';
+    } else {
+      document.getElementById('board-pw-error').textContent = 'Incorrect password. Try again.';
+      document.getElementById('board-pw-input').value = '';
+      document.getElementById('board-pw-input').focus();
+    }
+  }
 
   // Mobile nav toggle
   function toggleNav() {
