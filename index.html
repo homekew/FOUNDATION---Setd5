@@ -3411,54 +3411,31 @@ footer {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script>
 (function() {
-  // Countries with documented SETD5 cases (ISO numeric codes)
-  // Sources: published research papers 2014–2025
+  // Countries with documented SETD5 Syndrome cases (ISO numeric codes)
+  // Verified against published research papers 2014–2025
   const activeCodes = new Set([
-    840, // United States
-    826, // United Kingdom
-    276, // Germany
-    250, // France
-    528, // Netherlands
-     56, // Belgium
-    380, // Italy
-    724, // Spain
-     36, // Australia
-    392, // Japan
-    792, // Turkey
-    124, // Canada
-    376, // Israel
-    410, // South Korea
-    156, // China
-     76, // Brazil
-    616, // Poland
-    756, // Switzerland
-     40, // Austria
-    578, // Norway
-    208, // Denmark
-    752, // Sweden
-    246, // Finland
-    620, // Portugal
-    300, // Greece
-    356, // India
-    458, // Malaysia
-    710, // South Africa
-    484, // Mexico
-     32, // Argentina
-    364, // Iran
+    840, // United States — Brain Gene Registry; Powis et al. 2018; multiple cohorts
+    826, // United Kingdom — Grozeva et al. 2014 (landmark paper); DDD Study
+    276, // Germany — Kuechler et al. 2015 (3p25.3 critical region)
+    250, // France — De Falco et al. 2024 (Paris); Mattioli et al. 2016 (Strasbourg)
+    380, // Italy — De Falco et al. 2024 (Rome, Naples, Genoa, Messina); Kuechler 2015 (Padova, Bologna)
+    724, // Spain — Parenti et al. 2017 (Zaragoza, Barakaldo/Bizkaia)
+    528, // Netherlands — Kuechler et al. 2015 (Erasmus MC, Rotterdam)
+     36, // Australia — Hunter Genetics NSW, Adelaide, Westmead
+    392, // Japan — Yagasaki et al. 2017 (ptosis/3p25 deletion)
+    156, // China — Fan et al. 2025 (Beijing); Fang 2019 (Tianjin); Pan 2020 (Guangzhou)
+     76, // Brazil — Stur et al. 2017 (mild ID); Pires et al. 2020 (Sao Paulo)
+    616, // Poland — Grozeva et al. 2016 (Warsaw)
+    364, // Iran — Kuechler et al. 2015 (Kariminejad-Najmabadi center, Tehran)
+    356, // India — de novo variants study 2023 (Kasturba Medical College, Manipal)
   ]);
 
   const countryInfo = {
     840: 'United States',  826: 'United Kingdom',  276: 'Germany',
-    250: 'France',         528: 'Netherlands',       56: 'Belgium',
-    380: 'Italy',          724: 'Spain',             36: 'Australia',
-    392: 'Japan',          792: 'Turkey',           124: 'Canada',
-    376: 'Israel',         410: 'South Korea',      156: 'China',
-     76: 'Brazil',         616: 'Poland',           756: 'Switzerland',
-     40: 'Austria',        578: 'Norway',           208: 'Denmark',
-    752: 'Sweden',         246: 'Finland',          620: 'Portugal',
-    300: 'Greece',         356: 'India',            458: 'Malaysia',
-    710: 'South Africa',   484: 'Mexico',            32: 'Argentina',
-    364: 'Iran',
+    250: 'France',         380: 'Italy',            724: 'Spain',
+    528: 'Netherlands',     36: 'Australia',         392: 'Japan',
+    156: 'China',           76: 'Brazil',            616: 'Poland',
+    364: 'Iran',           356: 'India',
   };
 
   let swmInitialized = false;
