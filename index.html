@@ -1252,8 +1252,11 @@ footer {
   padding-top: 16px;
 }
 @media(max-width: 760px) {
-  .spc-chart-wrap { flex: 0 0 100%; max-width: 280px; margin: 0 auto; }
-  .spc-card { padding: 24px 20px 20px; }
+  .spc-layout { gap: 24px; }
+  .spc-chart-wrap { flex: 0 0 100%; max-width: 260px; margin: 0 auto; }
+  .spc-chart-wrap canvas { width: 100% !important; height: auto !important; }
+  .spc-card { padding: 20px 16px 18px; }
+  .spc-legend { min-width: 0; }
 }
 
 /* ── World Map ── */
