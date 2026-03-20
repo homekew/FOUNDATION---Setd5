@@ -1057,17 +1057,13 @@ footer {
           <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-about')" style="font-weight:600; font-size:0.88rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">About <span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
             <li><a href="#" onclick="showPage('about')" data-page="about">About the Syndrome</a></li>
-          </ul>
-        </li>
-        <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
-        <li><a href="#" onclick="showPage('resources')" data-page="resources">Resources</a></li>
-        <li class="nav-item-dropdown" id="dropdown-who">
-          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-who')" style="font-weight:600; font-size:0.88rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">Our Team <span class="nav-caret">▾</span></button>
-          <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('foundation')" data-page="foundation">About the Foundation</a></li>
             <li><a href="#" onclick="showPage('who')" data-page="who">Leadership</a></li>
             <li><a href="#" onclick="showPage('partners')" data-page="partners">Partners</a></li>
           </ul>
         </li>
+        <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
+        <li><a href="#" onclick="showPage('resources')" data-page="resources">Resources</a></li>
         <li><a href="#" onclick="showPage('donate')" data-page="donate" class="nav-donate">Donate</a></li>
       </ul>
       <div class="nav-toggle" id="nav-toggle" onclick="toggleNav()">
@@ -2198,6 +2194,113 @@ footer {
 
 
 <!-- ========================================================
+     PAGE: ABOUT THE FOUNDATION
+======================================================== -->
+<div id="foundation" class="page">
+
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">About Us</span>
+      <h1>About the Foundation</h1>
+      <p>Who we are, why we exist, and what we are building for families around the world.</p>
+    </div>
+  </div>
+
+  <!-- Our Story -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="what-is-grid">
+        <div>
+          <span class="subhead">Our Story</span>
+          <h2>Built by Parents, For Families</h2>
+          <p>The SETD5 Syndrome Foundation was founded by Laura Biazon after her child received a diagnosis of SETD5 Syndrome — a rare genetic condition that, at the time, had almost no community, no dedicated resources, and very little research to speak of.</p>
+          <p>Like so many parents navigating a rare disease diagnosis, Laura found herself searching for answers in isolation. What she found instead was a small but growing global community of families who shared the same experience: a diagnosis that changed everything, and almost nowhere to turn.</p>
+          <p>The Foundation exists because that should not be anyone's experience. Not now, and not ever again.</p>
+        </div>
+        <div class="origin-pullquote">
+          A diagnosis of SETD5 Syndrome should come with a community, not a dead end.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Our Mission</span>
+        <h2>What We Are Here to Do</h2>
+        <p>The SETD5 Syndrome Foundation is a family-led nonprofit dedicated to accelerating research, connecting families, and building the resources that make life better for every person living with SETD5 Syndrome.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:28px;">
+        <div class="card" style="padding:32px 28px;">
+          <div class="value-icon" style="background:var(--teal-light); margin-bottom:16px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#2F5361" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Accelerate Research</h3>
+          <p>We fund and support rigorous scientific research into SETD5 Syndrome, with the goal of improving outcomes and one day finding a path to treatment.</p>
+        </div>
+        <div class="card" style="padding:32px 28px;">
+          <div class="value-icon" style="background:var(--teal-light); margin-bottom:16px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#2F5361" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="#2F5361" stroke-width="1.8"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#2F5361" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Connect Families</h3>
+          <p>No family should navigate this diagnosis alone. We build community, facilitate connections, and ensure every family knows they are not the only one.</p>
+        </div>
+        <div class="card" style="padding:32px 28px;">
+          <div class="value-icon" style="background:var(--teal-light); margin-bottom:16px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#2F5361" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#2F5361" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Build Resources</h3>
+          <p>We create and curate the tools, guides, and information that families, caregivers, and clinicians need — in language that is clear, accessible, and human.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Where We Are -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Our Journey</span>
+        <h2>Where We Are Today</h2>
+        <p>The SETD5 Syndrome Foundation is in its early stages — and building deliberately. We are laying the groundwork for a foundation that will serve this community for decades to come.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:28px;">
+        <div class="card" style="padding:28px; text-align:center;">
+          <div style="font-size:2rem; font-weight:800; color:var(--teal); margin-bottom:8px;">1,100+</div>
+          <div style="font-weight:600; margin-bottom:6px;">Families Worldwide</div>
+          <p style="margin:0; font-size:0.9rem; color:var(--text-light);">A growing global community of families living with SETD5 Syndrome.</p>
+        </div>
+        <div class="card" style="padding:28px; text-align:center;">
+          <div style="font-size:2rem; font-weight:800; color:var(--teal); margin-bottom:8px;">501(c)(3)</div>
+          <div style="font-weight:600; margin-bottom:6px;">Registered Nonprofit</div>
+          <p style="margin:0; font-size:0.9rem; color:var(--text-light);">Incorporated and operating with full nonprofit status in the United States.</p>
+        </div>
+        <div class="card" style="padding:28px; text-align:center;">
+          <div style="font-size:2rem; font-weight:800; color:var(--teal); margin-bottom:8px;">5</div>
+          <div style="font-weight:600; margin-bottom:6px;">Working Groups</div>
+          <p style="margin:0; font-size:0.9rem; color:var(--text-light);">Volunteer-led teams driving community, research, governance, fundraising, and communications.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--cream">
+    <div class="container" style="text-align:center; max-width:640px;">
+      <h2>Want to Be Part of This?</h2>
+      <p>Whether you are a family, a clinician, a researcher, or simply someone who cares — there is a place for you here.</p>
+      <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:24px;">
+        <a href="#" onclick="showPage('donate')" class="btn btn-primary btn-lg">Support Our Work</a>
+        <a href="#" onclick="showPage('who')" class="btn btn-secondary btn-lg">Meet the Team</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ========================================================
      PAGE: PARTNERS
 ======================================================== -->
 <div id="partners" class="page">
@@ -2449,10 +2552,11 @@ footer {
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Our Team</h4>
+        <h4>About</h4>
         <ul>
-          <li><a href="#" onclick="showPage('who')">Board of Directors</a></li>
-          <li><a href="#" onclick="showPage('who')">Working Groups</a></li>
+          <li><a href="#" onclick="showPage('about')">About the Syndrome</a></li>
+          <li><a href="#" onclick="showPage('foundation')">About the Foundation</a></li>
+          <li><a href="#" onclick="showPage('who')">Leadership</a></li>
           <li><a href="#" onclick="showPage('partners')">Partners</a></li>
         </ul>
       </div>
@@ -2510,7 +2614,7 @@ footer {
   // On load, restore page from URL hash
   (function() {
     const hash = window.location.hash.replace('#', '');
-    const validPages = ['home','about','research','donate','who','resources','partners','board'];
+    const validPages = ['home','about','foundation','research','donate','who','resources','partners','board'];
     if (hash && validPages.includes(hash)) {
       showPage(hash);
     }
