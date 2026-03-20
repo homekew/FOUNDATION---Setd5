@@ -1061,8 +1061,9 @@ footer {
         </li>
         <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
         <li class="nav-item-dropdown" id="dropdown-who">
-          <a href="#" onclick="showPage('who')" data-page="who" class="nav-dropdown-trigger">About Us</a><button class="nav-caret-btn" onclick="toggleDropdown(event,'dropdown-who')" aria-label="Show submenu"><span class="nav-caret">▾</span></button>
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-who')" style="font-weight:600; font-size:inherit; color:var(--text); padding:8px 12px; border-radius:6px;">About Us <span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('who')" data-page="who">Our Team</a></li>
             <li><a href="#" onclick="showPage('partners')" data-page="partners">Partners</a></li>
           </ul>
         </li>
