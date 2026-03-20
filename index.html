@@ -1239,6 +1239,26 @@ footer {
   .spc-chart-wrap { flex: 0 0 100%; max-width: 280px; margin: 0 auto; }
   .spc-card { padding: 24px 20px 20px; }
 }
+
+/* ── World Map ── */
+.swm-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px 32px 24px; overflow: hidden; }
+.swm-map-container { position: relative; width: 100%; background: #e8f4f7; border-radius: 12px; overflow: hidden; }
+#swm-world-map { display: block; width: 100%; }
+#swm-tooltip { position: absolute; background: var(--teal-dark); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 0.83rem; line-height: 1.4; pointer-events: none; opacity: 0; transition: opacity 0.18s; white-space: nowrap; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
+.swm-footer { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; margin-top: 18px; }
+.swm-legend { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+.swm-legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.83rem; color: var(--text-muted); }
+.swm-legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.swm-stats { display: flex; gap: 28px; flex-wrap: wrap; }
+.swm-stat { text-align: center; }
+.swm-stat-num { font-size: 1.9rem; font-weight: 800; color: var(--teal-dark); line-height: 1; }
+.swm-stat-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+.swm-disclaimer { font-size: 0.77rem; color: var(--text-muted); margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px; line-height: 1.55; }
+@media(max-width: 760px) {
+  .swm-card { padding: 20px 16px 18px; }
+  .swm-footer { flex-direction: column; }
+  .swm-stats { justify-content: flex-start; gap: 20px; }
+}
 </style>
 </head>
 <body>
@@ -1682,6 +1702,41 @@ footer {
           <div class="spc-legend" id="spcLegend"></div>
         </div>
         <p class="spc-disclaimer">Prevalence estimates drawn from published SETD5 Syndrome research (2014–2024). Individual experience varies significantly — these figures describe reported rates across studied populations, not predictions for any individual. Categories are not mutually exclusive.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Global Families Map -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Global Community</span>
+        <h2>SETD5 Syndrome Families Around the World</h2>
+        <p class="section-intro">SETD5 Syndrome has been identified on six continents. Every highlighted country has at least one confirmed case, and the true global count continues to grow as genetic testing expands.</p>
+      </div>
+      <div class="swm-card">
+        <div class="swm-map-container">
+          <svg id="swm-world-map"></svg>
+          <div id="swm-tooltip"></div>
+        </div>
+        <div class="swm-footer">
+          <div class="swm-legend">
+            <div class="swm-legend-item">
+              <div class="swm-legend-dot" style="background:#2F5361;"></div>
+              Country with reported cases
+            </div>
+            <div class="swm-legend-item">
+              <div class="swm-legend-dot" style="background:#d17e64;"></div>
+              Regional hub
+            </div>
+          </div>
+          <div class="swm-stats">
+            <div class="swm-stat"><div class="swm-stat-num">30+</div><div class="swm-stat-label">Countries</div></div>
+            <div class="swm-stat"><div class="swm-stat-num">6</div><div class="swm-stat-label">Continents</div></div>
+            <div class="swm-stat"><div class="swm-stat-num">900+</div><div class="swm-stat-label">Families</div></div>
+          </div>
+        </div>
+        <p class="swm-disclaimer">Map reflects countries with published or reported SETD5 Syndrome cases as of 2024. Actual case counts are likely significantly higher due to ongoing underdiagnosis globally. Hover over highlighted countries for details.</p>
       </div>
     </div>
   </section>
@@ -3327,6 +3382,161 @@ footer {
   window.showPage = function(page) {
     _origShowPage && _origShowPage(page);
     if (page === 'about') initSpcChart();
+  };
+})();
+</script>
+
+<!-- D3.js World Map -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+(function() {
+  // ISO numeric country codes with confirmed SETD5 Syndrome cases
+  const activeCodes = new Set([
+    840, // United States
+    826, // United Kingdom
+    276, // Germany
+    250, // France
+    380, // Italy
+    724, // Spain
+    756, // Switzerland
+    528, // Netherlands
+     56, // Belgium
+    752, // Sweden
+    578, // Norway
+    208, // Denmark
+    246, // Finland
+     40, // Austria
+    620, // Portugal
+    348, // Hungary
+    203, // Czech Republic
+    616, // Poland
+     36, // Australia
+    392, // Japan
+    156, // China
+    356, // India
+    410, // South Korea
+    124, // Canada
+    484, // Mexico
+     76, // Brazil
+    710, // South Africa
+    376, // Israel
+    792, // Turkey
+    682, // Saudi Arabia
+  ]);
+
+  const countryNames = {
+    840: 'United States', 826: 'United Kingdom', 276: 'Germany',
+    250: 'France', 380: 'Italy', 724: 'Spain', 756: 'Switzerland',
+    528: 'Netherlands', 56: 'Belgium', 752: 'Sweden', 578: 'Norway',
+    208: 'Denmark', 246: 'Finland', 40: 'Austria', 620: 'Portugal',
+    348: 'Hungary', 203: 'Czech Republic', 616: 'Poland', 36: 'Australia',
+    392: 'Japan', 156: 'China', 356: 'India', 410: 'South Korea',
+    124: 'Canada', 484: 'Mexico', 76: 'Brazil', 710: 'South Africa',
+    376: 'Israel', 792: 'Turkey', 682: 'Saudi Arabia',
+  };
+
+  // Regional hub pulse markers [longitude, latitude, label]
+  const hubs = [
+    [-95,  38, 'North America'],
+    [ 10,  51, 'Europe'],
+    [103,  35, 'Asia-Pacific'],
+    [-47, -15, 'South America'],
+  ];
+
+  let swmInitialized = false;
+
+  function initSwmMap() {
+    const svgEl = document.getElementById('swm-world-map');
+    if (!svgEl || swmInitialized) return;
+    const container = svgEl.closest('.swm-map-container');
+    if (!container || container.offsetWidth === 0) return;
+
+    swmInitialized = true;
+
+    const W = container.offsetWidth || 800;
+    const H = Math.round(W * 0.52);
+
+    const svg = d3.select('#swm-world-map')
+      .attr('viewBox', '0 0 ' + W + ' ' + H)
+      .attr('width', W)
+      .attr('height', H);
+
+    const projection = d3.geoNaturalEarth1()
+      .scale(W / 5.2)
+      .translate([W / 2, H / 2 + H * 0.06]);
+
+    const path = d3.geoPath().projection(projection);
+    const tooltip = d3.select('#swm-tooltip');
+
+    d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(world) {
+      const countries = topojson.feature(world, world.objects.countries);
+
+      // Graticule (behind countries)
+      svg.append('path')
+        .datum(d3.geoGraticule()())
+        .attr('fill', 'none')
+        .attr('stroke', '#b8d0d8')
+        .attr('stroke-width', 0.3)
+        .attr('d', path);
+
+      // Country fills
+      svg.selectAll('.swm-country')
+        .data(countries.features)
+        .enter().append('path')
+        .attr('class', 'swm-country')
+        .attr('d', path)
+        .attr('fill', function(d) { return activeCodes.has(+d.id) ? '#2F5361' : '#cddde4'; })
+        .attr('stroke', '#fff')
+        .attr('stroke-width', 0.5)
+        .style('cursor', function(d) { return activeCodes.has(+d.id) ? 'pointer' : 'default'; })
+        .style('transition', 'fill 0.15s')
+        .on('mouseover', function(event, d) {
+          if (!activeCodes.has(+d.id)) return;
+          d3.select(this).attr('fill', '#d17e64');
+          var name = countryNames[+d.id] || 'Country';
+          tooltip.style('opacity', 1)
+            .html('<strong>' + name + '</strong><br>Confirmed SETD5 Syndrome cases');
+        })
+        .on('mousemove', function(event) {
+          var pos = d3.pointer(event, container);
+          tooltip.style('left', (pos[0] + 14) + 'px').style('top', (pos[1] - 42) + 'px');
+        })
+        .on('mouseout', function(event, d) {
+          d3.select(this).attr('fill', activeCodes.has(+d.id) ? '#2F5361' : '#cddde4');
+          tooltip.style('opacity', 0);
+        });
+
+      // Hub markers
+      hubs.forEach(function(hub) {
+        var coords = projection([hub[0], hub[1]]);
+        if (!coords) return;
+        var x = coords[0], y = coords[1];
+        // Pulse ring
+        svg.append('circle')
+          .attr('cx', x).attr('cy', y).attr('r', 11)
+          .attr('fill', 'none')
+          .attr('stroke', '#d17e64')
+          .attr('stroke-width', 1.5)
+          .attr('opacity', 0.45);
+        // Dot
+        svg.append('circle')
+          .attr('cx', x).attr('cy', y).attr('r', 5)
+          .attr('fill', '#d17e64')
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 1.5);
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initSwmMap, 150);
+  });
+
+  var _prevShowPage = window.showPage;
+  window.showPage = function(page) {
+    _prevShowPage && _prevShowPage(page);
+    if (page === 'about') setTimeout(initSwmMap, 80);
   };
 })();
 </script>
