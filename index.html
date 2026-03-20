@@ -179,7 +179,7 @@ strong { color: var(--text); }
 }
 .nav-logo-text .tagline {
   font-family: 'Open Sans Condensed', 'Open Sans', sans-serif;
-  font-weight: 490;
+  font-weight: 500;
   font-size: 1.2rem;
   margin-top: 5px;
   margin-bottom: 0;
@@ -1181,6 +1181,64 @@ footer {
 .teal { color: var(--teal); }
 .coral { color: var(--coral); }
 .gold { color: var(--gold); }
+
+/* ===== SYMPTOM PREVALENCE CHART ===== */
+.spc-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 32px 24px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+.spc-layout {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.spc-chart-wrap {
+  flex: 0 0 320px;
+  max-width: 320px;
+  position: relative;
+}
+.spc-legend { flex: 1; min-width: 220px; }
+.spc-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-bottom: 1px solid #f0ece5;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+.spc-legend-item:last-child { border-bottom: none; }
+.spc-legend-item:hover { background: var(--cream); }
+.spc-legend-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.spc-legend-label { font-size: 0.85rem; font-weight: 500; color: var(--text); flex: 1; }
+.spc-legend-pct { font-size: 0.82rem; font-weight: 700; color: var(--text-light); font-variant-numeric: tabular-nums; }
+.spc-center-label {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+.spc-center-num { font-size: 1.7rem; font-weight: 800; color: var(--teal-dark); line-height: 1; }
+.spc-center-text { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-top: 3px; }
+.spc-disclaimer {
+  margin-top: 24px;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+@media(max-width: 760px) {
+  .spc-chart-wrap { flex: 0 0 100%; max-width: 280px; margin: 0 auto; }
+  .spc-card { padding: 24px 20px 20px; }
+}
 </style>
 </head>
 <body>
@@ -1600,6 +1658,30 @@ footer {
       </div>
       <div style="background:var(--white); border-radius:12px; padding:24px 28px; margin-top:32px; border-left:4px solid var(--coral);">
         <p style="margin:0; font-size:0.93rem;"><strong>Important:</strong> Features listed are drawn from published case series and reflect commonly reported characteristics. Not every individual will have all of these, and no two people are exactly alike. This is for educational purposes only and is not a substitute for medical advice. Please consult with a qualified genetics specialist or developmental pediatrician for personalized guidance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Symptom Prevalence Chart -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">By the Numbers</span>
+        <h2>Symptom Category Prevalence</h2>
+        <p>Approximate reported prevalence across symptom categories, based on published research. Most individuals have features in multiple areas — these categories overlap significantly.</p>
+      </div>
+      <div class="spc-card">
+        <div class="spc-layout">
+          <div class="spc-chart-wrap">
+            <canvas id="symptomPieChart" width="320" height="320"></canvas>
+            <div class="spc-center-label" id="spcCenterLabel">
+              <div class="spc-center-num" id="spcCenterNum">9</div>
+              <div class="spc-center-text">Categories</div>
+            </div>
+          </div>
+          <div class="spc-legend" id="spcLegend"></div>
+        </div>
+        <p class="spc-disclaimer">Prevalence estimates drawn from published SETD5 Syndrome research (2014–2024). Individual experience varies significantly — these figures describe reported rates across studied populations, not predictions for any individual. Categories are not mutually exclusive.</p>
       </div>
     </div>
   </section>
@@ -3161,6 +3243,92 @@ footer {
   document.querySelectorAll('a[href="#"]').forEach(a => {
     a.addEventListener('click', e => e.preventDefault());
   });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(function() {
+  const spcData = [
+    { label: 'Learning & Cognition',      pct: 100, color: '#1a2744' },
+    { label: 'Speech & Language',         pct: 90,  color: '#2a7a6a' },
+    { label: 'Facial Structure & Head',   pct: 85,  color: '#2a627a' },
+    { label: 'Behavior & Emotional Reg.', pct: 75,  color: '#c9893a' },
+    { label: 'Neurological & Motor',      pct: 65,  color: '#4e7c5f' },
+    { label: 'Eyes & Vision',             pct: 55,  color: '#6b4f7a' },
+    { label: 'Feeding & Growth',          pct: 45,  color: '#4a6080' },
+    { label: 'Other Medical Features',    pct: 30,  color: '#a04a5e' },
+    { label: 'Mouth, Teeth & Hands',      pct: 25,  color: '#5a7245' },
+  ];
+
+  function initSpcChart() {
+    const legend = document.getElementById('spcLegend');
+    const canvas = document.getElementById('symptomPieChart');
+    if (!legend || !canvas || canvas.dataset.initialized) return;
+    canvas.dataset.initialized = 'true';
+
+    spcData.forEach((d, i) => {
+      const item = document.createElement('div');
+      item.className = 'spc-legend-item';
+      item.innerHTML = `<div class="spc-legend-dot" style="background:${d.color}"></div><span class="spc-legend-label">${d.label}</span><span class="spc-legend-pct">~${d.pct}%</span>`;
+      item.addEventListener('mouseenter', () => {
+        document.getElementById('spcCenterNum').textContent = `~${d.pct}%`;
+        document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = d.label.split(' ').slice(0,2).join(' ');
+        window.spcChart.data.datasets[0].backgroundColor = spcData.map((dd, ii) => ii === i ? dd.color : dd.color + '30');
+        window.spcChart.update('none');
+      });
+      item.addEventListener('mouseleave', () => {
+        document.getElementById('spcCenterNum').textContent = '9';
+        document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = 'Categories';
+        window.spcChart.data.datasets[0].backgroundColor = spcData.map(dd => dd.color);
+        window.spcChart.update('none');
+      });
+      legend.appendChild(item);
+    });
+
+    window.spcChart = new Chart(canvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: spcData.map(d => d.label),
+        datasets: [{ data: spcData.map(d => d.pct), backgroundColor: spcData.map(d => d.color), borderColor: '#F7F3EE', borderWidth: 3, hoverOffset: 8 }]
+      },
+      options: {
+        cutout: '62%',
+        responsive: false,
+        animation: { animateRotate: true, duration: 800 },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: { label: c => `  ~${c.parsed}% of reported cases`, title: c => c[0].label },
+            backgroundColor: '#1e3a45', titleFont: { family: 'Open Sans', weight: '700', size: 13 },
+            bodyFont: { family: 'Open Sans', size: 12 }, padding: 12, cornerRadius: 8, displayColors: false,
+          }
+        },
+        onHover: (event, elements) => {
+          if (elements.length) {
+            const i = elements[0].index;
+            document.getElementById('spcCenterNum').textContent = `~${spcData[i].pct}%`;
+            document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = spcData[i].label.split(' ').slice(0,2).join(' ');
+            window.spcChart.data.datasets[0].backgroundColor = spcData.map((dd, ii) => ii === i ? dd.color : dd.color + '40');
+            window.spcChart.update('none');
+          } else {
+            document.getElementById('spcCenterNum').textContent = '9';
+            document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = 'Categories';
+            window.spcChart.data.datasets[0].backgroundColor = spcData.map(dd => dd.color);
+            window.spcChart.update('none');
+          }
+        }
+      }
+    });
+  }
+
+  // Init on load and whenever the about page is shown
+  document.addEventListener('DOMContentLoaded', initSpcChart);
+  const _origShowPage = window.showPage;
+  window.showPage = function(page) {
+    _origShowPage && _origShowPage(page);
+    if (page === 'about') initSpcChart();
+  };
+})();
 </script>
 
 </body>
