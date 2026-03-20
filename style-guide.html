@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SETD5 Syndrome Foundation — Style Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Open+Sans+Condensed:wght@300;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal:       #2F5361;
+  --teal-dark:  #1e3a45;
+  --teal-light: #e6f0f3;
+  --coral:      #d17e64;
+  --coral-light:#fdf0ef;
+  --gold:       #D8AB67;
+  --gold-light: #fdf5e8;
+  --white:      #ffffff;
+  --cream:      #FAFAF8;
+  --text:       #1A3340;
+  --text-mid:   #4a6b78;
+  --text-light: #7a9bab;
+  --border:     #dde8ec;
+}
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #f4f7f9;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* Layout */
+.sg-header {
+  background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
+  padding: 48px 40px;
+  color: white;
+}
+.sg-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 6px;
+}
+.sg-header p { color: rgba(255,255,255,0.75); font-size: 1rem; }
+.sg-header .version {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 3px 14px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.85);
+  margin-top: 12px;
+  letter-spacing: 0.03em;
+}
+
+.sg-nav {
+  background: var(--teal-dark);
+  padding: 0 40px;
+  display: flex;
+  gap: 4px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.sg-nav a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 12px 14px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+}
+.sg-nav a:hover { color: white; border-bottom-color: var(--gold); }
+
+.sg-body { max-width: 1000px; margin: 0 auto; padding: 48px 24px 80px; }
+
+.sg-section {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 32px;
+  border: 1px solid var(--border);
+}
+.sg-section-title {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  color: var(--coral);
+  margin-bottom: 6px;
+}
+.sg-section h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Color swatches */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+.swatch {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.swatch-color {
+  height: 80px;
+}
+.swatch-info {
+  padding: 12px 14px;
+  background: white;
+}
+.swatch-name {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text);
+  display: block;
+  margin-bottom: 2px;
+}
+.swatch-var {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-family: monospace;
+  display: block;
+  margin-bottom: 2px;
+}
+.swatch-hex {
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  font-family: monospace;
+}
+
+/* Typography specimens */
+.type-specimen {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 20px;
+  align-items: center;
+}
+.type-specimen:last-child { border-bottom: none; padding-bottom: 0; }
+.type-meta { text-align: right; }
+.type-meta .label {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-family: monospace;
+  display: block;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.btn-row:last-child { margin-bottom: 0; }
+.btn {
+  display: inline-block;
+  padding: 13px 28px;
+  border-radius: 6px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+  text-decoration: none;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+.btn-primary { background: var(--coral); color: white; border-color: var(--coral); }
+.btn-primary:hover { background: #b05e54; border-color: #b05e54; }
+.btn-outline { background: transparent; color: var(--teal); border-color: var(--teal); }
+.btn-outline:hover { background: var(--teal); color: white; }
+.btn-gold { background: var(--gold); color: white; border-color: var(--gold); }
+.btn-gold:hover { background: #c49650; border-color: #c49650; }
+.btn-secondary { background: transparent; color: white; border-color: white; }
+.btn-lg { padding: 16px 36px; font-size: 1.05rem; }
+.dark-bg { background: var(--teal); padding: 20px; border-radius: 8px; }
+
+/* Cards */
+.card-demo-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(47,83,97,0.08);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.card-body { padding: 28px; }
+.card-icon {
+  width: 52px; height: 52px;
+  background: var(--teal-light);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+.card-icon.coral { background: var(--coral-light); }
+.card-icon.gold { background: var(--gold-light); }
+.card h3 { font-size: 1rem; color: var(--teal); font-weight: 700; margin-bottom: 8px; }
+.card p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.6; margin: 0; }
+
+/* Section backgrounds */
+.bg-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.bg-demo {
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid var(--border);
+}
+.bg-demo .bg-name { font-weight: 700; font-size: 0.85rem; color: var(--text); margin-bottom: 4px; }
+.bg-demo .bg-class { font-family: monospace; font-size: 0.75rem; color: var(--text-light); }
+
+/* Spacing */
+.spacing-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 14px;
+}
+.spacing-row:last-child { margin-bottom: 0; }
+.spacing-bar-wrap { flex: 1; }
+.spacing-bar {
+  background: var(--teal-light);
+  border-radius: 4px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+.spacing-label { font-weight: 700; font-size: 0.85rem; color: var(--text); width: 60px; }
+.spacing-value { font-family: monospace; font-size: 0.78rem; color: var(--text-light); width: 120px; text-align: right; }
+
+/* Subhead specimen */
+.subhead {
+  font-family: 'Open Sans Condensed', 'Open Sans', sans-serif;
+  font-weight: 700;
+  color: var(--coral);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* Element reference */
+.elem-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.elem-table th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--teal-light);
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.elem-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.55;
+}
+.elem-table tr:last-child td { border-bottom: none; }
+.elem-table td:first-child {
+  font-weight: 700;
+  color: var(--text);
+  width: 200px;
+  white-space: nowrap;
+}
+.elem-table td:nth-child(2) {
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: var(--teal);
+  width: 230px;
+}
+.elem-table td:nth-child(3) { color: var(--text-mid); }
+.elem-group-row td {
+  background: var(--gold-light);
+  font-weight: 700;
+  color: var(--teal);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 7px 14px;
+}
+
+/* Token table */
+.token-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.token-table th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--teal-light);
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.token-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-mid);
+  vertical-align: middle;
+}
+.token-table td:first-child { font-family: monospace; color: var(--teal); font-weight: 600; }
+.token-table tr:last-child td { border-bottom: none; }
+.dot {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+</style>
+</head>
+<body>
+
+<div class="sg-header">
+  <h1>SETD5 Syndrome Foundation</h1>
+  <p>Visual Style Guide — Brand tokens, typography, components, and usage guidelines</p>
+  <span class="version">Version 1.0 &nbsp;·&nbsp; March 2026</span>
+</div>
+
+<nav class="sg-nav">
+  <a href="#elements">Page Elements</a>
+  <a href="#colors">Colors</a>
+  <a href="#typography">Typography</a>
+  <a href="#buttons">Buttons</a>
+  <a href="#cards">Cards</a>
+  <a href="#backgrounds">Backgrounds</a>
+  <a href="#spacing">Spacing</a>
+  <a href="#tokens">All Tokens</a>
+</nav>
+
+<div class="sg-body">
+
+  <!-- PAGE ELEMENTS REFERENCE -->
+  <div class="sg-section" id="elements">
+    <p class="sg-section-title">Reference</p>
+    <h2>Page Elements — Technical Names</h2>
+    <p style="color:var(--text-light); font-size:0.88rem; margin-bottom:24px;">Use the name in the <strong style="color:var(--text);">Element</strong> column when asking for changes. The <strong style="color:var(--text);">Selector</strong> column shows the exact CSS name used in the code.</p>
+
+    <table class="elem-table">
+      <thead>
+        <tr>
+          <th>Element</th>
+          <th>Selector</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="elem-group-row"><td colspan="3">Navigation Bar</td></tr>
+        <tr>
+          <td>Nav bar</td>
+          <td>#site-nav</td>
+          <td>The sticky header bar that stays at the top of the page as you scroll. Contains the logo and navigation links.</td>
+        </tr>
+        <tr>
+          <td>Nav background</td>
+          <td>#site-nav { background }</td>
+          <td>The background color of the entire nav bar. Currently #fbf9f6 (warm off-white).</td>
+        </tr>
+        <tr>
+          <td>Nav bottom border</td>
+          <td>#site-nav { border-bottom }</td>
+          <td>The thin line separating the nav from the page content below it.</td>
+        </tr>
+        <tr>
+          <td>Logo area</td>
+          <td>.nav-logo</td>
+          <td>The clickable logo group containing the logo image and the foundation name/tagline text. Clicking it returns to the home page.</td>
+        </tr>
+        <tr>
+          <td>Logo image</td>
+          <td>.logo-svg</td>
+          <td>The circular logo PNG image in the nav bar. Currently 88×88px.</td>
+        </tr>
+        <tr>
+          <td>Foundation name</td>
+          <td>.nav-logo-text .name</td>
+          <td>"SETD5 Syndrome Foundation" — the large text next to the logo. Currently 2rem, weight 700, teal color.</td>
+        </tr>
+        <tr>
+          <td>Nav tagline</td>
+          <td>.nav-logo-text .tagline</td>
+          <td>"research · advocacy · community" — the smaller text beneath the foundation name. Coral color, condensed font.</td>
+        </tr>
+        <tr>
+          <td>Nav links</td>
+          <td>.nav-links a</td>
+          <td>The clickable page links in the nav bar (About, Research, Resources, Donate). Currently 1rem, weight 600.</td>
+        </tr>
+        <tr>
+          <td>Donate button (nav)</td>
+          <td>.nav-donate</td>
+          <td>The coral-filled "Donate" button in the nav bar. Styled differently from the other nav links.</td>
+        </tr>
+        <tr>
+          <td>Dropdown menu</td>
+          <td>.nav-dropdown-menu</td>
+          <td>The pop-out list that appears when hovering over "About" in the nav. Contains sub-page links.</td>
+        </tr>
+        <tr>
+          <td>Dropdown caret</td>
+          <td>.nav-caret</td>
+          <td>The small ▾ arrow next to "About" that opens the dropdown menu when clicked.</td>
+        </tr>
+
+        <tr class="elem-group-row"><td colspan="3">Page Layout</td></tr>
+        <tr>
+          <td>Container</td>
+          <td>.container</td>
+          <td>The invisible box that keeps content centered and limits it to 1200px wide with 24px padding on each side. All body content sits inside this.</td>
+        </tr>
+        <tr>
+          <td>Narrow container</td>
+          <td>.container--narrow</td>
+          <td>A slimmer version of the container, max 780px wide. Used for text-heavy pages like Resources.</td>
+        </tr>
+        <tr>
+          <td>Section</td>
+          <td>.section</td>
+          <td>A full-width horizontal band that groups related content. Sections stack vertically down the page and alternate background colors.</td>
+        </tr>
+        <tr>
+          <td>Page banner</td>
+          <td>.page-banner</td>
+          <td>The teal header strip at the top of inner pages (Research, Resources, etc.) that shows the page title and a short description.</td>
+        </tr>
+        <tr>
+          <td>Page banner title</td>
+          <td>.page-banner h1</td>
+          <td>The large white heading inside the teal page banner.</td>
+        </tr>
+        <tr>
+          <td>Page banner subtitle</td>
+          <td>.page-banner p</td>
+          <td>The smaller descriptive text below the page banner title.</td>
+        </tr>
+
+        <tr class="elem-group-row"><td colspan="3">Home Page — Hero</td></tr>
+        <tr>
+          <td>Hero section</td>
+          <td>.hero</td>
+          <td>The large opening section on the home page with the headline, description, buttons, and stats card.</td>
+        </tr>
+        <tr>
+          <td>Hero headline</td>
+          <td>.hero-content h1</td>
+          <td>The large bold text at the top of the hero ("Turning Research Into Hope...").</td>
+        </tr>
+        <tr>
+          <td>Hero description</td>
+          <td>.hero-desc</td>
+          <td>The paragraph text beneath the hero headline describing the foundation's mission.</td>
+        </tr>
+        <tr>
+          <td>Hero buttons</td>
+          <td>.hero-actions</td>
+          <td>The row of buttons in the hero (e.g. "Join Our Community", "Learn About SETD5 Syndrome").</td>
+        </tr>
+        <tr>
+          <td>Hero stats card</td>
+          <td>.hero-card</td>
+          <td>The floating card on the right side of the hero that shows key statistics.</td>
+        </tr>
+        <tr>
+          <td>Hero stat</td>
+          <td>.hero-stat</td>
+          <td>An individual number + label pair inside the hero stats card (e.g. "1 in 30,000 births").</td>
+        </tr>
+        <tr>
+          <td>Hero quote</td>
+          <td>.hero-tagline</td>
+          <td>The italic quote at the bottom of the hero stats card ("Every dollar brings us closer to answers.").</td>
+        </tr>
+
+        <tr class="elem-group-row"><td colspan="3">Home Page — Other Sections</td></tr>
+        <tr>
+          <td>Impact stats bar</td>
+          <td>.impact-bar</td>
+          <td>The full-width teal band beneath the hero showing 3–4 high-level impact numbers.</td>
+        </tr>
+        <tr>
+          <td>What is section</td>
+          <td>.what-is (section)</td>
+          <td>The "What is SETD5 Syndrome?" explainer section on the home page with the symptom cards.</td>
+        </tr>
+        <tr>
+          <td>Story section</td>
+          <td>.story-card</td>
+          <td>The family quote/testimonial section on the home page with the pull quote and attribution.</td>
+        </tr>
+        <tr>
+          <td>CTA band</td>
+          <td>.cta-band</td>
+          <td>A full-width teal call-to-action strip that appears at the bottom of pages with a headline and buttons encouraging action.</td>
+        </tr>
+        <tr>
+          <td>Newsletter section</td>
+          <td>.newsletter</td>
+          <td>The email sign-up section with the input field and subscribe button.</td>
+        </tr>
+
+        <tr class="elem-group-row"><td colspan="3">Components</td></tr>
+        <tr>
+          <td>Card</td>
+          <td>.card</td>
+          <td>A white rounded box with a subtle shadow used to display a discrete piece of content (research highlight, symptom, feature, etc.).</td>
+        </tr>
+        <tr>
+          <td>Card icon</td>
+          <td>.card-icon</td>
+          <td>The small colored square with an icon at the top of a card. Can be teal, coral, or gold.</td>
+        </tr>
+        <tr>
+          <td>Eyebrow / subheading</td>
+          <td>.subhead</td>
+          <td>The small all-caps coral label that appears above a section heading (e.g. "OUR MISSION", "ABOUT THE SCIENCE").</td>
+        </tr>
+        <tr>
+          <td>Primary button</td>
+          <td>.btn-primary</td>
+          <td>A coral-filled button. Used for the most important action on any given section.</td>
+        </tr>
+        <tr>
+          <td>Outline button</td>
+          <td>.btn-outline</td>
+          <td>A teal-bordered transparent button. Used for secondary actions on light backgrounds.</td>
+        </tr>
+        <tr>
+          <td>Gold button</td>
+          <td>.btn-gold</td>
+          <td>A gold-filled button. Used for fundraising emphasis.</td>
+        </tr>
+        <tr>
+          <td>Secondary button</td>
+          <td>.btn-secondary</td>
+          <td>A white-bordered transparent button. Used on dark teal backgrounds only.</td>
+        </tr>
+        <tr>
+          <td>Large button</td>
+          <td>.btn-lg</td>
+          <td>An extra-large button variant. Added alongside any button class (e.g. .btn-primary.btn-lg) for hero CTAs.</td>
+        </tr>
+
+        <tr class="elem-group-row"><td colspan="3">About the Foundation Page (Leadership)</td></tr>
+        <tr>
+          <td>Board grid</td>
+          <td>.board-grid</td>
+          <td>The 3-column grid showing the 5 board members with their photo, name, title, and bio.</td>
+        </tr>
+        <tr>
+          <td>Board member card</td>
+          <td>.board-card</td>
+          <td>An individual board member's card inside the board grid.</td>
+        </tr>
+        <tr>
+          <td>Board member photo</td>
+          <td>.board-photo</td>
+          <td>The circular headshot image on a board member card.</td>
+        </tr>
+        <tr>
+          <td>Board member name</td>
+          <td>.board-card h3</td>
+          <td>The name heading on a board member card.</td>
+        </tr>
+        <tr>
+          <td>Board member title</td>
+          <td>.board-title</td>
+          <td>The role/title line beneath the name on a board member card (e.g. "Founder & Executive Director").</td>
+        </tr>
+        <tr>
+          <td>Working group section</td>
+          <td>.working-groups (section)</td>
+          <td>The section listing the foundation's working groups with their focus areas.</td>
+        </tr>
+
+        <tr class="elem-group-row"><td colspan="3">Footer</td></tr>
+        <tr>
+          <td>Footer</td>
+          <td>#site-footer</td>
+          <td>The dark teal section at the very bottom of every page with navigation links, contact info, and the copyright line.</td>
+        </tr>
+        <tr>
+          <td>Footer logo</td>
+          <td>.footer-logo</td>
+          <td>The foundation name and tagline repeated in the footer.</td>
+        </tr>
+        <tr>
+          <td>Footer columns</td>
+          <td>.footer-grid</td>
+          <td>The multi-column layout inside the footer with grouped links.</td>
+        </tr>
+        <tr>
+          <td>Footer copyright</td>
+          <td>.footer-bottom</td>
+          <td>The bottom strip of the footer with the copyright notice and legal links.</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- COLORS -->
+  <div class="sg-section" id="colors">
+    <p class="sg-section-title">Foundation</p>
+    <h2>Brand Colors</h2>
+    <div class="color-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#2F5361;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Teal</span>
+          <span class="swatch-var">--teal</span>
+          <span class="swatch-hex">#2F5361</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1e3a45;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Teal Dark</span>
+          <span class="swatch-var">--teal-dark</span>
+          <span class="swatch-hex">#1e3a45</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#e6f0f3; border-bottom: 1px solid #dde8ec;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Teal Light</span>
+          <span class="swatch-var">--teal-light</span>
+          <span class="swatch-hex">#e6f0f3</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#d17e64;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Coral</span>
+          <span class="swatch-var">--coral</span>
+          <span class="swatch-hex">#d17e64</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fdf0ef; border-bottom: 1px solid #dde8ec;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Coral Light</span>
+          <span class="swatch-var">--coral-light</span>
+          <span class="swatch-hex">#fdf0ef</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#D8AB67;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Gold</span>
+          <span class="swatch-var">--gold</span>
+          <span class="swatch-hex">#D8AB67</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fdf5e8; border-bottom: 1px solid #dde8ec;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Gold Light</span>
+          <span class="swatch-var">--gold-light</span>
+          <span class="swatch-hex">#fdf5e8</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FAFAF8; border-bottom: 1px solid #dde8ec;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Cream</span>
+          <span class="swatch-var">--cream</span>
+          <span class="swatch-hex">#FAFAF8</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:32px;">Text Colors</h2>
+    <div class="color-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1A3340;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Text</span>
+          <span class="swatch-var">--text</span>
+          <span class="swatch-hex">#1A3340</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#4a6b78;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Text Mid</span>
+          <span class="swatch-var">--text-mid</span>
+          <span class="swatch-hex">#4a6b78</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#7a9bab;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Text Light</span>
+          <span class="swatch-var">--text-light</span>
+          <span class="swatch-hex">#7a9bab</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#dde8ec; border-bottom: 1px solid #ccc;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Border</span>
+          <span class="swatch-var">--border</span>
+          <span class="swatch-hex">#dde8ec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="sg-section" id="typography">
+    <p class="sg-section-title">Typography</p>
+    <h2>Type Styles</h2>
+
+    <div class="type-specimen">
+      <div>
+        <h1 style="font-size:3rem; color:var(--teal); font-weight:700; line-height:1.2;">Heading 1</h1>
+      </div>
+      <div class="type-meta">
+        <span class="label">Open Sans Bold</span>
+        <span class="label">3rem / 48px</span>
+        <span class="label">weight: 700</span>
+        <span class="label">color: --teal</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div>
+        <h2 style="font-size:2rem; color:var(--teal); font-weight:700; line-height:1.25;">Heading 2</h2>
+      </div>
+      <div class="type-meta">
+        <span class="label">Open Sans Bold</span>
+        <span class="label">2rem / 32px</span>
+        <span class="label">weight: 700</span>
+        <span class="label">color: --teal</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div>
+        <h3 style="font-size:1.25rem; color:var(--teal); font-weight:700;">Heading 3</h3>
+      </div>
+      <div class="type-meta">
+        <span class="label">Open Sans Bold</span>
+        <span class="label">1.25rem / 20px</span>
+        <span class="label">weight: 700</span>
+        <span class="label">color: --teal</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div>
+        <span class="subhead">Subheading / Eyebrow Label</span>
+      </div>
+      <div class="type-meta">
+        <span class="label">Open Sans Condensed</span>
+        <span class="label">0.85rem / 13.6px</span>
+        <span class="label">weight: 700</span>
+        <span class="label">UPPERCASE</span>
+        <span class="label">color: --coral</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div>
+        <p style="margin:0; color:var(--text-mid);">Body text. The SETD5 gene plays a critical role in brain development, and every person with SETD5 Syndrome is unique.</p>
+      </div>
+      <div class="type-meta">
+        <span class="label">Open Sans Regular</span>
+        <span class="label">1rem / 16px</span>
+        <span class="label">weight: 400</span>
+        <span class="label">line-height: 1.7</span>
+        <span class="label">color: --text-mid</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div>
+        <p style="margin:0; font-size:0.88rem; color:var(--text-light);">Small / caption text. Supporting details and metadata.</p>
+      </div>
+      <div class="type-meta">
+        <span class="label">Open Sans Regular</span>
+        <span class="label">0.88rem / 14px</span>
+        <span class="label">color: --text-light</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div>
+        <blockquote style="font-size:1.1rem; color:var(--text-mid); font-style:italic; border-left:3px solid var(--coral); padding-left:16px;">"Every dollar raised is a message to our kids: we see you, we believe in you."</blockquote>
+      </div>
+      <div class="type-meta">
+        <span class="label">Open Sans Italic</span>
+        <span class="label">1.1rem</span>
+        <span class="label">border: --coral</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="sg-section" id="buttons">
+    <p class="sg-section-title">Components</p>
+    <h2>Buttons</h2>
+
+    <p style="font-size:0.88rem; color:var(--text-light); margin-bottom:20px;">All buttons use <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px; font-size:0.82rem;">border-radius: 6px</code>, <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px; font-size:0.82rem;">font-weight: 700</code>, and a 2px border for consistent shape across variants.</p>
+
+    <div class="btn-row">
+      <a href="#" class="btn btn-primary">Donate Now</a>
+      <span style="font-size:0.78rem; color:var(--text-light); font-family:monospace;">.btn-primary — coral fill, used for primary CTAs</span>
+    </div>
+    <div class="btn-row">
+      <a href="#" class="btn btn-outline">Learn More</a>
+      <span style="font-size:0.78rem; color:var(--text-light); font-family:monospace;">.btn-outline — teal border, used for secondary actions on light backgrounds</span>
+    </div>
+    <div class="btn-row">
+      <a href="#" class="btn btn-gold">Support Research</a>
+      <span style="font-size:0.78rem; color:var(--text-light); font-family:monospace;">.btn-gold — gold fill, used for emphasis / fundraising accents</span>
+    </div>
+    <div class="btn-row">
+      <a href="#" class="btn btn-lg btn-primary">Large Button</a>
+      <span style="font-size:0.78rem; color:var(--text-light); font-family:monospace;">.btn-lg — larger padding for hero CTAs</span>
+    </div>
+    <div class="dark-bg" style="margin-top:16px;">
+      <div class="btn-row" style="margin-bottom:0;">
+        <a href="#" class="btn btn-secondary">Get Involved</a>
+        <span style="font-size:0.78rem; color:rgba(255,255,255,0.6); font-family:monospace;">.btn-secondary — white border, for use on teal backgrounds only</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="sg-section" id="cards">
+    <p class="sg-section-title">Components</p>
+    <h2>Cards</h2>
+    <div class="card-demo-row">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2F5361" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <h3>Teal Icon Card</h3>
+          <p>Default card style with teal icon background. Used for research and informational content.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="card-icon coral">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d17e64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3>Coral Icon Card</h3>
+          <p>Coral icon background. Used for community and family-focused content areas.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="card-icon gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#D8AB67" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3>Gold Icon Card</h3>
+          <p>Gold icon background. Used for milestones, fundraising highlights, and impact stats.</p>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:16px; font-size:0.82rem; color:var(--text-light);">Cards use <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">border-radius: 12px</code>, <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">box-shadow: --shadow-sm</code>, and lift on hover via <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">translateY(-3px)</code>.</p>
+  </div>
+
+  <!-- SECTION BACKGROUNDS -->
+  <div class="sg-section" id="backgrounds">
+    <p class="sg-section-title">Layout</p>
+    <h2>Section Backgrounds</h2>
+    <p style="color:var(--text-light); font-size:0.88rem; margin-bottom:24px;">Sections alternate backgrounds to create visual rhythm as users scroll down the page.</p>
+    <div class="bg-demo-grid">
+      <div class="bg-demo" style="background:#ffffff;">
+        <div class="bg-name">White</div>
+        <div class="bg-class">.section--white</div>
+      </div>
+      <div class="bg-demo" style="background:#FAFAF8;">
+        <div class="bg-name">Cream</div>
+        <div class="bg-class">.section--cream</div>
+      </div>
+      <div class="bg-demo" style="background:#e6f0f3;">
+        <div class="bg-name">Teal Light</div>
+        <div class="bg-class">.section--teal-light</div>
+      </div>
+      <div class="bg-demo" style="background:#fdf5e8;">
+        <div class="bg-name">Gold Light</div>
+        <div class="bg-class">.section--gold-light</div>
+      </div>
+      <div class="bg-demo" style="background:#fdf0ef;">
+        <div class="bg-name">Coral Light</div>
+        <div class="bg-class">.section--coral-light</div>
+      </div>
+      <div class="bg-demo" style="background:#2F5361;">
+        <div class="bg-name" style="color:white;">Teal (Dark)</div>
+        <div class="bg-class" style="color:rgba(255,255,255,0.6);">.section--teal</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPACING -->
+  <div class="sg-section" id="spacing">
+    <p class="sg-section-title">Layout</p>
+    <h2>Spacing Scale</h2>
+    <div style="margin-bottom:8px;">
+      <div class="spacing-row">
+        <span class="spacing-label">xs</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:8%;"><span style="font-size:0.75rem; color:var(--teal); font-weight:600;">8px</span></div></div>
+        <span class="spacing-value">gap, icon padding</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-label">sm</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16%;"><span style="font-size:0.75rem; color:var(--teal); font-weight:600;">16px</span></div></div>
+        <span class="spacing-value">card internal gap</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-label">md</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24%;"><span style="font-size:0.75rem; color:var(--teal); font-weight:600;">24px</span></div></div>
+        <span class="spacing-value">container padding</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-label">lg</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:40%;"><span style="font-size:0.75rem; color:var(--teal); font-weight:600;">40px</span></div></div>
+        <span class="spacing-value">grid gaps, card body</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-label">xl</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:56%;"><span style="font-size:0.75rem; color:var(--teal); font-weight:600;">56px</span></div></div>
+        <span class="spacing-value">section padding (mobile)</span>
+      </div>
+      <div class="spacing-row">
+        <span class="spacing-label">2xl</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:80%;"><span style="font-size:0.75rem; color:var(--teal); font-weight:600;">80px</span></div></div>
+        <span class="spacing-value">section header margin</span>
+      </div>
+    </div>
+    <p style="margin-top:16px; font-size:0.82rem; color:var(--text-light);">Max content width: <strong style="color:var(--text);">1100px</strong> (.container) &nbsp;·&nbsp; Narrow content width: <strong style="color:var(--text);">780px</strong> (.container--narrow)</p>
+  </div>
+
+  <!-- TOKEN REFERENCE -->
+  <div class="sg-section" id="tokens">
+    <p class="sg-section-title">Reference</p>
+    <h2>All CSS Custom Properties</h2>
+    <table class="token-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Value</th>
+          <th>Preview</th>
+          <th>Usage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>--teal</td><td>#2F5361</td><td><span class="dot" style="background:#2F5361;"></span></td><td>Headings, nav, outlines, primary brand</td></tr>
+        <tr><td>--teal-dark</td><td>#1e3a45</td><td><span class="dot" style="background:#1e3a45;"></span></td><td>Hero gradient start, hover states</td></tr>
+        <tr><td>--teal-light</td><td>#e6f0f3</td><td><span class="dot" style="background:#e6f0f3;"></span></td><td>Section backgrounds, icon backgrounds, nav active</td></tr>
+        <tr><td>--coral</td><td>#d17e64</td><td><span class="dot" style="background:#d17e64;"></span></td><td>Subheadings, primary buttons, links on hover</td></tr>
+        <tr><td>--coral-light</td><td>#fdf0ef</td><td><span class="dot" style="background:#fdf0ef;"></span></td><td>Section backgrounds, coral icon cards</td></tr>
+        <tr><td>--gold</td><td>#D8AB67</td><td><span class="dot" style="background:#D8AB67;"></span></td><td>Accent buttons, hero highlight text, gold icon cards</td></tr>
+        <tr><td>--gold-light</td><td>#fdf5e8</td><td><span class="dot" style="background:#fdf5e8;"></span></td><td>Section backgrounds, gold icon cards</td></tr>
+        <tr><td>--white</td><td>#ffffff</td><td><span class="dot" style="background:#ffffff;"></span></td><td>Card backgrounds, reversed text</td></tr>
+        <tr><td>--cream</td><td>#FAFAF8</td><td><span class="dot" style="background:#FAFAF8;"></span></td><td>Page background, alternating sections</td></tr>
+        <tr><td>--text</td><td>#1A3340</td><td><span class="dot" style="background:#1A3340;"></span></td><td>Strong text, nav links</td></tr>
+        <tr><td>--text-mid</td><td>#4a6b78</td><td><span class="dot" style="background:#4a6b78;"></span></td><td>Body copy, paragraph text</td></tr>
+        <tr><td>--text-light</td><td>#7a9bab</td><td><span class="dot" style="background:#7a9bab;"></span></td><td>Captions, metadata, placeholders</td></tr>
+        <tr><td>--border</td><td>#dde8ec</td><td><span class="dot" style="background:#dde8ec;"></span></td><td>Card borders, dividers, nav underline</td></tr>
+        <tr><td>--shadow</td><td>0 4px 24px rgba(47,83,97,0.10)</td><td>—</td><td>Card hover shadow</td></tr>
+        <tr><td>--shadow-sm</td><td>0 2px 8px rgba(47,83,97,0.08)</td><td>—</td><td>Default card shadow</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>
