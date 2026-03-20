@@ -1052,20 +1052,22 @@ footer {
         </div>
       </a>
       <ul class="nav-links" id="nav-links">
-        <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
-        <li class="nav-item-dropdown" id="dropdown-who">
-          <a href="#" onclick="showPage('who')" data-page="who" class="nav-dropdown-trigger">Our Team</a><button class="nav-caret-btn" onclick="toggleDropdown(event,'dropdown-who')" aria-label="Show submenu"><span class="nav-caret">▾</span></button>
+        <li class="nav-item-dropdown" id="dropdown-about">
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-about')" style="font-weight:600; font-size:0.88rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">About <span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('about')" data-page="about">About the Syndrome</a></li>
+          </ul>
+        </li>
+        <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
+        <li><a href="#" onclick="showPage('resources')" data-page="resources">Resources</a></li>
+        <li class="nav-item-dropdown" id="dropdown-who">
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-who')" style="font-weight:600; font-size:0.88rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">Our Team <span class="nav-caret">▾</span></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('who')" data-page="who">Leadership</a></li>
             <li><a href="#" onclick="showPage('partners')" data-page="partners">Partners</a></li>
           </ul>
         </li>
         <li><a href="#" onclick="showPage('donate')" data-page="donate" class="nav-donate">Donate</a></li>
-        <li class="nav-item-dropdown" id="dropdown-resources">
-          <a href="#" onclick="showPage('resources')" data-page="resources" class="nav-dropdown-trigger">Resources</a><button class="nav-caret-btn" onclick="toggleDropdown(event,'dropdown-resources')" aria-label="Show submenu"><span class="nav-caret">▾</span></button>
-          <ul class="nav-dropdown-menu">
-            <li><a href="#" onclick="showPage('about')" data-page="about">The Condition</a></li>
-          </ul>
-        </li>
       </ul>
       <div class="nav-toggle" id="nav-toggle" onclick="toggleNav()">
         <span></span><span></span><span></span>
