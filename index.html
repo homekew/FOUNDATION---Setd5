@@ -568,6 +568,43 @@ strong { color: var(--text); }
   background: rgba(196,109,98,0.07);
   pointer-events: none;
 }
+/* --- Per-page circle variations --- */
+/* about: large gold top-left, small coral bottom-right */
+#about .page-banner::before { top: -60px; right: auto; left: -100px; width: 460px; height: 460px; background: rgba(216,171,103,0.07); }
+#about .page-banner::after  { bottom: -80px; left: auto; right: -40px; width: 280px; height: 280px; background: rgba(196,109,98,0.08); }
+
+/* research: medium coral top-right, large gold bottom-left */
+#research .page-banner::before { top: -100px; right: -60px; left: auto; width: 380px; height: 380px; background: rgba(196,109,98,0.08); }
+#research .page-banner::after  { bottom: -120px; left: -80px; right: auto; width: 440px; height: 440px; background: rgba(216,171,103,0.07); }
+
+/* donate: two golds, staggered center-right */
+#donate .page-banner::before { top: -40px; right: 10%; left: auto; width: 320px; height: 320px; background: rgba(216,171,103,0.09); }
+#donate .page-banner::after  { bottom: -90px; right: -50px; left: auto; width: 380px; height: 380px; background: rgba(196,109,98,0.06); }
+
+/* who: large coral bottom-center, small gold top-right */
+#who .page-banner::before { top: -50px; right: -70px; left: auto; width: 300px; height: 300px; background: rgba(216,171,103,0.09); }
+#who .page-banner::after  { bottom: -110px; left: 20%; right: auto; width: 420px; height: 420px; background: rgba(196,109,98,0.07); }
+
+/* resources: medium gold top-center, coral bottom-left */
+#resources .page-banner::before { top: -70px; left: 30%; right: auto; width: 360px; height: 360px; background: rgba(216,171,103,0.08); }
+#resources .page-banner::after  { bottom: -90px; left: -70px; right: auto; width: 300px; height: 300px; background: rgba(196,109,98,0.08); }
+
+/* partners: large gold top-right, small coral lower-center */
+#partners .page-banner::before { top: -90px; right: -90px; left: auto; width: 480px; height: 480px; background: rgba(216,171,103,0.07); }
+#partners .page-banner::after  { bottom: -60px; left: 40%; right: auto; width: 260px; height: 260px; background: rgba(196,109,98,0.08); }
+
+/* fundraising: coral top-left, gold bottom-right */
+#fundraising .page-banner::before { top: -80px; left: -60px; right: auto; width: 400px; height: 400px; background: rgba(196,109,98,0.08); }
+#fundraising .page-banner::after  { bottom: -80px; right: -60px; left: auto; width: 360px; height: 360px; background: rgba(216,171,103,0.08); }
+
+/* volunteer: gold top-center-right, coral bottom-left */
+#volunteer .page-banner::before { top: -60px; right: 5%; left: auto; width: 350px; height: 350px; background: rgba(216,171,103,0.09); }
+#volunteer .page-banner::after  { bottom: -100px; left: -50px; right: auto; width: 400px; height: 400px; background: rgba(196,109,98,0.07); }
+
+/* board: small gold top-right, large coral bottom-center */
+#board .page-banner::before { top: -40px; right: -50px; left: auto; width: 280px; height: 280px; background: rgba(216,171,103,0.09); }
+#board .page-banner::after  { bottom: -120px; left: 25%; right: auto; width: 450px; height: 450px; background: rgba(196,109,98,0.06); }
+
 .page-banner .subhead { margin-bottom: 12px; color: var(--gold); }
 .page-banner h1 { color: var(--white); font-size: 3rem; line-height: 1.15; margin-bottom: 16px; }
 .page-banner p { color: rgba(255,255,255,0.82); font-size: 1.1rem; max-width: 580px; line-height: 1.6; }
