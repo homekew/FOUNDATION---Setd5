@@ -543,6 +543,26 @@ strong { color: var(--text); }
   background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
   padding: 40px 0 48px;
   border-bottom: 4px solid var(--gold);
+  position: relative;
+  overflow: hidden;
+}
+.page-banner::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  background: rgba(216,171,103,0.08);
+  pointer-events: none;
+}
+.page-banner::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; left: -60px;
+  width: 340px; height: 340px;
+  border-radius: 50%;
+  background: rgba(196,109,98,0.07);
+  pointer-events: none;
 }
 .page-banner .subhead { margin-bottom: 12px; color: var(--gold); }
 .page-banner h1 { color: var(--white); font-size: 3rem; line-height: 1.15; margin-bottom: 16px; }
@@ -1083,6 +1103,13 @@ footer {
         </li>
         <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
         <li><a href="#" onclick="showPage('resources')" data-page="resources">Resources</a></li>
+        <li class="nav-item-dropdown" id="dropdown-involve">
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-involve')" style="font-weight:600; font-size:1rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">Get Involved <span class="nav-caret">▾</span></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('fundraising')" data-page="fundraising">Fundraising</a></li>
+            <li><a href="#" onclick="showPage('volunteer')" data-page="volunteer">Volunteer</a></li>
+          </ul>
+        </li>
         <li><a href="#" onclick="showPage('donate')" data-page="donate" class="nav-donate">Donate</a></li>
       </ul>
       <div class="nav-toggle" id="nav-toggle" onclick="toggleNav()">
@@ -2372,6 +2399,228 @@ footer {
 
 
 <!-- ========================================================
+     PAGE: FUNDRAISING
+======================================================== -->
+<div id="fundraising" class="page">
+
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">Get Involved</span>
+      <h1>Fundraising</h1>
+      <p>Every dollar raised moves us closer to answers. Here are the ways you can fuel the mission.</p>
+    </div>
+  </div>
+
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Ways to Give</span>
+        <h2>Make an Impact</h2>
+        <p>Whether you're an individual donor, a company, or a community group, there's a meaningful way for you to support SETD5 Syndrome research and families.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3l2.5 7H23l-6 4.5 2.5 7.5L13 18l-6.5 4 2.5-7.5L3 10h7.5L13 3z" stroke="#2F5361" stroke-width="2" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>One-Time Donation</h3>
+            <p>A direct gift of any size makes an immediate difference — funding lab supplies, research fellowships, and family resources.</p>
+            <a href="#" onclick="showPage('donate')" class="btn btn-primary" style="margin-top:16px;">Donate Now</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon coral">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 4v18M4 13h18" stroke="#d17e64" stroke-width="2" stroke-linecap="round"/><circle cx="13" cy="13" r="10" stroke="#d17e64" stroke-width="2"/></svg>
+            </div>
+            <h3>Monthly Giving</h3>
+            <p>Recurring gifts provide the Foundation with stable, predictable funding that lets us plan research grants and programs with confidence.</p>
+            <a href="#" onclick="showPage('donate')" class="btn btn-primary" style="margin-top:16px;">Give Monthly</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon gold">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="3" y="7" width="20" height="14" rx="2" stroke="#D8AB67" stroke-width="2"/><path d="M3 11h20M8 7V5a5 5 0 0110 0v2" stroke="#D8AB67" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Corporate Giving</h3>
+            <p>Partner with us on research sponsorship, matching gift programs, or cause-marketing campaigns that make a visible difference for rare disease families.</p>
+            <a href="#" onclick="showPage('partners')" class="btn btn-outline" style="margin-top:16px;">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Community Fundraising</span>
+        <h2>Fundraise on Our Behalf</h2>
+        <p>Some of our most powerful fundraising comes from families and friends who take the mission into their own communities.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <h3>Birthday &amp; Milestone Fundraisers</h3>
+            <p>Turn a birthday, anniversary, or milestone moment into an act of generosity. Ask friends and family to donate to SETD5 Syndrome Foundation in your honor.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3>Team &amp; Group Fundraising</h3>
+            <p>Organize a run, bake sale, auction, or community event and donate the proceeds. We'll provide resources, materials, and support to help make your event a success.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3>Tribute &amp; Memorial Giving</h3>
+            <p>Honor someone you love by making a gift in their name, or invite others to give in lieu of flowers or gifts. A meaningful way to celebrate a life or mark a loss.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div style="background:var(--gold-light); border-radius:16px; padding:48px 52px; max-width:680px; margin:0 auto; text-align:center; border:4px solid var(--coral);">
+        <div style="width:48px; height:4px; background:var(--coral); border-radius:2px; margin:0 auto 24px;"></div>
+        <h2 style="color:var(--teal); font-size:2.2rem; line-height:1.2; margin-bottom:16px;">Ready to Make a Difference?</h2>
+        <p style="color:var(--text-mid); font-size:1rem; line-height:1.7; max-width:480px; margin:0 auto 32px;">Every contribution — no matter the size — moves the needle for families living with SETD5 Syndrome.</p>
+        <a href="#" onclick="showPage('donate')" class="btn btn-primary btn-lg">Donate Now</a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /fundraising -->
+
+
+<!-- ========================================================
+     PAGE: VOLUNTEER
+======================================================== -->
+<div id="volunteer" class="page">
+
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">Get Involved</span>
+      <h1>Volunteer</h1>
+      <p>Our Foundation runs on the passion and time of people who believe in this mission. There's a place for you here.</p>
+    </div>
+  </div>
+
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">How You Can Help</span>
+        <h2>Volunteer Opportunities</h2>
+        <p>We welcome volunteers from all backgrounds — parents, professionals, students, and advocates. Your skills and time make a direct difference.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.5 3 3 7.5 3 13s4.5 10 10 10 10-4.5 10-10S18.5 3 13 3z" stroke="#2F5361" stroke-width="2"/><path d="M13 8v5l4 2" stroke="#2F5361" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Family Support Network</h3>
+            <p>Help newly diagnosed families navigate the early days. As a peer support volunteer, you offer connection, empathy, and lived experience to families who need it most.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon coral">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="4" y="4" width="18" height="18" rx="3" stroke="#d17e64" stroke-width="2"/><path d="M9 13h8M9 9h5M9 17h6" stroke="#d17e64" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Content &amp; Communications</h3>
+            <p>Writers, editors, designers, and social media volunteers help us tell our story, reach more families, and communicate the science in plain language.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon gold">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="9" r="4" stroke="#D8AB67" stroke-width="2"/><path d="M5 22c0-4 3.5-7 8-7s8 3 8 7" stroke="#D8AB67" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Events &amp; Fundraising</h3>
+            <p>Help plan, promote, and run our fundraising events — from virtual awareness campaigns to in-person community gatherings.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M5 7h16M5 13h10M5 19h13" stroke="#2F5361" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Research Advocacy</h3>
+            <p>Support our efforts to engage the scientific community — helping with patient registry outreach, research survey distribution, and data collection coordination.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon coral">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M3 13h4l3 7 4-14 3 7h6" stroke="#d17e64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Professional Skills</h3>
+            <p>Lawyers, accountants, marketers, web developers, and other professionals can contribute pro bono services that help the Foundation grow and operate effectively.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon gold">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3l2 6h6l-5 4 2 6-5-3.5L8 19l2-6-5-4h6l2-6z" stroke="#D8AB67" stroke-width="2" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Ambassador Program</h3>
+            <p>Represent SETD5 Syndrome Foundation in your community. Ambassadors raise awareness, share our story, and recruit other supporters to the mission.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container" style="max-width:680px;">
+      <div class="section-header">
+        <span class="subhead">Sign Up</span>
+        <h2>Express Your Interest</h2>
+        <p>Fill out the form below and we'll be in touch with opportunities that match your skills and availability.</p>
+      </div>
+      <div class="contact-form">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <input type="text" placeholder="First Name">
+          <input type="text" placeholder="Last Name">
+        </div>
+        <input type="email" placeholder="Email Address">
+        <input type="text" placeholder="Location (City, State/Country)">
+        <select>
+          <option value="" disabled selected>Area of Interest</option>
+          <option>Family Support Network</option>
+          <option>Content &amp; Communications</option>
+          <option>Events &amp; Fundraising</option>
+          <option>Research Advocacy</option>
+          <option>Professional Skills</option>
+          <option>Ambassador Program</option>
+          <option>Other</option>
+        </select>
+        <textarea placeholder="Tell us a little about yourself and why you'd like to volunteer..."></textarea>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Submit Interest Form</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div style="background:var(--gold-light); border-radius:16px; padding:48px 52px; max-width:680px; margin:0 auto; text-align:center; border:4px solid var(--coral);">
+        <div style="width:48px; height:4px; background:var(--coral); border-radius:2px; margin:0 auto 24px;"></div>
+        <h2 style="color:var(--teal); font-size:2.2rem; line-height:1.2; margin-bottom:16px;">Questions About Volunteering?</h2>
+        <p style="color:var(--text-mid); font-size:1rem; line-height:1.7; max-width:480px; margin:0 auto 32px;">Reach out and a member of our team will be happy to talk through how you can get involved.</p>
+        <a href="mailto:volunteer@setd5foundation.org" class="btn btn-primary btn-lg">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /volunteer -->
+
+
+<!-- ========================================================
      PAGE: BOARD PORTAL (hidden — access via #board)
 ======================================================== -->
 <div id="board" class="page">
@@ -2581,12 +2830,12 @@ footer {
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Donate</h4>
+        <h4>Get Involved</h4>
         <ul>
           <li><a href="#" onclick="showPage('donate')">Make a Donation</a></li>
           <li><a href="#" onclick="showPage('donate')">Monthly Giving</a></li>
-          <li><a href="#" onclick="showPage('donate')">Fundraise</a></li>
-          <li><a href="#" onclick="showPage('donate')">Volunteer</a></li>
+          <li><a href="#" onclick="showPage('fundraising')">Fundraising</a></li>
+          <li><a href="#" onclick="showPage('volunteer')">Volunteer</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -2634,7 +2883,7 @@ footer {
   // On load, restore page from URL hash
   (function() {
     const hash = window.location.hash.replace('#', '');
-    const validPages = ['home','about','research','donate','who','resources','partners','board'];
+    const validPages = ['home','about','research','donate','who','resources','partners','board','fundraising','volunteer'];
     if (hash && validPages.includes(hash)) {
       showPage(hash);
     }
