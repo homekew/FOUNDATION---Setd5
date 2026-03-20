@@ -1257,23 +1257,23 @@ footer {
 }
 
 /* ── World Map ── */
-.swm-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px 32px 24px; overflow: hidden; }
-.swm-map-container { position: relative; width: 100%; background: #e8f4f7; border-radius: 12px; overflow: hidden; }
-#swm-world-map { display: block; width: 100%; }
-#swm-tooltip { position: absolute; background: var(--teal-dark); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 0.83rem; line-height: 1.5; pointer-events: none; opacity: 0; transition: opacity 0.18s; white-space: normal; max-width: 280px; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
-.swm-footer { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; margin-top: 18px; }
-.swm-legend { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
-.swm-legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.83rem; color: var(--text-muted); }
-.swm-legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-.swm-stats { display: flex; gap: 28px; flex-wrap: wrap; }
-.swm-stat { text-align: center; }
-.swm-stat-num { font-size: 1.9rem; font-weight: 800; color: var(--teal-dark); line-height: 1; }
-.swm-stat-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
-.swm-disclaimer { font-size: 0.77rem; color: var(--text-muted); margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px; line-height: 1.55; }
+.swm-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px 32px 24px; overflow: hidden; box-shadow: 0 2px 20px rgba(26,39,68,0.07); }
+.swm-map-container { position: relative; width: 100%; border-radius: 10px; overflow: hidden; }
+#swm-world-map { display: block; width: 100%; height: auto; }
+.swm-country { stroke: #e8e2d9; stroke-width: 0.5px; transition: fill 0.15s; cursor: default; }
+.swm-country-default { fill: #e8e4dc; }
+.swm-country-active { fill: #2a7a6a; cursor: pointer; }
+.swm-country-active:hover { fill: #1f5e52; }
+#swm-tooltip { position: absolute; background: var(--navy, #1a2744); color: #fff; padding: 9px 14px; border-radius: 8px; font-size: 0.82rem; line-height: 1.45; pointer-events: none; opacity: 0; transition: opacity 0.15s; max-width: 200px; z-index: 10; }
+#swm-tooltip strong { display: block; font-size: 0.84rem; }
+.swm-footer { display: flex; align-items: center; gap: 1.5rem; margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid var(--border); flex-wrap: wrap; }
+.swm-legend { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; flex: 1; }
+.swm-legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--text-muted); }
+.swm-legend-swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+.swm-disclaimer { font-size: 0.73rem; color: var(--text-muted); line-height: 1.55; max-width: 420px; margin-left: auto; text-align: right; }
 @media(max-width: 760px) {
   .swm-card { padding: 20px 16px 18px; }
-  .swm-footer { flex-direction: column; }
-  .swm-stats { justify-content: flex-start; gap: 20px; }
+  .swm-disclaimer { text-align: left; margin-left: 0; max-width: 100%; }
 }
 </style>
 </head>
@@ -1735,23 +1735,18 @@ footer {
       </div>
       <div class="swm-card">
         <div class="swm-map-container">
-          <svg id="swm-world-map"></svg>
+          <svg id="swm-world-map" viewBox="0 0 960 500"></svg>
           <div id="swm-tooltip"></div>
         </div>
         <div class="swm-footer">
           <div class="swm-legend">
             <div class="swm-legend-item">
-              <div class="swm-legend-dot" style="background:#d17e64;"></div>
-              Country with documented cases (hover for name)
+              <div class="swm-legend-swatch" style="background:#2a7a6a;"></div>
+              Countries with documented cases
             </div>
           </div>
-          <div class="swm-stats">
-            <div class="swm-stat"><div class="swm-stat-num">30+</div><div class="swm-stat-label">Countries</div></div>
-            <div class="swm-stat"><div class="swm-stat-num">6</div><div class="swm-stat-label">Continents</div></div>
-            <div class="swm-stat"><div class="swm-stat-num">900+</div><div class="swm-stat-label">Families</div></div>
-          </div>
+          <p class="swm-disclaimer">Each highlighted country has at least one individual with SETD5 Syndrome documented in a published research cohort or peer-reviewed case report. The full global reach of this condition is likely broader than published literature reflects.</p>
         </div>
-        <p class="swm-disclaimer">Map reflects countries with published or reported SETD5 Syndrome cases as of 2024. Actual case counts are likely significantly higher due to ongoing underdiagnosis globally. Hover over highlighted countries for details.</p>
       </div>
     </div>
   </section>
@@ -3416,124 +3411,139 @@ footer {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script>
 (function() {
-  // ISO numeric country codes with confirmed SETD5 Syndrome cases
+  // Countries with documented SETD5 cases (ISO numeric codes)
+  // Sources: published research papers 2014–2025
   const activeCodes = new Set([
     840, // United States
     826, // United Kingdom
     276, // Germany
     250, // France
-    380, // Italy
-    724, // Spain
-    756, // Switzerland
     528, // Netherlands
      56, // Belgium
-    752, // Sweden
-    578, // Norway
-    208, // Denmark
-    246, // Finland
-     40, // Austria
-    620, // Portugal
-    348, // Hungary
-    203, // Czech Republic
-    616, // Poland
+    380, // Italy
+    724, // Spain
      36, // Australia
     392, // Japan
-    156, // China
-    356, // India
-    410, // South Korea
-    124, // Canada
-    484, // Mexico
-     76, // Brazil
-    710, // South Africa
-    376, // Israel
     792, // Turkey
-    682, // Saudi Arabia
+    124, // Canada
+    376, // Israel
+    410, // South Korea
+    156, // China
+     76, // Brazil
+    616, // Poland
+    756, // Switzerland
+     40, // Austria
+    578, // Norway
+    208, // Denmark
+    752, // Sweden
+    246, // Finland
+    620, // Portugal
+    300, // Greece
+    356, // India
+    458, // Malaysia
+    710, // South Africa
+    484, // Mexico
+     32, // Argentina
+    364, // Iran
   ]);
 
-  const countryNames = {
-    840: 'United States', 826: 'United Kingdom', 276: 'Germany',
-    250: 'France', 380: 'Italy', 724: 'Spain', 756: 'Switzerland',
-    528: 'Netherlands', 56: 'Belgium', 752: 'Sweden', 578: 'Norway',
-    208: 'Denmark', 246: 'Finland', 40: 'Austria', 620: 'Portugal',
-    348: 'Hungary', 203: 'Czech Republic', 616: 'Poland', 36: 'Australia',
-    392: 'Japan', 156: 'China', 356: 'India', 410: 'South Korea',
-    124: 'Canada', 484: 'Mexico', 76: 'Brazil', 710: 'South Africa',
-    376: 'Israel', 792: 'Turkey', 682: 'Saudi Arabia',
+  const countryInfo = {
+    840: 'United States',  826: 'United Kingdom',  276: 'Germany',
+    250: 'France',         528: 'Netherlands',       56: 'Belgium',
+    380: 'Italy',          724: 'Spain',             36: 'Australia',
+    392: 'Japan',          792: 'Turkey',           124: 'Canada',
+    376: 'Israel',         410: 'South Korea',      156: 'China',
+     76: 'Brazil',         616: 'Poland',           756: 'Switzerland',
+     40: 'Austria',        578: 'Norway',           208: 'Denmark',
+    752: 'Sweden',         246: 'Finland',          620: 'Portugal',
+    300: 'Greece',         356: 'India',            458: 'Malaysia',
+    710: 'South Africa',   484: 'Mexico',            32: 'Argentina',
+    364: 'Iran',
   };
-
 
   let swmInitialized = false;
 
   function initSwmMap() {
     const svgEl = document.getElementById('swm-world-map');
     if (!svgEl || swmInitialized) return;
-    const container = svgEl.closest('.swm-map-container');
-    if (!container || container.offsetWidth === 0) return;
-
+    // Fixed viewBox — no need to query offsetWidth, works when hidden
     swmInitialized = true;
 
-    const W = container.offsetWidth || 800;
-    const H = Math.round(W * 0.52);
-
-    const svg = d3.select('#swm-world-map')
-      .attr('viewBox', '0 0 ' + W + ' ' + H)
-      .attr('width', W)
-      .attr('height', H);
+    const width = 960, height = 500;
+    const svg = d3.select('#swm-world-map');
+    const container = document.getElementById('swm-tooltip').parentElement;
+    const tooltip = document.getElementById('swm-tooltip');
 
     const projection = d3.geoNaturalEarth1()
-      .scale(W / 5.2)
-      .translate([W / 2, H / 2 + H * 0.06]);
+      .scale(153)
+      .translate([width / 2, height / 2]);
 
     const path = d3.geoPath().projection(projection);
-    const tooltip = d3.select('#swm-tooltip');
+
+    // Ocean
+    svg.insert('path', ':first-child')
+      .datum({ type: 'Sphere' })
+      .attr('d', path)
+      .attr('fill', '#ddeef7');
+
+    // Graticule
+    svg.append('path')
+      .datum(d3.geoGraticule()())
+      .attr('d', path)
+      .attr('fill', 'none')
+      .attr('stroke', '#ddd8cf')
+      .attr('stroke-width', 0.3);
 
     d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(world) {
       const countries = topojson.feature(world, world.objects.countries);
-
-      // Graticule (behind countries)
-      svg.append('path')
-        .datum(d3.geoGraticule()())
-        .attr('fill', 'none')
-        .attr('stroke', '#b8d0d8')
-        .attr('stroke-width', 0.3)
-        .attr('d', path);
 
       // Country fills
       svg.selectAll('.swm-country')
         .data(countries.features)
         .enter().append('path')
-        .attr('class', 'swm-country')
+        .attr('class', function(d) {
+          return activeCodes.has(+d.id)
+            ? 'swm-country swm-country-active'
+            : 'swm-country swm-country-default';
+        })
         .attr('d', path)
-        .attr('fill', function(d) { return activeCodes.has(+d.id) ? '#d17e64' : '#cddde4'; })
-        .attr('stroke', '#fff')
-        .attr('stroke-width', 0.5)
-        .style('cursor', function(d) { return activeCodes.has(+d.id) ? 'pointer' : 'default'; })
-        .style('transition', 'fill 0.15s')
-        .on('mouseover', function(event, d) {
-          if (!activeCodes.has(+d.id)) return;
-          d3.select(this).attr('fill', '#b5613e');
-          var name = countryNames[+d.id] || 'Country';
-          tooltip.style('opacity', 1).html('<strong>' + name + '</strong>');
-        })
-        .on('mousemove', function(event) {
+        .on('mousemove', function(event, d) {
+          var id = +d.id;
+          if (!activeCodes.has(id)) return;
+          var name = countryInfo[id] || 'Country';
+          var rect = container.getBoundingClientRect();
           var pos = d3.pointer(event, container);
-          tooltip.style('left', (pos[0] + 14) + 'px').style('top', (pos[1] - 42) + 'px');
+          tooltip.style.opacity = '1';
+          tooltip.style.left = Math.min(pos[0] + 12, rect.width - 215) + 'px';
+          tooltip.style.top = (pos[1] - 10) + 'px';
+          tooltip.innerHTML = '<strong>' + name + '</strong>';
         })
-        .on('mouseout', function(event, d) {
-          d3.select(this).attr('fill', activeCodes.has(+d.id) ? '#d17e64' : '#cddde4');
-          tooltip.style('opacity', 0);
+        .on('mouseleave', function() {
+          tooltip.style.opacity = '0';
         });
+
+      // Country borders (clean mesh layer)
+      svg.append('path')
+        .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+        .attr('fill', 'none')
+        .attr('stroke', '#e8e2d9')
+        .attr('stroke-width', 0.5)
+        .attr('d', path);
+
+    }).catch(function() {
+      document.querySelector('.swm-map-container').innerHTML =
+        '<p style="text-align:center;padding:3rem;color:#6b6b6b;">Map could not be loaded. Please check your connection.</p>';
     });
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(initSwmMap, 150);
+    setTimeout(initSwmMap, 100);
   });
 
   var _prevShowPage = window.showPage;
   window.showPage = function(page) {
     _prevShowPage && _prevShowPage(page);
-    if (page === 'about') setTimeout(initSwmMap, 80);
+    if (page === 'about') setTimeout(initSwmMap, 50);
   };
 })();
 </script>
