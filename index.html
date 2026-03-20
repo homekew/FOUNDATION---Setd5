@@ -285,19 +285,23 @@ strong { color: var(--text); }
 .hero::before {
   content: '';
   position: absolute;
-  top: -80px; right: -80px;
-  width: 500px; height: 500px;
-  border-radius: 50%;
-  background: rgba(216,171,103,0.08);
+  top: -80px; right: 40px;
+  width: 110px; height: 440px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23d8ab67' stroke-opacity='0.38' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(14deg);
   pointer-events: none;
 }
 .hero::after {
   content: '';
   position: absolute;
-  bottom: -120px; left: -60px;
-  width: 400px; height: 400px;
-  border-radius: 50%;
-  background: rgba(196,109,98,0.07);
+  bottom: -100px; left: 60px;
+  width: 95px; height: 380px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23c46d62' stroke-opacity='0.3' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(-12deg);
   pointer-events: none;
 }
 .hero-inner {
@@ -553,57 +557,44 @@ strong { color: var(--text); }
 .page-banner::before {
   content: '';
   position: absolute;
-  top: -80px; right: -80px;
-  width: 420px; height: 420px;
-  border-radius: 50%;
-  background: rgba(216,171,103,0.08);
+  top: -60px; right: 60px;
+  width: 90px; height: 360px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23d8ab67' stroke-opacity='0.38' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(12deg);
   pointer-events: none;
 }
 .page-banner::after {
   content: '';
   position: absolute;
-  bottom: -100px; left: -60px;
-  width: 340px; height: 340px;
-  border-radius: 50%;
-  background: rgba(196,109,98,0.07);
+  bottom: -50px; left: 50px;
+  width: 75px; height: 300px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23c46d62' stroke-opacity='0.3' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(-8deg);
   pointer-events: none;
 }
-/* --- Per-page circle variations --- */
-/* about: large gold top-left, small coral bottom-right */
-#about .page-banner::before { top: -60px; right: auto; left: -100px; width: 460px; height: 460px; background: rgba(216,171,103,0.07); }
-#about .page-banner::after  { bottom: -80px; left: auto; right: -40px; width: 280px; height: 280px; background: rgba(196,109,98,0.08); }
-
-/* research: medium coral top-right, large gold bottom-left */
-#research .page-banner::before { top: -100px; right: -60px; left: auto; width: 380px; height: 380px; background: rgba(196,109,98,0.08); }
-#research .page-banner::after  { bottom: -120px; left: -80px; right: auto; width: 440px; height: 440px; background: rgba(216,171,103,0.07); }
-
-/* donate: two golds, staggered center-right */
-#donate .page-banner::before { top: -40px; right: 10%; left: auto; width: 320px; height: 320px; background: rgba(216,171,103,0.09); }
-#donate .page-banner::after  { bottom: -90px; right: -50px; left: auto; width: 380px; height: 380px; background: rgba(196,109,98,0.06); }
-
-/* who: large coral bottom-center, small gold top-right */
-#who .page-banner::before { top: -50px; right: -70px; left: auto; width: 300px; height: 300px; background: rgba(216,171,103,0.09); }
-#who .page-banner::after  { bottom: -110px; left: 20%; right: auto; width: 420px; height: 420px; background: rgba(196,109,98,0.07); }
-
-/* resources: medium gold top-center, coral bottom-left */
-#resources .page-banner::before { top: -70px; left: 30%; right: auto; width: 360px; height: 360px; background: rgba(216,171,103,0.08); }
-#resources .page-banner::after  { bottom: -90px; left: -70px; right: auto; width: 300px; height: 300px; background: rgba(196,109,98,0.08); }
-
-/* partners: large gold top-right, small coral lower-center */
-#partners .page-banner::before { top: -90px; right: -90px; left: auto; width: 480px; height: 480px; background: rgba(216,171,103,0.07); }
-#partners .page-banner::after  { bottom: -60px; left: 40%; right: auto; width: 260px; height: 260px; background: rgba(196,109,98,0.08); }
-
-/* fundraising: coral top-left, gold bottom-right */
-#fundraising .page-banner::before { top: -80px; left: -60px; right: auto; width: 400px; height: 400px; background: rgba(196,109,98,0.08); }
-#fundraising .page-banner::after  { bottom: -80px; right: -60px; left: auto; width: 360px; height: 360px; background: rgba(216,171,103,0.08); }
-
-/* volunteer: gold top-center-right, coral bottom-left */
-#volunteer .page-banner::before { top: -60px; right: 5%; left: auto; width: 350px; height: 350px; background: rgba(216,171,103,0.09); }
-#volunteer .page-banner::after  { bottom: -100px; left: -50px; right: auto; width: 400px; height: 400px; background: rgba(196,109,98,0.07); }
-
-/* board: small gold top-right, large coral bottom-center */
-#board .page-banner::before { top: -40px; right: -50px; left: auto; width: 280px; height: 280px; background: rgba(216,171,103,0.09); }
-#board .page-banner::after  { bottom: -120px; left: 25%; right: auto; width: 450px; height: 450px; background: rgba(196,109,98,0.06); }
+/* --- Per-page helix position & rotation variations --- */
+#about .page-banner::before      { top: -50px; right: auto; left: -10px; transform: rotate(-15deg); }
+#about .page-banner::after       { bottom: -60px; left: auto; right: 30px; transform: rotate(10deg); }
+#research .page-banner::before   { top: -70px; right: -10px; left: auto; transform: rotate(20deg); }
+#research .page-banner::after    { bottom: -60px; left: 80px; right: auto; transform: rotate(-18deg); }
+#donate .page-banner::before     { top: -40px; right: 15%; left: auto; transform: rotate(5deg); }
+#donate .page-banner::after      { bottom: -70px; right: 20px; left: auto; transform: rotate(-20deg); }
+#who .page-banner::before        { top: -55px; right: 20px; left: auto; transform: rotate(18deg); }
+#who .page-banner::after         { bottom: -60px; left: 30%; right: auto; transform: rotate(-5deg); }
+#resources .page-banner::before  { top: -60px; left: 25%; right: auto; transform: rotate(8deg); }
+#resources .page-banner::after   { bottom: -50px; left: -15px; right: auto; transform: rotate(-14deg); }
+#partners .page-banner::before   { top: -70px; right: 20px; left: auto; transform: rotate(22deg); }
+#partners .page-banner::after    { bottom: -60px; left: 35%; right: auto; transform: rotate(-6deg); }
+#fundraising .page-banner::before { top: -55px; left: -10px; right: auto; transform: rotate(-18deg); }
+#fundraising .page-banner::after  { bottom: -60px; right: 40px; left: auto; transform: rotate(14deg); }
+#volunteer .page-banner::before  { top: -60px; right: 8%; left: auto; transform: rotate(10deg); }
+#volunteer .page-banner::after   { bottom: -70px; left: -15px; right: auto; transform: rotate(-22deg); }
+#board .page-banner::before      { top: -40px; right: 30px; left: auto; transform: rotate(6deg); }
+#board .page-banner::after       { bottom: -80px; left: 20%; right: auto; transform: rotate(-10deg); }
 
 .page-banner .subhead { margin-bottom: 12px; color: var(--gold); }
 .page-banner h1 { color: var(--white); font-size: 3rem; line-height: 1.15; margin-bottom: 16px; }
@@ -919,6 +910,106 @@ strong { color: var(--text); }
 .contact-form input:focus,
 .contact-form textarea:focus { border-color: var(--teal); }
 .contact-form textarea { min-height: 130px; resize: vertical; }
+
+/* ===== PARTNER CTA ===== */
+.partner-cta {
+  background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
+  padding: 72px 0;
+  position: relative;
+  overflow: hidden;
+}
+.partner-cta::before {
+  content: '';
+  position: absolute;
+  top: -70px; right: 50px;
+  width: 105px; height: 420px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23d8ab67' stroke-opacity='0.38' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(16deg);
+  pointer-events: none;
+}
+.partner-cta::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: 40px;
+  width: 85px; height: 340px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23c46d62' stroke-opacity='0.3' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(-14deg);
+  pointer-events: none;
+}
+.partner-cta-inner {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 56px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.partner-cta-left .subhead { color: var(--gold); margin-bottom: 12px; }
+.partner-cta-left h2 { color: var(--white); font-size: 2.6rem; line-height: 1.2; margin-bottom: 20px; }
+.partner-cta-left > p { color: rgba(255,255,255,0.82); font-size: 1.05rem; line-height: 1.7; margin-bottom: 36px; max-width: 480px; }
+.partner-benefit-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px; }
+.partner-benefit-list li { display: flex; gap: 16px; align-items: flex-start; }
+.partner-benefit-icon {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(216,171,103,0.18);
+  border: 1.5px solid rgba(216,171,103,0.4);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold);
+  font-size: 0.95rem;
+}
+.partner-benefit-text strong { display: block; color: var(--white); font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; }
+.partner-benefit-text span { color: rgba(255,255,255,0.7); font-size: 0.88rem; line-height: 1.5; }
+.partner-cta-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 44px 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+}
+.partner-cta-card .card-eyebrow {
+  display: inline-block;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  padding: 4px 14px;
+  margin-bottom: 20px;
+}
+.partner-cta-card h3 { font-size: 1.5rem; color: var(--teal-dark); line-height: 1.25; margin-bottom: 12px; }
+.partner-cta-card > p { color: var(--text-mid); font-size: 0.95rem; line-height: 1.65; margin-bottom: 28px; }
+.partner-contact-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  margin-bottom: 10px;
+}
+.partner-contact-line svg { flex-shrink: 0; color: var(--teal); }
+.partner-contact-line a { color: var(--teal); font-weight: 600; text-decoration: none; }
+.partner-contact-line a:hover { text-decoration: underline; }
+.partner-cta-card .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.partner-cta-card .btn { width: 100%; justify-content: center; margin-bottom: 12px; }
+.partner-cta-card .card-secondary-link { display: block; text-align: center; font-size: 0.88rem; color: var(--text-light); text-decoration: none; }
+.partner-cta-card .card-secondary-link:hover { color: var(--teal); }
+@media(max-width:900px) {
+  .partner-cta-inner { grid-template-columns: 1fr; gap: 40px; }
+  .partner-cta-card { max-width: 480px; }
+}
+@media(max-width:640px) {
+  .partner-cta { padding: 56px 0; }
+  .partner-cta-left h2 { font-size: 2rem; }
+  .partner-cta-card { padding: 36px 28px; }
+}
 
 /* ===== FOOTER ===== */
 footer {
@@ -2425,13 +2516,58 @@ footer {
     </div>
   </section>
 
-  <section class="cta-band">
+  <section class="partner-cta">
     <div class="container">
-      <div style="background:var(--gold-light); border-radius:16px; padding:48px 52px; max-width:680px; margin:0 auto; text-align:center; border:4px solid var(--coral);">
-        <div style="width:48px; height:4px; background:var(--coral); border-radius:2px; margin:0 auto 24px;"></div>
-        <h2 style="color:var(--teal); font-size:2.2rem; line-height:1.2; margin-bottom:16px;">Interested in Partnering?</h2>
-        <p style="color:var(--text-mid); font-size:1rem; line-height:1.7; max-width:480px; margin:0 auto 32px;">We are always looking to grow our network of partners who share our commitment to families and science.</p>
-        <a href="#" onclick="showPage('donate')" class="btn btn-primary btn-lg">Reach Out</a>
+      <div class="partner-cta-inner">
+
+        <div class="partner-cta-left">
+          <span class="subhead">Partnership Opportunities</span>
+          <h2>Let's Build Something Meaningful Together</h2>
+          <p>The SETD5 Syndrome Foundation partners with organizations that share our belief that no family should navigate a rare disease alone — and that better science leads to better lives.</p>
+          <ul class="partner-benefit-list">
+            <li>
+              <div class="partner-benefit-icon">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M8 12l3 3 5-5"/></svg>
+              </div>
+              <div class="partner-benefit-text">
+                <strong>Advance Rare Disease Research</strong>
+                <span>Co-fund studies, share datasets, and accelerate discovery for families waiting on answers.</span>
+              </div>
+            </li>
+            <li>
+              <div class="partner-benefit-icon">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="partner-benefit-text">
+                <strong>Reach a Dedicated Community</strong>
+                <span>Connect with an engaged network of families, clinicians, and researchers who trust this Foundation.</span>
+              </div>
+            </li>
+            <li>
+              <div class="partner-benefit-icon">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="partner-benefit-text">
+                <strong>Demonstrate Social Impact</strong>
+                <span>Align your organization with a mission that makes a measurable difference for children and families.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="partner-cta-card">
+          <span class="card-eyebrow">Get in Touch</span>
+          <h3>Ready to Explore a Partnership?</h3>
+          <p>We'd love to learn about your organization and find ways to work together toward shared goals.</p>
+          <div class="partner-contact-line">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span><a href="mailto:partnerships@setd5syndrome-foundation.org">partnerships@setd5syndrome-foundation.org</a></span>
+          </div>
+          <hr class="divider">
+          <a href="#" onclick="showPage('donate')" class="btn btn-primary">Start the Conversation</a>
+          <a href="#" onclick="showPage('about')" class="card-secondary-link">Learn more about our mission →</a>
+        </div>
+
       </div>
     </div>
   </section>
