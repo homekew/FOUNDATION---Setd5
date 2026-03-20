@@ -542,10 +542,14 @@ strong { color: var(--text); }
 .page-banner {
   background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
   padding: 40px 0 48px;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
   border-bottom: 4px solid var(--gold);
   position: relative;
   overflow: hidden;
 }
+.page-banner .container { position: relative; z-index: 1; width: 100%; }
 .page-banner::before {
   content: '';
   position: absolute;
