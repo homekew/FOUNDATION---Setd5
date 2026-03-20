@@ -1226,8 +1226,24 @@ footer {
 }
 .spc-center-num { font-size: 1.7rem; font-weight: 800; color: var(--teal-dark); line-height: 1; }
 .spc-center-text { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-top: 3px; }
+.spc-hover-strip {
+  margin-top: 20px;
+  padding: 11px 16px;
+  background: var(--cream);
+  border-radius: 8px;
+  text-align: center;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.spc-hover-strip-name { font-size: 0.87rem; font-weight: 600; }
+.spc-hover-strip-pct { font-size: 0.83rem; color: var(--text-light); }
+.spc-hover-strip-default { font-size: 0.83rem; color: var(--text-light); font-style: italic; }
 .spc-disclaimer {
-  margin-top: 24px;
+  margin-top: 16px;
   font-size: 0.78rem;
   color: var(--text-light);
   line-height: 1.6;
@@ -1244,7 +1260,7 @@ footer {
 .swm-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px 32px 24px; overflow: hidden; }
 .swm-map-container { position: relative; width: 100%; background: #e8f4f7; border-radius: 12px; overflow: hidden; }
 #swm-world-map { display: block; width: 100%; }
-#swm-tooltip { position: absolute; background: var(--teal-dark); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 0.83rem; line-height: 1.4; pointer-events: none; opacity: 0; transition: opacity 0.18s; white-space: nowrap; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
+#swm-tooltip { position: absolute; background: var(--teal-dark); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 0.83rem; line-height: 1.5; pointer-events: none; opacity: 0; transition: opacity 0.18s; white-space: normal; max-width: 280px; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
 .swm-footer { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; margin-top: 18px; }
 .swm-legend { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
 .swm-legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.83rem; color: var(--text-muted); }
@@ -1695,11 +1711,14 @@ footer {
           <div class="spc-chart-wrap">
             <canvas id="symptomPieChart" width="320" height="320"></canvas>
             <div class="spc-center-label" id="spcCenterLabel">
-              <div class="spc-center-num" id="spcCenterNum">9</div>
+              <div class="spc-center-num" id="spcCenterNum">14</div>
               <div class="spc-center-text">Categories</div>
             </div>
           </div>
           <div class="spc-legend" id="spcLegend"></div>
+        </div>
+        <div class="spc-hover-strip" id="spcHoverStrip">
+          <span class="spc-hover-strip-default">Hover over a slice or category to see details</span>
         </div>
         <p class="spc-disclaimer">Prevalence estimates drawn from published SETD5 Syndrome research (2014–2024). Individual experience varies significantly — these figures describe reported rates across studied populations, not predictions for any individual. Categories are not mutually exclusive.</p>
       </div>
@@ -1727,7 +1746,7 @@ footer {
             </div>
             <div class="swm-legend-item">
               <div class="swm-legend-dot" style="background:#d17e64;"></div>
-              Regional hub
+              Regional summary (hover for countries)
             </div>
           </div>
           <div class="swm-stats">
@@ -3304,16 +3323,39 @@ footer {
 <script>
 (function() {
   const spcData = [
-    { label: 'Learning & Cognition',      pct: 100, color: '#1a2744' },
-    { label: 'Speech & Language',         pct: 90,  color: '#2a7a6a' },
-    { label: 'Facial Structure & Head',   pct: 85,  color: '#2a627a' },
-    { label: 'Behavior & Emotional Reg.', pct: 75,  color: '#c9893a' },
-    { label: 'Neurological & Motor',      pct: 65,  color: '#4e7c5f' },
-    { label: 'Eyes & Vision',             pct: 55,  color: '#6b4f7a' },
-    { label: 'Feeding & Growth',          pct: 45,  color: '#4a6080' },
-    { label: 'Other Medical Features',    pct: 30,  color: '#a04a5e' },
-    { label: 'Mouth, Teeth & Hands',      pct: 25,  color: '#5a7245' },
+    { label: 'Learning & Cognition',         pct: 100, color: '#1a2744' },
+    { label: 'Speech & Language',            pct: 90,  color: '#2a7a6a' },
+    { label: 'Facial Structure & Head',      pct: 85,  color: '#2a627a' },
+    { label: 'Behavior & Emotional Reg.',    pct: 75,  color: '#c9893a' },
+    { label: 'Neurological & Motor',         pct: 65,  color: '#4e7c5f' },
+    { label: 'Eyes & Vision',               pct: 55,  color: '#6b4f7a' },
+    { label: 'Feeding & Growth',             pct: 45,  color: '#4a6080' },
+    { label: 'Mouth, Teeth & Hands',         pct: 25,  color: '#5a7245' },
+    { label: 'Musculoskeletal',              pct: 20,  color: '#7a4a2a' },
+    { label: 'Hearing Impairment',           pct: 18,  color: '#a04a5e' },
+    { label: 'Congenital Heart Defects',     pct: 15,  color: '#b05a30' },
+    { label: 'Cryptorchidism / Hypospadias', pct: 10,  color: '#8a6a3a' },
+    { label: 'Inguinal Hernia',              pct: 8,   color: '#6a4a6a' },
+    { label: 'Fragile Bones',               pct: 5,   color: '#4a7a7a' },
   ];
+
+  function spcSetHover(i) {
+    document.getElementById('spcCenterNum').textContent = '~' + spcData[i].pct + '%';
+    document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = spcData[i].label;
+    window.spcChart.data.datasets[0].backgroundColor = spcData.map((dd, ii) => ii === i ? dd.color : dd.color + '38');
+    window.spcChart.update('none');
+    const strip = document.getElementById('spcHoverStrip');
+    strip.innerHTML = '<span class="spc-hover-strip-name" style="color:' + spcData[i].color + '">' + spcData[i].label + '</span>'
+      + '<span class="spc-hover-strip-pct">~' + spcData[i].pct + '% of reported cases</span>';
+  }
+
+  function spcClearHover() {
+    document.getElementById('spcCenterNum').textContent = String(spcData.length);
+    document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = 'Categories';
+    window.spcChart.data.datasets[0].backgroundColor = spcData.map(dd => dd.color);
+    window.spcChart.update('none');
+    document.getElementById('spcHoverStrip').innerHTML = '<span class="spc-hover-strip-default">Hover over a slice or category to see details</span>';
+  }
 
   function initSpcChart() {
     const legend = document.getElementById('spcLegend');
@@ -3324,19 +3366,11 @@ footer {
     spcData.forEach((d, i) => {
       const item = document.createElement('div');
       item.className = 'spc-legend-item';
-      item.innerHTML = `<div class="spc-legend-dot" style="background:${d.color}"></div><span class="spc-legend-label">${d.label}</span><span class="spc-legend-pct">~${d.pct}%</span>`;
-      item.addEventListener('mouseenter', () => {
-        document.getElementById('spcCenterNum').textContent = `~${d.pct}%`;
-        document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = d.label.split(' ').slice(0,2).join(' ');
-        window.spcChart.data.datasets[0].backgroundColor = spcData.map((dd, ii) => ii === i ? dd.color : dd.color + '30');
-        window.spcChart.update('none');
-      });
-      item.addEventListener('mouseleave', () => {
-        document.getElementById('spcCenterNum').textContent = '9';
-        document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = 'Categories';
-        window.spcChart.data.datasets[0].backgroundColor = spcData.map(dd => dd.color);
-        window.spcChart.update('none');
-      });
+      item.innerHTML = '<div class="spc-legend-dot" style="background:' + d.color + '"></div>'
+        + '<span class="spc-legend-label">' + d.label + '</span>'
+        + '<span class="spc-legend-pct">~' + d.pct + '%</span>';
+      item.addEventListener('mouseenter', () => spcSetHover(i));
+      item.addEventListener('mouseleave', spcClearHover);
       legend.appendChild(item);
     });
 
@@ -3344,7 +3378,13 @@ footer {
       type: 'doughnut',
       data: {
         labels: spcData.map(d => d.label),
-        datasets: [{ data: spcData.map(d => d.pct), backgroundColor: spcData.map(d => d.color), borderColor: '#F7F3EE', borderWidth: 3, hoverOffset: 8 }]
+        datasets: [{
+          data: spcData.map(d => d.pct),
+          backgroundColor: spcData.map(d => d.color),
+          borderColor: '#F7F3EE',
+          borderWidth: 3,
+          hoverOffset: 8,
+        }]
       },
       options: {
         cutout: '62%',
@@ -3352,24 +3392,13 @@ footer {
         animation: { animateRotate: true, duration: 800 },
         plugins: {
           legend: { display: false },
-          tooltip: {
-            callbacks: { label: c => `  ~${c.parsed}% of reported cases`, title: c => c[0].label },
-            backgroundColor: '#1e3a45', titleFont: { family: 'Open Sans', weight: '700', size: 13 },
-            bodyFont: { family: 'Open Sans', size: 12 }, padding: 12, cornerRadius: 8, displayColors: false,
-          }
+          tooltip: { enabled: false },
         },
         onHover: (event, elements) => {
           if (elements.length) {
-            const i = elements[0].index;
-            document.getElementById('spcCenterNum').textContent = `~${spcData[i].pct}%`;
-            document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = spcData[i].label.split(' ').slice(0,2).join(' ');
-            window.spcChart.data.datasets[0].backgroundColor = spcData.map((dd, ii) => ii === i ? dd.color : dd.color + '40');
-            window.spcChart.update('none');
+            spcSetHover(elements[0].index);
           } else {
-            document.getElementById('spcCenterNum').textContent = '9';
-            document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = 'Categories';
-            window.spcChart.data.datasets[0].backgroundColor = spcData.map(dd => dd.color);
-            window.spcChart.update('none');
+            spcClearHover();
           }
         }
       }
@@ -3436,12 +3465,27 @@ footer {
     376: 'Israel', 792: 'Turkey', 682: 'Saudi Arabia',
   };
 
-  // Regional hub pulse markers [longitude, latitude, label]
+  // Regional summary markers — dot shows country list on hover
   const hubs = [
-    [-95,  38, 'North America'],
-    [ 10,  51, 'Europe'],
-    [103,  35, 'Asia-Pacific'],
-    [-47, -15, 'South America'],
+    {
+      lon: -95, lat: 38, label: 'North America',
+      countries: ['United States', 'Canada', 'Mexico']
+    },
+    {
+      lon: 10, lat: 51, label: 'Europe',
+      countries: ['United Kingdom', 'Germany', 'France', 'Italy', 'Spain',
+                  'Switzerland', 'Netherlands', 'Belgium', 'Sweden', 'Norway',
+                  'Denmark', 'Finland', 'Austria', 'Portugal', 'Hungary',
+                  'Czech Republic', 'Poland']
+    },
+    {
+      lon: 120, lat: 28, label: 'Asia-Pacific',
+      countries: ['Japan', 'China', 'India', 'South Korea', 'Australia']
+    },
+    {
+      lon: -47, lat: -15, label: 'South America',
+      countries: ['Brazil']
+    },
   ];
 
   let swmInitialized = false;
@@ -3507,24 +3551,41 @@ footer {
           tooltip.style('opacity', 0);
         });
 
-      // Hub markers
+      // Regional summary markers — hover to see country list
       hubs.forEach(function(hub) {
-        var coords = projection([hub[0], hub[1]]);
+        var coords = projection([hub.lon, hub.lat]);
         if (!coords) return;
         var x = coords[0], y = coords[1];
+
         // Pulse ring
         svg.append('circle')
-          .attr('cx', x).attr('cy', y).attr('r', 11)
+          .attr('cx', x).attr('cy', y).attr('r', 12)
           .attr('fill', 'none')
           .attr('stroke', '#d17e64')
           .attr('stroke-width', 1.5)
-          .attr('opacity', 0.45);
-        // Dot
+          .attr('opacity', 0.4);
+
+        // Interactive dot
         svg.append('circle')
-          .attr('cx', x).attr('cy', y).attr('r', 5)
+          .attr('cx', x).attr('cy', y).attr('r', 6)
           .attr('fill', '#d17e64')
           .attr('stroke', '#fff')
-          .attr('stroke-width', 1.5);
+          .attr('stroke-width', 1.5)
+          .style('cursor', 'pointer')
+          .on('mouseover', function(event) {
+            d3.select(this).attr('r', 8);
+            var html = '<strong>' + hub.label + '</strong><br>'
+              + hub.countries.join(' &middot; ');
+            tooltip.style('opacity', 1).html(html);
+          })
+          .on('mousemove', function(event) {
+            var pos = d3.pointer(event, container);
+            tooltip.style('left', (pos[0] + 14) + 'px').style('top', (pos[1] - 50) + 'px');
+          })
+          .on('mouseout', function() {
+            d3.select(this).attr('r', 6);
+            tooltip.style('opacity', 0);
+          });
       });
     });
   }
