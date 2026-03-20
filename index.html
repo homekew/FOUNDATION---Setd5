@@ -1052,25 +1052,20 @@ footer {
         </div>
       </a>
       <ul class="nav-links" id="nav-links">
-        <li><a href="#" onclick="showPage('about')" data-page="about">The Condition</a></li>
-        <li><a href="#" onclick="showPage('resources')" data-page="resources">For Families</a></li>
         <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
-        <li class="nav-item-dropdown" id="dropdown-about">
-          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-about')" style="font-weight:600; font-size:0.88rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">About <span class="nav-caret">▾</span></button>
+        <li class="nav-item-dropdown" id="dropdown-who">
+          <a href="#" onclick="showPage('who')" data-page="who" class="nav-dropdown-trigger">Our Team</a><button class="nav-caret-btn" onclick="toggleDropdown(event,'dropdown-who')" aria-label="Show submenu"><span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
-            <li><a href="#" onclick="showPage('who')" data-page="who">Our Team</a></li>
             <li><a href="#" onclick="showPage('partners')" data-page="partners">Partners</a></li>
           </ul>
         </li>
-        <li class="nav-item-dropdown" id="dropdown-involve">
-          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-involve')" style="font-weight:600; font-size:0.88rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">Get Involved <span class="nav-caret">▾</span></button>
+        <li><a href="#" onclick="showPage('donate')" data-page="donate" class="nav-donate">Donate</a></li>
+        <li class="nav-item-dropdown" id="dropdown-resources">
+          <a href="#" onclick="showPage('resources')" data-page="resources" class="nav-dropdown-trigger">Resources</a><button class="nav-caret-btn" onclick="toggleDropdown(event,'dropdown-resources')" aria-label="Show submenu"><span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
-            <li><a href="#" onclick="showPage('donate')" data-page="donate">Donate</a></li>
-            <li><a href="#" onclick="showPage('donate')" data-page="donate">Fundraise</a></li>
-            <li><a href="#" onclick="showPage('donate')" data-page="donate">Volunteer</a></li>
+            <li><a href="#" onclick="showPage('about')" data-page="about">The Condition</a></li>
           </ul>
         </li>
-        <li><a href="#" onclick="showPage('donate')" data-page="donate" class="nav-donate">Donate</a></li>
       </ul>
       <div class="nav-toggle" id="nav-toggle" onclick="toggleNav()">
         <span></span><span></span><span></span>
@@ -2442,22 +2437,6 @@ footer {
         </div>
       </div>
       <div class="footer-col">
-        <h4>The Condition</h4>
-        <ul>
-          <li><a href="#" onclick="showPage('about')">What is SETD5 Syndrome?</a></li>
-          <li><a href="#" onclick="showPage('about')">Signs &amp; Symptoms</a></li>
-          <li><a href="#" onclick="showPage('about')">Diagnosis</a></li>
-          <li><a href="#" onclick="showPage('about')">FAQs</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>For Families</h4>
-        <ul>
-          <li><a href="#" onclick="showPage('resources')">Resources</a></li>
-          <li><a href="#" onclick="showPage('who')">Contact Us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
         <h4>Research</h4>
         <ul>
           <li><a href="#" onclick="showPage('research')">Current Projects</a></li>
@@ -2467,19 +2446,30 @@ footer {
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Get Involved</h4>
+        <h4>Our Team</h4>
         <ul>
-          <li><a href="#" onclick="showPage('donate')">Donate</a></li>
+          <li><a href="#" onclick="showPage('who')">Board of Directors</a></li>
+          <li><a href="#" onclick="showPage('who')">Working Groups</a></li>
+          <li><a href="#" onclick="showPage('partners')">Partners</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Donate</h4>
+        <ul>
+          <li><a href="#" onclick="showPage('donate')">Make a Donation</a></li>
           <li><a href="#" onclick="showPage('donate')">Monthly Giving</a></li>
           <li><a href="#" onclick="showPage('donate')">Fundraise</a></li>
           <li><a href="#" onclick="showPage('donate')">Volunteer</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>About</h4>
+        <h4>Resources</h4>
         <ul>
-          <li><a href="#" onclick="showPage('who')">Our Team</a></li>
-          <li><a href="#" onclick="showPage('partners')">Partners</a></li>
+          <li><a href="#" onclick="showPage('resources')">Family Resources</a></li>
+          <li><a href="#" onclick="showPage('about')">The Condition</a></li>
+          <li><a href="#" onclick="showPage('about')">Signs &amp; Symptoms</a></li>
+          <li><a href="#" onclick="showPage('about')">FAQs</a></li>
+          <li><a href="#" onclick="showPage('who')">Contact Us</a></li>
         </ul>
       </div>
     </div>
