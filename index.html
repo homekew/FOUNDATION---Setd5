@@ -1052,19 +1052,22 @@ footer {
         </div>
       </a>
       <ul class="nav-links" id="nav-links">
-        <li><a href="#" onclick="showPage('home')" data-page="home" class="active">Home</a></li>
-        <li class="nav-item-dropdown" id="dropdown-about">
-          <a href="#" onclick="showPage('about')" data-page="about" class="nav-dropdown-trigger">About SETD5 Syndrome</a><button class="nav-caret-btn" onclick="toggleDropdown(event,'dropdown-about')" aria-label="Show submenu"><span class="nav-caret">▾</span></button>
-          <ul class="nav-dropdown-menu">
-            <li><a href="#" onclick="showPage('resources')" data-page="resources">Resources</a></li>
-          </ul>
-        </li>
+        <li><a href="#" onclick="showPage('about')" data-page="about">The Condition</a></li>
+        <li><a href="#" onclick="showPage('resources')" data-page="resources">For Families</a></li>
         <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
-        <li class="nav-item-dropdown" id="dropdown-who">
-          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-who')" style="font-weight:600; font-size:0.88rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">About Us <span class="nav-caret">▾</span></button>
+        <li class="nav-item-dropdown" id="dropdown-about">
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-about')" style="font-weight:600; font-size:0.88rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">About <span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
             <li><a href="#" onclick="showPage('who')" data-page="who">Our Team</a></li>
             <li><a href="#" onclick="showPage('partners')" data-page="partners">Partners</a></li>
+          </ul>
+        </li>
+        <li class="nav-item-dropdown" id="dropdown-involve">
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-involve')" style="font-weight:600; font-size:0.88rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">Get Involved <span class="nav-caret">▾</span></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('donate')" data-page="donate">Donate</a></li>
+            <li><a href="#" onclick="showPage('donate')" data-page="donate">Fundraise</a></li>
+            <li><a href="#" onclick="showPage('donate')" data-page="donate">Volunteer</a></li>
           </ul>
         </li>
         <li><a href="#" onclick="showPage('donate')" data-page="donate" class="nav-donate">Donate</a></li>
@@ -2439,12 +2442,19 @@ footer {
         </div>
       </div>
       <div class="footer-col">
-        <h4>About the Condition</h4>
+        <h4>The Condition</h4>
         <ul>
           <li><a href="#" onclick="showPage('about')">What is SETD5 Syndrome?</a></li>
           <li><a href="#" onclick="showPage('about')">Signs &amp; Symptoms</a></li>
           <li><a href="#" onclick="showPage('about')">Diagnosis</a></li>
           <li><a href="#" onclick="showPage('about')">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>For Families</h4>
+        <ul>
+          <li><a href="#" onclick="showPage('resources')">Resources</a></li>
+          <li><a href="#" onclick="showPage('who')">Contact Us</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -2462,7 +2472,14 @@ footer {
           <li><a href="#" onclick="showPage('donate')">Donate</a></li>
           <li><a href="#" onclick="showPage('donate')">Monthly Giving</a></li>
           <li><a href="#" onclick="showPage('donate')">Fundraise</a></li>
-          <li><a href="#" onclick="showPage('who')">Contact Us</a></li>
+          <li><a href="#" onclick="showPage('donate')">Volunteer</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#" onclick="showPage('who')">Our Team</a></li>
+          <li><a href="#" onclick="showPage('partners')">Partners</a></li>
         </ul>
       </div>
     </div>
