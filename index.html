@@ -212,9 +212,23 @@ strong { color: var(--text); }
 .nav-donate:hover { background: #b05e54 !important; color: var(--white) !important; }
 
 /* ===== NAV DROPDOWNS ===== */
-.nav-item-dropdown { position: relative; }
-.nav-dropdown-trigger { display: flex !important; align-items: center; gap: 3px; cursor: pointer; }
-.nav-caret { font-size: 0.65rem; transition: transform 0.2s; display: inline-block; margin-left: 1px; }
+.nav-item-dropdown { position: relative; display: flex; align-items: center; }
+.nav-dropdown-trigger { display: flex !important; align-items: center; gap: 0; }
+.nav-caret-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 4px 4px 2px;
+  color: var(--text);
+  font-size: 0.65rem;
+  transition: color 0.15s;
+  line-height: 1;
+}
+.nav-caret-btn:hover { color: var(--teal); }
+.nav-caret { font-size: 0.65rem; transition: transform 0.2s; display: inline-block; }
 .nav-item-dropdown:hover .nav-caret,
 .nav-item-dropdown.open .nav-caret { transform: rotate(180deg); }
 .nav-dropdown-menu {
@@ -936,14 +950,14 @@ footer {
   .nav-toggle { display: flex; }
   .nav-logo-text .name { font-size: 1.1rem; }
   .nav-logo-text .tagline { font-size: 0.9rem; }
-  /* Mobile dropdowns — always expanded when nav is open */
-  .nav-item-dropdown { width: 100%; }
+  /* Mobile dropdowns */
+  .nav-item-dropdown { width: 100%; flex-wrap: wrap; }
   .nav-item-dropdown:hover .nav-dropdown-menu { display: none; }
   .nav-item-dropdown.open .nav-dropdown-menu { display: block; }
-  .nav-links.open .nav-item-dropdown .nav-dropdown-menu { display: block; }
-  .nav-dropdown-menu { position: static; box-shadow: none; border: none; background: var(--teal-light); margin: 4px 0 4px; border-radius: 6px; min-width: unset; }
+  .nav-dropdown-menu { position: static; box-shadow: none; border: none; background: var(--teal-light); margin: 4px 0 4px; border-radius: 6px; min-width: unset; width: 100%; }
   .nav-dropdown-menu a { padding: 10px 16px !important; font-size: 0.9rem !important; }
-  .nav-dropdown-trigger { width: 100%; justify-content: space-between; }
+  .nav-dropdown-trigger { flex: 1; }
+  .nav-caret-btn { padding: 4px 8px; font-size: 0.8rem; }
 }
 @media (max-width: 640px) {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
@@ -1040,14 +1054,14 @@ footer {
       <ul class="nav-links" id="nav-links">
         <li><a href="#" onclick="showPage('home')" data-page="home" class="active">Home</a></li>
         <li class="nav-item-dropdown" id="dropdown-about">
-          <a href="#" onclick="handleDropdownNav(event,'dropdown-about','about')" data-page="about" class="nav-dropdown-trigger">About SETD5 Syndrome <span class="nav-caret">▾</span></a>
+          <a href="#" onclick="showPage('about')" data-page="about" class="nav-dropdown-trigger">About SETD5 Syndrome</a><button class="nav-caret-btn" onclick="toggleDropdown(event,'dropdown-about')" aria-label="Show submenu"><span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
             <li><a href="#" onclick="showPage('resources')" data-page="resources">Resources</a></li>
           </ul>
         </li>
         <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
         <li class="nav-item-dropdown" id="dropdown-who">
-          <a href="#" onclick="handleDropdownNav(event,'dropdown-who','who')" data-page="who" class="nav-dropdown-trigger">Our Team <span class="nav-caret">▾</span></a>
+          <a href="#" onclick="showPage('who')" data-page="who" class="nav-dropdown-trigger">Our Team</a><button class="nav-caret-btn" onclick="toggleDropdown(event,'dropdown-who')" aria-label="Show submenu"><span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
             <li><a href="#" onclick="showPage('partners')" data-page="partners">Partners</a></li>
           </ul>
@@ -2519,17 +2533,14 @@ footer {
     document.getElementById('nav-links').classList.toggle('open');
   }
 
-  // Dropdown nav handler: mobile = toggle dropdown, desktop = navigate
-  function handleDropdownNav(e, dropdownId, pageId) {
-    if (window.innerWidth <= 820) {
-      e.preventDefault();
-      const el = document.getElementById(dropdownId);
-      const isOpen = el.classList.contains('open');
-      document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.remove('open'));
-      if (!isOpen) el.classList.add('open');
-    } else {
-      showPage(pageId);
-    }
+  // Toggle dropdown open/closed (caret button only)
+  function toggleDropdown(e, dropdownId) {
+    e.preventDefault();
+    e.stopPropagation();
+    const el = document.getElementById(dropdownId);
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
   }
 
   // Close dropdowns when clicking outside
