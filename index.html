@@ -28,6 +28,7 @@ body {
   --coral-light:#fdf2eb;
   --gold:       #D8AB67;
   --gold-light: #fdf5e8;
+  --terra-light:#fde8da;
   --white:      #ffffff;
   --cream:      #F7F3EE;
   --text:       #1A3340;
@@ -147,12 +148,12 @@ strong { color: var(--text); }
 .card-body { padding: 32px; }
 .card-icon {
   width: 52px; height: 52px;
-  background: var(--teal-light);
+  background: var(--terra-light);
   border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 20px;
 }
-.card-icon svg { width: 26px; height: 26px; }
+.card-icon svg { width: 22px; height: 22px; }
 .card-body h3 { margin-bottom: 14px; }
 
 /* ===== NAV ===== */
@@ -478,10 +479,12 @@ strong { color: var(--text); }
 .story-card {
   background: var(--white);
   border-radius: 16px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   padding: 40px;
   position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+@media (hover: hover) { .story-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); } }
 .story-card::before {
   content: '\201C';
   font-size: 5rem;
@@ -800,10 +803,11 @@ strong { color: var(--text); }
   padding: 40px 28px;
   text-align: center;
   background: var(--white);
-  transition: all 0.25s;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
   position: relative;
 }
-.donate-tier:hover { border-color: var(--teal); box-shadow: var(--shadow); }
+.donate-tier:hover { border-color: var(--teal); box-shadow: var(--shadow); transform: translateY(-3px); }
 .donate-tier.featured {
   border-color: var(--coral);
   box-shadow: var(--shadow);
@@ -2509,8 +2513,8 @@ footer {
       <div class="grid-3">
         <div class="card">
           <div class="card-body">
-            <div class="card-icon" style="background:var(--teal-light);">
-              <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 3L15.5 10H23L17 14.5L19.5 21.5L13 17L6.5 21.5L9 14.5L3 10H10.5L13 3Z" stroke="#2F5361" stroke-width="2" stroke-linejoin="round"/></svg>
+            <div class="card-icon">
+              <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 3L15.5 10H23L17 14.5L19.5 21.5L13 17L6.5 21.5L9 14.5L3 10H10.5L13 3Z" stroke="#d4845a" stroke-width="2" stroke-linejoin="round"/></svg>
             </div>
             <h3>Fundraise For Us</h3>
             <p>Run a race, host a dinner, celebrate a birthday and turn any moment into a fundraiser. We'll give you everything you need to get started.</p>
@@ -2519,8 +2523,8 @@ footer {
         </div>
         <div class="card">
           <div class="card-body">
-            <div class="card-icon" style="background:var(--gold-light);">
-              <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="13" cy="9" r="4" stroke="#D8AB67" stroke-width="2"/><path d="M5 22c0-4 3.5-7 8-7s8 3 8 7" stroke="#D8AB67" stroke-width="2" stroke-linecap="round"/></svg>
+            <div class="card-icon">
+              <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="13" cy="9" r="4" stroke="#d4845a" stroke-width="2"/><path d="M5 22c0-4 3.5-7 8-7s8 3 8 7" stroke="#d4845a" stroke-width="2" stroke-linecap="round"/></svg>
             </div>
             <h3>Volunteer With Us</h3>
             <p>We need help with events, social media, family outreach, and more. Share your skills and time to help us grow our mission.</p>
@@ -2529,7 +2533,7 @@ footer {
         </div>
         <div class="card">
           <div class="card-body">
-            <div class="card-icon" style="background:var(--coral-light);">
+            <div class="card-icon">
               <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 3C7.5 3 3 7.5 3 13s4.5 10 10 10 10-4.5 10-10S18.5 3 13 3z" stroke="#d4845a" stroke-width="2"/><path d="M9 13l2.5 2.5L17 10" stroke="#d4845a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <h3>Share Your Story</h3>
@@ -2607,7 +2611,7 @@ footer {
             </div>
             <div class="value-card">
               <div class="value-icon" style="background:var(--gold-light);">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#D8AB67" stroke-width="1.8"/><path d="M2 11h18M11 2a15 15 0 000 18M11 2a15 15 0 010 18" stroke="#D8AB67" stroke-width="1.8"/></svg>
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#d4845a" stroke-width="1.8"/><path d="M2 11h18M11 2a15 15 0 000 18M11 2a15 15 0 010 18" stroke="#d4845a" stroke-width="1.8"/></svg>
               </div>
               <h3>Global &amp; Inclusive</h3>
               <p>SETD5 Syndrome affects families everywhere. Our community has no borders.</p>
@@ -2809,8 +2813,8 @@ footer {
       <div class="grid-3">
         <div class="card">
           <div class="card-body">
-            <div class="card-icon" style="background:var(--teal-light);">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.477 3 3 7.477 3 13s4.477 10 10 10 10-4.477 10-10S18.523 3 13 3z" stroke="#2F5361" stroke-width="2"/><path d="M17 9h-3a1 1 0 00-1 1v2h4l-.5 3H13v7h-3v-7H8v-3h2v-2a4 4 0 014-4h3v3z" stroke="#2F5361" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.477 3 3 7.477 3 13s4.477 10 10 10 10-4.477 10-10S18.523 3 13 3z" stroke="#d4845a" stroke-width="2"/><path d="M17 9h-3a1 1 0 00-1 1v2h4l-.5 3H13v7h-3v-7H8v-3h2v-2a4 4 0 014-4h3v3z" stroke="#d4845a" stroke-width="1.6" stroke-linejoin="round"/></svg>
             </div>
             <h3>SETD5 Syndrome Facebook Group</h3>
             <p>The SETD5 Syndrome community on Facebook is where many families first found each other. Connect with parents and caregivers from around the world who understand what you are going through.</p>
@@ -2819,7 +2823,7 @@ footer {
         </div>
         <div class="card">
           <div class="card-body">
-            <div class="card-icon coral" style="background:var(--coral-light);">
+            <div class="card-icon" style="background:var(--coral-light);">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.477 3 3 7.477 3 13s4.477 10 10 10 10-4.477 10-10S18.523 3 13 3z" stroke="#d4845a" stroke-width="2"/><path d="M3 13h20M13 3a15 15 0 000 20M13 3a15 15 0 010 20" stroke="#d4845a" stroke-width="2"/></svg>
             </div>
             <h3>SETD5 Syndrome Community</h3>
@@ -2830,7 +2834,7 @@ footer {
         <div class="card">
           <div class="card-body">
             <div class="card-icon">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="10" stroke="#2F5361" stroke-width="2"/><path d="M9 13h8M13 9v8" stroke="#2F5361" stroke-width="2" stroke-linecap="round"/></svg>
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="10" stroke="#d4845a" stroke-width="2"/><path d="M9 13h8M13 9v8" stroke="#d4845a" stroke-width="2" stroke-linecap="round"/></svg>
             </div>
             <h3>Simons Searchlight</h3>
             <p>A research program studying rare genetic conditions including SETD5 Syndrome. Families can enroll to contribute to natural history research and be notified of new studies.</p>
@@ -3071,7 +3075,7 @@ footer {
         <div class="card">
           <div class="card-body">
             <div class="card-icon">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3l2.5 7H23l-6 4.5 2.5 7.5L13 18l-6.5 4 2.5-7.5L3 10h7.5L13 3z" stroke="#2F5361" stroke-width="2" stroke-linejoin="round"/></svg>
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3l2.5 7H23l-6 4.5 2.5 7.5L13 18l-6.5 4 2.5-7.5L3 10h7.5L13 3z" stroke="#d4845a" stroke-width="2" stroke-linejoin="round"/></svg>
             </div>
             <h3>One-Time Donation</h3>
             <p>A direct gift of any size makes an immediate difference — funding lab supplies, research fellowships, and family resources.</p>
@@ -3080,7 +3084,7 @@ footer {
         </div>
         <div class="card">
           <div class="card-body">
-            <div class="card-icon coral">
+            <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 4v18M4 13h18" stroke="#d4845a" stroke-width="2" stroke-linecap="round"/><circle cx="13" cy="13" r="10" stroke="#d4845a" stroke-width="2"/></svg>
             </div>
             <h3>Monthly Giving</h3>
@@ -3090,8 +3094,8 @@ footer {
         </div>
         <div class="card">
           <div class="card-body">
-            <div class="card-icon gold">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="3" y="7" width="20" height="14" rx="2" stroke="#D8AB67" stroke-width="2"/><path d="M3 11h20M8 7V5a5 5 0 0110 0v2" stroke="#D8AB67" stroke-width="2" stroke-linecap="round"/></svg>
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="3" y="7" width="20" height="14" rx="2" stroke="#d4845a" stroke-width="2"/><path d="M3 11h20M8 7V5a5 5 0 0110 0v2" stroke="#d4845a" stroke-width="2" stroke-linecap="round"/></svg>
             </div>
             <h3>Corporate Giving</h3>
             <p>Partner with us on research sponsorship, matching gift programs, or cause-marketing campaigns that make a visible difference for rare disease families.</p>
@@ -3171,7 +3175,7 @@ footer {
         <div class="card">
           <div class="card-body">
             <div class="card-icon">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.5 3 3 7.5 3 13s4.5 10 10 10 10-4.5 10-10S18.5 3 13 3z" stroke="#2F5361" stroke-width="2"/><path d="M13 8v5l4 2" stroke="#2F5361" stroke-width="2" stroke-linecap="round"/></svg>
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.5 3 3 7.5 3 13s4.5 10 10 10 10-4.5 10-10S18.5 3 13 3z" stroke="#d4845a" stroke-width="2"/><path d="M13 8v5l4 2" stroke="#d4845a" stroke-width="2" stroke-linecap="round"/></svg>
             </div>
             <h3>Family Support Network</h3>
             <p>Help newly diagnosed families navigate the early days. As a peer support volunteer, you offer connection, empathy, and lived experience to families who need it most.</p>
@@ -3179,7 +3183,7 @@ footer {
         </div>
         <div class="card">
           <div class="card-body">
-            <div class="card-icon coral">
+            <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="4" y="4" width="18" height="18" rx="3" stroke="#d4845a" stroke-width="2"/><path d="M9 13h8M9 9h5M9 17h6" stroke="#d4845a" stroke-width="2" stroke-linecap="round"/></svg>
             </div>
             <h3>Content &amp; Communications</h3>
@@ -3188,8 +3192,8 @@ footer {
         </div>
         <div class="card">
           <div class="card-body">
-            <div class="card-icon gold">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="9" r="4" stroke="#D8AB67" stroke-width="2"/><path d="M5 22c0-4 3.5-7 8-7s8 3 8 7" stroke="#D8AB67" stroke-width="2" stroke-linecap="round"/></svg>
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="9" r="4" stroke="#d4845a" stroke-width="2"/><path d="M5 22c0-4 3.5-7 8-7s8 3 8 7" stroke="#d4845a" stroke-width="2" stroke-linecap="round"/></svg>
             </div>
             <h3>Events &amp; Fundraising</h3>
             <p>Help plan, promote, and run our fundraising events — from virtual awareness campaigns to in-person community gatherings.</p>
@@ -3198,7 +3202,7 @@ footer {
         <div class="card">
           <div class="card-body">
             <div class="card-icon">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M5 7h16M5 13h10M5 19h13" stroke="#2F5361" stroke-width="2" stroke-linecap="round"/></svg>
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M5 7h16M5 13h10M5 19h13" stroke="#d4845a" stroke-width="2" stroke-linecap="round"/></svg>
             </div>
             <h3>Research Advocacy</h3>
             <p>Support our efforts to engage the scientific community — helping with patient registry outreach, research survey distribution, and data collection coordination.</p>
@@ -3206,7 +3210,7 @@ footer {
         </div>
         <div class="card">
           <div class="card-body">
-            <div class="card-icon coral">
+            <div class="card-icon">
               <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M3 13h4l3 7 4-14 3 7h6" stroke="#d4845a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <h3>Professional Skills</h3>
@@ -3215,8 +3219,8 @@ footer {
         </div>
         <div class="card">
           <div class="card-body">
-            <div class="card-icon gold">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3l2 6h6l-5 4 2 6-5-3.5L8 19l2-6-5-4h6l2-6z" stroke="#D8AB67" stroke-width="2" stroke-linejoin="round"/></svg>
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3l2 6h6l-5 4 2 6-5-3.5L8 19l2-6-5-4h6l2-6z" stroke="#d4845a" stroke-width="2" stroke-linejoin="round"/></svg>
             </div>
             <h3>Ambassador Program</h3>
             <p>Represent SETD5 Syndrome Foundation in your community. Ambassadors raise awareness, share our story, and recruit other supporters to the mission.</p>

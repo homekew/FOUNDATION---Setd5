@@ -11,11 +11,12 @@
 :root {
   --teal:       #2F5361;
   --teal-dark:  #1e3a45;
-  --teal-light: #e6f0f3;
-  --coral:      #d17e64;
-  --coral-light:#fdf0ef;
+  --teal-light: #e4eeeb;
+  --coral:      #d4845a;
+  --coral-light:#fdf2eb;
   --gold:       #D8AB67;
   --gold-light: #fdf5e8;
+  --terra-light:#fde8da;
   --white:      #ffffff;
   --cream:      #FAFAF8;
   --text:       #1A3340;
@@ -206,13 +207,11 @@ body {
 .card-body { padding: 28px; }
 .card-icon {
   width: 52px; height: 52px;
-  background: var(--teal-light);
+  background: var(--terra-light);
   border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 16px;
 }
-.card-icon.coral { background: var(--coral-light); }
-.card-icon.gold { background: var(--gold-light); }
 .card h3 { font-size: 1rem; color: var(--teal); font-weight: 700; margin-bottom: 8px; }
 .card p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.6; margin: 0; }
 
@@ -346,7 +345,7 @@ body {
 <div class="sg-header">
   <h1>SETD5 Syndrome Foundation</h1>
   <p>Visual Style Guide — Brand tokens, typography, components, and usage guidelines</p>
-  <span class="version">Version 1.0 &nbsp;·&nbsp; March 2026</span>
+  <span class="version">Version 1.1 &nbsp;·&nbsp; March 2026</span>
 </div>
 
 <nav class="sg-nav">
@@ -540,7 +539,7 @@ body {
         <tr>
           <td>Card icon</td>
           <td>.card-icon</td>
-          <td>The small colored square with an icon at the top of a card. Can be teal, coral, or gold.</td>
+          <td>The small 52×52px square tile with an icon at the top of a card. All icons use a terracotta tint background (--terra-light) with a #d4845a stroke. SVG icons are 22×22px.</td>
         </tr>
         <tr>
           <td>Eyebrow / subheading</td>
@@ -653,27 +652,35 @@ body {
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#e6f0f3; border-bottom: 1px solid #dde8ec;"></div>
+        <div class="swatch-color" style="background:#e4eeeb; border-bottom: 1px solid #dde8ec;"></div>
         <div class="swatch-info">
           <span class="swatch-name">Teal Light</span>
           <span class="swatch-var">--teal-light</span>
-          <span class="swatch-hex">#e6f0f3</span>
+          <span class="swatch-hex">#e4eeeb</span>
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#d17e64;"></div>
+        <div class="swatch-color" style="background:#d4845a;"></div>
         <div class="swatch-info">
           <span class="swatch-name">Coral</span>
           <span class="swatch-var">--coral</span>
-          <span class="swatch-hex">#d17e64</span>
+          <span class="swatch-hex">#d4845a</span>
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#fdf0ef; border-bottom: 1px solid #dde8ec;"></div>
+        <div class="swatch-color" style="background:#fdf2eb; border-bottom: 1px solid #dde8ec;"></div>
         <div class="swatch-info">
           <span class="swatch-name">Coral Light</span>
           <span class="swatch-var">--coral-light</span>
-          <span class="swatch-hex">#fdf0ef</span>
+          <span class="swatch-hex">#fdf2eb</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fde8da; border-bottom: 1px solid #dde8ec;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Terra Light</span>
+          <span class="swatch-var">--terra-light</span>
+          <span class="swatch-hex">#fde8da</span>
         </div>
       </div>
       <div class="swatch">
@@ -868,32 +875,32 @@ body {
       <div class="card">
         <div class="card-body">
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#2F5361" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d4845a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
           </div>
-          <h3>Teal Icon Card</h3>
-          <p>Default card style with teal icon background. Used for research and informational content.</p>
+          <h3>Standard Card</h3>
+          <p>Terracotta tint icon background (<code style="font-size:0.78rem;">--terra-light</code>) with #d4845a stroke. Used throughout the site for features, actions, and community content.</p>
         </div>
       </div>
       <div class="card">
         <div class="card-body">
-          <div class="card-icon coral">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#d17e64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d4845a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </div>
-          <h3>Coral Icon Card</h3>
-          <p>Coral icon background. Used for community and family-focused content areas.</p>
+          <h3>Card with Icon</h3>
+          <p>All card icons are unified — single terracotta treatment across all card types. SVGs are 22×22px within a 52×52px tile.</p>
         </div>
       </div>
       <div class="card">
         <div class="card-body">
-          <div class="card-icon gold">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#D8AB67" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d4845a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           </div>
-          <h3>Gold Icon Card</h3>
-          <p>Gold icon background. Used for milestones, fundraising highlights, and impact stats.</p>
+          <h3>Hover Lift</h3>
+          <p>All cards lift on hover: <code style="font-size:0.78rem;">translateY(-3px)</code> + <code style="font-size:0.78rem;">--shadow</code>. Base shadow is <code style="font-size:0.78rem;">--shadow-sm</code>.</p>
         </div>
       </div>
     </div>
-    <p style="margin-top:16px; font-size:0.82rem; color:var(--text-light);">Cards use <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">border-radius: 12px</code>, <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">box-shadow: --shadow-sm</code>, and lift on hover via <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">translateY(-3px)</code>.</p>
+    <p style="margin-top:16px; font-size:0.82rem; color:var(--text-light);">Cards use <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">border-radius: 12px</code>, <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">box-shadow: --shadow-sm</code>, and lift on hover via <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">translateY(-3px)</code>. Icon tile: <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">--terra-light</code> background, <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">#d4845a</code> stroke, 22×22px SVG.</p>
   </div>
 
   <!-- SECTION BACKGROUNDS -->
@@ -910,7 +917,7 @@ body {
         <div class="bg-name">Cream</div>
         <div class="bg-class">.section--cream</div>
       </div>
-      <div class="bg-demo" style="background:#e6f0f3;">
+      <div class="bg-demo" style="background:#e4eeeb;">
         <div class="bg-name">Teal Light</div>
         <div class="bg-class">.section--teal-light</div>
       </div>
@@ -984,19 +991,20 @@ body {
       <tbody>
         <tr><td>--teal</td><td>#2F5361</td><td><span class="dot" style="background:#2F5361;"></span></td><td>Headings, nav, outlines, primary brand</td></tr>
         <tr><td>--teal-dark</td><td>#1e3a45</td><td><span class="dot" style="background:#1e3a45;"></span></td><td>Hero gradient start, hover states</td></tr>
-        <tr><td>--teal-light</td><td>#e6f0f3</td><td><span class="dot" style="background:#e6f0f3;"></span></td><td>Section backgrounds, icon backgrounds, nav active</td></tr>
-        <tr><td>--coral</td><td>#d17e64</td><td><span class="dot" style="background:#d17e64;"></span></td><td>Subheadings, primary buttons, links on hover</td></tr>
-        <tr><td>--coral-light</td><td>#fdf0ef</td><td><span class="dot" style="background:#fdf0ef;"></span></td><td>Section backgrounds, coral icon cards</td></tr>
-        <tr><td>--gold</td><td>#D8AB67</td><td><span class="dot" style="background:#D8AB67;"></span></td><td>Accent buttons, hero highlight text, gold icon cards</td></tr>
-        <tr><td>--gold-light</td><td>#fdf5e8</td><td><span class="dot" style="background:#fdf5e8;"></span></td><td>Section backgrounds, gold icon cards</td></tr>
+        <tr><td>--teal-light</td><td>#e4eeeb</td><td><span class="dot" style="background:#e4eeeb;"></span></td><td>Section backgrounds, subnav border, nav active — green-teal tint</td></tr>
+        <tr><td>--coral</td><td>#d4845a</td><td><span class="dot" style="background:#d4845a;"></span></td><td>Subheadings, primary buttons, card icon strokes</td></tr>
+        <tr><td>--coral-light</td><td>#fdf2eb</td><td><span class="dot" style="background:#fdf2eb;"></span></td><td>Section backgrounds, warm tint surfaces</td></tr>
+        <tr><td>--terra-light</td><td>#fde8da</td><td><span class="dot" style="background:#fde8da;"></span></td><td>Card icon tile background — all card icons use this</td></tr>
+        <tr><td>--gold</td><td>#D8AB67</td><td><span class="dot" style="background:#D8AB67;"></span></td><td>Accent buttons, hero highlight text</td></tr>
+        <tr><td>--gold-light</td><td>#fdf5e8</td><td><span class="dot" style="background:#fdf5e8;"></span></td><td>Section backgrounds</td></tr>
         <tr><td>--white</td><td>#ffffff</td><td><span class="dot" style="background:#ffffff;"></span></td><td>Card backgrounds, reversed text</td></tr>
         <tr><td>--cream</td><td>#FAFAF8</td><td><span class="dot" style="background:#FAFAF8;"></span></td><td>Page background, alternating sections</td></tr>
         <tr><td>--text</td><td>#1A3340</td><td><span class="dot" style="background:#1A3340;"></span></td><td>Strong text, nav links</td></tr>
         <tr><td>--text-mid</td><td>#4a6b78</td><td><span class="dot" style="background:#4a6b78;"></span></td><td>Body copy, paragraph text</td></tr>
         <tr><td>--text-light</td><td>#7a9bab</td><td><span class="dot" style="background:#7a9bab;"></span></td><td>Captions, metadata, placeholders</td></tr>
         <tr><td>--border</td><td>#dde8ec</td><td><span class="dot" style="background:#dde8ec;"></span></td><td>Card borders, dividers, nav underline</td></tr>
-        <tr><td>--shadow</td><td>0 4px 24px rgba(47,83,97,0.10)</td><td>—</td><td>Card hover shadow</td></tr>
-        <tr><td>--shadow-sm</td><td>0 2px 8px rgba(47,83,97,0.08)</td><td>—</td><td>Default card shadow</td></tr>
+        <tr><td>--shadow</td><td>0 4px 24px rgba(47,83,97,0.10)</td><td>—</td><td>Card hover shadow, featured cards</td></tr>
+        <tr><td>--shadow-sm</td><td>0 2px 8px rgba(47,83,97,0.08)</td><td>—</td><td>Default card, story card, donate tier base shadow</td></tr>
       </tbody>
     </table>
   </div>
