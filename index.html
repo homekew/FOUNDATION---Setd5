@@ -3742,6 +3742,14 @@ footer {
     else { boardScrollspyTeardown(); }
   }
 
+  // Board sub-nav state — declared here so they're assigned before the on-load IIFE
+  var BOARD_SECTIONS = [
+    'board-meetings','board-finance','board-governance','board-committees',
+    'board-fundraising','board-programs','board-comms','board-operations','tracker-section'
+  ];
+  var _boardObserver = null;
+  var _boardNavScrolling = false;
+
   // On load, restore page from URL hash
   (function() {
     const hash = window.location.hash.replace('#', '');
@@ -3795,12 +3803,7 @@ footer {
   });
 
   // ===== BOARD SUB-NAV =====
-  const BOARD_SECTIONS = [
-    'board-meetings','board-finance','board-governance','board-committees',
-    'board-fundraising','board-programs','board-comms','board-operations','tracker-section'
-  ];
-  let _boardObserver = null;
-  let _boardNavScrolling = false;
+  // (BOARD_SECTIONS, _boardObserver, _boardNavScrolling declared above before on-load IIFE)
 
   // Smooth-scroll to a board section, offset for both sticky bars
   function boardNavClick(e, sectionId) {
