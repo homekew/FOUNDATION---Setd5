@@ -1287,6 +1287,170 @@ footer {
   .swm-card { padding: 20px 16px 18px; }
   .swm-disclaimer { text-align: left; margin-left: 0; max-width: 100%; }
 }
+
+/* ===== CONVERSATION TRACKER ===== */
+.tracker-form {
+  background: var(--white);
+  border: 1.5px solid #e0eaee;
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 40px;
+}
+.tracker-form h3 {
+  font-size: 1.1rem;
+  color: var(--teal);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tracker-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.tracker-grid.full { grid-template-columns: 1fr; }
+@media (max-width: 640px) { .tracker-grid { grid-template-columns: 1fr; } }
+.tracker-field { display: flex; flex-direction: column; gap: 6px; }
+.tracker-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.tracker-field input,
+.tracker-field select,
+.tracker-field textarea {
+  padding: 10px 14px;
+  border: 1.5px solid #d0e0e8;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: var(--cream);
+  transition: border-color 0.2s;
+  outline: none;
+}
+.tracker-field input:focus,
+.tracker-field select:focus,
+.tracker-field textarea:focus { border-color: var(--teal); background: var(--white); }
+.tracker-field textarea { resize: vertical; min-height: 72px; }
+.tracker-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.tracker-filter-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.tracker-filter-bar select,
+.tracker-filter-bar input {
+  padding: 8px 12px;
+  border: 1.5px solid #d0e0e8;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  background: var(--white);
+  color: var(--text);
+  outline: none;
+}
+.tracker-filter-bar input { min-width: 200px; }
+.tracker-count {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  margin-left: auto;
+}
+.tracker-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  background: var(--cream);
+  border-radius: 12px;
+  border: 1.5px dashed #d0e0e8;
+}
+.tracker-list { display: flex; flex-direction: column; gap: 12px; }
+.tracker-entry {
+  background: var(--white);
+  border: 1.5px solid #e0eaee;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+  transition: border-color 0.2s;
+}
+.tracker-entry:hover { border-color: var(--teal); }
+.tracker-entry.done { opacity: 0.55; border-style: dashed; }
+.tracker-entry-main {}
+.tracker-entry-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.tracker-entity {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--teal);
+}
+.tracker-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-research    { background: #e6f0f3; color: #2F5361; }
+.badge-donor       { background: #fdf5e8; color: #9a6e20; }
+.badge-government  { background: #eef0fd; color: #3a3d8f; }
+.badge-foundation  { background: #fdf0ef; color: #8f3a2a; }
+.badge-corporate   { background: #f0fdf0; color: #2a6b2a; }
+.badge-media       { background: #fdf5fa; color: #7a2a6b; }
+.badge-vendor      { background: #f5f5f5; color: #555; }
+.badge-other       { background: #f0f0f0; color: #666; }
+.tracker-date { font-size: 0.8rem; color: var(--text-light); }
+.tracker-takeaway {
+  font-size: 0.88rem;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.tracker-followup {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.tracker-followup svg { flex-shrink: 0; margin-top: 1px; }
+.tracker-followup.has-action { color: var(--coral); font-weight: 500; }
+.tracker-entry-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  color: var(--text-light);
+  transition: background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+}
+.btn-icon:hover { background: var(--cream); color: var(--teal); }
+.btn-icon.danger:hover { background: #fdf0ef; color: var(--coral); }
+.btn-icon.done-btn.active { color: #2a8a2a; }
+
 </style>
 </head>
 <body>
@@ -3211,6 +3375,92 @@ footer {
     </div>
   </section>
 
+  <!-- Conversation Tracker -->
+  <section class="section section--white" id="tracker-section">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Relationship Management</span>
+        <h2>Conversation Tracker</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Log important conversations with external partners, donors, researchers, and agencies so nothing falls through the cracks.</p>
+      </div>
+
+      <!-- Add entry form -->
+      <div class="tracker-form">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1v16M1 9h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Log a Conversation
+        </h3>
+        <div class="tracker-grid">
+          <div class="tracker-field">
+            <label>Organization / Person</label>
+            <input type="text" id="tr-entity" placeholder="e.g. NIH Office of Rare Diseases" />
+          </div>
+          <div class="tracker-field">
+            <label>Date of Conversation</label>
+            <input type="date" id="tr-date" />
+          </div>
+        </div>
+        <div class="tracker-grid">
+          <div class="tracker-field">
+            <label>Category</label>
+            <select id="tr-category">
+              <option value="">— Select category —</option>
+              <option value="research">Research Partner</option>
+              <option value="donor">Donor / Funder</option>
+              <option value="government">Government / Regulatory</option>
+              <option value="foundation">Foundation / Nonprofit</option>
+              <option value="corporate">Corporate Partner</option>
+              <option value="media">Media / Press</option>
+              <option value="vendor">Vendor / Service Provider</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="tracker-field">
+            <label>Follow-up Action</label>
+            <input type="text" id="tr-followup" placeholder="e.g. Send MOU draft by April 1" />
+          </div>
+        </div>
+        <div class="tracker-grid full" style="margin-bottom:20px;">
+          <div class="tracker-field">
+            <label>Key Takeaway</label>
+            <textarea id="tr-takeaway" placeholder="What was the main outcome or insight from this conversation?"></textarea>
+          </div>
+        </div>
+        <div class="tracker-actions">
+          <button class="btn btn-primary" onclick="trackerAdd()">Save Entry</button>
+          <button class="btn btn-secondary" onclick="trackerExportCSV()">Export CSV</button>
+          <span id="tr-msg" style="font-size:0.85rem;color:var(--coral);display:none;"></span>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="tracker-filter-bar">
+        <input type="text" id="tr-search" placeholder="Search by name or keyword…" oninput="trackerRender()" />
+        <select id="tr-filter-cat" onchange="trackerRender()">
+          <option value="">All categories</option>
+          <option value="research">Research Partner</option>
+          <option value="donor">Donor / Funder</option>
+          <option value="government">Government / Regulatory</option>
+          <option value="foundation">Foundation / Nonprofit</option>
+          <option value="corporate">Corporate Partner</option>
+          <option value="media">Media / Press</option>
+          <option value="vendor">Vendor / Service Provider</option>
+          <option value="other">Other</option>
+        </select>
+        <select id="tr-filter-status" onchange="trackerRender()">
+          <option value="">All statuses</option>
+          <option value="open">Follow-up open</option>
+          <option value="done">Follow-up complete</option>
+        </select>
+        <span class="tracker-count" id="tr-count"></span>
+      </div>
+
+      <!-- Entry list -->
+      <div class="tracker-list" id="tracker-list"></div>
+    </div>
+  </section>
+
+
 </div><!-- /board -->
 
 
@@ -3564,6 +3814,146 @@ footer {
     if (page === 'about') setTimeout(initSwmMap, 50);
   };
 })();
+</script>
+
+
+<script>
+// ===== CONVERSATION TRACKER =====
+const TRACKER_KEY = 'setd5_conversations';
+
+function trackerLoad() {
+  try { return JSON.parse(localStorage.getItem(TRACKER_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function trackerSave(data) {
+  localStorage.setItem(TRACKER_KEY, JSON.stringify(data));
+}
+
+function trackerAdd() {
+  const entity   = document.getElementById('tr-entity').value.trim();
+  const date     = document.getElementById('tr-date').value;
+  const category = document.getElementById('tr-category').value;
+  const takeaway = document.getElementById('tr-takeaway').value.trim();
+  const followup = document.getElementById('tr-followup').value.trim();
+  const msg      = document.getElementById('tr-msg');
+
+  if (!entity || !date || !category || !takeaway) {
+    msg.textContent = 'Please fill in Organization, Date, Category, and Key Takeaway.';
+    msg.style.display = 'inline';
+    setTimeout(() => msg.style.display = 'none', 3500);
+    return;
+  }
+
+  const data = trackerLoad();
+  data.unshift({ id: Date.now(), entity, date, category, takeaway, followup, done: false });
+  trackerSave(data);
+
+  // Reset form
+  ['tr-entity','tr-date','tr-takeaway','tr-followup'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('tr-category').value = '';
+  trackerRender();
+}
+
+function trackerToggleDone(id) {
+  const data = trackerLoad();
+  const entry = data.find(e => e.id === id);
+  if (entry) { entry.done = !entry.done; trackerSave(data); trackerRender(); }
+}
+
+function trackerDelete(id) {
+  const data = trackerLoad().filter(e => e.id !== id);
+  trackerSave(data);
+  trackerRender();
+}
+
+const categoryLabels = {
+  research: 'Research Partner', donor: 'Donor / Funder',
+  government: 'Government / Regulatory', foundation: 'Foundation / Nonprofit',
+  corporate: 'Corporate Partner', media: 'Media / Press',
+  vendor: 'Vendor / Service Provider', other: 'Other'
+};
+
+function trackerRender() {
+  const list   = document.getElementById('tracker-list');
+  const search = (document.getElementById('tr-search')?.value || '').toLowerCase();
+  const catF   = document.getElementById('tr-filter-cat')?.value || '';
+  const statF  = document.getElementById('tr-filter-status')?.value || '';
+  let data = trackerLoad();
+
+  if (search) data = data.filter(e =>
+    e.entity.toLowerCase().includes(search) ||
+    e.takeaway.toLowerCase().includes(search) ||
+    (e.followup || '').toLowerCase().includes(search)
+  );
+  if (catF)  data = data.filter(e => e.category === catF);
+  if (statF === 'open') data = data.filter(e => !e.done);
+  if (statF === 'done') data = data.filter(e =>  e.done);
+
+  document.getElementById('tr-count').textContent =
+    data.length + ' entr' + (data.length === 1 ? 'y' : 'ies');
+
+  if (!data.length) {
+    list.innerHTML = '<div class="tracker-empty">No conversations logged yet. Use the form above to add your first entry.</div>';
+    return;
+  }
+
+  list.innerHTML = data.map(e => {
+    const label = categoryLabels[e.category] || 'Other';
+    const dateStr = e.date ? new Date(e.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+    const followupIcon = e.done
+      ? `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#2a8a2a" stroke-width="1.4"/><path d="M4 7l2 2 4-4" stroke="#2a8a2a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      : `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+    const followupText = e.followup
+      ? `<div class="tracker-followup ${e.done ? '' : 'has-action'}">${followupIcon} ${e.done ? '<s>' + e.followup + '</s>' : e.followup}</div>`
+      : `<div class="tracker-followup">No follow-up action noted.</div>`;
+
+    return `<div class="tracker-entry ${e.done ? 'done' : ''}">
+      <div class="tracker-entry-main">
+        <div class="tracker-entry-top">
+          <span class="tracker-entity">${e.entity}</span>
+          <span class="tracker-badge badge-${e.category}">${label}</span>
+          <span class="tracker-date">${dateStr}</span>
+        </div>
+        <div class="tracker-takeaway">${e.takeaway}</div>
+        ${followupText}
+      </div>
+      <div class="tracker-entry-controls">
+        <button class="btn-icon done-btn ${e.done ? 'active' : ''}" title="${e.done ? 'Mark follow-up open' : 'Mark follow-up complete'}" onclick="trackerToggleDone(${e.id})">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9l2.5 2.5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn-icon danger" title="Delete entry" onclick="if(confirm('Delete this entry?')) trackerDelete(${e.id})">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 5h12M7 5V3.5h4V5M6 5l.5 9.5h5L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function trackerExportCSV() {
+  const data = trackerLoad();
+  if (!data.length) { alert('No entries to export.'); return; }
+  const headers = ['Date','Organization','Category','Key Takeaway','Follow-up Action','Follow-up Complete'];
+  const rows = data.map(e => [
+    e.date, e.entity,
+    categoryLabels[e.category] || e.category,
+    '"' + (e.takeaway || '').replace(/"/g, '""') + '"',
+    '"' + (e.followup || '').replace(/"/g, '""') + '"',
+    e.done ? 'Yes' : 'No'
+  ].join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'SETD5_Conversations_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+// Set today's date as default
+document.addEventListener('DOMContentLoaded', () => {
+  const d = document.getElementById('tr-date');
+  if (d) d.value = new Date().toISOString().slice(0, 10);
+  trackerRender();
+});
 </script>
 
 </body>
