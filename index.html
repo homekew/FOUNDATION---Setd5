@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The SETD5 Syndrome Foundation is a family-led nonprofit advancing research for SETD5 Syndrome, a rare genetic condition, while building a global community of support, hope, and action.">
 <title>SETD5 Syndrome Foundation: Research, Advocacy, Community</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Open+Sans+Condensed:wght@300;700&display=swap" rel="stylesheet">
 <style>
@@ -1286,59 +1287,174 @@ footer {
   .swm-card { padding: 20px 16px 18px; }
   .swm-disclaimer { text-align: left; margin-left: 0; max-width: 100%; }
 }
+
+/* ===== CONVERSATION TRACKER ===== */
+.tracker-form {
+  background: var(--white);
+  border: 1.5px solid #e0eaee;
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 40px;
+}
+.tracker-form h3 {
+  font-size: 1.1rem;
+  color: var(--teal);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tracker-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.tracker-grid.full { grid-template-columns: 1fr; }
+@media (max-width: 640px) { .tracker-grid { grid-template-columns: 1fr; } }
+.tracker-field { display: flex; flex-direction: column; gap: 6px; }
+.tracker-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.tracker-field input,
+.tracker-field select,
+.tracker-field textarea {
+  padding: 10px 14px;
+  border: 1.5px solid #d0e0e8;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: var(--cream);
+  transition: border-color 0.2s;
+  outline: none;
+}
+.tracker-field input:focus,
+.tracker-field select:focus,
+.tracker-field textarea:focus { border-color: var(--teal); background: var(--white); }
+.tracker-field textarea { resize: vertical; min-height: 72px; }
+.tracker-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.tracker-filter-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.tracker-filter-bar select,
+.tracker-filter-bar input {
+  padding: 8px 12px;
+  border: 1.5px solid #d0e0e8;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  background: var(--white);
+  color: var(--text);
+  outline: none;
+}
+.tracker-filter-bar input { min-width: 200px; }
+.tracker-count {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  margin-left: auto;
+}
+.tracker-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  background: var(--cream);
+  border-radius: 12px;
+  border: 1.5px dashed #d0e0e8;
+}
+.tracker-list { display: flex; flex-direction: column; gap: 12px; }
+.tracker-entry {
+  background: var(--white);
+  border: 1.5px solid #e0eaee;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+  transition: border-color 0.2s;
+}
+.tracker-entry:hover { border-color: var(--teal); }
+.tracker-entry.done { opacity: 0.55; border-style: dashed; }
+.tracker-entry-main {}
+.tracker-entry-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.tracker-entity {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--teal);
+}
+.tracker-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-research    { background: #e6f0f3; color: #2F5361; }
+.badge-donor       { background: #fdf5e8; color: #9a6e20; }
+.badge-government  { background: #eef0fd; color: #3a3d8f; }
+.badge-foundation  { background: #fdf0ef; color: #8f3a2a; }
+.badge-corporate   { background: #f0fdf0; color: #2a6b2a; }
+.badge-media       { background: #fdf5fa; color: #7a2a6b; }
+.badge-vendor      { background: #f5f5f5; color: #555; }
+.badge-other       { background: #f0f0f0; color: #666; }
+.tracker-date { font-size: 0.8rem; color: var(--text-light); }
+.tracker-takeaway {
+  font-size: 0.88rem;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.tracker-followup {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.tracker-followup svg { flex-shrink: 0; margin-top: 1px; }
+.tracker-followup.has-action { color: var(--coral); font-weight: 500; }
+.tracker-entry-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  color: var(--text-light);
+  transition: background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+}
+.btn-icon:hover { background: var(--cream); color: var(--teal); }
+.btn-icon.danger:hover { background: #fdf0ef; color: var(--coral); }
+.btn-icon.done-btn.active { color: #2a8a2a; }
+
 </style>
 </head>
 <body>
 
-<!-- PASSWORD GATE — remove this block when ready to go public -->
-<div id="password-gate" style="
-  position:fixed; inset:0; z-index:99999;
-  background:var(--teal);
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Open Sans',sans-serif;
-">
-  <div style="text-align:center; padding:40px 32px; max-width:380px; width:100%;">
-    <div style="margin-bottom:28px;">
-      <div style="font-size:1.5rem; font-weight:800; color:var(--white); letter-spacing:0.01em; line-height:1.2;">SETD5 Syndrome<br>Foundation</div>
-      <div style="font-size:0.85rem; color:rgba(255,255,255,0.65); margin-top:8px; letter-spacing:0.08em;">research · advocacy · community</div>
-    </div>
-    <p style="color:rgba(255,255,255,0.8); font-size:0.9rem; margin-bottom:24px; line-height:1.6;">This site is currently under review.<br>Enter the password to continue.</p>
-    <input id="pw-input" type="password" placeholder="Password"
-      style="width:100%; padding:12px 16px; border-radius:8px; border:2px solid rgba(255,255,255,0.2);
-             background:rgba(255,255,255,0.1); color:var(--white); font-size:1rem; font-family:inherit;
-             outline:none; text-align:center; letter-spacing:0.05em; margin-bottom:12px;"
-      onkeydown="if(event.key==='Enter') checkPassword()"
-    >
-    <div id="pw-error" style="color:#f4a88a; font-size:0.85rem; margin-bottom:12px; min-height:20px;"></div>
-    <button onclick="checkPassword()"
-      style="width:100%; padding:13px; border-radius:8px; border:none; cursor:pointer;
-             background:var(--coral); color:var(--white); font-size:1rem; font-weight:700;
-             font-family:inherit; transition:background 0.2s;"
-      onmouseover="this.style.background='#b05e54'" onmouseout="this.style.background='var(--coral)'">
-      Enter Site
-    </button>
-  </div>
-</div>
-<script>
-  (function() {
-    if (sessionStorage.getItem('ssf_auth') === '1') {
-      document.getElementById('password-gate').style.display = 'none';
-    }
-    document.getElementById('pw-input').focus();
-  })();
-  function checkPassword() {
-    var val = document.getElementById('pw-input').value;
-    if (val === 'foundation') {
-      sessionStorage.setItem('ssf_auth', '1');
-      document.getElementById('password-gate').style.display = 'none';
-    } else {
-      document.getElementById('pw-error').textContent = 'Incorrect password. Try again.';
-      document.getElementById('pw-input').value = '';
-      document.getElementById('pw-input').focus();
-    }
-  }
-</script>
-<!-- END PASSWORD GATE -->
 
 <!-- ===== NAV ===== -->
 <nav id="site-nav">
@@ -1378,6 +1494,8 @@ footer {
   </div>
 </nav>
 
+<main id="main-content">
+
 <!-- ========================================================
      PAGE: HOME
 ======================================================== -->
@@ -1396,7 +1514,7 @@ footer {
           </div>
         </div>
         <div class="hero-card">
-          <h3>Our Impact So Far</h3>
+          <h2>Our Impact So Far</h2>
           <div class="hero-stat-row">
             <div class="hero-stat">
               <span class="number">300+</span>
@@ -2437,7 +2555,7 @@ footer {
             </div>
             <div>
               <strong style="display:block; color:var(--teal); font-size:0.88rem; margin-bottom:2px;">General Inquiries</strong>
-              <a href="mailto:info@setd5foundation.org">info@setd5foundation.org</a>
+              <a href="mailto:info@setd5syndrome.org">info@setd5syndrome.org</a>
             </div>
           </div>
           <div class="contact-info-item">
@@ -2446,7 +2564,7 @@ footer {
             </div>
             <div>
               <strong style="display:block; color:var(--teal); font-size:0.88rem; margin-bottom:2px;">Research &amp; Grants</strong>
-              <a href="mailto:research@setd5foundation.org">research@setd5foundation.org</a>
+              <a href="mailto:research@setd5syndrome.org">research@setd5syndrome.org</a>
             </div>
           </div>
           <div class="contact-info-item">
@@ -2455,7 +2573,7 @@ footer {
             </div>
             <div>
               <strong style="display:block; color:var(--teal); font-size:0.88rem; margin-bottom:2px;">Family Support</strong>
-              <a href="mailto:families@setd5foundation.org">families@setd5foundation.org</a>
+              <a href="mailto:families@setd5syndrome.org">families@setd5syndrome.org</a>
             </div>
           </div>
           <div class="contact-info-item">
@@ -2464,7 +2582,7 @@ footer {
             </div>
             <div>
               <strong style="display:block; color:var(--teal); font-size:0.88rem; margin-bottom:2px;">Media &amp; Press</strong>
-              <a href="mailto:media@setd5foundation.org">media@setd5foundation.org</a>
+              <a href="mailto:media@setd5syndrome.org">media@setd5syndrome.org</a>
             </div>
           </div>
           <div style="background:var(--cream); border:1px solid var(--border); border-radius:12px; padding:20px; margin-top:8px;">
@@ -2747,7 +2865,7 @@ footer {
           <p>We'd love to learn about your organization and find ways to work together toward shared goals.</p>
           <div class="partner-contact-line">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <span><a href="mailto:partnerships@setd5syndrome-foundation.org">partnerships@setd5syndrome-foundation.org</a></span>
+            <span><a href="mailto:partnerships@setd5syndrome.org">partnerships@setd5syndrome.org</a></span>
           </div>
           <hr class="divider">
           <a href="#" onclick="showPage('donate')" class="btn btn-primary">Start the Conversation</a>
@@ -2977,7 +3095,7 @@ footer {
         <div style="width:48px; height:4px; background:var(--coral); border-radius:2px; margin:0 auto 24px;"></div>
         <h2 style="color:var(--teal); font-size:2.2rem; line-height:1.2; margin-bottom:16px;">Questions About Volunteering?</h2>
         <p style="color:var(--text-mid); font-size:1rem; line-height:1.7; max-width:480px; margin:0 auto 32px;">Reach out and a member of our team will be happy to talk through how you can get involved.</p>
-        <a href="mailto:volunteer@setd5foundation.org" class="btn btn-primary btn-lg">Contact Us</a>
+        <a href="mailto:volunteer@setd5syndrome.org" class="btn btn-primary btn-lg">Contact Us</a>
       </div>
     </div>
   </section>
@@ -2990,36 +3108,6 @@ footer {
 ======================================================== -->
 <div id="board" class="page">
 
-  <!-- Board password gate overlay -->
-  <div id="board-gate" style="
-    position:fixed; inset:0; z-index:9999;
-    background:var(--teal-dark, #1e3a45);
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Open Sans',sans-serif;
-  ">
-    <div style="text-align:center; padding:40px 32px; max-width:380px; width:100%;">
-      <div style="margin-bottom:28px;">
-        <div style="font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.5); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px;">Board Portal</div>
-        <div style="font-size:1.4rem; font-weight:800; color:var(--white); line-height:1.2;">SETD5 Syndrome Foundation</div>
-      </div>
-      <p style="color:rgba(255,255,255,0.75); font-size:0.9rem; margin-bottom:24px; line-height:1.6;">This area is for board members and authorized committee members only.</p>
-      <input id="board-pw-input" type="password" placeholder="Board password"
-        style="width:100%; padding:12px 16px; border-radius:8px; border:2px solid rgba(255,255,255,0.2);
-               background:rgba(255,255,255,0.1); color:var(--white); font-size:1rem; font-family:inherit;
-               outline:none; text-align:center; letter-spacing:0.05em; margin-bottom:12px;"
-        onkeydown="if(event.key==='Enter') checkBoardPassword()"
-      >
-      <div id="board-pw-error" style="color:#f4a88a; font-size:0.85rem; margin-bottom:12px; min-height:20px;"></div>
-      <button onclick="checkBoardPassword()"
-        style="width:100%; padding:13px; border-radius:8px; border:none; cursor:pointer;
-               background:var(--coral); color:var(--white); font-size:1rem; font-weight:700;
-               font-family:inherit;"
-        onmouseover="this.style.background='#b05e54'" onmouseout="this.style.background='var(--coral)'">
-        Enter Board Portal
-      </button>
-      <p style="margin-top:20px;"><a href="#" onclick="showPage('home')" style="color:rgba(255,255,255,0.5); font-size:0.82rem;">← Back to main site</a></p>
-    </div>
-  </div>
 
   <div class="page-banner">
     <div class="container">
@@ -3036,6 +3124,7 @@ footer {
       <div class="section-header" style="margin-bottom:32px;">
         <span class="subhead">Governance</span>
         <h2>Board Meeting Materials</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Minutes, agendas, and presentation decks from board meetings and special sessions.</p>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
@@ -3072,6 +3161,7 @@ footer {
       <div class="section-header" style="margin-bottom:32px;">
         <span class="subhead">Finance</span>
         <h2>Financial Documents</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Budgets, annual reports, tax filings, and audit materials for board review and compliance.</p>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
@@ -3102,6 +3192,7 @@ footer {
       <div class="section-header" style="margin-bottom:32px;">
         <span class="subhead">Policies</span>
         <h2>Governance Documents</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Bylaws, organizational policies, and conflict of interest forms that guide how the foundation operates.</p>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
@@ -3135,6 +3226,7 @@ footer {
       <div class="section-header" style="margin-bottom:32px;">
         <span class="subhead">Committees</span>
         <h2>Committee Documents</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Working files, reports, and resources organized by each standing committee of the board.</p>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
@@ -3159,8 +3251,220 @@ footer {
     </div>
   </section>
 
+  <!-- Fundraising & Development -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Development</span>
+        <h2>Fundraising &amp; Development</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Donor reports, grant applications, campaign materials, and fundraising strategy documents.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Donor Reports</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grant Applications</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Campaign Materials</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Programs & Grantmaking -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Programs</span>
+        <h2>Programs &amp; Grantmaking</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Research grant agreements, program guidelines, grantee reports, and impact documentation.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grant Agreements</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--gold);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Program Guidelines</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--gold);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grantee Reports</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--gold);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Communications & Outreach -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Communications</span>
+        <h2>Communications &amp; Outreach</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Press releases, newsletter archives, social media plans, and brand assets for board awareness.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Press Releases</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--coral);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Newsletter Archives</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--coral);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Brand &amp; Media Assets</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--coral);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Foundation Operations -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Operations</span>
+        <h2>Foundation Operations</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Insurance, vendor contracts, HR documents, and day-to-day operational records for the foundation.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Insurance &amp; Liability</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Vendor Contracts</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">HR &amp; Personnel</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conversation Tracker -->
+  <section class="section section--white" id="tracker-section">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Relationship Management</span>
+        <h2>Conversation Tracker</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Log important conversations with external partners, donors, researchers, and agencies so nothing falls through the cracks.</p>
+      </div>
+
+      <!-- Add entry form -->
+      <div class="tracker-form">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1v16M1 9h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Log a Conversation
+        </h3>
+        <div class="tracker-grid">
+          <div class="tracker-field">
+            <label>Organization / Person</label>
+            <input type="text" id="tr-entity" placeholder="e.g. NIH Office of Rare Diseases" />
+          </div>
+          <div class="tracker-field">
+            <label>Date of Conversation</label>
+            <input type="date" id="tr-date" />
+          </div>
+        </div>
+        <div class="tracker-grid">
+          <div class="tracker-field">
+            <label>Category</label>
+            <select id="tr-category">
+              <option value="">— Select category —</option>
+              <option value="research">Research Partner</option>
+              <option value="donor">Donor / Funder</option>
+              <option value="government">Government / Regulatory</option>
+              <option value="foundation">Foundation / Nonprofit</option>
+              <option value="corporate">Corporate Partner</option>
+              <option value="media">Media / Press</option>
+              <option value="vendor">Vendor / Service Provider</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="tracker-field">
+            <label>Follow-up Action</label>
+            <input type="text" id="tr-followup" placeholder="e.g. Send MOU draft by April 1" />
+          </div>
+        </div>
+        <div class="tracker-grid full" style="margin-bottom:20px;">
+          <div class="tracker-field">
+            <label>Key Takeaway</label>
+            <textarea id="tr-takeaway" placeholder="What was the main outcome or insight from this conversation?"></textarea>
+          </div>
+        </div>
+        <div class="tracker-actions">
+          <button class="btn btn-primary" onclick="trackerAdd()">Save Entry</button>
+          <button class="btn btn-secondary" onclick="trackerExportCSV()">Export CSV</button>
+          <span id="tr-msg" style="font-size:0.85rem;color:var(--coral);display:none;"></span>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="tracker-filter-bar">
+        <input type="text" id="tr-search" placeholder="Search by name or keyword…" oninput="trackerRender()" />
+        <select id="tr-filter-cat" onchange="trackerRender()">
+          <option value="">All categories</option>
+          <option value="research">Research Partner</option>
+          <option value="donor">Donor / Funder</option>
+          <option value="government">Government / Regulatory</option>
+          <option value="foundation">Foundation / Nonprofit</option>
+          <option value="corporate">Corporate Partner</option>
+          <option value="media">Media / Press</option>
+          <option value="vendor">Vendor / Service Provider</option>
+          <option value="other">Other</option>
+        </select>
+        <select id="tr-filter-status" onchange="trackerRender()">
+          <option value="">All statuses</option>
+          <option value="open">Follow-up open</option>
+          <option value="done">Follow-up complete</option>
+        </select>
+        <span class="tracker-count" id="tr-count"></span>
+      </div>
+
+      <!-- Entry list -->
+      <div class="tracker-list" id="tracker-list"></div>
+    </div>
+  </section>
+
+
 </div><!-- /board -->
 
+
+</main><!-- /#main-content -->
 
 <!-- ===== FOOTER ===== -->
 <footer>
@@ -3242,8 +3546,6 @@ footer {
     document.getElementById('nav-links').classList.remove('open');
     // Update URL hash so refresh stays on this page
     history.replaceState(null, '', '#' + id);
-    // Show board gate if navigating to board page
-    if (id === 'board') showBoardGate();
   }
 
   // On load, restore page from URL hash
@@ -3255,28 +3557,6 @@ footer {
     }
   })();
 
-  // Board portal auth
-  function showBoardGate() {
-    const gate = document.getElementById('board-gate');
-    if (gate) {
-      if (sessionStorage.getItem('ssf_board_auth') === '1') {
-        gate.style.display = 'none';
-      } else {
-        gate.style.display = 'flex';
-        setTimeout(() => document.getElementById('board-pw-input').focus(), 50);
-      }
-    }
-  }
-  function checkBoardPassword() {
-    if (document.getElementById('board-pw-input').value === 'foundation') {
-      sessionStorage.setItem('ssf_board_auth', '1');
-      document.getElementById('board-gate').style.display = 'none';
-    } else {
-      document.getElementById('board-pw-error').textContent = 'Incorrect password. Try again.';
-      document.getElementById('board-pw-input').value = '';
-      document.getElementById('board-pw-input').focus();
-    }
-  }
 
   // Mobile nav toggle
   function toggleNav() {
@@ -3534,6 +3814,146 @@ footer {
     if (page === 'about') setTimeout(initSwmMap, 50);
   };
 })();
+</script>
+
+
+<script>
+// ===== CONVERSATION TRACKER =====
+const TRACKER_KEY = 'setd5_conversations';
+
+function trackerLoad() {
+  try { return JSON.parse(localStorage.getItem(TRACKER_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function trackerSave(data) {
+  localStorage.setItem(TRACKER_KEY, JSON.stringify(data));
+}
+
+function trackerAdd() {
+  const entity   = document.getElementById('tr-entity').value.trim();
+  const date     = document.getElementById('tr-date').value;
+  const category = document.getElementById('tr-category').value;
+  const takeaway = document.getElementById('tr-takeaway').value.trim();
+  const followup = document.getElementById('tr-followup').value.trim();
+  const msg      = document.getElementById('tr-msg');
+
+  if (!entity || !date || !category || !takeaway) {
+    msg.textContent = 'Please fill in Organization, Date, Category, and Key Takeaway.';
+    msg.style.display = 'inline';
+    setTimeout(() => msg.style.display = 'none', 3500);
+    return;
+  }
+
+  const data = trackerLoad();
+  data.unshift({ id: Date.now(), entity, date, category, takeaway, followup, done: false });
+  trackerSave(data);
+
+  // Reset form
+  ['tr-entity','tr-date','tr-takeaway','tr-followup'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('tr-category').value = '';
+  trackerRender();
+}
+
+function trackerToggleDone(id) {
+  const data = trackerLoad();
+  const entry = data.find(e => e.id === id);
+  if (entry) { entry.done = !entry.done; trackerSave(data); trackerRender(); }
+}
+
+function trackerDelete(id) {
+  const data = trackerLoad().filter(e => e.id !== id);
+  trackerSave(data);
+  trackerRender();
+}
+
+const categoryLabels = {
+  research: 'Research Partner', donor: 'Donor / Funder',
+  government: 'Government / Regulatory', foundation: 'Foundation / Nonprofit',
+  corporate: 'Corporate Partner', media: 'Media / Press',
+  vendor: 'Vendor / Service Provider', other: 'Other'
+};
+
+function trackerRender() {
+  const list   = document.getElementById('tracker-list');
+  const search = (document.getElementById('tr-search')?.value || '').toLowerCase();
+  const catF   = document.getElementById('tr-filter-cat')?.value || '';
+  const statF  = document.getElementById('tr-filter-status')?.value || '';
+  let data = trackerLoad();
+
+  if (search) data = data.filter(e =>
+    e.entity.toLowerCase().includes(search) ||
+    e.takeaway.toLowerCase().includes(search) ||
+    (e.followup || '').toLowerCase().includes(search)
+  );
+  if (catF)  data = data.filter(e => e.category === catF);
+  if (statF === 'open') data = data.filter(e => !e.done);
+  if (statF === 'done') data = data.filter(e =>  e.done);
+
+  document.getElementById('tr-count').textContent =
+    data.length + ' entr' + (data.length === 1 ? 'y' : 'ies');
+
+  if (!data.length) {
+    list.innerHTML = '<div class="tracker-empty">No conversations logged yet. Use the form above to add your first entry.</div>';
+    return;
+  }
+
+  list.innerHTML = data.map(e => {
+    const label = categoryLabels[e.category] || 'Other';
+    const dateStr = e.date ? new Date(e.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+    const followupIcon = e.done
+      ? `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#2a8a2a" stroke-width="1.4"/><path d="M4 7l2 2 4-4" stroke="#2a8a2a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      : `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+    const followupText = e.followup
+      ? `<div class="tracker-followup ${e.done ? '' : 'has-action'}">${followupIcon} ${e.done ? '<s>' + e.followup + '</s>' : e.followup}</div>`
+      : `<div class="tracker-followup">No follow-up action noted.</div>`;
+
+    return `<div class="tracker-entry ${e.done ? 'done' : ''}">
+      <div class="tracker-entry-main">
+        <div class="tracker-entry-top">
+          <span class="tracker-entity">${e.entity}</span>
+          <span class="tracker-badge badge-${e.category}">${label}</span>
+          <span class="tracker-date">${dateStr}</span>
+        </div>
+        <div class="tracker-takeaway">${e.takeaway}</div>
+        ${followupText}
+      </div>
+      <div class="tracker-entry-controls">
+        <button class="btn-icon done-btn ${e.done ? 'active' : ''}" title="${e.done ? 'Mark follow-up open' : 'Mark follow-up complete'}" onclick="trackerToggleDone(${e.id})">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9l2.5 2.5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn-icon danger" title="Delete entry" onclick="if(confirm('Delete this entry?')) trackerDelete(${e.id})">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 5h12M7 5V3.5h4V5M6 5l.5 9.5h5L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function trackerExportCSV() {
+  const data = trackerLoad();
+  if (!data.length) { alert('No entries to export.'); return; }
+  const headers = ['Date','Organization','Category','Key Takeaway','Follow-up Action','Follow-up Complete'];
+  const rows = data.map(e => [
+    e.date, e.entity,
+    categoryLabels[e.category] || e.category,
+    '"' + (e.takeaway || '').replace(/"/g, '""') + '"',
+    '"' + (e.followup || '').replace(/"/g, '""') + '"',
+    e.done ? 'Yes' : 'No'
+  ].join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'SETD5_Conversations_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+// Set today's date as default
+document.addEventListener('DOMContentLoaded', () => {
+  const d = document.getElementById('tr-date');
+  if (d) d.value = new Date().toISOString().slice(0, 10);
+  trackerRender();
+});
 </script>
 
 </body>
