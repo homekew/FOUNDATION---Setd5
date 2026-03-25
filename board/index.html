@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="SETD5 Syndrome Foundation Board Portal — authorized members only.">
+<title>Board Portal · SETD5 Syndrome Foundation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: auto; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: #1A3340;
+  line-height: 1.62;
+  font-size: 16px;
+}
+
+/* ===== BRAND TOKENS ===== */
+:root {
+  --teal:       #2F5361;
+  --teal-dark:  #1e3a45;
+  --teal-light: #d5ddde;
+  --coral:      #c96a38;
+  --coral-light:#eeebe7;
+  --gold:       #D8AB67;
+  --gold-light: #F2F2F0;
+  --terra-light:#fde8da;
+  --white:      #ffffff;
+  --cream:      #F7F3EE;
+  --text:       #1A3340;
+  --text-mid:   #4a6b78;
+  --text-light: #7a9bab;
+  --border:     #dde8ec;
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.05),  0 2px 8px  rgba(0,0,0,0.05);
+  --shadow-md:  0 2px 6px rgba(0,0,0,0.06),  0 6px 20px rgba(0,0,0,0.07);
+  --shadow-lg:  0 4px 12px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.09);
+  --shadow-xl:  0 8px 24px rgba(0,0,0,0.10), 0 24px 56px rgba(0,0,0,0.12);
+  --sp-2xs: 4px; --sp-xs: 8px; --sp-sm: 16px; --sp-md: 24px;
+  --sp-lg: 40px; --sp-xl: 64px; --sp-2xl: 96px;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3, h4 { font-family: 'Source Serif 4', serif; font-weight: 600; color: var(--teal); line-height: 1.2; }
+h2 { margin-bottom: 32px; }
+.subhead {
+  font-family: 'Inter', sans-serif; font-weight: 600; color: var(--coral);
+  letter-spacing: 0.07em; text-transform: uppercase; font-size: 0.75rem;
+  display: block; margin-bottom: 20px; margin-top: 8px;
+}
+p { color: var(--text-mid); margin-bottom: 1.2rem; }
+p:last-child { margin-bottom: 0; }
+a { color: var(--teal); text-decoration: none; }
+a:hover { color: var(--coral); }
+strong { color: var(--text); }
+
+/* ===== LAYOUT UTILITIES ===== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.container--narrow { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 80px 0; }
+.section--teal { background: var(--teal); }
+.section--cream { background: var(--cream); }
+.section--teal-light { background: var(--teal-light); }
+.section--gold-light { background: var(--gold-light); }
+.section--coral-light { background: var(--coral-light); }
+.section--white { background: var(--white); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.gap-16 { gap: 16px; }
+.gap-24 { gap: 24px; }
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-header h2 { font-size: 2rem; margin-bottom: 20px; }
+.section-header p { font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-block; padding: 13px 28px; border-radius: 6px;
+  font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.93rem;
+  cursor: pointer; transition: all 0.2s; border: 2px solid transparent;
+  text-align: center; letter-spacing: 0.02em;
+}
+.btn-primary { background: var(--coral); color: var(--white); border-color: var(--coral); box-shadow: 0 2px 8px rgba(201,106,56,0.30); }
+.btn-primary:hover { background: #b06438; border-color: #b06438; color: var(--white); box-shadow: 0 4px 14px rgba(201,106,56,0.40); transform: translateY(-1px); }
+.btn-secondary { background: transparent; color: var(--white); border-color: var(--white); }
+.btn-secondary:hover { background: var(--white); color: var(--teal); }
+.btn-outline { background: transparent; color: var(--teal); border-color: var(--teal); box-shadow: 0 2px 8px rgba(47,83,97,0.18); }
+.btn-outline:hover { background: var(--teal); color: var(--white); box-shadow: 0 4px 14px rgba(47,83,97,0.30); transform: translateY(-1px); }
+.btn-gold { background: var(--gold); color: var(--white); border-color: var(--gold); box-shadow: 0 2px 8px rgba(216,171,103,0.35); }
+.btn-gold:hover { background: #c49650; border-color: #c49650; color: var(--white); box-shadow: 0 4px 14px rgba(216,171,103,0.45); transform: translateY(-1px); }
+.btn-lg { padding: 11px 28px; font-size: 0.95rem; }
+
+/* ===== CARDS ===== */
+.card { background: var(--white); border-radius: 12px; box-shadow: var(--shadow-sm); overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+@media (hover: hover) { .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); } }
+.card-body { padding: 32px; }
+.card-icon { width: 52px; height: 52px; background: var(--gold-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.card-icon svg { width: 22px; height: 22px; }
+.card-body h3 { margin-bottom: 14px; }
+
+/* ===== NAV ===== */
+#site-nav {
+  position: sticky; top: 0; z-index: 1000;
+  background: #fbf9f6; border-bottom: 2px solid var(--teal-light);
+  box-shadow: 0 2px 12px rgba(47,83,97,0.08);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 80px; padding: 12px 0; }
+.nav-logo { display: flex; align-items: center; gap: 0; cursor: pointer; text-decoration: none; margin-left: -20px; }
+.nav-logo-text { line-height: 1.15; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; margin-left: -8px; }
+.nav-logo-text .name { font-family: 'Source Serif 4', serif; font-weight: 600; font-size: 1.65rem; color: var(--teal); display: block; white-space: nowrap; }
+.nav-logo-text .tagline { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.78rem; margin-top: 5px; margin-bottom: 0; color: var(--coral); letter-spacing: 0.09em; display: block; }
+.nav-links { display: flex; align-items: center; gap: 16px; list-style: none; }
+.nav-links a { font-weight: 500; font-size: 0.93rem; color: var(--text); padding: 6px 12px; border-radius: 6px; transition: all 0.15s; white-space: nowrap; }
+.nav-links a:hover { color: var(--teal); background: var(--teal-light); }
+.nav-links a.active { color: var(--teal); background: none; }
+.nav-donate { background: var(--coral); color: var(--white) !important; border-radius: 6px; padding: 8px 18px !important; }
+.nav-donate:hover { background: #b06438 !important; color: var(--white) !important; }
+.nav-item-dropdown { position: relative; display: flex; align-items: center; }
+.nav-dropdown-trigger { display: flex !important; align-items: center; gap: 0; }
+.nav-caret-btn { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 4px 4px 4px 2px; color: var(--text); font-size: 0.65rem; transition: color 0.15s; line-height: 1; }
+.nav-caret-btn:hover { color: var(--teal); }
+.nav-caret { font-size: 0.65rem; transition: transform 0.2s; display: inline-block; }
+.nav-item-dropdown:hover .nav-caret, .nav-item-dropdown.open .nav-caret { transform: rotate(180deg); }
+.nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: var(--white); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-md); min-width: 160px; padding: 6px; list-style: none; z-index: 1001; }
+.nav-dropdown-menu::before { content: ''; position: absolute; top: -10px; left: 0; right: 0; height: 10px; }
+.nav-dropdown-menu li a { display: block; padding: 8px 14px; border-radius: 6px; font-size: 0.88rem; font-weight: 600; color: var(--text); white-space: nowrap; background: none; }
+.nav-dropdown-menu li a:hover { background: var(--teal-light); color: var(--teal); }
+.nav-item-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+.nav-toggle span { display: block; width: 24px; height: 2px; background: var(--teal); border-radius: 2px; transition: all 0.2s; }
+.logo-svg { width: 88px; height: 88px; flex-shrink: 0; object-fit: contain; }
+
+/* ===== PAGE BANNER ===== */
+.page-banner {
+  background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
+  padding: 40px 0 48px; min-height: 220px; display: flex; align-items: center;
+  border-bottom: 4px solid var(--gold); position: relative; overflow: hidden;
+}
+.page-banner .container { position: relative; z-index: 1; width: 100%; }
+.page-banner::before {
+  content: ''; position: absolute; top: -40px; right: 30px; left: auto;
+  width: 130px; height: 520px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23d8ab67' stroke-opacity='0.12' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%; background-repeat: no-repeat; transform: rotate(6deg); pointer-events: none;
+}
+.page-banner::after {
+  content: ''; position: absolute; bottom: -80px; left: 20%; right: auto;
+  width: 110px; height: 440px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23c46d62' stroke-opacity='0.09' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%; background-repeat: no-repeat; transform: rotate(-10deg); pointer-events: none;
+}
+.helix-accent {
+  position: absolute; width: 95px; height: 380px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23d8ab67' stroke-opacity='0.11' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%; background-repeat: no-repeat; pointer-events: none;
+  top: -48px; left: 47%; transform: rotate(-4deg); z-index: 0;
+}
+.page-banner .subhead { margin-bottom: 12px; color: var(--gold); }
+.page-banner h1 { color: var(--white); font-size: 3rem; line-height: 1.15; margin-bottom: 16px; }
+.page-banner p { color: rgba(255,255,255,0.82); font-size: 1.1rem; max-width: 580px; line-height: 1.6; }
+
+/* ===== FOOTER ===== */
+footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 64px 0 32px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+.footer-brand .tagline-footer { font-size: 0.85rem; color: rgba(255,255,255,0.55); margin: 12px 0 20px; line-height: 1.6; }
+.footer-social { display: flex; gap: 10px; }
+.social-btn { width: 44px; height: 44px; border-radius: 8px; background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.75); font-size: 0.85rem; font-weight: 700; transition: background 0.2s; cursor: pointer; }
+.social-btn:hover { background: var(--gold); color: var(--white); }
+.footer-col h4 { color: var(--white); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a { color: rgba(255,255,255,0.65); font-size: 0.88rem; transition: color 0.15s; }
+.footer-col ul li a:hover { color: var(--gold); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.10); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.footer-bottom p { font-size: 0.80rem; color: rgba(255,255,255,0.45); margin: 0; }
+.footer-bottom a { color: rgba(255,255,255,0.45); }
+.footer-bottom a:hover { color: var(--gold); }
+.footer-logo-text .name { color: var(--white); font-weight: 600; font-size: 1rem; }
+.footer-logo-text .tagline { color: var(--gold); font-size: 0.75rem; letter-spacing: 0.08em; }
+
+/* ===== SECTION ON WHITE ===== */
+.section--white .card { background: var(--cream); }
+.section--white .card { box-shadow: var(--shadow-md); }
+
+/* ===== DOCUMENT EMPTY STATE ===== */
+.doc-empty {
+  padding: 10px 14px; background: transparent; border-radius: 8px;
+  border: 1.5px dashed var(--border); color: var(--text-light);
+  font-size: 0.85rem; opacity: 0.7; font-style: italic;
+}
+
+/* ===== UTILS ===== */
+.text-center { text-align: center; }
+.mt-8 { margin-top: 8px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; } .mt-32 { margin-top: 32px; }
+.mb-8 { margin-bottom: 8px; } .mb-16 { margin-bottom: 16px; } .mb-32 { margin-bottom: 32px; }
+.teal { color: var(--teal); } .coral { color: var(--coral); } .gold { color: var(--gold); }
+
+/* ===== CONVERSATION TRACKER ===== */
+.tracker-form { background: var(--white); border: 1.5px solid #e0eaee; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
+.tracker-form h3 { font-size: 1.1rem; color: var(--teal); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+.tracker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.tracker-grid.full { grid-template-columns: 1fr; }
+.tracker-grid--three-col { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 640px) { .tracker-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .tracker-grid--three-col { grid-template-columns: 1fr; } }
+.tracker-field { display: flex; flex-direction: column; gap: 6px; }
+.tracker-field label { font-size: 0.8rem; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 0.05em; }
+.tracker-field input, .tracker-field select, .tracker-field textarea { padding: 10px 14px; border: 1.5px solid #d0e0e8; border-radius: 8px; font-family: inherit; font-size: 0.9rem; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+.tracker-field input:focus, .tracker-field select:focus, .tracker-field textarea:focus { border-color: var(--teal); background: var(--white); }
+.tracker-field textarea { resize: vertical; min-height: 72px; }
+.tracker-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.tracker-filter-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
+.tracker-filter-bar select, .tracker-filter-bar input { padding: 8px 12px; border: 1.5px solid #d0e0e8; border-radius: 8px; font-family: inherit; font-size: 0.85rem; background: var(--white); color: var(--text); outline: none; }
+.tracker-filter-bar input { min-width: 200px; }
+.tracker-count { font-size: 0.82rem; color: var(--text-light); margin-left: auto; }
+.tracker-empty { text-align: center; padding: 48px 24px; color: var(--text-light); font-size: 0.9rem; background: var(--cream); border-radius: 12px; border: 1.5px dashed #d0e0e8; }
+.tracker-list { display: flex; flex-direction: column; gap: 12px; }
+.tracker-entry { background: var(--white); border: 1.5px solid #e0eaee; border-radius: 12px; padding: 20px 24px; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; transition: border-color 0.2s; }
+.tracker-entry:hover { border-color: var(--teal); }
+.tracker-entry.done { opacity: 0.55; border-style: dashed; }
+.tracker-entry-top { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+.tracker-entity { font-weight: 700; font-size: 1rem; color: var(--teal); }
+.tracker-contact-name { font-weight: 400; font-size: 0.9rem; color: var(--text-light); }
+.tracker-internal-name { font-weight: 400; font-size: 0.78rem; color: var(--text-light); font-style: italic; }
+.tracker-badge { font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.04em; }
+.badge-research    { background: #e4eeeb; color: #2F5361; }
+.badge-donor       { background: #F2F2F0; color: #9a6e20; }
+.badge-government  { background: #eef0fd; color: #3a3d8f; }
+.badge-foundation  { background: #fdf0ef; color: #8f3a2a; }
+.badge-corporate   { background: #f0fdf0; color: #2a6b2a; }
+.badge-media       { background: #fdf5fa; color: #7a2a6b; }
+.badge-vendor      { background: #f5f5f5; color: #555; }
+.badge-other       { background: #f0f0f0; color: #666; }
+.tracker-date { font-size: 0.8rem; color: var(--text-light); }
+.tracker-takeaway { font-size: 0.88rem; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+.tracker-followup { font-size: 0.82rem; color: var(--text-light); display: flex; align-items: flex-start; gap: 6px; }
+.tracker-followup svg { flex-shrink: 0; margin-top: 1px; }
+.tracker-followup.has-action { color: var(--coral); font-weight: 500; }
+.tracker-entry-controls { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.btn-icon { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px; color: var(--text-light); transition: background 0.15s, color 0.15s; display: flex; align-items: center; }
+.btn-icon:hover { background: var(--cream); color: var(--teal); }
+.btn-icon.danger:hover { background: #fdf0ef; color: var(--coral); }
+.btn-icon.done-btn.active { color: #2a8a2a; }
+.tracker-attachment-zone { position: relative; border: 2px dashed #d0e0e8; border-radius: 8px; padding: 11px 16px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: border-color 0.2s, background 0.2s; font-size: 0.85rem; color: var(--text-light); }
+.tracker-attachment-zone:hover { border-color: var(--teal); background: var(--teal-light); color: var(--teal); }
+.tracker-attachment-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.tracker-attachment-chosen { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--terra-light); border-radius: 8px; font-size: 0.85rem; color: var(--coral); font-weight: 500; }
+.tracker-attachment-chosen-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tracker-attachment-clear { background: none; border: none; cursor: pointer; color: var(--text-light); font-size: 1rem; line-height: 1; padding: 6px 8px; margin: -6px -6px; flex-shrink: 0; }
+.tracker-attachment-clear:hover { color: var(--coral); }
+.tracker-attachment-chip { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; padding: 4px 10px; background: var(--terra-light); border-radius: 20px; font-size: 0.78rem; }
+.tracker-attachment-chip a { color: var(--coral); text-decoration: none; font-weight: 600; }
+.tracker-attachment-chip a:hover { text-decoration: underline; }
+
+/* ===== BOARD SUB-NAV ===== */
+.board-subnav {
+  position: sticky;
+  top: 114px; /* updated by JS on load/resize */
+  z-index: 990;
+  background: var(--white);
+  border-bottom: 2px solid var(--teal-light);
+  box-shadow: 0 2px 10px rgba(47,83,97,0.07);
+  display: block; /* always visible on standalone board page */
+}
+.board-subnav-inner { display: flex; align-items: center; gap: 0; min-height: 52px; }
+.board-subnav-links { display: flex; align-items: center; gap: 2px; overflow-x: auto; scrollbar-width: none; flex: 1; padding: 8px 0; -webkit-overflow-scrolling: touch; }
+.board-subnav-links::-webkit-scrollbar { display: none; }
+.board-subnav-links a { white-space: nowrap; font-family: 'Inter', sans-serif; font-size: 0.84rem; font-weight: 500; color: var(--text-mid); padding: 6px 14px; border-radius: 20px; transition: background 0.15s, color 0.15s; text-decoration: none; flex-shrink: 0; }
+.board-subnav-links a:hover { background: var(--teal-light); color: var(--teal); }
+.board-subnav-links a.bsnav-active { background: var(--teal); color: var(--white); }
+.board-subnav-divider { width: 1px; height: 28px; background: var(--teal-light); flex-shrink: 0; margin: 0 4px; }
+.board-subnav-search { flex-shrink: 0; display: flex; align-items: center; gap: 6px; padding: 8px 0 8px 16px; border-left: 1px solid var(--teal-light); }
+.board-subnav-search input { width: 188px; padding: 7px 32px 7px 14px; border: 1.5px solid var(--border); border-radius: 20px; font-family: 'Inter', sans-serif; font-size: 0.84rem; color: var(--text); background: var(--cream); outline: none; transition: border-color 0.2s, background 0.2s, width 0.25s; }
+.board-subnav-search input:focus { border-color: var(--teal); background: var(--white); width: 240px; }
+.board-subnav-search-wrap { position: relative; display: flex; align-items: center; }
+.board-subnav-search-wrap svg { position: absolute; right: 10px; color: var(--text-light); pointer-events: none; transition: opacity 0.15s; }
+.board-subnav-search-wrap svg.hide-icon { opacity: 0; }
+.board-search-clear { position: absolute; right: 8px; background: none; border: none; cursor: pointer; color: var(--text-light); padding: 2px 4px; display: none; align-items: center; font-size: 0.9rem; line-height: 1; border-radius: 50%; transition: color 0.15s; z-index: 1; }
+.board-search-clear.visible { display: flex; }
+.board-search-clear:hover { color: var(--coral); }
+.board-section { transition: opacity 0.2s; }
+.board-section.bsearch-hidden { opacity: 0.18; pointer-events: none; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+  .grid-4 { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 1100px) {
+  .nav-logo-text .name { font-size: 1.5rem; }
+  .nav-logo-text .tagline { font-size: 1rem; }
+  .nav-inner { gap: 20px; }
+}
+@media (max-width: 820px) {
+  .nav-inner { height: auto; padding: 12px 0 12px; }
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); padding: 12px 16px; box-shadow: var(--shadow-md); z-index: 999; }
+  .nav-links.open li { border-bottom: 1px solid var(--border); }
+  .nav-links.open li:last-child { border-bottom: none; }
+  .nav-links.open a { display: block; padding: 12px 8px; font-size: 1rem; }
+  .nav-toggle { display: flex; }
+  .nav-logo-text .name { font-size: 1.1rem; }
+  .nav-logo-text .tagline { font-size: 0.9rem; }
+  .nav-item-dropdown { width: 100%; flex-wrap: wrap; }
+  .nav-item-dropdown:hover .nav-dropdown-menu { display: none; }
+  .nav-item-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu { position: static; box-shadow: none; border: none; background: var(--teal-light); margin: 4px 0 4px; border-radius: 6px; min-width: unset; width: 100%; }
+  .nav-dropdown-menu a { padding: 10px 16px !important; font-size: 0.9rem !important; }
+  .nav-dropdown-trigger { flex: 1; }
+  .nav-caret-btn { padding: 4px 8px; font-size: 0.8rem; }
+  .board-subnav { top: 114px; }
+  .board-subnav-links a { padding: 8px 14px; }
+  .board-subnav-inner { flex-direction: column; align-items: stretch; padding: 0; min-height: auto; gap: 0; }
+  .board-subnav-links { padding: 8px 0 8px; border-bottom: 1px solid var(--teal-light); }
+  .board-subnav-divider { display: none; }
+  .board-subnav-search { border-left: none; padding: 8px 0; width: 100%; }
+  .board-subnav-search-wrap { width: 100%; }
+  .board-subnav-search input { width: 100%; border-radius: 8px; }
+  .board-subnav-search input:focus { width: 100%; }
+}
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .section { padding: 48px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav id="site-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a class="nav-logo" href="/">
+        <img src="../Gemini_Generated_Image_2pc65x2pc65x2pc6.png" alt="SETD5 Syndrome Foundation logo" class="logo-svg" onerror="this.style.display='none'">
+        <div class="nav-logo-text">
+          <span class="name">SETD5 Syndrome Foundation</span>
+          <span class="tagline">research · advocacy · community</span>
+        </div>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li class="nav-item-dropdown" id="dropdown-about">
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-about')" style="font-weight:600; font-size:1rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">About <span class="nav-caret">▾</span></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="/#about">About the Syndrome</a></li>
+            <li><a href="/#who">About the Foundation</a></li>
+            <li><a href="/#partners">Partners</a></li>
+          </ul>
+        </li>
+        <li><a href="/#research">Research</a></li>
+        <li><a href="/#resources">Resources</a></li>
+        <li class="nav-item-dropdown" id="dropdown-involve">
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-involve')" style="font-weight:600; font-size:1rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">Get Involved <span class="nav-caret">▾</span></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="/#fundraising">Fundraising</a></li>
+            <li><a href="/#volunteer">Volunteer</a></li>
+          </ul>
+        </li>
+        <li><a href="/#donate" class="nav-donate">Donate</a></li>
+      </ul>
+      <div class="nav-toggle" id="nav-toggle" onclick="toggleNav()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Board Sub-Nav (always visible on this page) -->
+<div class="board-subnav" id="board-subnav" role="navigation" aria-label="Board portal navigation">
+  <div class="container">
+    <div class="board-subnav-inner">
+      <div class="board-subnav-links" id="board-subnav-links">
+        <a href="#board-meetings"    class="bsnav-active" onclick="boardNavClick(event,'board-meetings')">Meetings</a>
+        <a href="#tracker-section"                        onclick="boardNavClick(event,'tracker-section')">Conversations</a>
+        <a href="#board-finance"                          onclick="boardNavClick(event,'board-finance')">Finance</a>
+        <a href="#board-governance"                       onclick="boardNavClick(event,'board-governance')">Governance</a>
+        <a href="#board-committees"                       onclick="boardNavClick(event,'board-committees')">Committees</a>
+        <a href="#board-fundraising"                      onclick="boardNavClick(event,'board-fundraising')">Fundraising</a>
+        <a href="#board-programs"                         onclick="boardNavClick(event,'board-programs')">Programs</a>
+        <a href="#board-comms"                            onclick="boardNavClick(event,'board-comms')">Communications</a>
+        <a href="#board-operations"                       onclick="boardNavClick(event,'board-operations')">Operations</a>
+      </div>
+      <div class="board-subnav-divider" aria-hidden="true"></div>
+      <div class="board-subnav-search">
+        <div class="board-subnav-search-wrap">
+          <input type="search" id="board-search-input" placeholder="Search sections…" oninput="boardSearch(this.value)" autocomplete="off" aria-label="Search board portal" />
+          <svg class="hide-icon" id="board-search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <button class="board-search-clear" id="board-search-clear" onclick="boardSearchClear()" aria-label="Clear search" type="button">✕</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- Page Banner -->
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">Internal</span>
+      <h1>Board Portal</h1>
+      <p>Board of Directors and committee documents for authorized members only.</p>
+    </div>
+    <span class="helix-accent" aria-hidden="true"></span>
+  </div>
+
+  <!-- Board Meeting Materials -->
+  <section class="section section--white board-section" id="board-meetings">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Governance</span>
+        <h2>Board Meeting Materials</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Minutes, agendas, and presentation decks from board meetings and special sessions.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Minutes</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <a href="../SETD5_1st_Meeting_Minutes.docx" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              SETD5 1st Meeting Minutes
+            </a>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Agendas</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Presentations</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <a href="../SETD5_Founding_Meeting.pptx" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              SETD5 Founding Meeting
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Financial Documents -->
+  <section class="section section--cream board-section" id="board-finance">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Finance</span>
+        <h2>Financial Documents</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Budgets, annual reports, tax filings, and audit materials for board review and compliance.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Budgets &amp; Reports</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Tax Filings</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Audit &amp; Compliance</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Governance Documents -->
+  <section class="section section--white board-section" id="board-governance">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Policies</span>
+        <h2>Governance Documents</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Bylaws, organizational policies, and conflict of interest forms that guide how the foundation operates.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Bylaws &amp; Articles</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <a href="../SETD5_Certificate_of_Incorporation.pdf" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Certificate of Incorporation
+            </a>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Policies</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Conflict of Interest Forms</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Committee Documents -->
+  <section class="section section--cream board-section" id="board-committees">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Committees</span>
+        <h2>Committee Documents</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Working files, reports, and resources organized by each standing committee of the board.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Research Committee</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Finance Committee</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Other Committees</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fundraising & Development -->
+  <section class="section section--white board-section" id="board-fundraising">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Development</span>
+        <h2>Fundraising &amp; Development</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Donor reports, grant applications, campaign materials, and fundraising strategy documents.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Donor Reports</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Funding Applications</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Campaign Materials</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Programs & Grantmaking -->
+  <section class="section section--cream board-section" id="board-programs">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Programs</span>
+        <h2>Programs &amp; Grantmaking</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Research grant agreements, program guidelines, grantee reports, and impact documentation.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grant Agreements</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Program Guidelines</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grantee Reports</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Communications & Outreach -->
+  <section class="section section--white board-section" id="board-comms">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Communications</span>
+        <h2>Communications &amp; Outreach</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Press releases, newsletter archives, social media plans, and brand assets for board awareness.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Press Releases</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Newsletter Archives</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Brand &amp; Media Assets</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Foundation Operations -->
+  <section class="section section--cream board-section" id="board-operations">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Operations</span>
+        <h2>Foundation Operations</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Insurance, vendor contracts, HR documents, and day-to-day operational records for the foundation.</p>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Insurance &amp; Liability</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Vendor Contracts</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">HR &amp; Personnel</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conversation Tracker -->
+  <section class="section section--white board-section" id="tracker-section">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Relationship Management</span>
+        <h2>Conversation Tracker</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Log important conversations with external partners, donors, researchers, and agencies so nothing falls through the cracks.</p>
+      </div>
+
+      <!-- Add entry form -->
+      <div class="tracker-form">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1v16M1 9h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Log a Conversation
+        </h3>
+        <div class="tracker-grid tracker-grid--three-col">
+          <div class="tracker-field">
+            <label>Contact Name</label>
+            <input type="text" id="tr-name" placeholder="e.g. Dr. Sarah Chen" />
+          </div>
+          <div class="tracker-field">
+            <label>Organization</label>
+            <input type="text" id="tr-entity" placeholder="e.g. NIH Office of Rare Diseases" />
+          </div>
+          <div class="tracker-field">
+            <label>SETD5F Board / Committee Member</label>
+            <input type="text" id="tr-internal" placeholder="e.g. Kate Carr" />
+          </div>
+        </div>
+        <div class="tracker-grid">
+          <div class="tracker-field">
+            <label>Date of Conversation</label>
+            <input type="date" id="tr-date" />
+          </div>
+          <div class="tracker-field">
+            <label>Category</label>
+            <select id="tr-category">
+              <option value="">— Select category —</option>
+              <option value="research">Research Partner</option>
+              <option value="donor">Donor / Funder</option>
+              <option value="government">Government / Regulatory</option>
+              <option value="foundation">Foundation / Nonprofit</option>
+              <option value="corporate">Corporate Partner</option>
+              <option value="media">Media / Press</option>
+              <option value="vendor">Vendor / Service Provider</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="tracker-grid full" style="margin-bottom:0;">
+          <div class="tracker-field">
+            <label>Follow-up Action</label>
+            <input type="text" id="tr-followup" placeholder="e.g. Send MOU draft by April 1" />
+          </div>
+        </div>
+        <div class="tracker-grid full" style="margin-bottom:0;">
+          <div class="tracker-field">
+            <label>Key Takeaway</label>
+            <textarea id="tr-takeaway" placeholder="What was the main outcome or insight from this conversation?"></textarea>
+          </div>
+        </div>
+        <div class="tracker-grid full" style="margin-bottom:20px;">
+          <div class="tracker-field">
+            <label>Attachment <span style="font-weight:400;color:var(--text-light);">(optional — PDF, Word, image)</span></label>
+            <div class="tracker-attachment-zone" id="tr-attachment-zone">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#7a9bab" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Choose a file or drag it here</span>
+              <input type="file" id="tr-attachment" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.txt" onchange="trackerFileChosen(this)">
+            </div>
+            <div class="tracker-attachment-chosen" id="tr-attachment-chosen" style="display:none;">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#c96a38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="tracker-attachment-chosen-name" id="tr-attachment-chosen-name"></span>
+              <button type="button" class="tracker-attachment-clear" onclick="trackerFileClear()" title="Remove attachment">✕</button>
+            </div>
+          </div>
+        </div>
+        <div class="tracker-actions">
+          <button class="btn btn-primary" onclick="trackerAdd()">Save Entry</button>
+          <button class="btn btn-outline" onclick="trackerExportCSV()">Export CSV</button>
+          <span id="tr-msg" style="font-size:0.85rem;color:var(--coral);display:none;"></span>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="tracker-filter-bar">
+        <input type="text" id="tr-search" placeholder="Search by name or keyword…" oninput="trackerRender()" />
+        <select id="tr-filter-cat" onchange="trackerRender()">
+          <option value="">All categories</option>
+          <option value="research">Research Partner</option>
+          <option value="donor">Donor / Funder</option>
+          <option value="government">Government / Regulatory</option>
+          <option value="foundation">Foundation / Nonprofit</option>
+          <option value="corporate">Corporate Partner</option>
+          <option value="media">Media / Press</option>
+          <option value="vendor">Vendor / Service Provider</option>
+          <option value="other">Other</option>
+        </select>
+        <select id="tr-filter-status" onchange="trackerRender()">
+          <option value="">All statuses</option>
+          <option value="open">Follow-up open</option>
+          <option value="done">Follow-up complete</option>
+        </select>
+        <span class="tracker-count" id="tr-count"></span>
+      </div>
+
+      <!-- Entry list -->
+      <div class="tracker-list" id="tracker-list"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">
+          <div class="name">SETD5 Syndrome Foundation</div>
+          <div class="tagline">research · advocacy · community</div>
+        </div>
+        <p class="tagline-footer" style="margin-top:14px;">A family-led nonprofit dedicated to accelerating research into SETD5 Syndrome and supporting the global community of families it affects.</p>
+        <div class="footer-social">
+          <div class="social-btn" title="Facebook">f</div>
+          <div class="social-btn" title="Instagram">in</div>
+          <div class="social-btn" title="X/Twitter">𝕏</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Research</h4>
+        <ul>
+          <li><a href="/#research">Current Projects</a></li>
+          <li><a href="/#research">Research Timeline</a></li>
+          <li><a href="/#research">Scientific Advisory Board</a></li>
+          <li><a href="/#research">Research Grants</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="/#about">About the Syndrome</a></li>
+          <li><a href="/#who">About the Foundation</a></li>
+          <li><a href="/#partners">Partners</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="/#donate">Make a Donation</a></li>
+          <li><a href="/#donate">Monthly Giving</a></li>
+          <li><a href="/#fundraising">Fundraising</a></li>
+          <li><a href="/#volunteer">Volunteer</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 SETD5 Syndrome Foundation. All rights reserved. 501(c)(3) nonprofit · EIN: [Your EIN]</p>
+      <div style="display:flex; gap:20px;">
+        <a href="/#">Privacy Policy</a>
+        <a href="/#">Terms of Use</a>
+        <a href="/#">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  // Mobile nav toggle
+  function toggleNav() {
+    document.getElementById('nav-links').classList.toggle('open');
+  }
+
+  // Toggle dropdown open/closed
+  function toggleDropdown(e, dropdownId) {
+    e.preventDefault();
+    e.stopPropagation();
+    const el = document.getElementById(dropdownId);
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-item-dropdown')) {
+      document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.remove('open'));
+    }
+  });
+
+  // ===== BOARD SUB-NAV =====
+  var BOARD_SECTIONS = [
+    'board-meetings','board-finance','board-governance','board-committees',
+    'board-fundraising','board-programs','board-comms','board-operations','tracker-section'
+  ];
+  var _boardObserver = null;
+  var _boardNavScrolling = false;
+
+  // Sync subnav top to real nav height
+  function boardSyncSubnavTop() {
+    var mainNav = document.getElementById('site-nav');
+    var subNav  = document.getElementById('board-subnav');
+    if (mainNav && subNav) subNav.style.top = mainNav.offsetHeight + 'px';
+  }
+  window.addEventListener('resize', boardSyncSubnavTop);
+  window.addEventListener('load', boardSyncSubnavTop);
+
+  // Smooth-scroll to a board section
+  function boardNavClick(e, sectionId) {
+    e.preventDefault();
+    _boardNavScrolling = true;
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+    const mainNav = document.getElementById('site-nav');
+    const subNav  = document.getElementById('board-subnav');
+    const offset  = (mainNav ? mainNav.offsetHeight : 88) + (subNav ? subNav.offsetHeight : 52) + 8;
+    const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+    boardSetActive(sectionId);
+    const link = document.querySelector(`#board-subnav-links a[href="#${sectionId}"]`);
+    if (link) link.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+    setTimeout(() => { _boardNavScrolling = false; }, 800);
+  }
+
+  function boardSetActive(sectionId) {
+    document.querySelectorAll('#board-subnav-links a').forEach(a => {
+      a.classList.toggle('bsnav-active', a.getAttribute('href') === '#' + sectionId);
+    });
+  }
+
+  // IntersectionObserver scrollspy
+  function boardScrollspySetup() {
+    boardScrollspyTeardown();
+    _boardObserver = new IntersectionObserver(entries => {
+      if (_boardNavScrolling) return;
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          boardSetActive(entry.target.id);
+          const link = document.querySelector(`#board-subnav-links a[href="#${entry.target.id}"]`);
+          if (link) link.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+        }
+      });
+    }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+    BOARD_SECTIONS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) _boardObserver.observe(el);
+    });
+  }
+
+  function boardScrollspyTeardown() {
+    if (_boardObserver) { _boardObserver.disconnect(); _boardObserver = null; }
+  }
+
+  // Search: dim non-matching sections
+  function boardSearch(val) {
+    const clearBtn = document.getElementById('board-search-clear');
+    if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
+    const sections = document.querySelectorAll('.board-section');
+    const q = val.trim().toLowerCase();
+    if (!q) {
+      sections.forEach(s => s.classList.remove('bsearch-hidden'));
+      return;
+    }
+    var firstMatch = null;
+    sections.forEach(function(section) {
+      const matches = section.textContent.toLowerCase().includes(q);
+      section.classList.toggle('bsearch-hidden', !matches);
+      if (matches && !firstMatch) firstMatch = section;
+    });
+    if (firstMatch) {
+      const mainNav = document.getElementById('site-nav');
+      const subNav  = document.getElementById('board-subnav');
+      const offset  = (mainNav ? mainNav.offsetHeight : 114) + (subNav ? subNav.offsetHeight : 54) + 8;
+      const top     = firstMatch.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+      boardSetActive(firstMatch.id);
+    }
+  }
+
+  function boardSearchClear() {
+    const input = document.getElementById('board-search-input');
+    if (input) { input.value = ''; boardSearch(''); }
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    boardSyncSubnavTop();
+    requestAnimationFrame(() => requestAnimationFrame(boardSyncSubnavTop));
+    boardScrollspySetup();
+  });
+</script>
+
+<script>
+// ===== CONVERSATION TRACKER =====
+const TRACKER_KEY = 'setd5_conversations';
+
+function trackerLoad() {
+  try { return JSON.parse(localStorage.getItem(TRACKER_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function trackerSave(data) {
+  localStorage.setItem(TRACKER_KEY, JSON.stringify(data));
+}
+
+function trackerFileChosen(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('tr-attachment-zone').style.display = 'none';
+  document.getElementById('tr-attachment-chosen').style.display = 'flex';
+  document.getElementById('tr-attachment-chosen-name').textContent = file.name;
+}
+
+function trackerFileClear() {
+  const input = document.getElementById('tr-attachment');
+  if (input) input.value = '';
+  document.getElementById('tr-attachment-zone').style.display = 'flex';
+  document.getElementById('tr-attachment-chosen').style.display = 'none';
+  document.getElementById('tr-attachment-chosen-name').textContent = '';
+}
+
+function trackerAdd() {
+  const name     = document.getElementById('tr-name').value.trim();
+  const entity   = document.getElementById('tr-entity').value.trim();
+  const internal = document.getElementById('tr-internal').value.trim();
+  const date     = document.getElementById('tr-date').value;
+  const category = document.getElementById('tr-category').value;
+  const takeaway = document.getElementById('tr-takeaway').value.trim();
+  const followup = document.getElementById('tr-followup').value.trim();
+  const msg      = document.getElementById('tr-msg');
+  const fileInput = document.getElementById('tr-attachment');
+  const file      = fileInput?.files[0];
+
+  if (!entity || !date || !category || !takeaway) {
+    msg.textContent = 'Please fill in Organization, Date, Category, and Key Takeaway.';
+    msg.style.display = 'inline';
+    setTimeout(() => msg.style.display = 'none', 3500);
+    return;
+  }
+
+  function saveEntry(attachment) {
+    const data = trackerLoad();
+    data.unshift({ id: Date.now(), name, entity, internal, date, category, takeaway, followup, attachment: attachment || null, done: false });
+    trackerSave(data);
+    ['tr-name','tr-entity','tr-internal','tr-date','tr-takeaway','tr-followup'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('tr-category').value = '';
+    trackerFileClear();
+    trackerRender();
+  }
+
+  if (file) {
+    if (file.size > 4 * 1024 * 1024) {
+      msg.textContent = 'File is too large (max 4 MB). Please use a smaller file.';
+      msg.style.display = 'inline';
+      setTimeout(() => msg.style.display = 'none', 4000);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) { saveEntry({ name: file.name, data: e.target.result, type: file.type }); };
+    reader.onerror = function() { saveEntry(null); };
+    reader.readAsDataURL(file);
+  } else {
+    saveEntry(null);
+  }
+}
+
+function trackerToggleDone(id) {
+  const data = trackerLoad();
+  const entry = data.find(e => e.id === id);
+  if (entry) { entry.done = !entry.done; trackerSave(data); trackerRender(); }
+}
+
+function trackerDelete(id) {
+  const data = trackerLoad().filter(e => e.id !== id);
+  trackerSave(data);
+  trackerRender();
+}
+
+const categoryLabels = {
+  research: 'Research Partner', donor: 'Donor / Funder',
+  government: 'Government / Regulatory', foundation: 'Foundation / Nonprofit',
+  corporate: 'Corporate Partner', media: 'Media / Press',
+  vendor: 'Vendor / Service Provider', other: 'Other'
+};
+
+function trackerRender() {
+  const list   = document.getElementById('tracker-list');
+  const search = (document.getElementById('tr-search')?.value || '').toLowerCase();
+  const catF   = document.getElementById('tr-filter-cat')?.value || '';
+  const statF  = document.getElementById('tr-filter-status')?.value || '';
+  let data = trackerLoad();
+
+  if (search) data = data.filter(e =>
+    (e.name || '').toLowerCase().includes(search) ||
+    (e.internal || '').toLowerCase().includes(search) ||
+    e.entity.toLowerCase().includes(search) ||
+    e.takeaway.toLowerCase().includes(search) ||
+    (e.followup || '').toLowerCase().includes(search)
+  );
+  if (catF)  data = data.filter(e => e.category === catF);
+  if (statF === 'open') data = data.filter(e => !e.done);
+  if (statF === 'done') data = data.filter(e =>  e.done);
+
+  document.getElementById('tr-count').textContent =
+    data.length + ' entr' + (data.length === 1 ? 'y' : 'ies');
+
+  if (!data.length) {
+    list.innerHTML = '<div class="tracker-empty">No conversations logged yet. Use the form above to add your first entry.</div>';
+    return;
+  }
+
+  list.innerHTML = data.map(e => {
+    const label = categoryLabels[e.category] || 'Other';
+    const dateStr = e.date ? new Date(e.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+    const followupIcon = e.done
+      ? `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#2a8a2a" stroke-width="1.4"/><path d="M4 7l2 2 4-4" stroke="#2a8a2a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      : `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+    const followupText = e.followup
+      ? `<div class="tracker-followup ${e.done ? '' : 'has-action'}">${followupIcon} ${e.done ? '<s>' + e.followup + '</s>' : e.followup}</div>`
+      : `<div class="tracker-followup">No follow-up action noted.</div>`;
+
+    const attachmentHTML = e.attachment
+      ? `<div class="tracker-attachment-chip">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#c96a38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="${e.attachment.data}" download="${e.attachment.name}">${e.attachment.name}</a>
+        </div>`
+      : '';
+
+    return `<div class="tracker-entry ${e.done ? 'done' : ''}">
+      <div class="tracker-entry-main">
+        <div class="tracker-entry-top">
+          <span class="tracker-entity">${e.entity}${e.name ? '<span class="tracker-contact-name"> · ' + e.name + '</span>' : ''}${e.internal ? '<span class="tracker-internal-name"> via ' + e.internal + '</span>' : ''}</span>
+          <span class="tracker-badge badge-${e.category}">${label}</span>
+          <span class="tracker-date">${dateStr}</span>
+        </div>
+        <div class="tracker-takeaway">${e.takeaway}</div>
+        ${followupText}
+        ${attachmentHTML}
+      </div>
+      <div class="tracker-entry-controls">
+        <button class="btn-icon done-btn ${e.done ? 'active' : ''}" title="${e.done ? 'Mark follow-up open' : 'Mark follow-up complete'}" onclick="trackerToggleDone(${e.id})">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9l2.5 2.5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn-icon danger" title="Delete entry" onclick="if(confirm('Delete this entry?')) trackerDelete(${e.id})">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 5h12M7 5V3.5h4V5M6 5l.5 9.5h5L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function trackerExportCSV() {
+  const data = trackerLoad();
+  if (!data.length) { alert('No entries to export.'); return; }
+  const headers = ['Date','Contact Name','Organization','SETD5F Board/Committee Member','Category','Key Takeaway','Follow-up Action','Follow-up Complete','Attachment'];
+  const rows = data.map(e => [
+    e.date,
+    '"' + (e.name || '').replace(/"/g, '""') + '"',
+    '"' + (e.entity || '').replace(/"/g, '""') + '"',
+    '"' + (e.internal || '').replace(/"/g, '""') + '"',
+    categoryLabels[e.category] || e.category,
+    '"' + (e.takeaway || '').replace(/"/g, '""') + '"',
+    '"' + (e.followup || '').replace(/"/g, '""') + '"',
+    e.done ? 'Yes' : 'No',
+    e.attachment ? e.attachment.name : ''
+  ].join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'SETD5_Conversations_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+// Set today's date as default
+document.addEventListener('DOMContentLoaded', () => {
+  const d = document.getElementById('tr-date');
+  if (d) d.value = new Date().toISOString().slice(0, 10);
+  trackerRender();
+});
+</script>
+
+</body>
+</html>
