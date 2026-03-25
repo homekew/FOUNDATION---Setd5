@@ -3,15 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The SETD5 Syndrome Foundation is a family-led nonprofit advancing research for SETD5 Syndrome, a rare genetic condition, while building a global community of support, hope, and action.">
 <title>SETD5 Syndrome Foundation: Research, Advocacy, Community</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Open+Sans+Condensed:wght@300;700&display=swap" rel="stylesheet">
 <style>
 /* ===== RESET & BASE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 body {
   font-family: 'Open Sans', sans-serif;
-  background: #FAFAF8;
+  background: var(--cream);
   color: #1A3340;
   line-height: 1.7;
   font-size: 16px;
@@ -22,12 +24,12 @@ body {
   --teal:       #2F5361;
   --teal-dark:  #1e3a45;
   --teal-light: #e6f0f3;
-  --coral:      #C46D62;
+  --coral:      #d17e64;
   --coral-light:#fdf0ef;
   --gold:       #D8AB67;
   --gold-light: #fdf5e8;
   --white:      #ffffff;
-  --cream:      #FAFAF8;
+  --cream:      #F7F3EE;
   --text:       #1A3340;
   --text-mid:   #4a6b78;
   --text-light: #7a9bab;
@@ -41,15 +43,19 @@ h1, h2, h3, h4 {
   font-family: 'Open Sans', sans-serif;
   font-weight: 700;
   color: var(--teal);
-  line-height: 1.25;
+  line-height: 1.3;
 }
+h2 { margin-bottom: 24px; }
 .subhead {
   font-family: 'Open Sans Condensed', 'Open Sans', sans-serif;
   font-weight: 700;
   color: var(--coral);
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  font-size: 0.85rem;
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 16px;
+  margin-top: 8px;
 }
 p { color: var(--text-mid); margin-bottom: 1rem; }
 p:last-child { margin-bottom: 0; }
@@ -58,9 +64,9 @@ a:hover { color: var(--coral); }
 strong { color: var(--text); }
 
 /* ===== LAYOUT UTILITIES ===== */
-.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 .container--narrow { max-width: 780px; margin: 0 auto; padding: 0 24px; }
-.section { padding: 80px 0; }
+.section { padding: 56px 0; }
 .section--teal { background: var(--teal); }
 .section--cream { background: var(--cream); }
 .section--teal-light { background: var(--teal-light); }
@@ -69,15 +75,15 @@ strong { color: var(--text); }
 .section--white { background: var(--white); }
 
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 .flex { display: flex; }
 .flex-center { display: flex; align-items: center; justify-content: center; }
 .gap-16 { gap: 16px; }
 .gap-24 { gap: 24px; }
 
-.section-header { text-align: center; margin-bottom: 56px; }
-.section-header h2 { font-size: 2rem; margin-bottom: 12px; }
+.section-header { text-align: center; margin-bottom: 40px; }
+.section-header h2 { font-size: 2rem; margin-bottom: 24px; }
 .section-header p { font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
 
 /* ===== BUTTONS ===== */
@@ -128,7 +134,7 @@ strong { color: var(--text); }
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+@media (hover: hover) { .card:hover { transform: translateY(-3px); box-shadow: var(--shadow); } }
 .card-body { padding: 28px; }
 .card-icon {
   width: 52px; height: 52px;
@@ -138,13 +144,14 @@ strong { color: var(--text); }
   margin-bottom: 16px;
 }
 .card-icon svg { width: 26px; height: 26px; }
+.card-body h3 { margin-bottom: 10px; }
 
 /* ===== NAV ===== */
 #site-nav {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: var(--white);
+  background: #fbf9f6;
   border-bottom: 2px solid var(--teal-light);
   box-shadow: 0 2px 12px rgba(47,83,97,0.08);
 }
@@ -152,28 +159,33 @@ strong { color: var(--text); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 88px;
+  gap: 32px;
+  min-height: 80px;
+  padding: 12px 0;
 }
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 0;
   cursor: pointer;
   text-decoration: none;
+  margin-left: -20px;
 }
-.nav-logo-text { line-height: 1.15; }
+.nav-logo-text { line-height: 1.15; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; margin-left: -8px; }
 .nav-logo-text .name {
   font-family: 'Open Sans', sans-serif;
-  font-weight: 800;
-  font-size: 1.35rem;
+  font-weight: 700;
+  font-size: 2rem;
   color: var(--teal);
   display: block;
+  white-space: nowrap;
 }
 .nav-logo-text .tagline {
   font-family: 'Open Sans Condensed', 'Open Sans', sans-serif;
-  font-weight: 300;
-  font-size: 0.95rem;
+  font-weight: 500;
+  font-size: 1.2rem;
   margin-top: 5px;
+  margin-bottom: 0;
   color: var(--coral);
   letter-spacing: 0.08em;
   display: block;
@@ -181,19 +193,20 @@ strong { color: var(--text); }
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 16px;
   list-style: none;
 }
 .nav-links a {
   font-weight: 600;
-  font-size: 0.88rem;
+  font-size: 1rem;
   color: var(--text);
   padding: 6px 12px;
   border-radius: 6px;
   transition: all 0.15s;
   white-space: nowrap;
 }
-.nav-links a:hover, .nav-links a.active { color: var(--teal); background: var(--teal-light); }
+.nav-links a:hover { color: var(--teal); background: var(--teal-light); }
+.nav-links a.active { color: var(--teal); background: none; }
 .nav-donate {
   background: var(--coral);
   color: var(--white) !important;
@@ -202,36 +215,96 @@ strong { color: var(--text); }
 }
 .nav-donate:hover { background: #b05e54 !important; color: var(--white) !important; }
 
+/* ===== NAV DROPDOWNS ===== */
+.nav-item-dropdown { position: relative; display: flex; align-items: center; }
+.nav-dropdown-trigger { display: flex !important; align-items: center; gap: 0; }
+.nav-caret-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 4px 4px 2px;
+  color: var(--text);
+  font-size: 0.65rem;
+  transition: color 0.15s;
+  line-height: 1;
+}
+.nav-caret-btn:hover { color: var(--teal); }
+.nav-caret { font-size: 0.65rem; transition: transform 0.2s; display: inline-block; }
+.nav-item-dropdown:hover .nav-caret,
+.nav-item-dropdown.open .nav-caret { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  min-width: 160px;
+  padding: 6px;
+  list-style: none;
+  z-index: 1001;
+}
+/* Invisible bridge so the hover doesn't break crossing the gap */
+.nav-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+}
+.nav-dropdown-menu li a {
+  display: block;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  background: none;
+}
+.nav-dropdown-menu li a:hover { background: var(--teal-light); color: var(--teal); }
+.nav-item-dropdown:hover .nav-dropdown-menu { display: block; }
+
 /* Mobile nav toggle */
 .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
 .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--teal); border-radius: 2px; transition: all 0.2s; }
 
 /* ===== LOGO SVG ===== */
-.logo-svg { width: 72px; height: 72px; flex-shrink: 0; object-fit: contain; }
+.logo-svg { width: 88px; height: 88px; flex-shrink: 0; object-fit: contain; }
 
 /* ===== HERO ===== */
 .hero {
   background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, #3d6b7d 100%);
-  padding: 100px 0 90px;
+  padding: 72px 0 112px;
   position: relative;
   overflow: hidden;
 }
 .hero::before {
   content: '';
   position: absolute;
-  top: -80px; right: -80px;
-  width: 500px; height: 500px;
-  border-radius: 50%;
-  background: rgba(216,171,103,0.08);
+  top: -80px; right: 40px;
+  width: 155px; height: 620px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23d8ab67' stroke-opacity='0.12' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(14deg);
   pointer-events: none;
 }
 .hero::after {
   content: '';
   position: absolute;
-  bottom: -120px; left: -60px;
-  width: 400px; height: 400px;
-  border-radius: 50%;
-  background: rgba(196,109,98,0.07);
+  bottom: -100px; left: 60px;
+  width: 135px; height: 540px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23c46d62' stroke-opacity='0.09' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(-12deg);
   pointer-events: none;
 }
 .hero-inner {
@@ -249,14 +322,14 @@ strong { color: var(--text); }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   display: block;
 }
 .hero h1 {
   color: var(--white);
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.2;
   margin-bottom: 20px;
 }
 .hero h1 em {
@@ -275,6 +348,7 @@ strong { color: var(--text); }
   border: 1px solid rgba(255,255,255,0.20);
   border-radius: 16px;
   padding: 36px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 .hero-card h3 { color: var(--white); font-size: 1.1rem; margin-bottom: 20px; }
@@ -303,7 +377,7 @@ strong { color: var(--text); }
 
 /* ===== IMPACT STATS BAR ===== */
 .stats-bar {
-  background: var(--white);
+  background: var(--cream);
   padding: 40px 0;
   border-bottom: 1px solid var(--border);
 }
@@ -316,7 +390,7 @@ strong { color: var(--text); }
 }
 .stat-item { text-align: center; }
 .stat-item .num {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--teal);
   line-height: 1;
@@ -336,14 +410,15 @@ strong { color: var(--text); }
 /* ===== WHAT IS SECTION ===== */
 .what-is-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
 .what-is-visual {
-  background: var(--teal-light);
+  background: var(--white);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 40px;
   text-align: center;
   position: relative;
 }
 .dna-illustration { width: 180px; height: auto; margin: 0 auto; display: block; }
-.what-is-content .subhead { margin-bottom: 10px; }
+.what-is-content .subhead { margin-bottom: 12px; }
 .what-is-content h2 { margin-bottom: 16px; }
 .what-is-content p { font-size: 1.02rem; }
 .what-is-content .learn-more { margin-top: 24px; }
@@ -352,7 +427,7 @@ strong { color: var(--text); }
 .research-card {
   background: var(--white);
   border-radius: 12px;
-  padding: 28px;
+  padding: 24px;
   border-left: 4px solid var(--gold);
   box-shadow: var(--shadow-sm);
 }
@@ -367,7 +442,7 @@ strong { color: var(--text); }
   margin-bottom: 12px;
   letter-spacing: 0.03em;
 }
-.research-card h3 { font-size: 1.05rem; margin-bottom: 10px; }
+.research-card h3 { font-size: 1.15rem; margin-bottom: 10px; }
 .research-card p { font-size: 0.93rem; }
 .research-card .institution {
   display: flex;
@@ -386,7 +461,7 @@ strong { color: var(--text); }
   background: var(--white);
   border-radius: 16px;
   box-shadow: var(--shadow);
-  padding: 36px;
+  padding: 32px;
   position: relative;
 }
 .story-card::before {
@@ -427,13 +502,14 @@ strong { color: var(--text); }
 
 /* ===== DONATE CTA BAND ===== */
 .cta-band {
-  background: linear-gradient(135deg, var(--coral) 0%, #b05e54 100%);
-  padding: 72px 0;
+  background: var(--teal-dark);
+  padding: 56px 0;
   text-align: center;
 }
-.cta-band h2 { color: var(--white); font-size: 2rem; margin-bottom: 12px; }
-.cta-band p { color: rgba(255,255,255,0.88); font-size: 1.05rem; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
+.cta-band > .container > h2 { color: var(--white); font-size: 2rem; margin-bottom: 16px; }
+.cta-band > .container > p { color: rgba(255,255,255,0.88); font-size: 1.05rem; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 .cta-band .btn-secondary { margin: 0 8px; }
+.cta-band-card { background: #fdf5e8 !important; }
 
 /* ===== NEWSLETTER ===== */
 .newsletter-form {
@@ -453,7 +529,7 @@ strong { color: var(--text); }
   color: var(--text);
   outline: none;
 }
-.newsletter-form input:focus { border-color: var(--teal); }
+.newsletter-form input:focus { border-color: var(--teal); outline: none; box-shadow: 0 0 0 3px rgba(47,83,97,0.18); }
 .newsletter-form button {
   background: var(--teal);
   color: var(--white);
@@ -472,11 +548,82 @@ strong { color: var(--text); }
 /* ===== PAGE BANNER ===== */
 .page-banner {
   background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
-  padding: 64px 0 56px;
+  padding: 40px 0 48px;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  border-bottom: 4px solid var(--gold);
+  position: relative;
+  overflow: hidden;
 }
-.page-banner .subhead { margin-bottom: 8px; color: var(--gold); }
-.page-banner h1 { color: var(--white); font-size: 2.4rem; margin-bottom: 12px; }
-.page-banner p { color: rgba(255,255,255,0.82); font-size: 1.05rem; max-width: 560px; }
+.page-banner .container { position: relative; z-index: 1; width: 100%; }
+.page-banner::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: 60px;
+  width: 130px; height: 520px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23d8ab67' stroke-opacity='0.12' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+.page-banner::after {
+  content: '';
+  position: absolute;
+  bottom: -50px; left: 50px;
+  width: 110px; height: 440px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23c46d62' stroke-opacity='0.09' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+/* --- Per-page helix position & rotation variations --- */
+#about .page-banner::before      { top: -50px; right: auto; left: -10px; transform: rotate(-15deg); }
+#about .page-banner::after       { bottom: -60px; left: auto; right: 30px; transform: rotate(10deg); }
+#research .page-banner::before   { top: -70px; right: -10px; left: auto; transform: rotate(20deg); }
+#research .page-banner::after    { bottom: -60px; left: 80px; right: auto; transform: rotate(-18deg); }
+#donate .page-banner::before     { top: -40px; right: 15%; left: auto; transform: rotate(5deg); }
+#donate .page-banner::after      { bottom: -70px; right: 20px; left: auto; transform: rotate(-20deg); }
+#who .page-banner::before        { top: -55px; right: 20px; left: auto; transform: rotate(18deg); }
+#who .page-banner::after         { bottom: -60px; left: 30%; right: auto; transform: rotate(-5deg); }
+#resources .page-banner::before  { top: -60px; left: 25%; right: auto; transform: rotate(8deg); }
+#resources .page-banner::after   { bottom: -50px; left: -15px; right: auto; transform: rotate(-14deg); }
+#partners .page-banner::before   { top: -70px; right: 20px; left: auto; transform: rotate(22deg); }
+#partners .page-banner::after    { bottom: -60px; left: 35%; right: auto; transform: rotate(-6deg); }
+#fundraising .page-banner::before { top: -55px; left: -10px; right: auto; transform: rotate(-18deg); }
+#fundraising .page-banner::after  { bottom: -60px; right: 40px; left: auto; transform: rotate(14deg); }
+#volunteer .page-banner::before  { top: -60px; right: 8%; left: auto; transform: rotate(10deg); }
+#volunteer .page-banner::after   { bottom: -70px; left: -15px; right: auto; transform: rotate(-22deg); }
+#board .page-banner::before      { top: -40px; right: 30px; left: auto; transform: rotate(6deg); }
+#board .page-banner::after       { bottom: -80px; left: 20%; right: auto; transform: rotate(-10deg); }
+
+/* --- Third helix accent (positioned via inline span) --- */
+.helix-accent {
+  position: absolute;
+  width: 95px; height: 380px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23d8ab67' stroke-opacity='0.11' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  top: -45px; left: 42%;
+  transform: rotate(4deg);
+  z-index: 0;
+}
+#about    .helix-accent { left: 68%; top: -40px; transform: rotate(-7deg); }
+#research .helix-accent { left: 18%; top: -55px; transform: rotate(16deg); }
+#donate   .helix-accent { left: 52%; top: -40px; transform: rotate(-3deg); }
+#who      .helix-accent { left: 56%; top: -55px; transform: rotate(13deg); }
+#resources .helix-accent { left: 72%; top: -45px; transform: rotate(-15deg); }
+#partners  .helix-accent { left: 24%; top: -40px; transform: rotate(7deg); }
+#fundraising .helix-accent { left: 62%; top: -45px; transform: rotate(-11deg); }
+#volunteer   .helix-accent { left: 33%; top: -50px; transform: rotate(5deg); }
+#board       .helix-accent { left: 47%; top: -48px; transform: rotate(-4deg); }
+
+.page-banner .subhead { margin-bottom: 12px; color: var(--gold); }
+.page-banner h1 { color: var(--white); font-size: 3rem; line-height: 1.15; margin-bottom: 16px; }
+.page-banner p { color: rgba(255,255,255,0.82); font-size: 1.1rem; max-width: 580px; line-height: 1.6; }
 
 /* ===== ABOUT PAGE ===== */
 .symptoms-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -541,7 +688,7 @@ strong { color: var(--text); }
   overflow: hidden;
 }
 .project-card-top {
-  background: var(--teal-light);
+  background: var(--cream);
   padding: 20px 24px;
   display: flex;
   justify-content: space-between;
@@ -610,7 +757,7 @@ strong { color: var(--text); }
   text-align: center;
   background: var(--white);
   border-radius: 12px;
-  padding: 28px 20px;
+  padding: 24px;
   box-shadow: var(--shadow-sm);
 }
 .advisor-avatar {
@@ -623,7 +770,7 @@ strong { color: var(--text); }
   font-size: 1.3rem;
   color: var(--teal);
 }
-.advisor-card h3 { font-size: 0.95rem; margin-bottom: 4px; }
+.advisor-card h3 { font-size: 1.05rem; margin-bottom: 4px; }
 .advisor-card .role { font-size: 0.8rem; color: var(--coral); font-weight: 600; }
 .advisor-card .institution { font-size: 0.8rem; color: var(--text-light); margin-top: 2px; }
 
@@ -631,7 +778,7 @@ strong { color: var(--text); }
 .donate-tier {
   border: 2px solid var(--border);
   border-radius: 16px;
-  padding: 36px 28px;
+  padding: 32px 24px;
   text-align: center;
   background: var(--white);
   transition: all 0.25s;
@@ -681,11 +828,11 @@ strong { color: var(--text); }
 .other-way-card {
   background: var(--white);
   border-radius: 12px;
-  padding: 28px;
+  padding: 24px;
   box-shadow: var(--shadow-sm);
   border-top: 3px solid var(--gold);
 }
-.other-way-card h3 { font-size: 1rem; margin-bottom: 8px; }
+.other-way-card h3 { font-size: 1.15rem; margin-bottom: 8px; }
 .other-way-card p { font-size: 0.88rem; }
 
 /* ===== WHO WE ARE PAGE ===== */
@@ -693,7 +840,7 @@ strong { color: var(--text); }
 .value-card {
   background: var(--white);
   border-radius: 12px;
-  padding: 28px 24px;
+  padding: 24px;
   box-shadow: var(--shadow-sm);
   border-bottom: 3px solid var(--teal-light);
   transition: border-color 0.2s;
@@ -706,7 +853,7 @@ strong { color: var(--text); }
   margin-bottom: 14px;
   font-size: 1.4rem;
 }
-.value-card h3 { font-size: 1rem; margin-bottom: 8px; }
+.value-card h3 { font-size: 1.15rem; margin-bottom: 8px; }
 .value-card p { font-size: 0.88rem; }
 .team-card {
   background: var(--white);
@@ -716,7 +863,7 @@ strong { color: var(--text); }
   box-shadow: var(--shadow-sm);
 }
 .team-avatar {
-  width: 80px; height: 80px;
+  width: 150px; height: 150px;
   border-radius: 50%;
   background: var(--teal-light);
   margin: 0 auto 14px;
@@ -725,9 +872,21 @@ strong { color: var(--text); }
   font-weight: 800;
   color: var(--teal);
 }
-.team-card h3 { font-size: 0.95rem; margin-bottom: 3px; }
+.team-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
 .team-card .title { font-size: 0.8rem; color: var(--coral); font-weight: 600; }
 .team-card .bio { font-size: 0.82rem; color: var(--text-light); margin-top: 8px; }
+/* Cards on white sections use cream background for contrast */
+.section--white .card,
+.section--white .research-card,
+.section--white .story-card,
+.section--white .project-card,
+.section--white .advisor-card,
+.section--white .donate-tier,
+.section--white .other-way-card,
+.section--white .value-card,
+.section--white .team-card {
+  background: var(--cream);
+}
 .origin-pullquote {
   border-left: 4px solid var(--gold);
   padding: 12px 24px;
@@ -747,7 +906,7 @@ strong { color: var(--text); }
 .contact-info-item {
   display: flex;
   gap: 14px;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 20px;
 }
 .contact-icon {
@@ -777,6 +936,106 @@ strong { color: var(--text); }
 .contact-form textarea:focus { border-color: var(--teal); }
 .contact-form textarea { min-height: 130px; resize: vertical; }
 
+/* ===== PARTNER CTA ===== */
+.partner-cta {
+  background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
+  padding: 72px 0;
+  position: relative;
+  overflow: hidden;
+}
+.partner-cta::before {
+  content: '';
+  position: absolute;
+  top: -70px; right: 50px;
+  width: 145px; height: 580px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23d8ab67' stroke-opacity='0.12' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(16deg);
+  pointer-events: none;
+}
+.partner-cta::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: 40px;
+  width: 120px; height: 480px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 320'%3E%3Cg fill='none' stroke='%23c46d62' stroke-opacity='0.09' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M68,0 C68,20,12,60,12,80 C12,100,68,140,68,160 C68,180,12,220,12,240 C12,260,68,300,68,320'/%3E%3Cpath d='M12,0 C12,20,68,60,68,80 C68,100,12,140,12,160 C12,180,68,220,68,240 C68,260,12,300,12,320'/%3E%3Cline x1='12' y1='0' x2='68' y2='0'/%3E%3Cline x1='21' y1='18' x2='59' y2='18'/%3E%3Cline x1='28' y1='27' x2='52' y2='27'/%3E%3Cline x1='28' y1='53' x2='52' y2='53'/%3E%3Cline x1='21' y1='62' x2='59' y2='62'/%3E%3Cline x1='12' y1='80' x2='68' y2='80'/%3E%3Cline x1='21' y1='98' x2='59' y2='98'/%3E%3Cline x1='28' y1='107' x2='52' y2='107'/%3E%3Cline x1='28' y1='133' x2='52' y2='133'/%3E%3Cline x1='21' y1='142' x2='59' y2='142'/%3E%3Cline x1='12' y1='160' x2='68' y2='160'/%3E%3Cline x1='21' y1='178' x2='59' y2='178'/%3E%3Cline x1='28' y1='187' x2='52' y2='187'/%3E%3Cline x1='28' y1='213' x2='52' y2='213'/%3E%3Cline x1='21' y1='222' x2='59' y2='222'/%3E%3Cline x1='12' y1='240' x2='68' y2='240'/%3E%3Cline x1='21' y1='258' x2='59' y2='258'/%3E%3Cline x1='28' y1='267' x2='52' y2='267'/%3E%3Cline x1='28' y1='293' x2='52' y2='293'/%3E%3Cline x1='21' y1='302' x2='59' y2='302'/%3E%3Cline x1='12' y1='320' x2='68' y2='320'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(-14deg);
+  pointer-events: none;
+}
+.partner-cta-inner {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 56px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.partner-cta-left .subhead { color: var(--gold); margin-bottom: 12px; }
+.partner-cta-left h2 { color: var(--white); font-size: 2.6rem; line-height: 1.2; margin-bottom: 20px; }
+.partner-cta-left > p { color: rgba(255,255,255,0.82); font-size: 1.05rem; line-height: 1.7; margin-bottom: 36px; max-width: 480px; }
+.partner-benefit-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px; }
+.partner-benefit-list li { display: flex; gap: 16px; align-items: flex-start; }
+.partner-benefit-icon {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(216,171,103,0.18);
+  border: 1.5px solid rgba(216,171,103,0.4);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold);
+  font-size: 0.95rem;
+}
+.partner-benefit-text strong { display: block; color: var(--white); font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; }
+.partner-benefit-text span { color: rgba(255,255,255,0.7); font-size: 0.88rem; line-height: 1.5; }
+.partner-cta-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 44px 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+}
+.partner-cta-card .card-eyebrow {
+  display: inline-block;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  padding: 4px 14px;
+  margin-bottom: 20px;
+}
+.partner-cta-card h3 { font-size: 1.5rem; color: var(--teal-dark); line-height: 1.25; margin-bottom: 12px; }
+.partner-cta-card > p { color: var(--text-mid); font-size: 0.95rem; line-height: 1.65; margin-bottom: 28px; }
+.partner-contact-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  margin-bottom: 10px;
+}
+.partner-contact-line svg { flex-shrink: 0; color: var(--teal); }
+.partner-contact-line a { color: var(--teal); font-weight: 600; text-decoration: none; }
+.partner-contact-line a:hover { text-decoration: underline; }
+.partner-cta-card .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.partner-cta-card .btn { width: 100%; justify-content: center; margin-bottom: 12px; }
+.partner-cta-card .card-secondary-link { display: block; text-align: center; font-size: 0.88rem; color: var(--text-light); text-decoration: none; }
+.partner-cta-card .card-secondary-link:hover { color: var(--teal); }
+@media(max-width:900px) {
+  .partner-cta-inner { grid-template-columns: 1fr; gap: 40px; }
+  .partner-cta-card { max-width: 480px; }
+}
+@media(max-width:640px) {
+  .partner-cta { padding: 56px 0; }
+  .partner-cta-left h2 { font-size: 2rem; }
+  .partner-cta-card { padding: 36px 28px; }
+}
+
 /* ===== FOOTER ===== */
 footer {
   background: var(--teal-dark);
@@ -797,7 +1056,7 @@ footer {
 }
 .footer-social { display: flex; gap: 10px; }
 .social-btn {
-  width: 36px; height: 36px;
+  width: 44px; height: 44px;
   border-radius: 8px;
   background: rgba(255,255,255,0.10);
   display: flex; align-items: center; justify-content: center;
@@ -846,7 +1105,7 @@ footer {
 @media (max-width: 900px) {
   .hero-inner { grid-template-columns: 1fr; }
   .hero-card { display: none; }
-  .hero h1 { font-size: 2.2rem; }
+  .hero h1 { font-size: 2.4rem; }
   .grid-3 { grid-template-columns: 1fr 1fr; }
   .grid-4 { grid-template-columns: 1fr 1fr; }
   .what-is-grid { grid-template-columns: 1fr; }
@@ -855,20 +1114,68 @@ footer {
   .other-ways { grid-template-columns: 1fr; }
   .values-grid { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 640px) {
+/* CTA band card tablet padding */
+@media (max-width: 820px) {
+  .cta-band-card { padding: 40px 36px !important; }
+}
+/* Shrink logo at mid-widths before it wraps */
+@media (max-width: 1100px) {
+  .nav-logo-text .name { font-size: 1.5rem; }
+  .nav-logo-text .tagline { font-size: 1rem; }
+  .nav-inner { gap: 20px; }
+}
+/* Nav collapses to hamburger earlier to avoid overflow on tablets */
+@media (max-width: 820px) {
+  .nav-inner { height: auto; padding: 12px 0 12px; }
   .nav-links { display: none; }
-  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 70px; left: 0; right: 0; background: var(--white); padding: 16px; box-shadow: var(--shadow); z-index: 999; }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--white); padding: 12px 16px; box-shadow: var(--shadow); z-index: 999; }
+  .nav-links.open li { border-bottom: 1px solid var(--border); }
+  .nav-links.open li:last-child { border-bottom: none; }
+  .nav-links.open a { display: block; padding: 12px 8px; font-size: 1rem; }
   .nav-toggle { display: flex; }
+  .nav-logo-text .name { font-size: 1.1rem; }
+  .nav-logo-text .tagline { font-size: 0.9rem; }
+  /* Mobile dropdowns */
+  .nav-item-dropdown { width: 100%; flex-wrap: wrap; }
+  .nav-item-dropdown:hover .nav-dropdown-menu { display: none; }
+  .nav-item-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu { position: static; box-shadow: none; border: none; background: var(--teal-light); margin: 4px 0 4px; border-radius: 6px; min-width: unset; width: 100%; }
+  .nav-dropdown-menu a { padding: 10px 16px !important; font-size: 0.9rem !important; }
+  .nav-dropdown-trigger { flex: 1; }
+  .nav-caret-btn { padding: 4px 8px; font-size: 0.8rem; }
+}
+@media (max-width: 640px) {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .symptoms-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .values-grid { grid-template-columns: 1fr; }
-  .hero h1 { font-size: 1.8rem; }
-  .section { padding: 56px 0; }
+  .hero h1 { font-size: 2rem; }
+  .hero { padding: 48px 0 64px; }
+  .section { padding: 36px 0; }
   .stats-bar-inner { gap: 20px; }
   .stat-divider { display: none; }
   .newsletter-form { flex-direction: column; }
   .donate-tier { margin-bottom: 16px; }
+  /* CTA card: reduce padding on small phones */
+  .cta-band-card { padding: 36px 24px !important; }
+}
+
+/* ===== PARTNER LOGO PLACEHOLDER ===== */
+.partner-logo-placeholder {
+  width: 100%;
+  height: 72px;
+  border: 1.5px dashed var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  background: var(--cream);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-light);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* ===== UTILS ===== */
@@ -883,9 +1190,107 @@ footer {
 .teal { color: var(--teal); }
 .coral { color: var(--coral); }
 .gold { color: var(--gold); }
+
+/* ===== SYMPTOM PREVALENCE CHART ===== */
+.spc-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 32px 24px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+.spc-layout {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.spc-chart-wrap {
+  flex: 0 0 320px;
+  max-width: 320px;
+  position: relative;
+}
+.spc-legend { flex: 1; min-width: 220px; }
+.spc-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-bottom: 1px solid #f0ece5;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+.spc-legend-item:last-child { border-bottom: none; }
+.spc-legend-item:hover { background: var(--cream); }
+.spc-legend-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.spc-legend-label { font-size: 0.85rem; font-weight: 500; color: var(--text); flex: 1; }
+.spc-legend-pct { font-size: 0.82rem; font-weight: 700; color: var(--text-light); font-variant-numeric: tabular-nums; }
+.spc-center-label {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+.spc-center-num { font-size: 1.7rem; font-weight: 800; color: var(--teal-dark); line-height: 1; }
+.spc-center-text { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-top: 3px; }
+.spc-hover-strip {
+  margin-top: 20px;
+  padding: 11px 16px;
+  background: var(--cream);
+  border-radius: 8px;
+  text-align: center;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.spc-hover-strip-name { font-size: 0.87rem; font-weight: 600; }
+.spc-hover-strip-pct { font-size: 0.83rem; color: var(--text-light); }
+.spc-hover-strip-default { font-size: 0.83rem; color: var(--text-light); font-style: italic; }
+.spc-disclaimer {
+  margin-top: 16px;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+@media(max-width: 760px) {
+  .spc-layout { flex-direction: column; align-items: center; gap: 24px; }
+  .spc-chart-wrap { flex: none; width: 240px; max-width: 100%; }
+  .spc-chart-wrap canvas { width: 240px !important; height: 240px !important; }
+  .spc-legend { width: 100%; min-width: 0; }
+  .spc-card { padding: 20px 16px 18px; }
+}
+
+/* ── World Map ── */
+.swm-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px 32px 24px; overflow: hidden; box-shadow: 0 2px 20px rgba(26,39,68,0.07); }
+.swm-map-container { position: relative; width: 100%; border-radius: 10px; overflow: hidden; }
+#swm-world-map { display: block; width: 100%; height: auto; }
+.swm-country { stroke: #e8e2d9; stroke-width: 0.5px; transition: fill 0.15s; cursor: default; }
+.swm-country-default { fill: #e8e4dc; }
+.swm-country-active { fill: #2a7a6a; cursor: pointer; }
+.swm-country-active:hover { fill: #1f5e52; }
+#swm-tooltip { position: absolute; background: var(--navy, #1a2744); color: #fff; padding: 9px 14px; border-radius: 8px; font-size: 0.82rem; line-height: 1.45; pointer-events: none; opacity: 0; transition: opacity 0.15s; max-width: 200px; z-index: 10; }
+#swm-tooltip strong { display: block; font-size: 0.84rem; color: #fff; }
+.swm-footer { display: flex; align-items: center; gap: 1.5rem; margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid var(--border); flex-wrap: wrap; }
+.swm-legend { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; flex: 1; }
+.swm-legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--text-muted); }
+.swm-legend-swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+.swm-disclaimer { font-size: 0.73rem; color: var(--text-muted); line-height: 1.55; max-width: 420px; margin-left: auto; text-align: right; }
+@media(max-width: 760px) {
+  .swm-card { padding: 20px 16px 18px; }
+  .swm-disclaimer { text-align: left; margin-left: 0; max-width: 100%; }
+}
 </style>
 </head>
 <body>
+
 
 <!-- ===== NAV ===== -->
 <nav id="site-nav">
@@ -899,10 +1304,23 @@ footer {
         </div>
       </a>
       <ul class="nav-links" id="nav-links">
-        <li><a href="#" onclick="showPage('home')" data-page="home" class="active">Home</a></li>
-        <li><a href="#" onclick="showPage('about')" data-page="about">About SETD5 Syndrome</a></li>
+        <li class="nav-item-dropdown" id="dropdown-about">
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-about')" style="font-weight:600; font-size:1rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">About <span class="nav-caret">▾</span></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('about')" data-page="about">About the Syndrome</a></li>
+            <li><a href="#" onclick="showPage('who')" data-page="who">About the Foundation</a></li>
+            <li><a href="#" onclick="showPage('partners')" data-page="partners">Partners</a></li>
+          </ul>
+        </li>
         <li><a href="#" onclick="showPage('research')" data-page="research">Research</a></li>
-        <li><a href="#" onclick="showPage('who')" data-page="who">Our Team</a></li>
+        <li><a href="#" onclick="showPage('resources')" data-page="resources">Resources</a></li>
+        <li class="nav-item-dropdown" id="dropdown-involve">
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-involve')" style="font-weight:600; font-size:1rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">Get Involved <span class="nav-caret">▾</span></button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('fundraising')" data-page="fundraising">Fundraising</a></li>
+            <li><a href="#" onclick="showPage('volunteer')" data-page="volunteer">Volunteer</a></li>
+          </ul>
+        </li>
         <li><a href="#" onclick="showPage('donate')" data-page="donate" class="nav-donate">Donate</a></li>
       </ul>
       <div class="nav-toggle" id="nav-toggle" onclick="toggleNav()">
@@ -911,6 +1329,8 @@ footer {
     </div>
   </div>
 </nav>
+
+<main id="main-content">
 
 <!-- ========================================================
      PAGE: HOME
@@ -922,16 +1342,15 @@ footer {
     <div class="container">
       <div class="hero-inner">
         <div class="hero-content">
-          <span class="hero-eyebrow">SETD5 Syndrome Foundation</span>
-          <h1>Funding the Science.<br><em>Empowering</em> the Families.</h1>
-          <p class="hero-desc">We are a family-led nonprofit dedicated to accelerating research into SETD5 Syndrome, a rare genetic condition, while building a global community of support, hope, and action.</p>
+          <h1>Fueling Research.<br><em>Empowering</em> Families.</h1>
+          <p class="hero-desc">We are a family-led nonprofit dedicated to advancing research for SETD5 Syndrome, a rare genetic condition, and building a global community of support, hope, and action.</p>
           <div class="hero-actions">
             <a href="#" class="btn btn-primary btn-lg" onclick="showPage('donate')">Donate Now</a>
             <a href="#" class="btn btn-secondary btn-lg" onclick="showPage('about')">Learn About SETD5 Syndrome</a>
           </div>
         </div>
         <div class="hero-card">
-          <h3>Our Impact So Far</h3>
+          <h2>Our Impact So Far</h2>
           <div class="hero-stat-row">
             <div class="hero-stat">
               <span class="number">300+</span>
@@ -969,8 +1388,8 @@ footer {
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <span class="num">2013</span>
-          <span class="lbl">Gene First Identified</span>
+          <span class="num">2014</span>
+          <span class="lbl">Condition First Described</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
@@ -989,39 +1408,24 @@ footer {
   <!-- What Is SETD5 Syndrome -->
   <section class="section section--white">
     <div class="container">
-      <div class="what-is-grid">
-        <div class="what-is-visual">
-          <svg viewBox="0 0 200 260" width="180" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M80 240 Q64 200 80 160 Q96 120 80 80 Q64 40 80 10" stroke="#2F5361" stroke-width="6" fill="none" stroke-linecap="round"/>
-            <path d="M120 240 Q136 200 120 160 Q104 120 120 80 Q136 40 120 10" stroke="#2F5361" stroke-width="6" fill="none" stroke-linecap="round"/>
-            <line x1="80" y1="220" x2="120" y2="220" stroke="#D8AB67" stroke-width="4" stroke-linecap="round"/>
-            <line x1="76" y1="195" x2="124" y2="195" stroke="#2F5361" stroke-width="4" stroke-linecap="round"/>
-            <line x1="80" y1="170" x2="120" y2="170" stroke="#D8AB67" stroke-width="4" stroke-linecap="round"/>
-            <line x1="76" y1="145" x2="124" y2="145" stroke="#2F5361" stroke-width="4" stroke-linecap="round"/>
-            <line x1="80" y1="120" x2="120" y2="120" stroke="#D8AB67" stroke-width="4" stroke-linecap="round"/>
-            <line x1="76" y1="95" x2="124" y2="95" stroke="#2F5361" stroke-width="4" stroke-linecap="round"/>
-            <line x1="80" y1="70" x2="120" y2="70" stroke="#D8AB67" stroke-width="4" stroke-linecap="round"/>
-            <line x1="76" y1="45" x2="124" y2="45" stroke="#2F5361" stroke-width="4" stroke-linecap="round"/>
-            <circle cx="100" cy="95" r="18" fill="#C46D62" opacity="0.85"/>
-            <path d="M100 88 L100 102 M94 95 L106 95" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-            <text x="100" y="100" text-anchor="middle" font-family="Open Sans" font-weight="700" font-size="9" fill="white">SETD5</text>
-          </svg>
-          <p style="margin-top:16px; font-size:0.85rem; color:var(--text-light);">The SETD5 gene on chromosome 3p25.3</p>
-        </div>
-        <div class="what-is-content">
-          <span class="subhead">What is SETD5 Syndrome?</span>
-          <h2>A Rare Genetic Condition with a Growing Community</h2>
-          <p>SETD5 Syndrome is caused by changes (variants or deletions) in the <em>SETD5</em> gene. This gene plays a critical role in brain development, and when it doesn't work as expected, it can lead to intellectual disability, autism spectrum disorder, behavioral differences, and speech delays.</p>
-          <p>Most cases arise spontaneously (not inherited), meaning families often have no prior history. SETD5 Syndrome was first described in 2014, and the global community of diagnosed individuals is still growing as genetic testing becomes more widespread.</p>
-          <p>Every person with SETD5 Syndrome is unique. This is a condition of beautiful complexity, and our mission is to fully understand it and support those living with it.</p>
-          <a href="#" class="btn btn-outline mt-24" onclick="showPage('about')">Learn More About the Condition</a>
-        </div>
+      <!-- Photo row across the top -->
+      <div style="margin-bottom:32px;">
+        <img src="image.png" alt="Children with SETD5 Syndrome" style="width:100%; max-height:340px; border-radius:12px; display:block; object-fit:cover; object-position:center;">
+      </div>
+      <!-- Text below -->
+      <div class="what-is-content" style="text-align:left;">
+        <span class="subhead">What is SETD5 Syndrome?</span>
+        <h2>A Rare Genetic Condition with a Growing Community</h2>
+        <p>SETD5 Syndrome is caused by changes (variants or deletions) in the <em>SETD5</em> gene. This gene plays a critical role in brain development, and when it doesn't work as expected, it can affect many areas of development. Common features include intellectual disability, autism spectrum disorder, speech and language delays, and behavioral differences such as attention and hyperactivity challenges. SETD5 Syndrome can also lead to a range of physical symptoms, which vary from person to person.</p>
+        <p>In most reported cases, the change arises spontaneously (de novo) and there is no prior family history of the condition, though familial cases do occur. When a parent carries the variant, it can be passed to a child. SETD5 Syndrome was first described in 2014, and the global community of diagnosed individuals is still growing as genetic testing becomes more widespread.</p>
+        <p>Every person with SETD5 Syndrome is unique. This is a condition of beautiful complexity, and our mission is to fully understand it and support those living with it.</p>
+        <a href="#" class="btn btn-outline mt-24" onclick="showPage('about')">Learn More About the Condition</a>
       </div>
     </div>
   </section>
 
   <!-- Research Highlights -->
-  <section class="section section--teal-light">
+  <section class="section section--cream">
     <div class="container">
       <div class="section-header">
         <span class="subhead">Research Highlights</span>
@@ -1032,7 +1436,7 @@ footer {
         <div class="research-card">
           <span class="tag">Basic Science</span>
           <h3>SETD5 Protein Function in Neural Development</h3>
-          <p>Researchers are mapping exactly how the SETD5 protein regulates gene expression in developing brain cells, the essential first step toward targeted therapies.</p>
+          <p>Researchers are mapping how the SETD5 protein regulates gene expression in developing brain cells — a key area of investigation on the path toward targeted therapies.</p>
           <div class="institution">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#7a9bab" stroke-width="1.5"/><path d="M7 4v4l2.5 1.5" stroke="#7a9bab" stroke-width="1.5" stroke-linecap="round"/></svg>
             Stanford University · Active
@@ -1073,13 +1477,13 @@ footer {
       </div>
       <div class="story-card">
         <blockquote>
-          "When our daughter was diagnosed at age three, we were handed a printout with almost no information and told to 'wait and see.' That was not good enough. We found other families online, we connected with researchers, and we realized: if we didn't build this foundation, no one would. Every dollar raised is a message to our kids: we see you, we believe in you, and we will not stop."
+          "When our daughter was diagnosed at age three, we found other families online, we connected with researchers, and we realized: if we didn't build this foundation, no one would. Every dollar raised is a message to our kids: we see you, we believe in you, and we will not stop."
         </blockquote>
         <div class="story-attribution">
-          <div class="story-avatar">SK</div>
+          <div class="story-avatar">JD</div>
           <div>
-            <div class="story-name">Sarah K.</div>
-            <div class="story-role">Co-Founder, SETD5 Syndrome Foundation · Parent of a child with SETD5 Syndrome</div>
+            <div class="story-name">Jane D.</div>
+            <div class="story-role">Parent of a child with SETD5 Syndrome</div>
           </div>
         </div>
       </div>
@@ -1092,15 +1496,20 @@ footer {
   <!-- Donate CTA Band -->
   <section class="cta-band">
     <div class="container">
-      <h2>Every Gift Funds a Breakthrough</h2>
-      <p>Research doesn't wait. Neither do our families. A donation today keeps scientists at the bench and gives hope to hundreds of families around the world.</p>
-      <a href="#" class="btn btn-secondary btn-lg" onclick="showPage('donate')">Make a Donation</a>
-      <a href="#" class="btn btn-secondary btn-lg" onclick="showPage('donate')" style="background:transparent; border-color:rgba(255,255,255,0.5);">Other Ways to Give</a>
+      <div class="cta-band-card" style="background:#fdf5e8 !important; border-radius:16px; padding:32px; max-width:680px; margin:0 auto; text-align:center; border:3px solid var(--coral);">
+        <div style="width:48px; height:4px; background:var(--coral); border-radius:2px; margin:0 auto 24px;"></div>
+        <h2 style="color:var(--teal); font-size:2.2rem; line-height:1.15; margin-bottom:16px;">Every Gift Funds<br>a Breakthrough</h2>
+        <p style="color:var(--text-mid); font-size:1rem; line-height:1.7; max-width:480px; margin:0 auto 32px;">Research doesn't wait. Neither do our families. A donation today keeps scientists at the bench and gives hope to hundreds of families around the world.</p>
+        <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
+          <a href="#" class="btn btn-primary btn-lg" onclick="showPage('donate')">Make a Donation</a>
+          <a href="#" class="btn btn-outline btn-lg" onclick="showPage('donate')">Other Ways to Give</a>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Newsletter -->
-  <section class="section section--teal-light">
+  <section class="section section--cream">
     <div class="container--narrow text-center">
       <span class="subhead">Stay Connected</span>
       <h2>Join Our Community</h2>
@@ -1127,6 +1536,7 @@ footer {
       <h1>About SETD5 Syndrome</h1>
       <p>Plain-language information about the genetics, symptoms, diagnosis, and daily life with SETD5 Syndrome, written for families first.</p>
     </div>
+    <span class="helix-accent" aria-hidden="true"></span>
   </div>
 
   <!-- What is it -->
@@ -1135,35 +1545,35 @@ footer {
       <div class="grid-2">
         <div>
           <span class="subhead">The Basics</span>
-          <h2>What Is SETD5 Syndrome?</h2>
-          <p>SETD5 Syndrome (also called MRD23, or Mental Retardation, Autosomal Dominant 23) is a rare neurodevelopmental condition caused by changes in the <strong>SETD5 gene</strong>, located on chromosome 3p25.3.</p>
-          <p>The SETD5 gene provides instructions for making a protein that helps regulate which genes are turned on or off during brain development. When one copy of this gene has a variant or is partially deleted, the protein may not function properly, which can affect how the brain develops.</p>
-          <p>SETD5 Syndrome typically occurs as a <strong>de novo</strong> (new, spontaneous) change, meaning most affected individuals are the first in their family to carry it. It is not usually inherited from a parent, though familial cases are documented.</p>
-          <p>It is estimated to affect <strong>fewer than 1,000 people worldwide</strong>, though the true prevalence is likely higher, as many individuals remain undiagnosed.</p>
+          <h2 style="margin-bottom:24px;">What Is SETD5 Syndrome?</h2>
+          <p>SETD5 Syndrome is a rare genetic neurodevelopmental condition caused by a change (variant) in the <strong>SETD5 gene</strong>, located on chromosome 3p25.3. SETD5 haploinsufficiency — meaning one working copy of the gene instead of the usual two — disrupts normal development in ways that can affect cognition, behavior, communication, and physical features.</p>
+          <p>Research suggests that SETD5 may help regulate how other genes are switched on and off during development. When one copy does not function correctly, a range of developmental, behavioral, medical, and physical features have been observed in affected individuals. No two individuals are exactly alike, and severity varies widely.</p>
+          <p>Most reported cases occur as a <strong>de novo</strong> mutation, meaning the change arose spontaneously and was not inherited from either parent. In some families, a parent carries the same variant and may pass it on.</p>
+          <p>Approximately <strong>75+ individuals</strong> had been described in published case series as of 2025. However, the global community has grown to over <strong>1,100 families worldwide</strong>, suggesting the true number of people affected is significantly higher than published figures reflect.</p>
         </div>
         <div>
-          <div style="background:var(--teal-light); border-radius:16px; padding:32px;">
+          <div style="background:var(--white); border:1px solid var(--border); border-radius:16px; padding:32px;">
             <h3 style="margin-bottom:20px;">Quick Facts</h3>
             <div style="display:flex; flex-direction:column; gap:14px;">
               <div style="display:flex; gap:12px; align-items:flex-start;">
                 <div style="width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px;"></div>
-                <div><strong>Gene:</strong> SETD5 (SET Domain Containing 5)</div>
+                <div><strong>Gene:</strong> SETD5 (SET Domain Containing 5), chromosome 3p25.3</div>
               </div>
               <div style="display:flex; gap:12px; align-items:flex-start;">
                 <div style="width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px;"></div>
-                <div><strong>Chromosome:</strong> 3p25.3</div>
+                <div><strong>Also known as:</strong> MRD23, Autosomal Dominant Intellectual Disability 23, SETD5-Related Syndrome, SETD5 haploinsufficiency; overlaps with 3p25.3 Microdeletion Syndrome</div>
               </div>
               <div style="display:flex; gap:12px; align-items:flex-start;">
                 <div style="width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px;"></div>
-                <div><strong>Inheritance:</strong> Autosomal dominant; usually de novo</div>
+                <div><strong>Inheritance:</strong> Most reported cases are de novo (new mutation, not inherited)</div>
               </div>
               <div style="display:flex; gap:12px; align-items:flex-start;">
                 <div style="width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px;"></div>
-                <div><strong>First described:</strong> 2014 (Grozeva et al.)</div>
+                <div><strong>First described:</strong> 2014</div>
               </div>
               <div style="display:flex; gap:12px; align-items:flex-start;">
                 <div style="width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px;"></div>
-                <div><strong>Estimated prevalence:</strong> fewer than 1,000 known cases worldwide</div>
+                <div><strong>Estimated cases:</strong> ~75+ individuals described in published case series as of 2025; the global community has grown to 1,100+ families, suggesting the true number affected is higher than published figures reflect</div>
               </div>
               <div style="display:flex; gap:12px; align-items:flex-start;">
                 <div style="width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px;"></div>
@@ -1179,80 +1589,135 @@ footer {
     </div>
   </section>
 
+  <!-- Other Names -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Nomenclature</span>
+        <h2>Other Names You May Encounter</h2>
+        <p>SETD5 Syndrome appears under several different names in medical literature, databases, and research. All refer to the same underlying condition.</p>
+      </div>
+      <div class="grid-3" style="display:grid; gap:24px; align-items:start;">
+        <div class="card" style="padding:24px;">
+          <strong style="color:var(--teal); display:block; margin-bottom:8px;">MRD23 / Autosomal Dominant Intellectual Disability 23</strong>
+          <p style="margin:0; font-size:0.9rem; color:var(--text-light);">Formal clinical classification used in genetics literature and medical databases.</p>
+        </div>
+        <div class="card" style="padding:24px;">
+          <strong style="color:var(--teal); display:block; margin-bottom:8px;">Intellectual Developmental Disorder, Autosomal Dominant 23</strong>
+          <p style="margin:0; font-size:0.9rem; color:var(--text-light);">A variation of the formal medical classification used in some clinical records.</p>
+        </div>
+        <div class="card" style="padding:24px;">
+          <strong style="color:var(--teal); display:block; margin-bottom:8px;">Intellectual Disability-Facial Dysmorphism Syndrome due to SETD5 Haploinsufficiency</strong>
+          <p style="margin:0; font-size:0.9rem; color:var(--text-light);">A descriptive name used by the NIH's Genetic and Rare Diseases Information Center (GARD), referencing the primary symptoms and genetic mechanism.</p>
+        </div>
+        <div class="card" style="padding:24px;">
+          <strong style="color:var(--teal); display:block; margin-bottom:8px;">SETD5-Related Disorder / SETD5-Related Syndrome</strong>
+          <p style="margin:0; font-size:0.9rem; color:var(--text-light);">Broader, more accessible terms used by patient advocacy groups and registries such as Simons Searchlight.</p>
+        </div>
+        <div class="card" style="padding:24px;">
+          <strong style="color:var(--teal); display:block; margin-bottom:8px;">3p25.3 Microdeletion Syndrome</strong>
+          <p style="margin:0; font-size:0.9rem; color:var(--text-light);">A closely related condition in which a small piece of chromosome 3 is deleted — a region that includes the SETD5 gene. Researchers believe the core features are primarily caused by loss of SETD5, and the clinical literature significantly overlaps.</p>
+          <span style="display:inline-block; margin-top:10px; font-size:0.8rem; color:var(--gold); font-weight:600;">Related condition</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Signs and Symptoms -->
-  <section class="section section--teal-light">
+  <section class="section section--white">
     <div class="container">
       <div class="section-header">
         <span class="subhead">Signs &amp; Symptoms</span>
         <h2>What Does SETD5 Syndrome Look Like?</h2>
         <p>SETD5 Syndrome presents differently in every person. Some individuals have mild features, while others may have more significant support needs. No two individuals are exactly alike.</p>
       </div>
-      <div class="symptoms-grid">
-        <div class="symptom-item">
-          <div class="symptom-dot"></div>
-          <div>
-            <strong>Intellectual Disability</strong>
-            <p>Ranging from mild to moderate; affects learning and adaptive skills.</p>
-          </div>
+      <div class="grid-3">
+        <div class="card" style="text-align:center; padding:28px 24px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:10px;">Learning &amp; Cognition</h3>
+          <p style="font-size:0.88rem; color:var(--text-light); margin:0; line-height:1.6;">Intellectual disability, global developmental delay, working memory difficulties, and challenges with reading, writing, and numeracy.</p>
         </div>
-        <div class="symptom-item">
-          <div class="symptom-dot"></div>
-          <div>
-            <strong>Speech &amp; Language Delays</strong>
-            <p>Expressive language is often more affected than understanding. Many children are minimally verbal early on.</p>
-          </div>
+        <div class="card" style="text-align:center; padding:28px 24px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:10px;">Speech &amp; Language</h3>
+          <p style="font-size:0.88rem; color:var(--text-light); margin:0; line-height:1.6;">Speech and language delay commonly reported. Some individuals are minimally verbal; others use AAC. Expressive language is often more affected than comprehension.</p>
         </div>
-        <div class="symptom-item">
-          <div class="symptom-dot"></div>
-          <div>
-            <strong>Autism Spectrum Features</strong>
-            <p>Social communication differences, repetitive behaviors, and sensory sensitivities are common.</p>
-          </div>
+        <div class="card" style="text-align:center; padding:28px 24px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:10px;">Behavior &amp; Emotional Regulation</h3>
+          <p style="font-size:0.88rem; color:var(--text-light); margin:0; line-height:1.6;">ADHD features, anxiety, sensory sensitivities, autism spectrum features, and a preference for routine are commonly observed.</p>
         </div>
-        <div class="symptom-item">
-          <div class="symptom-dot"></div>
-          <div>
-            <strong>Behavioral Differences</strong>
-            <p>Hyperactivity, impulsivity, ADHD-like features, and sometimes anxiety or mood dysregulation.</p>
-          </div>
+        <div class="card" style="text-align:center; padding:28px 24px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:10px;">Social &amp; Adaptive</h3>
+          <p style="font-size:0.88rem; color:var(--text-light); margin:0; line-height:1.6;">Social communication challenges and reduced awareness of danger have been reported in some individuals.</p>
         </div>
-        <div class="symptom-item">
-          <div class="symptom-dot"></div>
-          <div>
-            <strong>Hypotonia (Low Muscle Tone)</strong>
-            <p>Often present in infancy; can affect feeding, motor milestones, and gross motor skills.</p>
-          </div>
+        <div class="card" style="text-align:center; padding:28px 24px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:10px;">Neurological &amp; Motor</h3>
+          <p style="font-size:0.88rem; color:var(--text-light); margin:0; line-height:1.6;">Low muscle tone (hypotonia), gross and fine motor delays, coordination difficulties, sleep disturbances, and epilepsy in some individuals.</p>
         </div>
-        <div class="symptom-item">
-          <div class="symptom-dot"></div>
-          <div>
-            <strong>Gross &amp; Fine Motor Delays</strong>
-            <p>Walking may be delayed; coordination challenges are common. Most children do walk independently.</p>
-          </div>
-        </div>
-        <div class="symptom-item">
-          <div class="symptom-dot"></div>
-          <div>
-            <strong>Mild Facial Features</strong>
-            <p>Some individuals have subtle facial differences including widely spaced eyes, a broad forehead, or a prominent chin.</p>
-          </div>
-        </div>
-        <div class="symptom-item">
-          <div class="symptom-dot"></div>
-          <div>
-            <strong>Epilepsy</strong>
-            <p>Occurs in a subset of individuals. Seizure types vary and are typically managed with medication.</p>
-          </div>
+        <div class="card" style="text-align:center; padding:28px 24px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:10px;">Medical &amp; Physical</h3>
+          <p style="font-size:0.88rem; color:var(--text-light); margin:0; line-height:1.6;">May include feeding difficulties in infancy, growth concerns, vision or hearing impairment, and heart concerns present from birth in some individuals.</p>
         </div>
       </div>
       <div style="background:var(--white); border-radius:12px; padding:24px 28px; margin-top:32px; border-left:4px solid var(--coral);">
-        <p style="margin:0; font-size:0.93rem;"><strong>Important:</strong> This information is for educational purposes only and does not constitute medical advice. Every individual with SETD5 Syndrome is unique. Please consult with a qualified genetics specialist or developmental pediatrician for personalized guidance.</p>
+        <p style="margin:0; font-size:0.93rem;"><strong>Important:</strong> Features listed are drawn from published case series and reflect commonly reported characteristics. Not every individual will have all of these, and no two people are exactly alike. This is for educational purposes only and is not a substitute for medical advice. Please consult with a qualified genetics specialist or developmental pediatrician for personalized guidance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Symptom Prevalence Chart -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">By the Numbers</span>
+        <h2>Symptom Category Prevalence</h2>
+        <p>Approximate reported prevalence across symptom categories, based on published research. Most individuals have features in multiple areas — these categories overlap significantly.</p>
+      </div>
+      <div class="spc-card">
+        <div class="spc-layout">
+          <div class="spc-chart-wrap">
+            <canvas id="symptomPieChart" width="320" height="320"></canvas>
+            <div class="spc-center-label" id="spcCenterLabel">
+              <div class="spc-center-num" id="spcCenterNum">14</div>
+              <div class="spc-center-text">Categories</div>
+            </div>
+          </div>
+          <div class="spc-legend" id="spcLegend"></div>
+        </div>
+        <div class="spc-hover-strip" id="spcHoverStrip">
+          <span class="spc-hover-strip-default">Hover over a slice or category to see details</span>
+        </div>
+        <p class="spc-disclaimer">Prevalence estimates drawn from published SETD5 Syndrome research (2014–2024). Individual experience varies significantly — these figures describe reported rates across studied populations, not predictions for any individual. Categories are not mutually exclusive.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Global Families Map -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Global Community</span>
+        <h2>SETD5 Syndrome Families Around the World</h2>
+        <p class="section-intro">SETD5 Syndrome has been identified on six continents. Every highlighted country has at least one confirmed case, and the true global count continues to grow as genetic testing expands.</p>
+      </div>
+      <div class="swm-card">
+        <div class="swm-map-container">
+          <svg id="swm-world-map" viewBox="0 0 960 500"></svg>
+          <div id="swm-tooltip"></div>
+        </div>
+        <div class="swm-footer">
+          <div class="swm-legend">
+            <div class="swm-legend-item">
+              <div class="swm-legend-swatch" style="background:#2a7a6a;"></div>
+              Countries with documented cases
+            </div>
+          </div>
+          <p class="swm-disclaimer">Each highlighted country has at least one individual with SETD5 Syndrome documented in a published research cohort or peer-reviewed case report. The full global reach of this condition is likely broader than published literature reflects.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Diagnostic Journey -->
-  <section class="section section--white">
+  <section class="section section--cream">
     <div class="container">
       <div class="grid-2">
         <div>
@@ -1278,21 +1743,21 @@ footer {
               <div class="journey-num">3</div>
               <div class="journey-body">
                 <h3>Genetic Testing</h3>
-                <p>Chromosomal microarray (CMA) or whole-exome sequencing (WES) is ordered. This is the testing that identifies SETD5 variants or deletions.</p>
+                <p>Chromosomal microarray (CMA) or whole-exome sequencing (WES) may be ordered — these are among the types of genetic testing that can identify SETD5 variants or deletions. Your genetics team will advise which is appropriate.</p>
               </div>
             </div>
             <div class="journey-step">
               <div class="journey-num">4</div>
               <div class="journey-body">
                 <h3>Diagnosis Confirmed</h3>
-                <p>A pathogenic or likely pathogenic SETD5 variant is identified. Parents receive a formal diagnosis, often a moment of grief and relief at once.</p>
+                <p>A disease-causing change in the SETD5 gene — described on lab reports as "pathogenic" or "likely pathogenic" — is identified. Parents receive a formal diagnosis, often a moment of grief and relief at once.</p>
               </div>
             </div>
             <div class="journey-step">
               <div class="journey-num">5</div>
               <div class="journey-body">
-                <h3>Finding Community</h3>
-                <p>Connecting with SETD5 Syndrome Foundation and other families is one of the most powerful steps after diagnosis. You are not alone.</p>
+                <h3>Finding Community &amp; Next Steps</h3>
+                <p>Connecting with SETD5 Syndrome Foundation and other families is one of the most meaningful steps after diagnosis. Many families also find it helpful to ask their genetics team about follow-up care, reach out to early intervention programs, and connect with school support services. You are not alone, and you do not have to figure this out by yourself.</p>
               </div>
             </div>
           </div>
@@ -1300,41 +1765,34 @@ footer {
         <div>
           <span class="subhead">Frequently Asked Questions</span>
           <h2>Questions Families Often Ask</h2>
-          <div style="margin-top:24px;">
+          <div style="margin-top:24px; background:var(--cream); border-radius:12px; padding:8px 24px;">
             <div class="faq-item">
               <div class="faq-q" onclick="toggleFaq(this)">
                 Could I have passed this on to my child?
                 <span class="faq-toggle">+</span>
               </div>
-              <div class="faq-a">In most cases, SETD5 Syndrome arises as a de novo (spontaneous, new) change; it was not inherited from either parent. Parents' genetic testing is typically normal. However, in rare cases, a parent may carry a variant with variable expressivity. A genetics counselor can review your family's specific situation.</div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-q" onclick="toggleFaq(this)">
-                Will my child walk and talk?
-                <span class="faq-toggle">+</span>
-              </div>
-              <div class="faq-a">Most children with SETD5 Syndrome do learn to walk, though it may be delayed. Language outcomes vary significantly. Some individuals develop functional verbal communication, while others use augmentative and alternative communication (AAC). Early speech-language therapy makes a meaningful difference.</div>
+              <div class="faq-a">In most cases, SETD5 Syndrome arises as a de novo (spontaneous, new) change; it was not inherited from either parent. Many parents test negative for the variant themselves. However, in some cases, a parent may carry a variant with variable expressivity (meaning the same gene change can affect people very differently). A genetics counselor can review your family's specific situation.</div>
             </div>
             <div class="faq-item">
               <div class="faq-q" onclick="toggleFaq(this)">
                 Is there a cure or treatment?
                 <span class="faq-toggle">+</span>
               </div>
-              <div class="faq-a">There is currently no cure for SETD5 Syndrome, but researchers are actively working toward targeted therapies. In the meantime, individualized therapies (speech, occupational, physical, behavioral) significantly improve quality of life. This is exactly why research funding matters so much.</div>
+              <div class="faq-a">There is currently no cure for SETD5 Syndrome, but researchers are actively working toward targeted therapies. In the meantime, individualized therapies (speech, occupational, physical, and behavioral) can help address many of the challenges associated with the condition. This is exactly why research funding matters so much.</div>
             </div>
             <div class="faq-item">
               <div class="faq-q" onclick="toggleFaq(this)">
                 What is the recurrence risk for future pregnancies?
                 <span class="faq-toggle">+</span>
               </div>
-              <div class="faq-a">Because most cases are de novo, the recurrence risk in future pregnancies is generally low (estimated around 1%). However, if a parent is found to carry the same variant, the risk increases to 50%. Genetic counseling and prenatal testing options are available.</div>
+              <div class="faq-a">Recurrence risk depends on whether a parent carries the variant. Published case series suggest most cases are de novo (not inherited from either parent), so risk for future pregnancies is generally low in those families. However, in some families a parent carries the same variant, which changes the recurrence picture. A genetic counselor can clarify the recurrence risk and testing options specific to your family.</div>
             </div>
             <div class="faq-item">
               <div class="faq-q" onclick="toggleFaq(this)">
                 How do I connect with other families?
                 <span class="faq-toggle">+</span>
               </div>
-              <div class="faq-a">SETD5 Syndrome Foundation maintains a private family community where parents, caregivers, and self-advocates can connect, share, and support one another. Reach out through our Contact page to be connected.</div>
+              <div class="faq-a">Visit our <a href="#resources" onclick="showPage('resources')" style="color:var(--teal);font-weight:600;">Resources page</a> for ways to connect with other families and advocates in the SETD5 Syndrome community.</div>
             </div>
           </div>
         </div>
@@ -1365,6 +1823,7 @@ footer {
       <h1>Funding the Science of SETD5 Syndrome</h1>
       <p>Every dollar raised goes directly toward understanding SETD5 Syndrome and, ultimately, finding treatments. Here is the work your generosity makes possible.</p>
     </div>
+    <span class="helix-accent" aria-hidden="true"></span>
   </div>
 
   <!-- Research Mission -->
@@ -1378,8 +1837,8 @@ footer {
           <p>Our foundation funds research across the full pipeline: from understanding the basic biology of SETD5, to modeling the condition in animal systems, to developing and testing candidate therapies. We work closely with our Scientific Advisory Board to ensure every funded project is rigorous, collaborative, and moves us closer to helping families.</p>
           <p>We are also committed to family-centered research, which means patients and families have a voice in setting research priorities.</p>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-          <div style="background:var(--teal-light); border-radius:12px; padding:24px; text-align:center;">
+        <div class="grid-2" style="display:grid; gap:16px;">
+          <div style="background:var(--cream); border-radius:12px; padding:24px; text-align:center;">
             <div style="font-size:2rem; font-weight:800; color:var(--teal);">12</div>
             <div style="font-size:0.82rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:.05em;">Active Projects</div>
           </div>
@@ -1387,11 +1846,11 @@ footer {
             <div style="font-size:2rem; font-weight:800; color:var(--teal);">$1.2M+</div>
             <div style="font-size:0.82rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:.05em;">Funded to Date</div>
           </div>
-          <div style="background:var(--coral-light); border-radius:12px; padding:24px; text-align:center;">
+          <div style="background:#fdf5e8; border-radius:12px; padding:24px; text-align:center;">
             <div style="font-size:2rem; font-weight:800; color:var(--teal);">8</div>
             <div style="font-size:0.82rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:.05em;">Institutions</div>
           </div>
-          <div style="background:var(--teal-light); border-radius:12px; padding:24px; text-align:center;">
+          <div style="background:var(--cream); border-radius:12px; padding:24px; text-align:center;">
             <div style="font-size:2rem; font-weight:800; color:var(--teal);">24</div>
             <div style="font-size:0.82rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:.05em;">Publications</div>
           </div>
@@ -1401,7 +1860,7 @@ footer {
   </section>
 
   <!-- Current Projects -->
-  <section class="section section--teal-light">
+  <section class="section section--cream">
     <div class="container">
       <div class="section-header">
         <span class="subhead">Current Research</span>
@@ -1416,7 +1875,7 @@ footer {
           </div>
           <div class="project-card-body">
             <h3>SETD5 Protein Function in Neural Development</h3>
-            <p>Mapping the molecular role of the SETD5 protein in transcriptional regulation during early brain development, identifying downstream targets.</p>
+            <p>Mapping how the SETD5 protein controls which genes are switched on or off during early brain development, and identifying which other genes it influences.</p>
             <div class="project-meta">
               <div class="project-meta-item">PI: <span>Dr. A. Chen</span></div>
               <div class="project-meta-item">Institution: <span>Stanford</span></div>
@@ -1446,7 +1905,7 @@ footer {
           </div>
           <div class="project-card-body">
             <h3>Drug Screening in SETD5 Mouse Models</h3>
-            <p>High-throughput screening of FDA-approved compounds and novel molecules that may rescue SETD5-associated phenotypes in validated mouse models.</p>
+            <p>Testing hundreds of existing approved drugs and new compounds to identify any that may improve SETD5-associated features in mouse models — a step toward future clinical trials.</p>
             <div class="project-meta">
               <div class="project-meta-item">PI: <span>Dr. J. Williams</span></div>
               <div class="project-meta-item">Institution: <span>Baylor</span></div>
@@ -1460,8 +1919,8 @@ footer {
             <span class="status-badge active">Active</span>
           </div>
           <div class="project-card-body">
-            <h3>Genotype-Phenotype Correlation Analysis</h3>
-            <p>Analyzing whether the type or location of SETD5 variant (missense vs. truncating vs. deletion) predicts clinical severity or specific features.</p>
+            <h3>Variant Type and Clinical Features Study</h3>
+            <p>Investigating whether the type or location of a person's SETD5 change is related to the severity or specific features they experience.</p>
             <div class="project-meta">
               <div class="project-meta-item">PI: <span>Dr. L. Nguyen</span></div>
               <div class="project-meta-item">Institution: <span>NIH</span></div>
@@ -1475,8 +1934,8 @@ footer {
             <span class="status-badge active">Active</span>
           </div>
           <div class="project-card-body">
-            <h3>Human iPSC-Derived Neuronal Models</h3>
-            <p>Creating patient-derived stem cell lines and differentiating them into neurons to study SETD5 Syndrome in human cell systems for drug testing.</p>
+            <h3>Human Cell Models of SETD5 Syndrome</h3>
+            <p>Using stem cells derived from people with SETD5 Syndrome and converting them into brain cells, so researchers can study the condition in human cell systems and test potential treatments.</p>
             <div class="project-meta">
               <div class="project-meta-item">PI: <span>Dr. R. Torres</span></div>
               <div class="project-meta-item">Institution: <span>UCSF</span></div>
@@ -1515,8 +1974,8 @@ footer {
             <div class="timeline-item">
               <div class="timeline-dot"></div>
               <div class="timeline-year">2013</div>
-              <h3>SETD5 Gene First Associated with Intellectual Disability</h3>
-              <p>Researchers first identify SETD5 variants in individuals with unexplained intellectual disability.</p>
+              <h3>SETD5 First Linked to Intellectual Disability</h3>
+              <p>Early research identifies SETD5 variants in individuals with unexplained intellectual disability — a preliminary finding that would lead to the condition being formally characterized the following year.</p>
             </div>
             <div class="timeline-item gold">
               <div class="timeline-dot"></div>
@@ -1534,7 +1993,7 @@ footer {
               <div class="timeline-dot"></div>
               <div class="timeline-year">2018</div>
               <h3>First Mouse Model Validated</h3>
-              <p>A heterozygous Setd5 mouse model is validated, recapitulating key behavioral and neurological features of the human condition.</p>
+              <p>A mouse model carrying one changed copy of the Setd5 gene is validated, showing behavioral and neurological features similar to those seen in humans with the condition.</p>
             </div>
 
             <div class="timeline-item gold">
@@ -1548,8 +2007,8 @@ footer {
         <div>
           <span class="subhead">Scientific Advisory Board</span>
           <h2>Our Scientific Leadership</h2>
-          <p>Our SAB comprises leading scientists in neurodevelopmental genetics, epigenomics, and rare disease therapeutics who guide our research strategy.</p>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:28px;">
+          <p>Our SAB comprises leading scientists in neurodevelopmental genetics, epigenomics (the study of how genes are switched on and off), and rare disease therapeutics who guide our research strategy.</p>
+          <div class="grid-2" style="display:grid; gap:16px; margin-top:28px;">
             <div class="advisor-card">
               <div class="advisor-avatar">AC</div>
               <h3>Dr. Amy Chen, PhD</h3>
@@ -1575,7 +2034,7 @@ footer {
               <div class="institution">UCSF</div>
             </div>
           </div>
-          <div style="background:var(--teal-light); border-radius:12px; padding:24px; margin-top:24px;">
+          <div style="background:var(--cream); border:1px solid var(--border); border-radius:12px; padding:24px; margin-top:24px;">
             <h3 style="font-size:0.98rem; margin-bottom:10px;">Interested in Collaborating?</h3>
             <p style="font-size:0.88rem;">We welcome inquiries from researchers interested in SETD5 Syndrome. Contact our research team to explore funding and collaboration opportunities.</p>
             <a href="#" class="btn btn-outline mt-16" style="font-size:0.85rem; padding:10px 20px;" onclick="showPage('who')">Get in Touch</a>
@@ -1607,6 +2066,7 @@ footer {
       <h1>Make a Difference Today</h1>
       <p>Every contribution, large or small, directly funds research, supports families, and brings us closer to answers for children with SETD5 Syndrome.</p>
     </div>
+    <span class="helix-accent" aria-hidden="true"></span>
   </div>
 
   <!-- Donate Tiers -->
@@ -1615,7 +2075,7 @@ footer {
       <div class="section-header">
         <span class="subhead">Make a Gift</span>
         <h2>Choose Your Impact</h2>
-        <p>100% of your gift goes directly to SETD5 Syndrome research, family programs, and advocacy. We are a lean, volunteer-led organization.</p>
+        <p>The vast majority of every gift goes directly to SETD5 Syndrome research, family programs, and advocacy. We are a lean, volunteer-led organization committed to keeping our overhead as low as possible.</p>
       </div>
       <div class="grid-4" style="align-items:start; margin-bottom:40px;">
         <div class="donate-tier">
@@ -1672,7 +2132,7 @@ footer {
   </section>
 
   <!-- Monthly giving -->
-  <section class="section section--teal-light">
+  <section class="section section--cream">
     <div class="container">
       <div class="grid-2">
         <div>
@@ -1739,7 +2199,7 @@ footer {
         <div class="card">
           <div class="card-body">
             <div class="card-icon" style="background:var(--coral-light);">
-              <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 3C7.5 3 3 7.5 3 13s4.5 10 10 10 10-4.5 10-10S18.5 3 13 3z" stroke="#C46D62" stroke-width="2"/><path d="M9 13l2.5 2.5L17 10" stroke="#C46D62" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 3C7.5 3 3 7.5 3 13s4.5 10 10 10 10-4.5 10-10S18.5 3 13 3z" stroke="#d17e64" stroke-width="2"/><path d="M9 13l2.5 2.5L17 10" stroke="#d17e64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <h3>Share Your Story</h3>
             <p>Your experience with SETD5 Syndrome is powerful. Sharing it raises awareness, helps newly diagnosed families feel less alone, and drives donations.</p>
@@ -1750,7 +2210,7 @@ footer {
     </div>
   </section>
 
-  <section style="background:var(--teal-light); padding:40px 0; text-align:center;">
+  <section style="background:var(--white); border-top:1px solid var(--border); padding:40px 0; text-align:center;">
     <div class="container--narrow">
       <p style="font-size:0.88rem; color:var(--text-mid);">SETD5 Syndrome Foundation is a registered 501(c)(3) nonprofit organization. All donations are tax-deductible to the extent permitted by law. EIN: [Your EIN Here]</p>
     </div>
@@ -1766,10 +2226,11 @@ footer {
 
   <div class="page-banner">
     <div class="container">
-      <span class="subhead">Our Team</span>
+      <span class="subhead">About Us</span>
       <h1>A Foundation Built by Families</h1>
       <p>We started as a handful of parents with no roadmap. Today we are a growing global foundation with a clear mission: find answers for our children.</p>
     </div>
+    <span class="helix-accent" aria-hidden="true"></span>
   </div>
 
   <!-- Origin Story -->
@@ -1783,7 +2244,7 @@ footer {
           <div class="origin-pullquote">
             "We could not wait for someone else to build what our children needed. So we built it ourselves."
           </div>
-          <p>In 2021, a group of parents from the United States, Europe, and Australia came together with a single conviction: that a rare disease this newly understood could move from mystery to treatment faster than anyone thought possible, if families organized, raised money, and partnered directly with science.</p>
+          <p>A group of parents from the United States, Europe, and Australia came together with a single conviction: that a rare disease this newly understood could move from mystery to treatment faster than anyone thought possible, if families organized, raised money, and partnered directly with science.</p>
           <p>We hired no executives. We kept our overhead low. We put every dollar toward research and families. And we built the SETD5 Syndrome Foundation.</p>
           <p>Today, we fund 12 active research projects, support hundreds of families across 18 countries, and have helped produce 24 peer-reviewed publications on SETD5 Syndrome. We are just getting started.</p>
         </div>
@@ -1800,17 +2261,23 @@ footer {
           </div>
           <div class="values-grid" style="margin-top:0;">
             <div class="value-card">
-              <div class="value-icon" style="background:var(--teal-light);">🔬</div>
+              <div class="value-icon" style="background:var(--teal-light);">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2a9 9 0 100 18A9 9 0 0011 2z" stroke="#2F5361" stroke-width="1.8"/><path d="M8 11h6M11 8v6" stroke="#2F5361" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </div>
               <h3>Science First</h3>
               <p>We fund rigorous, peer-reviewed research guided by our Scientific Advisory Board.</p>
             </div>
             <div class="value-card">
-              <div class="value-icon" style="background:var(--coral-light);">❤️</div>
+              <div class="value-icon" style="background:var(--coral-light);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" stroke="#d17e64" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              </div>
               <h3>Family-Led</h3>
               <p>Every decision is made with the lived experience of families at the center.</p>
             </div>
             <div class="value-card">
-              <div class="value-icon" style="background:var(--gold-light);">🌍</div>
+              <div class="value-icon" style="background:var(--gold-light);">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#D8AB67" stroke-width="1.8"/><path d="M2 11h18M11 2a15 15 0 000 18M11 2a15 15 0 010 18" stroke="#D8AB67" stroke-width="1.8"/></svg>
+              </div>
               <h3>Global &amp; Inclusive</h3>
               <p>SETD5 Syndrome affects families everywhere. Our community has no borders.</p>
             </div>
@@ -1821,37 +2288,88 @@ footer {
   </section>
 
   <!-- Leadership -->
-  <section class="section section--teal-light">
+  <section class="section section--cream">
     <div class="container">
       <div class="section-header">
         <span class="subhead">Leadership</span>
         <h2>Board of Directors</h2>
         <p>Our board is entirely composed of parents, caregivers, and allies who volunteer their time, skills, and passion to this mission.</p>
       </div>
-      <div class="grid-4">
+      <div class="grid-3" style="display:grid; gap:24px; max-width:900px; margin:0 auto;">
         <div class="team-card">
-          <div class="team-avatar">SK</div>
-          <h3>Sarah K.</h3>
-          <div class="title">Co-Founder &amp; Board Chair</div>
-          <div class="bio">Parent of a child with SETD5 Syndrome. Former nonprofit executive. Founded the organization in 2021.</div>
+          <div class="team-avatar">LB</div>
+          <h3>Laura Biazon</h3>
+          <div class="title">Founder &amp; Board Member</div>
+          <div class="bio">Nurse Practitioner, parent of a child with SETD5 Syndrome, and founder of the SETD5 Syndrome Foundation. Laura brings both clinical knowledge and lived experience to her role, with an unwavering commitment to building a community where no family has to navigate this diagnosis alone.</div>
         </div>
         <div class="team-card">
-          <div class="team-avatar">MR</div>
-          <h3>Michael R.</h3>
-          <div class="title">Co-Founder &amp; Treasurer</div>
-          <div class="bio">Parent of a child with SETD5 Syndrome. CPA with 20 years of nonprofit finance experience.</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar">LT</div>
-          <h3>Lisa T.</h3>
-          <div class="title">Board Secretary</div>
-          <div class="bio">Pediatric occupational therapist and parent advocate. Leads our family support programming.</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar">DM</div>
-          <h3>David M.</h3>
+          <img src="kate.png" alt="Kate Carr" class="team-avatar" style="object-fit:cover; object-position: center 20%;">
+          <h3>Kate Carr</h3>
           <div class="title">Board Member</div>
-          <div class="bio">Technology executive and parent. Oversees our digital infrastructure and communications strategy.</div>
+          <div class="bio">Educator, parent of a child with SETD5 Syndrome, and founder of her own nonprofit. Kate is driven by a passion for making complex information feel accessible and human for the families who need it most.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">SC</div>
+          <h3>Samantha Cotter</h3>
+          <div class="title">Board Member</div>
+          <div class="bio">(FILLER TEXT) Parent and advocate contributing to the Foundation's growing community and programming efforts.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">AM</div>
+          <h3>Amelia Marie</h3>
+          <div class="title">Board Member</div>
+          <div class="bio">(FILLER TEXT) Parent and advocate contributing to the Foundation's growing community and programming efforts.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">JM</div>
+          <h3>Jesiree Mendez</h3>
+          <div class="title">Board Member</div>
+          <div class="bio">(FILLER TEXT) Parent and advocate dedicated to supporting families living with SETD5 Syndrome and building a stronger community around this diagnosis.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">TM</div>
+          <h3>Taryn Mildenhall</h3>
+          <div class="title">Board Member</div>
+          <div class="bio">(FILLER TEXT) Parent and advocate contributing to the Foundation's growing community and programming efforts.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">MW</div>
+          <h3>Mandy Wittenberg</h3>
+          <div class="title">Board Member</div>
+          <div class="bio">(FILLER TEXT) Parent and advocate committed to connecting families affected by SETD5 Syndrome and advancing the Foundation's mission.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Working Groups -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">How We Work</span>
+        <h2>Working Groups</h2>
+        <p>Our work is organized into five focused working groups, each led by board members and volunteers contributing their expertise to advance the Foundation's mission.</p>
+      </div>
+      <div class="grid-3" style="display:grid;gap:24px;">
+        <div class="card" style="padding:32px 28px;text-align:center;">
+          <h3 style="color:var(--teal);margin-bottom:.75rem;font-size:1.05rem;">Community Support</h3>
+          <p style="margin:0;font-size:.95rem;line-height:1.6;color:var(--text-light);">Developing family resources, peer support programs, and an online community where families affected by SETD5 Syndrome can connect and find one another.</p>
+        </div>
+        <div class="card" style="padding:32px 28px;text-align:center;">
+          <h3 style="color:var(--teal);margin-bottom:.75rem;font-size:1.05rem;">Medical &amp; Scientific</h3>
+          <p style="margin:0;font-size:.95rem;line-height:1.6;color:var(--text-light);">Recruiting a Scientific Advisory Board, cultivating researcher relationships, and laying the groundwork for a patient registry to accelerate discovery.</p>
+        </div>
+        <div class="card" style="padding:32px 28px;text-align:center;">
+          <h3 style="color:var(--teal);margin-bottom:.75rem;font-size:1.05rem;">Governance &amp; Legal</h3>
+          <p style="margin:0;font-size:.95rem;line-height:1.6;color:var(--text-light);">Overseeing incorporation, bylaws, and 501(c)(3) status. Building the legal foundation that allows us to operate with integrity and accountability.</p>
+        </div>
+        <div class="card" style="padding:32px 28px;text-align:center;">
+          <h3 style="color:var(--teal);margin-bottom:.75rem;font-size:1.05rem;">Fundraising &amp; Finance</h3>
+          <p style="margin:0;font-size:.95rem;line-height:1.6;color:var(--text-light);">Building a sustainable fundraising strategy, pursuing grants, and establishing the donor database and financial infrastructure to fuel our work.</p>
+        </div>
+        <div class="card" style="padding:32px 28px;text-align:center;">
+          <h3 style="color:var(--teal);margin-bottom:.75rem;font-size:1.05rem;">Communication &amp; Branding</h3>
+          <p style="margin:0;font-size:.95rem;line-height:1.6;color:var(--text-light);">Shaping the Foundation's identity through the website, social media presence, visual branding, and the Foundation's name and voice in the world.</p>
         </div>
       </div>
     </div>
@@ -1868,39 +2386,46 @@ footer {
       <div class="contact-grid">
         <div>
           <div class="contact-info-item">
-            <div class="contact-icon">📧</div>
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="3" width="16" height="12" rx="2" stroke="#2F5361" stroke-width="1.6"/><path d="M1 6l8 5 8-5" stroke="#2F5361" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
             <div>
               <strong style="display:block; color:var(--teal); font-size:0.88rem; margin-bottom:2px;">General Inquiries</strong>
-              <a href="mailto:info@setd5foundation.org">info@setd5foundation.org</a>
+              <a href="mailto:info@setd5syndrome.org">info@setd5syndrome.org</a>
             </div>
           </div>
           <div class="contact-info-item">
-            <div class="contact-icon">🔬</div>
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#2F5361" stroke-width="1.6"/><path d="M9 5v4l3 2" stroke="#2F5361" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
             <div>
               <strong style="display:block; color:var(--teal); font-size:0.88rem; margin-bottom:2px;">Research &amp; Grants</strong>
-              <a href="mailto:research@setd5foundation.org">research@setd5foundation.org</a>
+              <a href="mailto:research@setd5syndrome.org">research@setd5syndrome.org</a>
             </div>
           </div>
           <div class="contact-info-item">
-            <div class="contact-icon">💛</div>
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 16s-7-4.5-7-8.5a5 5 0 0110 0 5 5 0 0110 0C16 11.5 9 16 9 16z" stroke="#2F5361" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </div>
             <div>
               <strong style="display:block; color:var(--teal); font-size:0.88rem; margin-bottom:2px;">Family Support</strong>
-              <a href="mailto:families@setd5foundation.org">families@setd5foundation.org</a>
+              <a href="mailto:families@setd5syndrome.org">families@setd5syndrome.org</a>
             </div>
           </div>
           <div class="contact-info-item">
-            <div class="contact-icon">📰</div>
+            <div class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" stroke="#2F5361" stroke-width="1.6"/><path d="M5 6h8M5 9h8M5 12h5" stroke="#2F5361" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
             <div>
               <strong style="display:block; color:var(--teal); font-size:0.88rem; margin-bottom:2px;">Media &amp; Press</strong>
-              <a href="mailto:media@setd5foundation.org">media@setd5foundation.org</a>
+              <a href="mailto:media@setd5syndrome.org">media@setd5syndrome.org</a>
             </div>
           </div>
-          <div style="background:var(--teal-light); border-radius:12px; padding:20px; margin-top:8px;">
+          <div style="background:var(--cream); border:1px solid var(--border); border-radius:12px; padding:20px; margin-top:8px;">
             <h3 style="font-size:0.92rem; margin-bottom:8px;">Follow Us</h3>
             <div style="display:flex; gap:10px; flex-wrap:wrap;">
               <a href="#" class="btn btn-outline" style="font-size:0.8rem; padding:8px 16px;">Facebook</a>
               <a href="#" class="btn btn-outline" style="font-size:0.8rem; padding:8px 16px;">Instagram</a>
-              <a href="#" class="btn btn-outline" style="font-size:0.8rem; padding:8px 16px;">X / Twitter</a>
             </div>
           </div>
         </div>
@@ -1929,6 +2454,640 @@ footer {
 </div><!-- /who -->
 
 
+<!-- ========================================================
+     PAGE: RESOURCES
+======================================================== -->
+<div id="resources" class="page">
+
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">About SETD5 Syndrome</span>
+      <h1>Resources for Families</h1>
+      <p>A curated collection of trusted resources to help families navigate a SETD5 Syndrome diagnosis, connect with researchers, and find community.</p>
+    </div>
+    <span class="helix-accent" aria-hidden="true"></span>
+  </div>
+
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Community & Research</span>
+        <h2>Connect, Learn, and Find Your People</h2>
+        <p>Trusted resources for families navigating a SETD5 Syndrome diagnosis, from community spaces where you can connect with other families to research registries where your participation makes a difference.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon" style="background:var(--teal-light);">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.477 3 3 7.477 3 13s4.477 10 10 10 10-4.477 10-10S18.523 3 13 3z" stroke="#2F5361" stroke-width="2"/><path d="M17 9h-3a1 1 0 00-1 1v2h4l-.5 3H13v7h-3v-7H8v-3h2v-2a4 4 0 014-4h3v3z" stroke="#2F5361" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>SETD5 Syndrome Facebook Group</h3>
+            <p>The SETD5 Syndrome community on Facebook is where many families first found each other. Connect with parents and caregivers from around the world who understand what you are going through.</p>
+            <a href="https://www.facebook.com/groups/setd5families/" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:16px;">Join the Group</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon coral" style="background:var(--coral-light);">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.477 3 3 7.477 3 13s4.477 10 10 10 10-4.477 10-10S18.523 3 13 3z" stroke="#d17e64" stroke-width="2"/><path d="M3 13h20M13 3a15 15 0 000 20M13 3a15 15 0 010 20" stroke="#d17e64" stroke-width="2"/></svg>
+            </div>
+            <h3>SETD5 Syndrome Community</h3>
+            <p>A parent-built resource hub created to help families understand a SETD5 Syndrome diagnosis in clear, practical language. It brings together explanations, a family toolkit, medical terms, research summaries, and more, so parents and caregivers have one place to start. Designed to make complicated information feel more approachable, especially for families trying to figure out next steps.</p>
+            <a href="https://setdsyndrome.live" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:16px;">Visit setdsyndrome.live</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="10" stroke="#2F5361" stroke-width="2"/><path d="M9 13h8M13 9v8" stroke="#2F5361" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Simons Searchlight</h3>
+            <p>A research program studying rare genetic conditions including SETD5 Syndrome. Families can enroll to contribute to natural history research and be notified of new studies.</p>
+            <a href="https://www.simonssearchlight.org" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:16px;">Visit Simons Searchlight</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <h2>Not Sure Where to Start?</h2>
+      <p>If you are newly diagnosed or feeling overwhelmed, reach out directly. We connect every family with the right resources for their situation.</p>
+      <a href="#" onclick="showPage('who')" class="btn btn-secondary btn-lg" style="margin-top:8px;">Contact the Foundation</a>
+    </div>
+  </section>
+
+</div><!-- /resources -->
+
+
+<!-- ========================================================
+     PAGE: PARTNERS
+======================================================== -->
+<div id="partners" class="page">
+
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">About Us</span>
+      <h1>Community Partners</h1>
+      <p>We are grateful to the organizations and individuals who share our mission and stand alongside our families.</p>
+    </div>
+    <span class="helix-accent" aria-hidden="true"></span>
+  </div>
+
+  <!-- RESEARCH PARTNERS -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Research Partners</span>
+        <h2>Scientific Collaborators</h2>
+        <p>We work alongside leading research institutions dedicated to understanding SETD5 Syndrome and advancing therapeutic development.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="partner-logo-placeholder">Partner Logo</div>
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--coral);">Research Institution</span>
+            <h3 style="margin-top:6px;">Boston Children's Hospital</h3>
+            <p>Rare Neurodevelopmental Research Program. Partnering on natural history data collection and clinical characterization of SETD5 Syndrome.</p>
+            <a href="#" class="btn btn-outline" style="margin-top:16px; font-size:0.82rem; padding:8px 16px;">Visit Website</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="partner-logo-placeholder">Partner Logo</div>
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--coral);">Research Institution</span>
+            <h3 style="margin-top:6px;">UCSF Department of Pediatric Genetics</h3>
+            <p>Collaborating on SETD5 variant functional studies and contributing to our patient registry development and data-sharing framework.</p>
+            <a href="#" class="btn btn-outline" style="margin-top:16px; font-size:0.82rem; padding:8px 16px;">Visit Website</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="partner-logo-placeholder">Partner Logo</div>
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--coral);">Research Institution</span>
+            <h3 style="margin-top:6px;">Broad Institute</h3>
+            <p>Program in Medical and Population Genetics. Supporting genomic data analysis and contributing expertise in epigenomic research.</p>
+            <a href="#" class="btn btn-outline" style="margin-top:16px; font-size:0.82rem; padding:8px 16px;">Visit Website</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADVOCACY PARTNERS -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Advocacy Partners</span>
+        <h2>Rare Disease Allies</h2>
+        <p>Organizations that amplify the voices of rare disease families and help us navigate the policy, funding, and advocacy landscape.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="partner-logo-placeholder">Partner Logo</div>
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--coral);">Rare Disease Advocacy</span>
+            <h3 style="margin-top:6px;">NORD — National Organization for Rare Disorders</h3>
+            <p>SETD5 Syndrome Foundation is a member organization of NORD, connecting our families to a broader rare disease network and advocacy resources.</p>
+            <a href="#" class="btn btn-outline" style="margin-top:16px; font-size:0.82rem; padding:8px 16px;">Visit Website</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="partner-logo-placeholder">Partner Logo</div>
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--coral);">Rare Disease Advocacy</span>
+            <h3 style="margin-top:6px;">Global Genes</h3>
+            <p>Partnering to connect SETD5 Syndrome families with tools, resources, and a global community of rare disease advocates working toward a cure.</p>
+            <a href="#" class="btn btn-outline" style="margin-top:16px; font-size:0.82rem; padding:8px 16px;">Visit Website</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="partner-logo-placeholder">Partner Logo</div>
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--coral);">Policy &amp; Legislation</span>
+            <h3 style="margin-top:6px;">Rare Disease Legislative Advocates</h3>
+            <p>Supporting our efforts to engage lawmakers on research funding, insurance access, and policies that directly affect rare disease families.</p>
+            <a href="#" class="btn btn-outline" style="margin-top:16px; font-size:0.82rem; padding:8px 16px;">Visit Website</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAMILY & COMMUNITY PARTNERS -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Community Partners</span>
+        <h2>Family &amp; Community Organizations</h2>
+        <p>Groups that connect directly with SETD5 Syndrome families and provide on-the-ground support, education, and community.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="partner-logo-placeholder">Partner Logo</div>
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--coral);">Family Community</span>
+            <h3 style="margin-top:6px;">SETD5 Families International</h3>
+            <p>A peer-run family network connecting caregivers worldwide. We partner to ensure families find connection and support from day one of their diagnosis.</p>
+            <a href="#" class="btn btn-outline" style="margin-top:16px; font-size:0.82rem; padding:8px 16px;">Visit Website</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="partner-logo-placeholder">Partner Logo</div>
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--coral);">Education &amp; Resources</span>
+            <h3 style="margin-top:6px;">Understood.org</h3>
+            <p>Partnering to ensure families of children with SETD5 Syndrome have access to trusted educational and learning resources tailored to neurodevelopmental conditions.</p>
+            <a href="#" class="btn btn-outline" style="margin-top:16px; font-size:0.82rem; padding:8px 16px;">Visit Website</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="partner-logo-placeholder">Partner Logo</div>
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--coral);">Corporate Partner</span>
+            <h3 style="margin-top:6px;">Example Corporate Sponsor</h3>
+            <p>Providing annual funding support and employee engagement opportunities that directly fuel our research grants and family programming initiatives.</p>
+            <a href="#" class="btn btn-outline" style="margin-top:16px; font-size:0.82rem; padding:8px 16px;">Visit Website</a>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center; color:var(--text-light); font-size:0.85rem; margin-top:40px; font-style:italic;">These listings are examples shown for layout review. Final partners will be added before launch.</p>
+    </div>
+  </section>
+
+  <section class="partner-cta">
+    <div class="container">
+      <div class="partner-cta-inner">
+
+        <div class="partner-cta-left">
+          <span class="subhead">Partnership Opportunities</span>
+          <h2>Let's Build Something Meaningful Together</h2>
+          <p>The SETD5 Syndrome Foundation partners with organizations that share our belief that no family should navigate a rare disease alone — and that better science leads to better lives.</p>
+          <ul class="partner-benefit-list">
+            <li>
+              <div class="partner-benefit-icon">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M8 12l3 3 5-5"/></svg>
+              </div>
+              <div class="partner-benefit-text">
+                <strong>Advance Rare Disease Research</strong>
+                <span>Co-fund studies, share datasets, and accelerate discovery for families waiting on answers.</span>
+              </div>
+            </li>
+            <li>
+              <div class="partner-benefit-icon">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="partner-benefit-text">
+                <strong>Reach a Dedicated Community</strong>
+                <span>Connect with an engaged network of families, clinicians, and researchers who trust this Foundation.</span>
+              </div>
+            </li>
+            <li>
+              <div class="partner-benefit-icon">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="partner-benefit-text">
+                <strong>Demonstrate Social Impact</strong>
+                <span>Align your organization with a mission that makes a measurable difference for children and families.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="partner-cta-card">
+          <span class="card-eyebrow">Get in Touch</span>
+          <h3>Ready to Explore a Partnership?</h3>
+          <p>We'd love to learn about your organization and find ways to work together toward shared goals.</p>
+          <div class="partner-contact-line">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span><a href="mailto:partnerships@setd5syndrome.org">partnerships@setd5syndrome.org</a></span>
+          </div>
+          <hr class="divider">
+          <a href="#" onclick="showPage('donate')" class="btn btn-primary">Start the Conversation</a>
+          <a href="#" onclick="showPage('about')" class="card-secondary-link">Learn more about our mission →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div><!-- /partners -->
+
+
+<!-- ========================================================
+     PAGE: FUNDRAISING
+======================================================== -->
+<div id="fundraising" class="page">
+
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">Get Involved</span>
+      <h1>Fundraising</h1>
+      <p>Every dollar raised moves us closer to answers. Here are the ways you can fuel the mission.</p>
+    </div>
+    <span class="helix-accent" aria-hidden="true"></span>
+  </div>
+
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Ways to Give</span>
+        <h2>Make an Impact</h2>
+        <p>Whether you're an individual donor, a company, or a community group, there's a meaningful way for you to support SETD5 Syndrome research and families.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3l2.5 7H23l-6 4.5 2.5 7.5L13 18l-6.5 4 2.5-7.5L3 10h7.5L13 3z" stroke="#2F5361" stroke-width="2" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>One-Time Donation</h3>
+            <p>A direct gift of any size makes an immediate difference — funding lab supplies, research fellowships, and family resources.</p>
+            <a href="#" onclick="showPage('donate')" class="btn btn-primary" style="margin-top:16px;">Donate Now</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon coral">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 4v18M4 13h18" stroke="#d17e64" stroke-width="2" stroke-linecap="round"/><circle cx="13" cy="13" r="10" stroke="#d17e64" stroke-width="2"/></svg>
+            </div>
+            <h3>Monthly Giving</h3>
+            <p>Recurring gifts provide the Foundation with stable, predictable funding that lets us plan research grants and programs with confidence.</p>
+            <a href="#" onclick="showPage('donate')" class="btn btn-primary" style="margin-top:16px;">Give Monthly</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon gold">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="3" y="7" width="20" height="14" rx="2" stroke="#D8AB67" stroke-width="2"/><path d="M3 11h20M8 7V5a5 5 0 0110 0v2" stroke="#D8AB67" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Corporate Giving</h3>
+            <p>Partner with us on research sponsorship, matching gift programs, or cause-marketing campaigns that make a visible difference for rare disease families.</p>
+            <a href="#" onclick="showPage('partners')" class="btn btn-outline" style="margin-top:16px;">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">Community Fundraising</span>
+        <h2>Fundraise on Our Behalf</h2>
+        <p>Some of our most powerful fundraising comes from families and friends who take the mission into their own communities.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <h3>Birthday &amp; Milestone Fundraisers</h3>
+            <p>Turn a birthday, anniversary, or milestone moment into an act of generosity. Ask friends and family to donate to SETD5 Syndrome Foundation in your honor.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3>Team &amp; Group Fundraising</h3>
+            <p>Organize a run, bake sale, auction, or community event and donate the proceeds. We'll provide resources, materials, and support to help make your event a success.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3>Tribute &amp; Memorial Giving</h3>
+            <p>Honor someone you love by making a gift in their name, or invite others to give in lieu of flowers or gifts. A meaningful way to celebrate a life or mark a loss.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div style="background:var(--gold-light); border-radius:16px; padding:48px 52px; max-width:680px; margin:0 auto; text-align:center; border:4px solid var(--coral);">
+        <div style="width:48px; height:4px; background:var(--coral); border-radius:2px; margin:0 auto 24px;"></div>
+        <h2 style="color:var(--teal); font-size:2.2rem; line-height:1.2; margin-bottom:16px;">Ready to Make a Difference?</h2>
+        <p style="color:var(--text-mid); font-size:1rem; line-height:1.7; max-width:480px; margin:0 auto 32px;">Every contribution — no matter the size — moves the needle for families living with SETD5 Syndrome.</p>
+        <a href="#" onclick="showPage('donate')" class="btn btn-primary btn-lg">Donate Now</a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /fundraising -->
+
+
+<!-- ========================================================
+     PAGE: VOLUNTEER
+======================================================== -->
+<div id="volunteer" class="page">
+
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">Get Involved</span>
+      <h1>Volunteer</h1>
+      <p>Our Foundation runs on the passion and time of people who believe in this mission. There's a place for you here.</p>
+    </div>
+    <span class="helix-accent" aria-hidden="true"></span>
+  </div>
+
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header">
+        <span class="subhead">How You Can Help</span>
+        <h2>Volunteer Opportunities</h2>
+        <p>We welcome volunteers from all backgrounds — parents, professionals, students, and advocates. Your skills and time make a direct difference.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.5 3 3 7.5 3 13s4.5 10 10 10 10-4.5 10-10S18.5 3 13 3z" stroke="#2F5361" stroke-width="2"/><path d="M13 8v5l4 2" stroke="#2F5361" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Family Support Network</h3>
+            <p>Help newly diagnosed families navigate the early days. As a peer support volunteer, you offer connection, empathy, and lived experience to families who need it most.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon coral">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="4" y="4" width="18" height="18" rx="3" stroke="#d17e64" stroke-width="2"/><path d="M9 13h8M9 9h5M9 17h6" stroke="#d17e64" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Content &amp; Communications</h3>
+            <p>Writers, editors, designers, and social media volunteers help us tell our story, reach more families, and communicate the science in plain language.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon gold">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="9" r="4" stroke="#D8AB67" stroke-width="2"/><path d="M5 22c0-4 3.5-7 8-7s8 3 8 7" stroke="#D8AB67" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Events &amp; Fundraising</h3>
+            <p>Help plan, promote, and run our fundraising events — from virtual awareness campaigns to in-person community gatherings.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M5 7h16M5 13h10M5 19h13" stroke="#2F5361" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Research Advocacy</h3>
+            <p>Support our efforts to engage the scientific community — helping with patient registry outreach, research survey distribution, and data collection coordination.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon coral">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M3 13h4l3 7 4-14 3 7h6" stroke="#d17e64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Professional Skills</h3>
+            <p>Lawyers, accountants, marketers, web developers, and other professionals can contribute pro bono services that help the Foundation grow and operate effectively.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon gold">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3l2 6h6l-5 4 2 6-5-3.5L8 19l2-6-5-4h6l2-6z" stroke="#D8AB67" stroke-width="2" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Ambassador Program</h3>
+            <p>Represent SETD5 Syndrome Foundation in your community. Ambassadors raise awareness, share our story, and recruit other supporters to the mission.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container" style="max-width:680px;">
+      <div class="section-header">
+        <span class="subhead">Sign Up</span>
+        <h2>Express Your Interest</h2>
+        <p>Fill out the form below and we'll be in touch with opportunities that match your skills and availability.</p>
+      </div>
+      <div class="contact-form">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <input type="text" placeholder="First Name">
+          <input type="text" placeholder="Last Name">
+        </div>
+        <input type="email" placeholder="Email Address">
+        <input type="text" placeholder="Location (City, State/Country)">
+        <select>
+          <option value="" disabled selected>Area of Interest</option>
+          <option>Family Support Network</option>
+          <option>Content &amp; Communications</option>
+          <option>Events &amp; Fundraising</option>
+          <option>Research Advocacy</option>
+          <option>Professional Skills</option>
+          <option>Ambassador Program</option>
+          <option>Other</option>
+        </select>
+        <textarea placeholder="Tell us a little about yourself and why you'd like to volunteer..."></textarea>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Submit Interest Form</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div style="background:var(--gold-light); border-radius:16px; padding:48px 52px; max-width:680px; margin:0 auto; text-align:center; border:4px solid var(--coral);">
+        <div style="width:48px; height:4px; background:var(--coral); border-radius:2px; margin:0 auto 24px;"></div>
+        <h2 style="color:var(--teal); font-size:2.2rem; line-height:1.2; margin-bottom:16px;">Questions About Volunteering?</h2>
+        <p style="color:var(--text-mid); font-size:1rem; line-height:1.7; max-width:480px; margin:0 auto 32px;">Reach out and a member of our team will be happy to talk through how you can get involved.</p>
+        <a href="mailto:volunteer@setd5syndrome.org" class="btn btn-primary btn-lg">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /volunteer -->
+
+
+<!-- ========================================================
+     PAGE: BOARD PORTAL (hidden — access via #board)
+======================================================== -->
+<div id="board" class="page">
+
+
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">Internal</span>
+      <h1>Board Portal</h1>
+      <p>Board of Directors and committee documents for authorized members only.</p>
+    </div>
+    <span class="helix-accent" aria-hidden="true"></span>
+  </div>
+
+  <!-- Board Meeting Materials -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Governance</span>
+        <h2>Board Meeting Materials</h2>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Minutes</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <a href="SETD5_1st_Meeting_Minutes.docx" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              SETD5 1st Meeting Minutes
+            </a>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Agendas</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Presentations</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <a href="SETD5_Founding_Meeting.pptx" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              SETD5 Founding Meeting
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Financial Documents -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Finance</span>
+        <h2>Financial Documents</h2>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Budgets &amp; Reports</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--gold);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Tax Filings</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--gold);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Audit &amp; Compliance</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--gold);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Governance Documents -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Policies</span>
+        <h2>Governance Documents</h2>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Bylaws &amp; Articles</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <a href="SETD5_Certificate_of_Incorporation.pdf" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--coral); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Certificate of Incorporation
+            </a>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Policies</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--coral);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Conflict of Interest Forms</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--coral);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Committee Documents -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Committees</span>
+        <h2>Committee Documents</h2>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Research Committee</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Finance Committee</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Other Committees</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+            <div style="padding:10px 14px; background:var(--white); border-radius:8px; border-left:3px solid var(--teal);">No documents uploaded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /board -->
+
+
+</main><!-- /#main-content -->
+
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="container">
@@ -1946,15 +3105,6 @@ footer {
         </div>
       </div>
       <div class="footer-col">
-        <h4>About the Condition</h4>
-        <ul>
-          <li><a href="#" onclick="showPage('about')">What is SETD5 Syndrome?</a></li>
-          <li><a href="#" onclick="showPage('about')">Signs &amp; Symptoms</a></li>
-          <li><a href="#" onclick="showPage('about')">Diagnosis</a></li>
-          <li><a href="#" onclick="showPage('about')">FAQs</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
         <h4>Research</h4>
         <ul>
           <li><a href="#" onclick="showPage('research')">Current Projects</a></li>
@@ -1964,11 +3114,29 @@ footer {
         </ul>
       </div>
       <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#" onclick="showPage('about')">About the Syndrome</a></li>
+          <li><a href="#" onclick="showPage('who')">About the Foundation</a></li>
+          <li><a href="#" onclick="showPage('partners')">Partners</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
         <h4>Get Involved</h4>
         <ul>
-          <li><a href="#" onclick="showPage('donate')">Donate</a></li>
+          <li><a href="#" onclick="showPage('donate')">Make a Donation</a></li>
           <li><a href="#" onclick="showPage('donate')">Monthly Giving</a></li>
-          <li><a href="#" onclick="showPage('donate')">Fundraise</a></li>
+          <li><a href="#" onclick="showPage('fundraising')">Fundraising</a></li>
+          <li><a href="#" onclick="showPage('volunteer')">Volunteer</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#" onclick="showPage('resources')">Family Resources</a></li>
+          <li><a href="#" onclick="showPage('about')">The Condition</a></li>
+          <li><a href="#" onclick="showPage('about')">Signs &amp; Symptoms</a></li>
+          <li><a href="#" onclick="showPage('about')">FAQs</a></li>
           <li><a href="#" onclick="showPage('who')">Contact Us</a></li>
         </ul>
       </div>
@@ -1998,12 +3166,41 @@ footer {
     });
     // Close mobile nav
     document.getElementById('nav-links').classList.remove('open');
+    // Update URL hash so refresh stays on this page
+    history.replaceState(null, '', '#' + id);
   }
+
+  // On load, restore page from URL hash
+  (function() {
+    const hash = window.location.hash.replace('#', '');
+    const validPages = ['home','about','research','donate','who','resources','partners','board','fundraising','volunteer'];
+    if (hash && validPages.includes(hash)) {
+      showPage(hash);
+    }
+  })();
+
 
   // Mobile nav toggle
   function toggleNav() {
     document.getElementById('nav-links').classList.toggle('open');
   }
+
+  // Toggle dropdown open/closed (caret button only)
+  function toggleDropdown(e, dropdownId) {
+    e.preventDefault();
+    e.stopPropagation();
+    const el = document.getElementById(dropdownId);
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-item-dropdown')) {
+      document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.remove('open'));
+    }
+  });
 
   // FAQ accordion
   function toggleFaq(el) {
@@ -2024,6 +3221,221 @@ footer {
   document.querySelectorAll('a[href="#"]').forEach(a => {
     a.addEventListener('click', e => e.preventDefault());
   });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(function() {
+  const spcData = [
+    { label: 'Learning & Cognition',         pct: 100, color: '#1a2744' },
+    { label: 'Speech & Language',            pct: 90,  color: '#2a7a6a' },
+    { label: 'Facial Structure & Head',      pct: 85,  color: '#2a627a' },
+    { label: 'Behavior & Emotional Reg.',    pct: 75,  color: '#c9893a' },
+    { label: 'Neurological & Motor',         pct: 65,  color: '#4e7c5f' },
+    { label: 'Eyes & Vision',               pct: 55,  color: '#6b4f7a' },
+    { label: 'Feeding & Growth',             pct: 45,  color: '#4a6080' },
+    { label: 'Mouth, Teeth & Hands',         pct: 25,  color: '#5a7245' },
+    { label: 'Musculoskeletal',              pct: 20,  color: '#7a4a2a' },
+    { label: 'Hearing Impairment',           pct: 18,  color: '#a04a5e' },
+    { label: 'Congenital Heart Defects',     pct: 15,  color: '#b05a30' },
+    { label: 'Cryptorchidism / Hypospadias', pct: 10,  color: '#8a6a3a' },
+    { label: 'Inguinal Hernia',              pct: 8,   color: '#6a4a6a' },
+    { label: 'Fragile Bones',               pct: 5,   color: '#4a7a7a' },
+  ];
+
+  function spcSetHover(i) {
+    document.getElementById('spcCenterNum').textContent = '~' + spcData[i].pct + '%';
+    document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = spcData[i].label;
+    window.spcChart.data.datasets[0].backgroundColor = spcData.map((dd, ii) => ii === i ? dd.color : dd.color + '38');
+    window.spcChart.update('none');
+    const strip = document.getElementById('spcHoverStrip');
+    strip.innerHTML = '<span class="spc-hover-strip-name" style="color:' + spcData[i].color + '">' + spcData[i].label + '</span>'
+      + '<span class="spc-hover-strip-pct">~' + spcData[i].pct + '% of reported cases</span>';
+  }
+
+  function spcClearHover() {
+    document.getElementById('spcCenterNum').textContent = String(spcData.length);
+    document.getElementById('spcCenterLabel').querySelector('.spc-center-text').textContent = 'Categories';
+    window.spcChart.data.datasets[0].backgroundColor = spcData.map(dd => dd.color);
+    window.spcChart.update('none');
+    document.getElementById('spcHoverStrip').innerHTML = '<span class="spc-hover-strip-default">Hover over a slice or category to see details</span>';
+  }
+
+  function initSpcChart() {
+    const legend = document.getElementById('spcLegend');
+    const canvas = document.getElementById('symptomPieChart');
+    if (!legend || !canvas || canvas.dataset.initialized) return;
+    canvas.dataset.initialized = 'true';
+
+    spcData.forEach((d, i) => {
+      const item = document.createElement('div');
+      item.className = 'spc-legend-item';
+      item.innerHTML = '<div class="spc-legend-dot" style="background:' + d.color + '"></div>'
+        + '<span class="spc-legend-label">' + d.label + '</span>'
+        + '<span class="spc-legend-pct">~' + d.pct + '%</span>';
+      item.addEventListener('mouseenter', () => spcSetHover(i));
+      item.addEventListener('mouseleave', spcClearHover);
+      legend.appendChild(item);
+    });
+
+    window.spcChart = new Chart(canvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: spcData.map(d => d.label),
+        datasets: [{
+          data: spcData.map(d => d.pct),
+          backgroundColor: spcData.map(d => d.color),
+          borderColor: '#F7F3EE',
+          borderWidth: 3,
+          hoverOffset: 8,
+        }]
+      },
+      options: {
+        cutout: '62%',
+        responsive: false,
+        animation: { animateRotate: true, duration: 800 },
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: false },
+        },
+        onHover: (event, elements) => {
+          if (elements.length) {
+            spcSetHover(elements[0].index);
+          } else {
+            spcClearHover();
+          }
+        }
+      }
+    });
+  }
+
+  // Init on load and whenever the about page is shown
+  document.addEventListener('DOMContentLoaded', initSpcChart);
+  const _origShowPage = window.showPage;
+  window.showPage = function(page) {
+    _origShowPage && _origShowPage(page);
+    if (page === 'about') initSpcChart();
+  };
+})();
+</script>
+
+<!-- D3.js World Map -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+(function() {
+  // Countries with documented SETD5 Syndrome cases (ISO numeric codes)
+  // Verified against published research papers 2014–2025
+  const activeCodes = new Set([
+    840, // United States — Brain Gene Registry; Powis et al. 2018; multiple cohorts
+    826, // United Kingdom — Grozeva et al. 2014 (landmark paper); DDD Study
+    276, // Germany — Kuechler et al. 2015 (3p25.3 critical region)
+    250, // France — De Falco et al. 2024 (Paris); Mattioli et al. 2016 (Strasbourg)
+    380, // Italy — De Falco et al. 2024 (Rome, Naples, Genoa, Messina); Kuechler 2015 (Padova, Bologna)
+    724, // Spain — Parenti et al. 2017 (Zaragoza, Barakaldo/Bizkaia)
+    528, // Netherlands — Kuechler et al. 2015 (Erasmus MC, Rotterdam)
+     36, // Australia — Hunter Genetics NSW, Adelaide, Westmead
+    392, // Japan — Yagasaki et al. 2017 (ptosis/3p25 deletion)
+    156, // China — Fan et al. 2025 (Beijing); Fang 2019 (Tianjin); Pan 2020 (Guangzhou)
+     76, // Brazil — Stur et al. 2017 (mild ID); Pires et al. 2020 (Sao Paulo)
+    616, // Poland — Grozeva et al. 2016 (Warsaw)
+    364, // Iran — Kuechler et al. 2015 (Kariminejad-Najmabadi center, Tehran)
+    356, // India — de novo variants study 2023 (Kasturba Medical College, Manipal)
+  ]);
+
+  const countryInfo = {
+    840: 'United States',  826: 'United Kingdom',  276: 'Germany',
+    250: 'France',         380: 'Italy',            724: 'Spain',
+    528: 'Netherlands',     36: 'Australia',         392: 'Japan',
+    156: 'China',           76: 'Brazil',            616: 'Poland',
+    364: 'Iran',           356: 'India',
+  };
+
+  let swmInitialized = false;
+
+  function initSwmMap() {
+    const svgEl = document.getElementById('swm-world-map');
+    if (!svgEl || swmInitialized) return;
+    // Fixed viewBox — no need to query offsetWidth, works when hidden
+    swmInitialized = true;
+
+    const width = 960, height = 500;
+    const svg = d3.select('#swm-world-map');
+    const container = document.getElementById('swm-tooltip').parentElement;
+    const tooltip = document.getElementById('swm-tooltip');
+
+    const projection = d3.geoNaturalEarth1()
+      .scale(153)
+      .translate([width / 2, height / 2]);
+
+    const path = d3.geoPath().projection(projection);
+
+    // Ocean
+    svg.insert('path', ':first-child')
+      .datum({ type: 'Sphere' })
+      .attr('d', path)
+      .attr('fill', '#ddeef7');
+
+    // Graticule
+    svg.append('path')
+      .datum(d3.geoGraticule()())
+      .attr('d', path)
+      .attr('fill', 'none')
+      .attr('stroke', '#ddd8cf')
+      .attr('stroke-width', 0.3);
+
+    d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(world) {
+      const countries = topojson.feature(world, world.objects.countries);
+
+      // Country fills
+      svg.selectAll('.swm-country')
+        .data(countries.features)
+        .enter().append('path')
+        .attr('class', function(d) {
+          return activeCodes.has(+d.id)
+            ? 'swm-country swm-country-active'
+            : 'swm-country swm-country-default';
+        })
+        .attr('d', path)
+        .on('mousemove', function(event, d) {
+          var id = +d.id;
+          if (!activeCodes.has(id)) return;
+          var name = countryInfo[id] || 'Country';
+          var rect = container.getBoundingClientRect();
+          var pos = d3.pointer(event, container);
+          tooltip.style.opacity = '1';
+          tooltip.style.left = Math.min(pos[0] + 12, rect.width - 215) + 'px';
+          tooltip.style.top = (pos[1] - 10) + 'px';
+          tooltip.innerHTML = '<strong>' + name + '</strong>';
+        })
+        .on('mouseleave', function() {
+          tooltip.style.opacity = '0';
+        });
+
+      // Country borders (clean mesh layer)
+      svg.append('path')
+        .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+        .attr('fill', 'none')
+        .attr('stroke', '#e8e2d9')
+        .attr('stroke-width', 0.5)
+        .attr('d', path);
+
+    }).catch(function() {
+      document.querySelector('.swm-map-container').innerHTML =
+        '<p style="text-align:center;padding:3rem;color:#6b6b6b;">Map could not be loaded. Please check your connection.</p>';
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initSwmMap, 100);
+  });
+
+  var _prevShowPage = window.showPage;
+  window.showPage = function(page) {
+    _prevShowPage && _prevShowPage(page);
+    if (page === 'about') setTimeout(initSwmMap, 50);
+  };
+})();
 </script>
 
 </body>

@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Test files
+test-write*.txt
+
+# Internal working files
+notes.md
+site-design-system-prompt.md
+*.skill
+
+# Draft/backup files
+index copy.html
+
+# Screenshots
+Screenshot*.png
