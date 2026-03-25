@@ -134,7 +134,7 @@ strong { color: var(--text); }
   border-color: var(--gold);
 }
 .btn-gold:hover { background: #c49650; border-color: #c49650; color: var(--white); }
-.btn-lg { padding: 16px 36px; font-size: 1.05rem; }
+.btn-lg { padding: 11px 28px; font-size: 0.95rem; }
 
 /* ===== CARDS ===== */
 .card {
@@ -1425,6 +1425,12 @@ footer {
   font-weight: 400;
   font-size: 0.9rem;
   color: var(--text-light);
+}
+.tracker-internal-name {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  font-style: italic;
 }
 .tracker-badge {
   font-size: 0.72rem;
@@ -3635,14 +3641,18 @@ footer {
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1v16M1 9h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
           Log a Conversation
         </h3>
-        <div class="tracker-grid">
+        <div class="tracker-grid" style="grid-template-columns: repeat(3, 1fr);">
           <div class="tracker-field">
-            <label>Contact Name</label>
+            <label>Their Contact</label>
             <input type="text" id="tr-name" placeholder="e.g. Dr. Sarah Chen" />
           </div>
           <div class="tracker-field">
-            <label>Organization / Foundation</label>
+            <label>Their Organization</label>
             <input type="text" id="tr-entity" placeholder="e.g. NIH Office of Rare Diseases" />
+          </div>
+          <div class="tracker-field">
+            <label>SETD5F Board / Committee Member</label>
+            <input type="text" id="tr-internal" placeholder="e.g. Kate Carr" />
           </div>
         </div>
         <div class="tracker-grid">
@@ -4236,6 +4246,7 @@ function trackerFileClear() {
 function trackerAdd() {
   const name     = document.getElementById('tr-name').value.trim();
   const entity   = document.getElementById('tr-entity').value.trim();
+  const internal = document.getElementById('tr-internal').value.trim();
   const date     = document.getElementById('tr-date').value;
   const category = document.getElementById('tr-category').value;
   const takeaway = document.getElementById('tr-takeaway').value.trim();
@@ -4253,9 +4264,9 @@ function trackerAdd() {
 
   function saveEntry(attachment) {
     const data = trackerLoad();
-    data.unshift({ id: Date.now(), name, entity, date, category, takeaway, followup, attachment: attachment || null, done: false });
+    data.unshift({ id: Date.now(), name, entity, internal, date, category, takeaway, followup, attachment: attachment || null, done: false });
     trackerSave(data);
-    ['tr-name','tr-entity','tr-date','tr-takeaway','tr-followup'].forEach(id => document.getElementById(id).value = '');
+    ['tr-name','tr-entity','tr-internal','tr-date','tr-takeaway','tr-followup'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('tr-category').value = '';
     trackerFileClear();
     trackerRender();
@@ -4308,6 +4319,7 @@ function trackerRender() {
 
   if (search) data = data.filter(e =>
     (e.name || '').toLowerCase().includes(search) ||
+    (e.internal || '').toLowerCase().includes(search) ||
     e.entity.toLowerCase().includes(search) ||
     e.takeaway.toLowerCase().includes(search) ||
     (e.followup || '').toLowerCase().includes(search)
@@ -4344,7 +4356,7 @@ function trackerRender() {
     return `<div class="tracker-entry ${e.done ? 'done' : ''}">
       <div class="tracker-entry-main">
         <div class="tracker-entry-top">
-          <span class="tracker-entity">${e.entity}${e.name ? '<span class="tracker-contact-name"> · ' + e.name + '</span>' : ''}</span>
+          <span class="tracker-entity">${e.entity}${e.name ? '<span class="tracker-contact-name"> · ' + e.name + '</span>' : ''}${e.internal ? '<span class="tracker-internal-name"> via ' + e.internal + '</span>' : ''}</span>
           <span class="tracker-badge badge-${e.category}">${label}</span>
           <span class="tracker-date">${dateStr}</span>
         </div>
@@ -4367,11 +4379,12 @@ function trackerRender() {
 function trackerExportCSV() {
   const data = trackerLoad();
   if (!data.length) { alert('No entries to export.'); return; }
-  const headers = ['Date','Contact Name','Organization','Category','Key Takeaway','Follow-up Action','Follow-up Complete','Attachment'];
+  const headers = ['Date','Their Contact','Their Organization','SETD5F Board/Committee Member','Category','Key Takeaway','Follow-up Action','Follow-up Complete','Attachment'];
   const rows = data.map(e => [
     e.date,
     '"' + (e.name || '').replace(/"/g, '""') + '"',
     '"' + (e.entity || '').replace(/"/g, '""') + '"',
+    '"' + (e.internal || '').replace(/"/g, '""') + '"',
     categoryLabels[e.category] || e.category,
     '"' + (e.takeaway || '').replace(/"/g, '""') + '"',
     '"' + (e.followup || '').replace(/"/g, '""') + '"',
