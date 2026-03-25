@@ -1387,6 +1387,7 @@ footer {
         <li class="nav-item-dropdown" id="dropdown-involve">
           <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-involve')" style="font-weight:600; font-size:1rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">Get Involved <span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
+            <li><a href="#" onclick="showPage('donate')" data-page="donate">Donate</a></li>
             <li><a href="#" onclick="showPage('fundraising')" data-page="fundraising">Fundraising</a></li>
             <li><a href="#" onclick="showPage('volunteer')" data-page="volunteer">Volunteer</a></li>
           </ul>
@@ -2446,34 +2447,29 @@ footer {
         <h2>We Would Love to Hear From You</h2>
         <p>Whether you are newly diagnosed, a researcher, a donor, or a journalist, we respond to every message.</p>
       </div>
-      <div class="contact-grid">
-        <div>
-          <div style="background:var(--cream); border:1px solid var(--border); border-radius:12px; padding:20px; margin-top:0;">
-            <h3 style="font-size:0.92rem; margin-bottom:8px;">Follow Us</h3>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-              <span style="font-size:0.8rem; padding:8px 16px; border:1px solid var(--border); border-radius:8px; color:var(--text-light);">Facebook <em style="font-size:0.72rem; margin-left:4px;">Coming Soon</em></span>
-              <span style="font-size:0.8rem; padding:8px 16px; border:1px solid var(--border); border-radius:8px; color:var(--text-light);">Instagram <em style="font-size:0.72rem; margin-left:4px;">Coming Soon</em></span>
-            </div>
+      <div style="max-width:600px; margin:0 auto;">
+        <form class="contact-form" action="mailto:info@setd5syndrome.org" method="post" enctype="text/plain">
+          <input type="text" name="name" placeholder="Your Name">
+          <input type="email" name="email" placeholder="Your Email">
+          <select name="category">
+            <option value="" disabled selected>What is this about?</option>
+            <option value="newly-diagnosed">Newly Diagnosed Family</option>
+            <option value="family-support">Family Support &amp; Community</option>
+            <option value="research">Research Inquiry</option>
+            <option value="donation">Donation / Fundraising</option>
+            <option value="volunteer">Volunteer</option>
+            <option value="media">Media / Press</option>
+            <option value="other">Other</option>
+          </select>
+          <textarea name="message" placeholder="Tell us how we can help..."></textarea>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
+        </form>
+        <div style="margin-top:24px; text-align:center;">
+          <p style="font-size:0.8rem; color:var(--text-light); margin-bottom:12px; text-transform:uppercase; letter-spacing:.08em; font-weight:600;">Follow Us</p>
+          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <span style="font-size:0.8rem; padding:8px 16px; border:1px solid var(--border); border-radius:8px; color:var(--text-light);">Facebook <em style="font-size:0.72rem; margin-left:4px;">Coming Soon</em></span>
+            <span style="font-size:0.8rem; padding:8px 16px; border:1px solid var(--border); border-radius:8px; color:var(--text-light);">Instagram <em style="font-size:0.72rem; margin-left:4px;">Coming Soon</em></span>
           </div>
-        </div>
-        <div>
-          <form class="contact-form" action="mailto:info@setd5syndrome.org" method="post" enctype="text/plain">
-            <p style="font-weight:700; color:var(--teal); margin-bottom:16px; font-size:0.95rem;">Send Us a Message</p>
-            <input type="text" name="name" placeholder="Your Name">
-            <input type="email" name="email" placeholder="Your Email">
-            <select name="category">
-              <option value="" disabled selected>What is this about?</option>
-              <option value="newly-diagnosed">Newly Diagnosed Family</option>
-              <option value="family-support">Family Support &amp; Community</option>
-              <option value="research">Research Inquiry</option>
-              <option value="donation">Donation / Fundraising</option>
-              <option value="volunteer">Volunteer</option>
-              <option value="media">Media / Press</option>
-              <option value="other">Other</option>
-            </select>
-            <textarea name="message" placeholder="Tell us how we can help..."></textarea>
-            <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
-          </form>
         </div>
       </div>
     </div>
