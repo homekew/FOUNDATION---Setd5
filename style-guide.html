@@ -13,10 +13,9 @@
   --teal-dark:  #1e3a45;
   --teal-light: #e4eeeb;
   --coral:      #c96a38;
-  --coral-light:#fdf2eb;
+  --coral-light:#eeebe7;
   --gold:       #D8AB67;
   --gold-light: #F2F2F0;
-  --terra-light:#fde8da;
   --white:      #ffffff;
   --cream:      #FAFAF8;
   --text:       #1A3340;
@@ -207,7 +206,7 @@ body {
 .card-body { padding: 28px; }
 .card-icon {
   width: 52px; height: 52px;
-  background: var(--terra-light);
+  background: var(--coral-light);
   border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 16px;
@@ -345,7 +344,7 @@ body {
 <div class="sg-header">
   <h1>SETD5 Syndrome Foundation</h1>
   <p>Visual Style Guide — Brand tokens, typography, components, and usage guidelines</p>
-  <span class="version">Version 1.1 &nbsp;·&nbsp; March 2026</span>
+  <span class="version">Version 1.2 &nbsp;·&nbsp; March 2026</span>
 </div>
 
 <nav class="sg-nav">
@@ -506,8 +505,23 @@ body {
         <tr class="elem-group-row"><td colspan="3">Home Page — Other Sections</td></tr>
         <tr>
           <td>Impact stats bar</td>
-          <td>.impact-bar</td>
-          <td>The full-width teal band beneath the hero showing 3–4 high-level impact numbers.</td>
+          <td>.stats-bar</td>
+          <td>The full-width band beneath the hero showing 3–4 high-level numbers. Outer background: #cfcfcc with drop shadow. Inner panel (.stats-bar-inner) has a rounded #FAFAF8 inset with a soft inner shadow.</td>
+        </tr>
+        <tr>
+          <td>Stats bar inner panel</td>
+          <td>.stats-bar-inner</td>
+          <td>The rounded #FAFAF8 container that holds the stat items inside the stats bar. Has border-radius: 14px and an inset box-shadow.</td>
+        </tr>
+        <tr>
+          <td>Stat item</td>
+          <td>.stat-item</td>
+          <td>An individual number + label pair inside the stats bar. Number (.num) uses --teal at 2rem; label (.lbl) uses --text-mid at 0.68rem uppercase.</td>
+        </tr>
+        <tr>
+          <td>Stat divider</td>
+          <td>.stat-divider</td>
+          <td>A 1px vertical separator between stat items. Soft teal tint: rgba(47,83,97,0.15). Hidden on mobile.</td>
         </tr>
         <tr>
           <td>What is section</td>
@@ -539,7 +553,7 @@ body {
         <tr>
           <td>Card icon</td>
           <td>.card-icon</td>
-          <td>The small 52×52px square tile with an icon at the top of a card. All icons use a terracotta tint background (--terra-light) with a #c96a38 stroke. SVG icons are 22×22px.</td>
+          <td>The small 52×52px square tile with an icon at the top of a card. Uses --coral-light background (#eeebe7) with a #c96a38 stroke. SVG icons are 22×22px.</td>
         </tr>
         <tr>
           <td>Eyebrow / subheading</td>
@@ -668,19 +682,19 @@ body {
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#fdf2eb; border-bottom: 1px solid #dde8ec;"></div>
+        <div class="swatch-color" style="background:#eeebe7; border-bottom: 1px solid #dde8ec;"></div>
         <div class="swatch-info">
           <span class="swatch-name">Coral Light</span>
           <span class="swatch-var">--coral-light</span>
-          <span class="swatch-hex">#fdf2eb</span>
+          <span class="swatch-hex">#eeebe7</span>
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#fde8da; border-bottom: 1px solid #dde8ec;"></div>
+        <div class="swatch-color" style="background:#cfcfcc; border-bottom: 1px solid #bbb;"></div>
         <div class="swatch-info">
-          <span class="swatch-name">Terra Light</span>
-          <span class="swatch-var">--terra-light</span>
-          <span class="swatch-hex">#fde8da</span>
+          <span class="swatch-name">Stats Bar</span>
+          <span class="swatch-var">hardcoded</span>
+          <span class="swatch-hex">#cfcfcc</span>
         </div>
       </div>
       <div class="swatch">
@@ -900,7 +914,7 @@ body {
         </div>
       </div>
     </div>
-    <p style="margin-top:16px; font-size:0.82rem; color:var(--text-light);">Cards use <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">border-radius: 12px</code>, <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">box-shadow: --shadow-sm</code>, and lift on hover via <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">translateY(-3px)</code>. Icon tile: <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">--terra-light</code> background, <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">#c96a38</code> stroke, 22×22px SVG.</p>
+    <p style="margin-top:16px; font-size:0.82rem; color:var(--text-light);">Cards use <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">border-radius: 12px</code>, <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">box-shadow: --shadow-sm</code>, and lift on hover via <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">translateY(-3px)</code>. Icon tile: <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">--coral-light</code> background (#eeebe7), <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px;">#c96a38</code> stroke, 22×22px SVG.</p>
   </div>
 
   <!-- SECTION BACKGROUNDS -->
@@ -989,22 +1003,24 @@ body {
         </tr>
       </thead>
       <tbody>
-        <tr><td>--teal</td><td>#2F5361</td><td><span class="dot" style="background:#2F5361;"></span></td><td>Headings, nav, outlines, primary brand</td></tr>
+        <tr><td>--teal</td><td>#2F5361</td><td><span class="dot" style="background:#2F5361;"></span></td><td>Headings, nav, outlines, primary brand; stat numbers in stats bar</td></tr>
         <tr><td>--teal-dark</td><td>#1e3a45</td><td><span class="dot" style="background:#1e3a45;"></span></td><td>Hero gradient start, hover states</td></tr>
         <tr><td>--teal-light</td><td>#e4eeeb</td><td><span class="dot" style="background:#e4eeeb;"></span></td><td>Section backgrounds, subnav border, nav active — green-teal tint</td></tr>
         <tr><td>--coral</td><td>#c96a38</td><td><span class="dot" style="background:#c96a38;"></span></td><td>Subheadings, primary buttons, card icon strokes</td></tr>
-        <tr><td>--coral-light</td><td>#fdf2eb</td><td><span class="dot" style="background:#fdf2eb;"></span></td><td>Section backgrounds, warm tint surfaces</td></tr>
-        <tr><td>--terra-light</td><td>#fde8da</td><td><span class="dot" style="background:#fde8da;"></span></td><td>Card icon tile background — all card icons use this</td></tr>
+        <tr><td>--coral-light</td><td>#eeebe7</td><td><span class="dot" style="background:#eeebe7;"></span></td><td>Available for section backgrounds and warm tint surfaces (defined, not currently applied)</td></tr>
         <tr><td>--gold</td><td>#D8AB67</td><td><span class="dot" style="background:#D8AB67;"></span></td><td>Accent buttons, hero highlight text</td></tr>
         <tr><td>--gold-light</td><td>#F2F2F0</td><td><span class="dot" style="background:#F2F2F0;"></span></td><td>Section backgrounds</td></tr>
         <tr><td>--white</td><td>#ffffff</td><td><span class="dot" style="background:#ffffff;"></span></td><td>Card backgrounds, reversed text</td></tr>
-        <tr><td>--cream</td><td>#FAFAF8</td><td><span class="dot" style="background:#FAFAF8;"></span></td><td>Page background, alternating sections</td></tr>
+        <tr><td>--cream</td><td>#FAFAF8</td><td><span class="dot" style="background:#FAFAF8;"></span></td><td>Page background, alternating sections, stats bar inset panel</td></tr>
         <tr><td>--text</td><td>#1A3340</td><td><span class="dot" style="background:#1A3340;"></span></td><td>Strong text, nav links</td></tr>
-        <tr><td>--text-mid</td><td>#4a6b78</td><td><span class="dot" style="background:#4a6b78;"></span></td><td>Body copy, paragraph text</td></tr>
+        <tr><td>--text-mid</td><td>#4a6b78</td><td><span class="dot" style="background:#4a6b78;"></span></td><td>Body copy, paragraph text, stat bar labels</td></tr>
         <tr><td>--text-light</td><td>#7a9bab</td><td><span class="dot" style="background:#7a9bab;"></span></td><td>Captions, metadata, placeholders</td></tr>
         <tr><td>--border</td><td>#dde8ec</td><td><span class="dot" style="background:#dde8ec;"></span></td><td>Card borders, dividers, nav underline</td></tr>
-        <tr><td>--shadow</td><td>0 4px 24px rgba(47,83,97,0.10)</td><td>—</td><td>Card hover shadow, featured cards</td></tr>
-        <tr><td>--shadow-sm</td><td>0 2px 8px rgba(47,83,97,0.08)</td><td>—</td><td>Default card, story card, donate tier base shadow</td></tr>
+        <tr><td>--shadow-sm</td><td>0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.05)</td><td>—</td><td>Default card base shadow</td></tr>
+        <tr><td>--shadow-md</td><td>0 2px 6px rgba(0,0,0,0.06), 0 6px 20px rgba(0,0,0,0.07)</td><td>—</td><td>Story card, donate tier, card hover</td></tr>
+        <tr><td>--shadow-lg</td><td>0 4px 12px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.09)</td><td>—</td><td>Featured cards, lifted hover state</td></tr>
+        <tr><td>--shadow-xl</td><td>0 8px 24px rgba(0,0,0,0.10), 0 24px 56px rgba(0,0,0,0.12)</td><td>—</td><td>Modal-weight elevation, hero card</td></tr>
+        <tr><td>#cfcfcc (hardcoded)</td><td>#cfcfcc</td><td><span class="dot" style="background:#cfcfcc;"></span></td><td>Stats bar outer background — not a CSS variable, applied directly to .stats-bar</td></tr>
       </tbody>
     </table>
   </div>
