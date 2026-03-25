@@ -3643,11 +3643,11 @@ footer {
         </h3>
         <div class="tracker-grid" style="grid-template-columns: repeat(3, 1fr);">
           <div class="tracker-field">
-            <label>Their Contact</label>
+            <label>Contact Name</label>
             <input type="text" id="tr-name" placeholder="e.g. Dr. Sarah Chen" />
           </div>
           <div class="tracker-field">
-            <label>Their Organization</label>
+            <label>Organization</label>
             <input type="text" id="tr-entity" placeholder="e.g. NIH Office of Rare Diseases" />
           </div>
           <div class="tracker-field">
@@ -4379,7 +4379,7 @@ function trackerRender() {
 function trackerExportCSV() {
   const data = trackerLoad();
   if (!data.length) { alert('No entries to export.'); return; }
-  const headers = ['Date','Their Contact','Their Organization','SETD5F Board/Committee Member','Category','Key Takeaway','Follow-up Action','Follow-up Complete','Attachment'];
+  const headers = ['Date','Contact Name','Organization','SETD5F Board/Committee Member','Category','Key Takeaway','Follow-up Action','Follow-up Complete','Attachment'];
   const rows = data.map(e => [
     e.date,
     '"' + (e.name || '').replace(/"/g, '""') + '"',
