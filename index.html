@@ -2270,7 +2270,7 @@ footer {
       <span class="subhead">Our Story</span>
       <h2>How We Got Here</h2>
       <!-- Two-column: text left, cards right -->
-      <div style="display:grid; grid-template-columns:1.4fr 1fr; gap:32px; align-items:center; margin-top:32px;">
+      <div style="display:grid; grid-template-columns:1.4fr 1fr; gap:32px; align-items:center; margin-top:16px;">
         <!-- Left: story text -->
         <div>
           <p>When our children were diagnosed with SETD5 Syndrome, we received a name but little else. There was no patient registry, no foundation, no family community to speak of. Research was scattered, slow, and underfunded.</p>
@@ -2448,16 +2448,7 @@ footer {
       </div>
       <div class="contact-grid">
         <div>
-          <div class="contact-info-item">
-            <div class="contact-icon">
-              <svg width="22" height="22" viewBox="0 0 18 18" fill="none"><rect x="1" y="3" width="16" height="12" rx="2" stroke="#c96a38" stroke-width="1.6"/><path d="M1 6l8 5 8-5" stroke="#c96a38" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </div>
-            <div>
-              <strong style="display:block; color:var(--teal); font-size:0.88rem; margin-bottom:2px;">General Inquiries</strong>
-              <a href="mailto:info@setd5syndrome.org">info@setd5syndrome.org</a>
-            </div>
-          </div>
-          <div style="background:var(--cream); border:1px solid var(--border); border-radius:12px; padding:20px; margin-top:8px;">
+          <div style="background:var(--cream); border:1px solid var(--border); border-radius:12px; padding:20px; margin-top:0;">
             <h3 style="font-size:0.92rem; margin-bottom:8px;">Follow Us</h3>
             <div style="display:flex; gap:10px; flex-wrap:wrap;">
               <span style="font-size:0.8rem; padding:8px 16px; border:1px solid var(--border); border-radius:8px; color:var(--text-light);">Facebook <em style="font-size:0.72rem; margin-left:4px;">Coming Soon</em></span>
@@ -2466,22 +2457,23 @@ footer {
           </div>
         </div>
         <div>
-          <div class="contact-form">
+          <form class="contact-form" action="mailto:info@setd5syndrome.org" method="post" enctype="text/plain">
             <p style="font-weight:700; color:var(--teal); margin-bottom:16px; font-size:0.95rem;">Send Us a Message</p>
-            <input type="text" placeholder="Your Name">
-            <input type="email" placeholder="Your Email">
-            <select>
+            <input type="text" name="name" placeholder="Your Name">
+            <input type="email" name="email" placeholder="Your Email">
+            <select name="category">
               <option value="" disabled selected>What is this about?</option>
-              <option>Newly Diagnosed Family</option>
-              <option>Research Inquiry</option>
-              <option>Donation / Fundraising</option>
-              <option>Volunteer</option>
-              <option>Media / Press</option>
-              <option>Other</option>
+              <option value="newly-diagnosed">Newly Diagnosed Family</option>
+              <option value="family-support">Family Support &amp; Community</option>
+              <option value="research">Research Inquiry</option>
+              <option value="donation">Donation / Fundraising</option>
+              <option value="volunteer">Volunteer</option>
+              <option value="media">Media / Press</option>
+              <option value="other">Other</option>
             </select>
-            <textarea placeholder="Tell us how we can help..."></textarea>
-            <button type="button" class="btn btn-primary" style="width:100%;">Send Message</button>
-          </div>
+            <textarea name="message" placeholder="Tell us how we can help..."></textarea>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
+          </form>
         </div>
       </div>
     </div>
@@ -2937,6 +2929,7 @@ footer {
           <div class="tagline">research · advocacy · community</div>
         </div>
         <p class="tagline-footer" style="margin-top:14px;">A family-led nonprofit dedicated to accelerating research into SETD5 Syndrome and supporting the global community of families it affects.</p>
+        <p style="margin-top:10px; font-size:0.85rem;"><a href="mailto:info@setd5syndrome.org" style="color:rgba(255,255,255,0.7);">info@setd5syndrome.org</a></p>
         <div class="footer-social">
           <div class="social-btn" title="Facebook">f</div>
           <div class="social-btn" title="Instagram">in</div>
