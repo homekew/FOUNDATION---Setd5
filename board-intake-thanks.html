@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Thank You · SETD5 Syndrome Foundation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:       #2F5361;
+      --teal-dark:  #1e3a45;
+      --coral:      #c96a38;
+      --gold:       #D8AB67;
+      --gold-light: #F2F2F0;
+      --white:      #ffffff;
+      --cream:      #F7F3EE;
+      --text:       #1A3340;
+      --text-mid:   #4a6b78;
+      --text-light: #7a9bab;
+      --border:     #dde8ec;
+      --shadow-md:  0 2px 6px rgba(0,0,0,0.06), 0 6px 20px rgba(0,0,0,0.07);
+      --shadow-lg:  0 4px 12px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.09);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    .page-header {
+      background: var(--teal);
+      padding: 28px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, #3d6b7a 100%);
+    }
+    .header-logo {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      margin-bottom: 0;
+    }
+    .header-logo img {
+      height: 44px;
+      width: 44px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: var(--white);
+      padding: 5px;
+    }
+    .header-logo-text .name {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.01em;
+    }
+    .header-logo-text .tagline {
+      display: block;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ---- Main content ---- */
+    .container {
+      max-width: 580px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+      flex: 1;
+    }
+
+    .thank-you-card {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
+      padding: 48px 40px;
+      margin-top: -32px;
+      text-align: center;
+    }
+
+    .check-circle {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .check-circle svg {
+      color: #2e7d32;
+    }
+
+    .thank-you-card h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--teal);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .thank-you-card .lead {
+      font-size: 1.05rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .thank-you-card .sub {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1.5px solid var(--border);
+      margin: 32px 0;
+    }
+
+    .next-steps {
+      text-align: left;
+      background: var(--gold-light);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .next-steps h3 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 14px;
+    }
+    .next-steps ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .next-steps ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+    .next-steps ul li::before {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      background: var(--teal);
+      border-radius: 50%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-size: 12px;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin-top: 1px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 14px 32px;
+      background: var(--teal);
+      color: var(--white);
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: var(--shadow-md);
+    }
+    .btn-primary:hover {
+      background: var(--teal-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 0.88rem;
+      color: var(--text-light);
+      text-decoration: none;
+    }
+    .btn-secondary:hover { color: var(--teal); }
+
+    /* ---- Footer ---- */
+    .page-footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.78rem;
+      color: var(--text-light);
+    }
+
+    @media (max-width: 600px) {
+      .thank-you-card { padding: 32px 20px; }
+      .thank-you-card h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <a class="header-logo" href="/">
+    <img src="Gemini_Generated_Image_2pc65x2pc65x2pc6.png" alt="SETD5 Syndrome Foundation" onerror="this.style.display='none'">
+    <div class="header-logo-text">
+      <span class="name">SETD5 Syndrome Foundation</span>
+      <span class="tagline">research · advocacy · community</span>
+    </div>
+  </a>
+</header>
+
+<div class="container">
+  <div class="thank-you-card">
+
+    <div class="check-circle">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+
+    <h1>You're all set!</h1>
+    <p class="lead">Thank you for submitting your information. We're so glad you're part of the SETD5 Syndrome Foundation board.</p>
+    <p class="sub">Kate will be in touch shortly with next steps. In the meantime, feel free to explore the foundation website.</p>
+
+    <div class="next-steps">
+      <h3>What happens next</h3>
+      <ul>
+        <li>Kate will review your submission and reach out within a few days.</li>
+        <li>Your bio will be lightly edited for consistency and shared with you before publishing.</li>
+        <li>You'll receive your board portal login link once access is set up.</li>
+      </ul>
+    </div>
+
+    <a href="/" class="btn-primary">Visit the Foundation website</a><br>
+    <a href="/board-intake.html" class="btn-secondary">Submit another response</a>
+
+  </div>
+</div>
+
+<footer class="page-footer">
+  &copy; 2025 SETD5 Syndrome Foundation
+</footer>
+
+</body>
+</html>
