@@ -944,7 +944,9 @@ strong { color: var(--text); }
   gap: 14px;
   align-items: center;
   margin-bottom: 20px;
+  padding: 6px 0;
 }
+@media (max-width: 640px) { .contact-info-item { padding: 12px 0; margin-bottom: 4px; } }
 .contact-icon {
   width: 40px; height: 40px;
   border-radius: 10px;
@@ -2653,7 +2655,7 @@ footer {
   <!-- Origin Story -->
   <section class="section section--white">
     <div class="container">
-      <div class="grid-2">
+      <div class="grid-2" style="align-items:start;">
         <div>
           <span class="subhead">Our Story</span>
           <h2>How We Got Here</h2>
@@ -2662,50 +2664,75 @@ footer {
             "We could not wait for someone else to build what our children needed. So we built it ourselves."
           </div>
           <p>A group of parents from the United States, Europe, and Australia came together with a single conviction: that a rare disease this newly understood could move from mystery to treatment faster than anyone thought possible, if families organized, raised money, and partnered directly with science.</p>
-          <p>We hired no executives. We kept our overhead low. We put every dollar toward research and families. And we built the SETD5 Syndrome Foundation.</p>
-          <p>Today, we fund 12 active research projects, support hundreds of families across 18 countries, and have helped produce 24 peer-reviewed publications on SETD5 Syndrome. We are just getting started.</p>
+          <p>We hired no executives. We kept our overhead low. We put every dollar toward research and families. And we built the SETD5 Syndrome Foundation. We are just getting started.</p>
         </div>
-        <div>
-          <span class="subhead">Mission, Vision &amp; Values</span>
-          <h2>What We Stand For</h2>
-          <div style="background:var(--teal); border-radius:12px; padding:28px; margin-top:20px; margin-bottom:20px;">
-            <h3 style="color:var(--white); font-size:0.85rem; text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;">Our Mission</h3>
-            <p style="color:rgba(255,255,255,0.88); font-size:1rem; margin:0;">To accelerate research into SETD5 Syndrome and support the global community of individuals, families, and clinicians affected by this rare genetic condition.</p>
+        <div style="display:flex; flex-direction:column; gap:0; background:var(--cream); border-radius:16px; padding:40px 36px;">
+          <div style="margin-bottom:32px;">
+            <span style="display:block; font-family:'Inter',sans-serif; font-size:3.5rem; font-weight:700; color:var(--teal); line-height:1;">12</span>
+            <span style="display:block; font-size:0.82rem; color:var(--text-light); margin-top:6px; text-transform:uppercase; letter-spacing:.06em; font-weight:500;">Active research projects</span>
           </div>
-          <div style="background:var(--gold-light); border-radius:12px; padding:28px; margin-bottom:20px; border:1px solid #e8d4a8;">
-            <h3 style="color:var(--teal); font-size:0.85rem; text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;">Our Vision</h3>
-            <p style="color:var(--text-mid); font-size:1rem; margin:0;">A world where every person with SETD5 Syndrome has access to effective treatments, early diagnosis, and a thriving community of support.</p>
+          <div style="border-top:1px solid var(--border); padding-top:32px; margin-bottom:32px;">
+            <span style="display:block; font-family:'Inter',sans-serif; font-size:3.5rem; font-weight:700; color:var(--teal); line-height:1;">18</span>
+            <span style="display:block; font-size:0.82rem; color:var(--text-light); margin-top:6px; text-transform:uppercase; letter-spacing:.06em; font-weight:500;">Countries with SETD5 Syndrome families</span>
           </div>
-          <div class="values-grid" style="margin-top:0;">
-            <div class="value-card">
-              <div class="value-icon">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2a9 9 0 100 18A9 9 0 0011 2z" stroke="#c96a38" stroke-width="1.8"/><path d="M8 11h6M11 8v6" stroke="#c96a38" stroke-width="1.8" stroke-linecap="round"/></svg>
-              </div>
-              <h3>Science First</h3>
-              <p>We fund rigorous, peer-reviewed research guided by our Scientific Advisory Board.</p>
-            </div>
-            <div class="value-card">
-              <div class="value-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" stroke="#c96a38" stroke-width="1.8" stroke-linejoin="round"/></svg>
-              </div>
-              <h3>Family-Led</h3>
-              <p>Every decision is made with the lived experience of families at the center.</p>
-            </div>
-            <div class="value-card">
-              <div class="value-icon">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#c96a38" stroke-width="1.8"/><path d="M2 11h18M11 2a15 15 0 000 18M11 2a15 15 0 010 18" stroke="#c96a38" stroke-width="1.8"/></svg>
-              </div>
-              <h3>Global &amp; Inclusive</h3>
-              <p>SETD5 Syndrome affects families everywhere. Our community has no borders.</p>
-            </div>
+          <div style="border-top:1px solid var(--border); padding-top:32px;">
+            <span style="display:block; font-family:'Inter',sans-serif; font-size:3.5rem; font-weight:700; color:var(--teal); line-height:1;">24</span>
+            <span style="display:block; font-size:0.82rem; color:var(--text-light); margin-top:6px; text-transform:uppercase; letter-spacing:.06em; font-weight:500;">Peer-reviewed publications</span>
           </div>
+        </div>
+      </div>
+      <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:48px;">
+        <a href="#" class="btn btn-primary" onclick="showPage('resources')">Find Family Resources</a>
+        <a href="#" class="btn btn-outline" onclick="showPage('research')">Meet Our Research</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission, Vision & Values -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:40px;">
+        <span class="subhead">Mission, Vision &amp; Values</span>
+        <h2>What We Stand For</h2>
+      </div>
+      <div class="grid-2" style="align-items:stretch; gap:24px; margin-bottom:48px;">
+        <div style="background:var(--teal); border-radius:12px; padding:36px;">
+          <h3 style="color:var(--white); font-size:0.82rem; text-transform:uppercase; letter-spacing:.06em; margin-bottom:12px;">Our Mission</h3>
+          <p style="color:rgba(255,255,255,0.88); font-size:1.05rem; margin:0; line-height:1.65;">To accelerate research into SETD5 Syndrome and support the global community of individuals, families, and clinicians affected by this rare genetic condition.</p>
+        </div>
+        <div style="background:var(--gold-light); border-radius:12px; padding:36px; border:1px solid #e8d4a8;">
+          <h3 style="color:var(--teal); font-size:0.82rem; text-transform:uppercase; letter-spacing:.06em; margin-bottom:12px;">Our Vision</h3>
+          <p style="color:var(--text-mid); font-size:1.05rem; margin:0; line-height:1.65;">A world where every person with SETD5 Syndrome has access to effective treatments, early diagnosis, and a thriving community of support.</p>
+        </div>
+      </div>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2a9 9 0 100 18A9 9 0 0011 2z" stroke="#c96a38" stroke-width="1.8"/><path d="M8 11h6M11 8v6" stroke="#c96a38" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Science First</h3>
+          <p>We fund rigorous, peer-reviewed research guided by our Scientific Advisory Board.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" stroke="#c96a38" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Family-Led</h3>
+          <p>Every decision is made with the lived experience of families at the center.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#c96a38" stroke-width="1.8"/><path d="M2 11h18M11 2a15 15 0 000 18M11 2a15 15 0 010 18" stroke="#c96a38" stroke-width="1.8"/></svg>
+          </div>
+          <h3>Global &amp; Inclusive</h3>
+          <p>SETD5 Syndrome affects families everywhere. Our community has no borders.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Leadership -->
-  <section class="section section--cream">
+  <section class="section section--white">
     <div class="container">
       <div class="section-header">
         <span class="subhead">Leadership</span>
@@ -2729,38 +2756,44 @@ footer {
           <div class="team-avatar">SC</div>
           <h3>Samantha Cotter</h3>
           <div class="title">Board Member</div>
-          <div class="bio">(FILLER TEXT) Parent and advocate contributing to the Foundation's growing community and programming efforts.</div>
+          <div class="bio">Parent of a child with SETD5 Syndrome and dedicated community builder. Samantha brings firsthand experience and a deep commitment to ensuring every family touched by this diagnosis feels supported and seen.</div>
         </div>
         <div class="team-card">
           <div class="team-avatar">AM</div>
           <h3>Amelia Marie</h3>
           <div class="title">Board Member</div>
-          <div class="bio">(FILLER TEXT) Parent and advocate contributing to the Foundation's growing community and programming efforts.</div>
+          <div class="bio">Parent and advocate with a background in education and family support. Amelia is passionate about creating accessible resources and strengthening connections within the SETD5 Syndrome community.</div>
         </div>
         <div class="team-card">
           <div class="team-avatar">JM</div>
           <h3>Jesiree Mendez</h3>
           <div class="title">Board Member</div>
-          <div class="bio">(FILLER TEXT) Parent and advocate dedicated to supporting families living with SETD5 Syndrome and building a stronger community around this diagnosis.</div>
+          <div class="bio">Parent of a child with SETD5 Syndrome and passionate family advocate. Jesiree is committed to bridging language and cultural barriers so that families everywhere can access the support and information they deserve.</div>
         </div>
         <div class="team-card">
           <div class="team-avatar">TM</div>
           <h3>Taryn Mildenhall</h3>
           <div class="title">Board Member</div>
-          <div class="bio">(FILLER TEXT) Parent and advocate contributing to the Foundation's growing community and programming efforts.</div>
+          <div class="bio">Parent and community advocate bringing warmth and determination to the Foundation's mission. Taryn is focused on strengthening the support network for families navigating a SETD5 Syndrome diagnosis around the world.</div>
         </div>
         <div class="team-card">
           <div class="team-avatar">MW</div>
           <h3>Mandy Wittenberg</h3>
           <div class="title">Board Member</div>
-          <div class="bio">(FILLER TEXT) Parent and advocate committed to connecting families affected by SETD5 Syndrome and advancing the Foundation's mission.</div>
+          <div class="bio">Parent of a child with SETD5 Syndrome and a passionate connector of people. Mandy believes that no family should face this diagnosis in isolation and is dedicated to building the community and infrastructure to make that a reality.</div>
+        </div>
+        <div class="team-card" style="border:2px dashed var(--border); background:transparent; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+          <div class="team-avatar" style="background:var(--teal-light); color:var(--teal); font-size:1.6rem; font-weight:300;">+</div>
+          <h3 style="color:var(--teal);">Growing Our Board</h3>
+          <div class="title">We Are Recruiting</div>
+          <div class="bio">We are actively seeking board members who bring expertise in law, medicine, communications, or lived experience with SETD5 Syndrome. <a href="mailto:info@setd5syndrome.org" style="color:var(--coral);">Get in touch.</a></div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Working Groups -->
-  <section class="section section--white">
+  <section class="section section--cream">
     <div class="container">
       <div class="section-header">
         <span class="subhead">How We Work</span>
@@ -2863,6 +2896,34 @@ footer {
             <textarea placeholder="Tell us how we can help..."></textarea>
             <button type="button" class="btn btn-primary" style="width:100%;">Send Message</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Where to Next -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Explore More</span>
+        <h2>Where to Next?</h2>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:24px; max-width:720px; margin:0 auto;">
+        <div class="card" style="padding:36px; text-align:center;">
+          <div class="card-icon">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="10" stroke="#c96a38" stroke-width="2"/><path d="M13 8v5l3.5 3.5" stroke="#c96a38" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3 style="margin-bottom:12px;">Learn About SETD5 Syndrome</h3>
+          <p style="color:var(--text-light); font-size:0.95rem; margin-bottom:24px;">Understand the condition and find resources built for families navigating a new diagnosis.</p>
+          <a href="#" class="btn btn-primary" onclick="showPage('condition')">Explore the Condition</a>
+        </div>
+        <div class="card" style="padding:36px; text-align:center;">
+          <div class="card-icon" style="background:var(--teal-light);">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M5 13h16M13 5l8 8-8 8" stroke="#2F5361" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 style="margin-bottom:12px;">Explore Our Research</h3>
+          <p style="color:var(--text-light); font-size:0.95rem; margin-bottom:24px;">See the science driving better outcomes and the researchers we partner with around the world.</p>
+          <a href="#" class="btn btn-outline" onclick="showPage('research')">View Research</a>
         </div>
       </div>
     </div>
