@@ -61,7 +61,7 @@ h2 { margin-bottom: 32px; }
   color: var(--coral);
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   display: block;
   margin-bottom: 20px;
   margin-top: 8px;
@@ -327,7 +327,7 @@ strong { color: var(--text); }
 .hero-eyebrow {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gold);
@@ -1473,7 +1473,7 @@ footer {
 /* ===== BOARD SUB-NAV ===== */
 .board-subnav {
   position: sticky;
-  top: 88px;
+  top: 114px; /* updated by JS on load/resize to match real nav height */
   z-index: 990;
   background: var(--white);
   border-bottom: 2px solid var(--teal-light);
@@ -1587,7 +1587,7 @@ footer {
 
 /* Mobile */
 @media (max-width: 820px) {
-  .board-subnav { top: 64px; }
+  .board-subnav { top: 114px; } /* same — logo keeps nav tall on mobile too */
   .board-subnav-inner {
     flex-direction: column;
     align-items: stretch;
@@ -3738,7 +3738,7 @@ footer {
     // Show/hide board sub-nav
     const bsn = document.getElementById('board-subnav');
     if (bsn) bsn.classList.toggle('visible', id === 'board');
-    if (id === 'board') { boardSearchClear(); boardScrollspySetup(); }
+    if (id === 'board') { boardSyncSubnavTop(); boardSearchClear(); boardScrollspySetup(); }
     else { boardScrollspyTeardown(); }
   }
 
@@ -3805,6 +3805,14 @@ footer {
   // ===== BOARD SUB-NAV =====
   // (BOARD_SECTIONS, _boardObserver, _boardNavScrolling declared above before on-load IIFE)
 
+  // Keep board subnav top = real main-nav height so it never hides under it
+  function boardSyncSubnavTop() {
+    var mainNav = document.getElementById('site-nav');
+    var subNav  = document.getElementById('board-subnav');
+    if (mainNav && subNav) subNav.style.top = mainNav.offsetHeight + 'px';
+  }
+  window.addEventListener('resize', boardSyncSubnavTop);
+
   // Smooth-scroll to a board section, offset for both sticky bars
   function boardNavClick(e, sectionId) {
     e.preventDefault();
@@ -3852,7 +3860,7 @@ footer {
     if (_boardObserver) { _boardObserver.disconnect(); _boardObserver = null; }
   }
 
-  // Search: dim sections that don't contain the query
+  // Search: dim non-matching sections and scroll to the first match
   function boardSearch(val) {
     const clearBtn = document.getElementById('board-search-clear');
     if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
@@ -3862,10 +3870,21 @@ footer {
       sections.forEach(s => s.classList.remove('bsearch-hidden'));
       return;
     }
-    sections.forEach(section => {
-      const text = section.textContent.toLowerCase();
-      section.classList.toggle('bsearch-hidden', !text.includes(q));
+    var firstMatch = null;
+    sections.forEach(function(section) {
+      const matches = section.textContent.toLowerCase().includes(q);
+      section.classList.toggle('bsearch-hidden', !matches);
+      if (matches && !firstMatch) firstMatch = section;
     });
+    // Scroll to first matching section
+    if (firstMatch) {
+      const mainNav = document.getElementById('site-nav');
+      const subNav  = document.getElementById('board-subnav');
+      const offset  = (mainNav ? mainNav.offsetHeight : 114) + (subNav ? subNav.offsetHeight : 54) + 8;
+      const top     = firstMatch.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+      boardSetActive(firstMatch.id);
+    }
   }
 
   function boardSearchClear() {
@@ -3879,6 +3898,7 @@ footer {
     if (hash === 'board') {
       const bsn = document.getElementById('board-subnav');
       if (bsn) bsn.classList.add('visible');
+      boardSyncSubnavTop();
       boardScrollspySetup();
     }
   })();
