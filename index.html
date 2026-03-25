@@ -367,6 +367,14 @@ strong { color: var(--text); }
   padding: 36px;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 1px 6px rgba(0,0,0,0.10);
+  transition: transform 0.22s, box-shadow 0.22s;
+}
+@media (hover: hover) {
+  .hero-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.28), 0 4px 16px rgba(0,0,0,0.16);
+  }
 }
 .hero-card h2, .hero-card h3 { color: var(--white); font-size: 1.1rem; margin-bottom: 20px; }
 .hero-stat-row { display: flex; gap: 20px; margin-bottom: 24px; }
@@ -401,16 +409,26 @@ strong { color: var(--text); }
 .stats-bar {
   background: var(--cream);
   padding: 52px 0;
+  border-top: 1px solid rgba(255,255,255,0.9);
   border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
 }
 .stats-bar-inner {
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
-  gap: 32px;
+  gap: 24px;
 }
-.stat-item { text-align: center; }
+.stat-item {
+  text-align: center;
+  background: var(--white);
+  border-radius: 14px;
+  padding: 24px 36px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+@media (hover: hover) { .stat-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); } }
 .stat-item .num {
   font-family: 'Inter', sans-serif;
   font-size: 1.85rem;
@@ -429,7 +447,7 @@ strong { color: var(--text); }
   margin-top: 4px;
   display: block;
 }
-.stat-divider { width: 1px; height: 50px; background: var(--border); }
+.stat-divider { display: none; }
 
 /* ===== WHAT IS SECTION ===== */
 .what-is-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
@@ -714,9 +732,11 @@ strong { color: var(--text); }
   border-radius: 12px;
   box-shadow: var(--shadow-sm);
   overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+@media (hover: hover) { .project-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); } }
 .project-card-top {
-  background: var(--cream);
+  background: var(--teal-light);
   padding: 20px 24px;
   display: flex;
   justify-content: space-between;
@@ -787,7 +807,17 @@ strong { color: var(--text); }
   border-radius: 12px;
   padding: 32px 24px;
   box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+@media (hover: hover) { .advisor-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); } }
+.stat-tile {
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+@media (hover: hover) { .stat-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); } }
 .advisor-avatar {
   width: 72px; height: 72px;
   border-radius: 50%;
@@ -2257,20 +2287,20 @@ footer {
           <p>Our foundation funds research across the full pipeline: from understanding the basic biology of SETD5, to modeling the condition in animal systems, to developing and testing candidate therapies. We work closely with our Scientific Advisory Board to ensure every funded project is rigorous, collaborative, and moves us closer to helping families.</p>
           <p>We are also committed to family-centered research, which means patients and families have a voice in setting research priorities.</p>
         </div>
-        <div class="grid-2" style="display:grid; gap:16px;">
-          <div style="background:var(--cream); border-radius:12px; padding:24px; text-align:center;">
+        <div class="grid-2" style="gap:16px;">
+          <div class="stat-tile" style="background:var(--cream);">
             <div style="font-size:2rem; font-weight:800; color:var(--teal);">12</div>
             <div style="font-size:0.82rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:.05em;">Active Projects</div>
           </div>
-          <div style="background:var(--gold-light); border-radius:12px; padding:24px; text-align:center;">
+          <div class="stat-tile" style="background:var(--gold-light);">
             <div style="font-size:2rem; font-weight:800; color:var(--teal);">$1.2M+</div>
             <div style="font-size:0.82rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:.05em;">Funded to Date</div>
           </div>
-          <div style="background:#F2F2F0; border-radius:12px; padding:24px; text-align:center;">
+          <div class="stat-tile" style="background:var(--teal-light);">
             <div style="font-size:2rem; font-weight:800; color:var(--teal);">8</div>
             <div style="font-size:0.82rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:.05em;">Institutions</div>
           </div>
-          <div style="background:var(--cream); border-radius:12px; padding:24px; text-align:center;">
+          <div class="stat-tile" style="background:var(--cream);">
             <div style="font-size:2rem; font-weight:800; color:var(--teal);">24</div>
             <div style="font-size:0.82rem; font-weight:600; color:var(--text-light); text-transform:uppercase; letter-spacing:.05em;">Publications</div>
           </div>
@@ -2454,10 +2484,12 @@ footer {
               <div class="institution">UCSF</div>
             </div>
           </div>
-          <div style="background:var(--cream); border:1px solid var(--border); border-radius:12px; padding:24px; margin-top:24px;">
-            <h3 style="font-size:0.98rem; margin-bottom:10px;">Interested in Collaborating?</h3>
-            <p style="font-size:0.88rem;">We welcome inquiries from researchers interested in SETD5 Syndrome. Contact our research team to explore funding and collaboration opportunities.</p>
-            <a href="#" class="btn btn-outline mt-16" style="font-size:0.85rem; padding:10px 20px;" onclick="showPage('who')">Get in Touch</a>
+          <div class="card" style="margin-top:24px;">
+            <div class="card-body">
+              <h3 style="font-size:0.98rem; margin-bottom:10px;">Interested in Collaborating?</h3>
+              <p style="font-size:0.88rem;">We welcome inquiries from researchers interested in SETD5 Syndrome. Contact our research team to explore funding and collaboration opportunities.</p>
+              <a href="#" class="btn btn-outline" style="font-size:0.85rem; padding:10px 20px; margin-top:16px; display:inline-block;" onclick="showPage('who')">Get in Touch</a>
+            </div>
           </div>
         </div>
       </div>
@@ -2469,6 +2501,34 @@ footer {
       <h2>Fund the Next Breakthrough</h2>
       <p>Our next round of research grants opens soon. Your gift today helps us say "yes" to the science that matters most.</p>
       <a href="#" class="btn btn-secondary btn-lg" onclick="showPage('donate')">Donate to Research</a>
+    </div>
+  </section>
+
+  <!-- Where to Next -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Explore More</span>
+        <h2>Where to Next?</h2>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:24px; max-width:720px; margin:0 auto;">
+        <div class="card" style="padding:36px; text-align:center;">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="10" stroke="#c96a38" stroke-width="2"/><path d="M9 13l2.5 2.5L17 10" stroke="#c96a38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 style="margin-bottom:12px;">Understand the Condition</h3>
+          <p style="color:var(--text-light); font-size:0.95rem; margin-bottom:24px;">Learn what SETD5 Syndrome is, how it is diagnosed, and what it means for families.</p>
+          <a href="#" class="btn btn-primary" onclick="showPage('about')">Explore the Condition</a>
+        </div>
+        <div class="card" style="padding:36px; text-align:center;">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 26 26" fill="none"><path d="M13 3l2 6h6l-5 4 2 6-5-3.5L8 19l2-6-5-4h6l2-6z" stroke="#c96a38" stroke-width="2" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 style="margin-bottom:12px;">Support the Science</h3>
+          <p style="color:var(--text-light); font-size:0.95rem; margin-bottom:24px;">Every dollar we raise goes directly toward the projects you just read about.</p>
+          <a href="#" class="btn btn-outline" onclick="showPage('donate')">Donate to Research</a>
+        </div>
+      </div>
     </div>
   </section>
 
