@@ -1479,6 +1479,53 @@ footer {
 .btn-icon.danger:hover { background: #fdf0ef; color: var(--coral); }
 .btn-icon.done-btn.active { color: #2a8a2a; }
 
+/* Attachment upload zone */
+.tracker-attachment-zone {
+  position: relative;
+  border: 2px dashed #d0e0e8;
+  border-radius: 8px;
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.tracker-attachment-zone:hover { border-color: var(--teal); background: var(--teal-light); color: var(--teal); }
+.tracker-attachment-zone input[type="file"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.tracker-attachment-chosen {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  background: var(--terra-light);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--coral);
+  font-weight: 500;
+}
+.tracker-attachment-chosen-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tracker-attachment-clear {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-light); font-size: 1rem; line-height: 1; padding: 0 2px; flex-shrink: 0;
+}
+.tracker-attachment-clear:hover { color: var(--coral); }
+/* Attachment chip on logged entries */
+.tracker-attachment-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 8px;
+  padding: 4px 10px;
+  background: var(--terra-light);
+  border-radius: 20px;
+  font-size: 0.78rem;
+}
+.tracker-attachment-chip a {
+  color: var(--coral); text-decoration: none; font-weight: 600;
+}
+.tracker-attachment-chip a:hover { text-decoration: underline; }
+
 /* ===== BOARD SUB-NAV ===== */
 .board-subnav {
   position: sticky;
@@ -3624,10 +3671,25 @@ footer {
             <input type="text" id="tr-followup" placeholder="e.g. Send MOU draft by April 1" />
           </div>
         </div>
-        <div class="tracker-grid full" style="margin-bottom:20px;">
+        <div class="tracker-grid full" style="margin-bottom:0;">
           <div class="tracker-field">
             <label>Key Takeaway</label>
             <textarea id="tr-takeaway" placeholder="What was the main outcome or insight from this conversation?"></textarea>
+          </div>
+        </div>
+        <div class="tracker-grid full" style="margin-bottom:20px;">
+          <div class="tracker-field">
+            <label>Attachment <span style="font-weight:400;color:var(--text-light);">(optional — PDF, Word, image)</span></label>
+            <div class="tracker-attachment-zone" id="tr-attachment-zone">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#7a9bab" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Choose a file or drag it here</span>
+              <input type="file" id="tr-attachment" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.txt" onchange="trackerFileChosen(this)">
+            </div>
+            <div class="tracker-attachment-chosen" id="tr-attachment-chosen" style="display:none;">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#d4845a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="tracker-attachment-chosen-name" id="tr-attachment-chosen-name"></span>
+              <button type="button" class="tracker-attachment-clear" onclick="trackerFileClear()" title="Remove attachment">✕</button>
+            </div>
           </div>
         </div>
         <div class="tracker-actions">
@@ -4155,6 +4217,22 @@ function trackerSave(data) {
   localStorage.setItem(TRACKER_KEY, JSON.stringify(data));
 }
 
+function trackerFileChosen(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('tr-attachment-zone').style.display = 'none';
+  document.getElementById('tr-attachment-chosen').style.display = 'flex';
+  document.getElementById('tr-attachment-chosen-name').textContent = file.name;
+}
+
+function trackerFileClear() {
+  const input = document.getElementById('tr-attachment');
+  if (input) input.value = '';
+  document.getElementById('tr-attachment-zone').style.display = 'flex';
+  document.getElementById('tr-attachment-chosen').style.display = 'none';
+  document.getElementById('tr-attachment-chosen-name').textContent = '';
+}
+
 function trackerAdd() {
   const name     = document.getElementById('tr-name').value.trim();
   const entity   = document.getElementById('tr-entity').value.trim();
@@ -4163,6 +4241,8 @@ function trackerAdd() {
   const takeaway = document.getElementById('tr-takeaway').value.trim();
   const followup = document.getElementById('tr-followup').value.trim();
   const msg      = document.getElementById('tr-msg');
+  const fileInput = document.getElementById('tr-attachment');
+  const file      = fileInput?.files[0];
 
   if (!entity || !date || !category || !takeaway) {
     msg.textContent = 'Please fill in Organization, Date, Category, and Key Takeaway.';
@@ -4171,14 +4251,33 @@ function trackerAdd() {
     return;
   }
 
-  const data = trackerLoad();
-  data.unshift({ id: Date.now(), name, entity, date, category, takeaway, followup, done: false });
-  trackerSave(data);
+  function saveEntry(attachment) {
+    const data = trackerLoad();
+    data.unshift({ id: Date.now(), name, entity, date, category, takeaway, followup, attachment: attachment || null, done: false });
+    trackerSave(data);
+    ['tr-name','tr-entity','tr-date','tr-takeaway','tr-followup'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('tr-category').value = '';
+    trackerFileClear();
+    trackerRender();
+  }
 
-  // Reset form
-  ['tr-name','tr-entity','tr-date','tr-takeaway','tr-followup'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('tr-category').value = '';
-  trackerRender();
+  if (file) {
+    // Warn if file is very large (localStorage limit is ~5MB per origin)
+    if (file.size > 4 * 1024 * 1024) {
+      msg.textContent = 'File is too large (max 4 MB). Please use a smaller file.';
+      msg.style.display = 'inline';
+      setTimeout(() => msg.style.display = 'none', 4000);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      saveEntry({ name: file.name, data: e.target.result, type: file.type });
+    };
+    reader.onerror = function() { saveEntry(null); };
+    reader.readAsDataURL(file);
+  } else {
+    saveEntry(null);
+  }
 }
 
 function trackerToggleDone(id) {
@@ -4235,6 +4334,13 @@ function trackerRender() {
       ? `<div class="tracker-followup ${e.done ? '' : 'has-action'}">${followupIcon} ${e.done ? '<s>' + e.followup + '</s>' : e.followup}</div>`
       : `<div class="tracker-followup">No follow-up action noted.</div>`;
 
+    const attachmentHTML = e.attachment
+      ? `<div class="tracker-attachment-chip">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#d4845a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="${e.attachment.data}" download="${e.attachment.name}">${e.attachment.name}</a>
+        </div>`
+      : '';
+
     return `<div class="tracker-entry ${e.done ? 'done' : ''}">
       <div class="tracker-entry-main">
         <div class="tracker-entry-top">
@@ -4244,6 +4350,7 @@ function trackerRender() {
         </div>
         <div class="tracker-takeaway">${e.takeaway}</div>
         ${followupText}
+        ${attachmentHTML}
       </div>
       <div class="tracker-entry-controls">
         <button class="btn-icon done-btn ${e.done ? 'active' : ''}" title="${e.done ? 'Mark follow-up open' : 'Mark follow-up complete'}" onclick="trackerToggleDone(${e.id})">
@@ -4260,7 +4367,7 @@ function trackerRender() {
 function trackerExportCSV() {
   const data = trackerLoad();
   if (!data.length) { alert('No entries to export.'); return; }
-  const headers = ['Date','Contact Name','Organization','Category','Key Takeaway','Follow-up Action','Follow-up Complete'];
+  const headers = ['Date','Contact Name','Organization','Category','Key Takeaway','Follow-up Action','Follow-up Complete','Attachment'];
   const rows = data.map(e => [
     e.date,
     '"' + (e.name || '').replace(/"/g, '""') + '"',
@@ -4268,7 +4375,8 @@ function trackerExportCSV() {
     categoryLabels[e.category] || e.category,
     '"' + (e.takeaway || '').replace(/"/g, '""') + '"',
     '"' + (e.followup || '').replace(/"/g, '""') + '"',
-    e.done ? 'Yes' : 'No'
+    e.done ? 'Yes' : 'No',
+    e.attachment ? e.attachment.name : ''
   ].join(','));
   const csv = [headers.join(','), ...rows].join('\n');
   const a = document.createElement('a');
