@@ -407,47 +407,46 @@ strong { color: var(--text); }
 
 /* ===== IMPACT STATS BAR ===== */
 .stats-bar {
-  background: var(--cream);
-  padding: 52px 0;
-  border-top: 1px solid rgba(255,255,255,0.9);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  background: var(--teal);
+  padding: 48px 0;
 }
 .stats-bar-inner {
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 0;
 }
 .stat-item {
   text-align: center;
-  background: var(--white);
-  border-radius: 14px;
-  padding: 24px 36px;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 12px 40px;
+  flex: 1;
+  min-width: 140px;
 }
-@media (hover: hover) { .stat-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); } }
 .stat-item .num {
   font-family: 'Inter', sans-serif;
-  font-size: 1.85rem;
+  font-size: 2rem;
   font-weight: 600;
-  color: var(--teal);
+  color: var(--white);
   line-height: 1;
   display: block;
 }
 .stat-item .lbl {
   font-family: 'Inter', sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 500;
-  color: var(--text-light);
+  color: rgba(255,255,255,0.65);
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  margin-top: 4px;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
   display: block;
 }
-.stat-divider { display: none; }
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+  flex-shrink: 0;
+}
 
 /* ===== WHAT IS SECTION ===== */
 .what-is-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
