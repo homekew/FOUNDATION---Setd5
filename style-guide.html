@@ -5,13 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Visual style guide for the SETD5 Syndrome Foundation: colors, typography, components, and brand standards.">
 <title>SETD5 Syndrome Foundation — Style Guide</title>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Open+Sans+Condensed:wght@300;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --teal:       #2F5361;
   --teal-dark:  #1e3a45;
-  --teal-light: #e4eeeb;
+  --teal-light: #d5ddde;
   --coral:      #c96a38;
   --coral-light:#eeebe7;
   --gold:       #D8AB67;
@@ -24,7 +26,7 @@
   --border:     #dde8ec;
 }
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   background: #f4f7f9;
   color: var(--text);
   font-size: 16px;
@@ -83,7 +85,7 @@ body {
   border: 1px solid var(--border);
 }
 .sg-section-title {
-  font-family: 'Open Sans Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -170,7 +172,7 @@ body {
   display: inline-block;
   padding: 13px 28px;
   border-radius: 6px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
@@ -250,7 +252,7 @@ body {
 
 /* Subhead specimen */
 .subhead {
-  font-family: 'Open Sans Condensed', 'Open Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   color: var(--coral);
   letter-spacing: 0.04em;
@@ -344,7 +346,7 @@ body {
 <div class="sg-header">
   <h1>SETD5 Syndrome Foundation</h1>
   <p>Visual Style Guide — Brand tokens, typography, components, and usage guidelines</p>
-  <span class="version">Version 1.2 &nbsp;·&nbsp; March 2026</span>
+  <span class="version">Version 1.3 &nbsp;·&nbsp; March 2026</span>
 </div>
 
 <nav class="sg-nav">
@@ -385,7 +387,7 @@ body {
         <tr>
           <td>Nav background</td>
           <td>#site-nav { background }</td>
-          <td>The background color of the entire nav bar. Currently #fbf9f6 (warm off-white).</td>
+          <td>The background of the entire nav bar. Base color is #fbf9f6 (warm off-white), overlaid with a very subtle radial-gradient color wash using teal, gold, and coral at very low opacity (0.02–0.05). Purely decorative — invisible unless looking closely.</td>
         </tr>
         <tr>
           <td>Nav bottom border</td>
@@ -405,7 +407,7 @@ body {
         <tr>
           <td>Foundation name</td>
           <td>.nav-logo-text .name</td>
-          <td>"SETD5 Syndrome Foundation" — the large text next to the logo. Currently 2rem, weight 700, teal color.</td>
+          <td>"SETD5 Syndrome Foundation" — the large text next to the logo. Source Serif 4, 1.65rem, weight 600, teal color. Shrinks at ≤1100px (1.5rem), ≤980px (1.25rem), and ≤820px (1.1rem).</td>
         </tr>
         <tr>
           <td>Nav tagline</td>
@@ -415,7 +417,7 @@ body {
         <tr>
           <td>Nav links</td>
           <td>.nav-links a</td>
-          <td>The clickable page links in the nav bar (About, Research, Resources, Donate). Currently 1rem, weight 600.</td>
+          <td>The clickable page links in the nav bar (About, Research, Resources, Donate). Currently 0.93rem, weight 400. Dropdown sub-links match this weight.</td>
         </tr>
         <tr>
           <td>Donate button (nav)</td>
@@ -437,7 +439,7 @@ body {
         <tr>
           <td>Container</td>
           <td>.container</td>
-          <td>The invisible box that keeps content centered and limits it to 1200px wide with 24px padding on each side. All body content sits inside this.</td>
+          <td>The invisible box that keeps content centered and limits it to 1200px wide with 24px padding on each side. On mobile (&lt;640px) padding reduces to 16px; the nav container specifically uses 6px on mobile to keep the logo flush to the left edge.</td>
         </tr>
         <tr>
           <td>Narrow container</td>
@@ -590,17 +592,22 @@ body {
         <tr>
           <td>Board grid</td>
           <td>.board-grid</td>
-          <td>The 3-column grid showing the 5 board members with their photo, name, title, and bio.</td>
+          <td>The 3-column grid showing 7 board members with their photo, name, role, and preview text. Members: Laura Biazon, Kate Carr, Samantha Cotter, Amy Kreller-Kochis, Jesiree Mendez, Taryn Mildenhall, Mandy Wittenberg.</td>
         </tr>
         <tr>
           <td>Board member card</td>
           <td>.board-card</td>
-          <td>An individual board member's card inside the board grid.</td>
+          <td>An individual board member's card inside the board grid. Clicking opens a full bio modal. Cards without a completed bio show "Bio coming soon" in italicized teal and have no click behavior.</td>
+        </tr>
+        <tr>
+          <td>Board photo wrap</td>
+          <td>.board-photo-wrap</td>
+          <td>The circular photo container on each board card. 130×130px, border-radius: 50%. Falls back to initials (.board-initials) if no photo is present.</td>
         </tr>
         <tr>
           <td>Board member photo</td>
           <td>.board-photo</td>
-          <td>The circular headshot image on a board member card.</td>
+          <td>The headshot image inside .board-photo-wrap. Uses object-fit: cover; object-position: center top.</td>
         </tr>
         <tr>
           <td>Board member name</td>
@@ -608,14 +615,24 @@ body {
           <td>The name heading on a board member card.</td>
         </tr>
         <tr>
-          <td>Board member title</td>
-          <td>.board-title</td>
-          <td>The role/title line beneath the name on a board member card (e.g. "Founder & Executive Director").</td>
+          <td>Board member role</td>
+          <td>.board-role</td>
+          <td>The role/title line beneath the name on a board member card (e.g. "Founder &amp; Board Member", "Board Member").</td>
+        </tr>
+        <tr>
+          <td>Board preview text</td>
+          <td>.board-preview</td>
+          <td>A 1–2 sentence summary beneath the role label on each board card, leading with the member's professional identity and contribution to the mission.</td>
+        </tr>
+        <tr>
+          <td>Bio modal</td>
+          <td>#bio-modal / .bio-modal-inner</td>
+          <td>The full-screen overlay that appears when a board card is clicked, showing the member's complete bio and photo.</td>
         </tr>
         <tr>
           <td>Working group section</td>
-          <td>.working-groups (section)</td>
-          <td>The section listing the foundation's working groups with their focus areas.</td>
+          <td>(section, no unique class)</td>
+          <td>The section listing the foundation's five working groups. Appears after the Board of Directors section on the About the Foundation page.</td>
         </tr>
 
         <tr class="elem-group-row"><td colspan="3">Footer</td></tr>
@@ -666,11 +683,11 @@ body {
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#e4eeeb; border-bottom: 1px solid #dde8ec;"></div>
+        <div class="swatch-color" style="background:#d5ddde; border-bottom: 1px solid #dde8ec;"></div>
         <div class="swatch-info">
           <span class="swatch-name">Teal Light</span>
           <span class="swatch-var">--teal-light</span>
-          <span class="swatch-hex">#e4eeeb</span>
+          <span class="swatch-hex">#d5ddde</span>
         </div>
       </div>
       <div class="swatch">
@@ -767,36 +784,36 @@ body {
 
     <div class="type-specimen">
       <div>
-        <h1 style="font-size:3rem; color:var(--teal); font-weight:700; line-height:1.2;">Heading 1</h1>
+        <h1 style="font-family:'Source Serif 4',serif; font-size:3rem; color:var(--teal); font-weight:600; line-height:1.2;">Heading 1</h1>
       </div>
       <div class="type-meta">
-        <span class="label">Open Sans Bold</span>
+        <span class="label">Source Serif 4</span>
         <span class="label">3rem / 48px</span>
-        <span class="label">weight: 700</span>
+        <span class="label">weight: 600</span>
         <span class="label">color: --teal</span>
       </div>
     </div>
 
     <div class="type-specimen">
       <div>
-        <h2 style="font-size:2rem; color:var(--teal); font-weight:700; line-height:1.25;">Heading 2</h2>
+        <h2 style="font-family:'Source Serif 4',serif; font-size:2rem; color:var(--teal); font-weight:600; line-height:1.25;">Heading 2</h2>
       </div>
       <div class="type-meta">
-        <span class="label">Open Sans Bold</span>
+        <span class="label">Source Serif 4</span>
         <span class="label">2rem / 32px</span>
-        <span class="label">weight: 700</span>
+        <span class="label">weight: 600</span>
         <span class="label">color: --teal</span>
       </div>
     </div>
 
     <div class="type-specimen">
       <div>
-        <h3 style="font-size:1.25rem; color:var(--teal); font-weight:700;">Heading 3</h3>
+        <h3 style="font-family:'Source Serif 4',serif; font-size:1.25rem; color:var(--teal); font-weight:600;">Heading 3</h3>
       </div>
       <div class="type-meta">
-        <span class="label">Open Sans Bold</span>
+        <span class="label">Source Serif 4</span>
         <span class="label">1.25rem / 20px</span>
-        <span class="label">weight: 700</span>
+        <span class="label">weight: 600</span>
         <span class="label">color: --teal</span>
       </div>
     </div>
@@ -806,7 +823,7 @@ body {
         <span class="subhead">Subheading / Eyebrow Label</span>
       </div>
       <div class="type-meta">
-        <span class="label">Open Sans Condensed</span>
+        <span class="label">Inter</span>
         <span class="label">0.85rem / 13.6px</span>
         <span class="label">weight: 700</span>
         <span class="label">UPPERCASE</span>
@@ -819,10 +836,10 @@ body {
         <p style="margin:0; color:var(--text-mid);">Body text. The SETD5 gene plays a critical role in brain development, and every person with SETD5 Syndrome is unique.</p>
       </div>
       <div class="type-meta">
-        <span class="label">Open Sans Regular</span>
+        <span class="label">Inter Regular</span>
         <span class="label">1rem / 16px</span>
         <span class="label">weight: 400</span>
-        <span class="label">line-height: 1.7</span>
+        <span class="label">line-height: 1.62</span>
         <span class="label">color: --text-mid</span>
       </div>
     </div>
@@ -832,7 +849,7 @@ body {
         <p style="margin:0; font-size:0.88rem; color:var(--text-light);">Small / caption text. Supporting details and metadata.</p>
       </div>
       <div class="type-meta">
-        <span class="label">Open Sans Regular</span>
+        <span class="label">Inter Regular</span>
         <span class="label">0.88rem / 14px</span>
         <span class="label">color: --text-light</span>
       </div>
@@ -840,10 +857,10 @@ body {
 
     <div class="type-specimen">
       <div>
-        <blockquote style="font-size:1.1rem; color:var(--text-mid); font-style:italic; border-left:3px solid var(--coral); padding-left:16px;">"Every dollar raised is a message to our kids: we see you, we believe in you."</blockquote>
+        <blockquote style="font-family:'Source Serif 4',serif; font-size:1.1rem; color:var(--text-mid); font-style:italic; border-left:3px solid var(--coral); padding-left:16px;">"Every dollar raised is a message to our kids: we see you, we believe in you."</blockquote>
       </div>
       <div class="type-meta">
-        <span class="label">Open Sans Italic</span>
+        <span class="label">Source Serif 4 Italic</span>
         <span class="label">1.1rem</span>
         <span class="label">border: --coral</span>
       </div>
@@ -855,7 +872,7 @@ body {
     <p class="sg-section-title">Components</p>
     <h2>Buttons</h2>
 
-    <p style="font-size:0.88rem; color:var(--text-light); margin-bottom:20px;">All buttons use <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px; font-size:0.82rem;">border-radius: 6px</code>, <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px; font-size:0.82rem;">font-weight: 700</code>, and a 2px border for consistent shape across variants.</p>
+    <p style="font-size:0.88rem; color:var(--text-light); margin-bottom:20px;">All buttons use <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px; font-size:0.82rem;">border-radius: 6px</code>, <code style="background:var(--teal-light); padding:2px 6px; border-radius:4px; font-size:0.82rem;">font-weight: 600</code> (Inter), and a 2px border for consistent shape across variants.</p>
 
     <div class="btn-row">
       <a href="#" class="btn btn-primary">Donate Now</a>
@@ -931,7 +948,7 @@ body {
         <div class="bg-name">Cream</div>
         <div class="bg-class">.section--cream</div>
       </div>
-      <div class="bg-demo" style="background:#e4eeeb;">
+      <div class="bg-demo" style="background:#d5ddde;">
         <div class="bg-name">Teal Light</div>
         <div class="bg-class">.section--teal-light</div>
       </div>
@@ -986,7 +1003,8 @@ body {
         <span class="spacing-value">section header margin</span>
       </div>
     </div>
-    <p style="margin-top:16px; font-size:0.82rem; color:var(--text-light);">Max content width: <strong style="color:var(--text);">1100px</strong> (.container) &nbsp;·&nbsp; Narrow content width: <strong style="color:var(--text);">780px</strong> (.container--narrow)</p>
+    <p style="margin-top:16px; font-size:0.82rem; color:var(--text-light);">Max content width: <strong style="color:var(--text);">1200px</strong> (.container) &nbsp;·&nbsp; Narrow content width: <strong style="color:var(--text);">780px</strong> (.container--narrow)</p>
+    <p style="margin-top:12px; font-size:0.82rem; color:var(--text-light);"><strong style="color:var(--text);">Responsive breakpoints:</strong> &nbsp;≤1100px — nav text shrinks, inner gap reduces. &nbsp;≤980px — nav compresses further (smaller font, tighter gaps, slimmer Donate button). &nbsp;≤820px — nav collapses to hamburger menu. &nbsp;≤640px — single-column grid, container padding 16px, nav container 6px.</p>
   </div>
 
   <!-- TOKEN REFERENCE -->
@@ -1005,7 +1023,7 @@ body {
       <tbody>
         <tr><td>--teal</td><td>#2F5361</td><td><span class="dot" style="background:#2F5361;"></span></td><td>Headings, nav, outlines, primary brand; stat numbers in stats bar</td></tr>
         <tr><td>--teal-dark</td><td>#1e3a45</td><td><span class="dot" style="background:#1e3a45;"></span></td><td>Hero gradient start, hover states</td></tr>
-        <tr><td>--teal-light</td><td>#e4eeeb</td><td><span class="dot" style="background:#e4eeeb;"></span></td><td>Section backgrounds, subnav border, nav active — green-teal tint</td></tr>
+        <tr><td>--teal-light</td><td>#d5ddde</td><td><span class="dot" style="background:#d5ddde;"></span></td><td>Section backgrounds, subnav border, nav active — green-teal tint</td></tr>
         <tr><td>--coral</td><td>#c96a38</td><td><span class="dot" style="background:#c96a38;"></span></td><td>Subheadings, primary buttons, card icon strokes</td></tr>
         <tr><td>--coral-light</td><td>#eeebe7</td><td><span class="dot" style="background:#eeebe7;"></span></td><td>Available for section backgrounds and warm tint surfaces (defined, not currently applied)</td></tr>
         <tr><td>--gold</td><td>#D8AB67</td><td><span class="dot" style="background:#D8AB67;"></span></td><td>Accent buttons, hero highlight text</td></tr>
