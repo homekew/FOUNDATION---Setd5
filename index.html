@@ -166,8 +166,12 @@ strong { color: var(--text); }
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: #fbf9f6;
-  border-bottom: 2px solid var(--teal-light);
+  background-color: #fbf9f6;
+  background-image:
+    radial-gradient(ellipse 50% 280% at -2% 50%, rgba(47,83,97,0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 300% at 28% 65%, rgba(216,171,103,0.08) 0%, transparent 60%);
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(to right, rgba(47,83,97,0.35), rgba(216,171,103,0.30), rgba(201,106,56,0.20), transparent) 1;
   box-shadow: 0 2px 12px rgba(47,83,97,0.08);
 }
 .nav-inner {
