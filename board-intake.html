@@ -27,348 +27,60 @@
       --shadow-md:  0 2px 6px rgba(0,0,0,0.06), 0 6px 20px rgba(0,0,0,0.07);
       --shadow-lg:  0 4px 12px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.09);
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--cream);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    /* ---- Header ---- */
-    .page-header {
-      background: var(--teal);
-      padding: 28px 24px 60px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .page-header::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, #3d6b7a 100%);
-    }
-    .header-logo {
-      position: relative;
-      z-index: 1;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      margin-bottom: 28px;
-    }
-    .header-logo img {
-      height: 44px;
-      width: 44px;
-      object-fit: contain;
-      border-radius: 8px;
-      background: var(--white);
-      padding: 5px;
-    }
-    .header-logo-text .name {
-      display: block;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: 0.01em;
-    }
-    .header-logo-text .tagline {
-      display: block;
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.65);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-    .header-content {
-      position: relative;
-      z-index: 1;
-    }
-    .header-eyebrow {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 12px;
-    }
-    .page-header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      color: var(--white);
-      line-height: 1.2;
-      margin-bottom: 12px;
-    }
-    .page-header p {
-      color: rgba(255,255,255,0.8);
-      font-size: 1rem;
-      max-width: 520px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    /* ---- Card container ---- */
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 20px 60px;
-    }
-    .form-card {
-      background: var(--white);
-      border-radius: 20px;
-      box-shadow: var(--shadow-lg);
-      padding: 40px;
-      margin-top: -32px;
-      position: relative;
-    }
-
-    /* ---- Form fields ---- */
-    .field-group {
-      margin-bottom: 28px;
-    }
-    .field-group:last-of-type {
-      margin-bottom: 0;
-    }
-    label {
-      display: block;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 8px;
-      letter-spacing: 0.01em;
-    }
-    label .required {
-      color: var(--coral);
-      margin-left: 2px;
-    }
-    label .optional {
-      font-weight: 400;
-      color: var(--text-light);
-      font-size: 0.8rem;
-      margin-left: 4px;
-    }
-    input[type="text"],
-    input[type="email"],
-    textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.95rem;
-      color: var(--text);
-      background: var(--gold-light);
-      transition: border-color 0.2s, box-shadow 0.2s;
-      outline: none;
-    }
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    textarea:focus {
-      border-color: var(--teal);
-      box-shadow: 0 0 0 3px rgba(47,83,97,0.1);
-      background: var(--white);
-    }
-    textarea {
-      resize: vertical;
-      min-height: 140px;
-      line-height: 1.6;
-    }
-    .field-hint {
-      margin-top: 6px;
-      font-size: 0.82rem;
-      color: var(--text-light);
-      line-height: 1.5;
-    }
-
-    /* ---- Bio guidance box ---- */
-    .bio-guidance {
-      background: var(--cream);
-      border-left: 3px solid var(--gold);
-      border-radius: 0 10px 10px 0;
-      padding: 16px 18px;
-      margin-bottom: 12px;
-    }
-    .bio-guidance p {
-      font-size: 0.84rem;
-      color: var(--text-mid);
-      line-height: 1.6;
-      margin-bottom: 8px;
-    }
+    body { font-family: 'Poppins', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    .page-header { background: var(--teal); padding: 28px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .page-header::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, #3d6b7a 100%); }
+    .header-logo { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 12px; text-decoration: none; margin-bottom: 28px; }
+    .header-logo img { height: 44px; width: 44px; object-fit: contain; border-radius: 8px; background: var(--white); padding: 5px; }
+    .header-logo-text .name { display: block; font-size: 1rem; font-weight: 700; color: var(--white); letter-spacing: 0.01em; }
+    .header-logo-text .tagline { display: block; font-size: 0.72rem; color: rgba(255,255,255,0.65); letter-spacing: 0.06em; text-transform: uppercase; }
+    .header-content { position: relative; z-index: 1; }
+    .header-eyebrow { display: inline-block; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--white); line-height: 1.2; margin-bottom: 12px; }
+    .page-header p { color: rgba(255,255,255,0.8); font-size: 1rem; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+    .container { max-width: 680px; margin: 0 auto; padding: 0 20px 60px; }
+    .form-card { background: var(--white); border-radius: 20px; box-shadow: var(--shadow-lg); padding: 40px; margin-top: -32px; position: relative; }
+    .field-group { margin-bottom: 28px; }
+    .field-group:last-of-type { margin-bottom: 0; }
+    label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 8px; letter-spacing: 0.01em; }
+    label .required { color: var(--coral); margin-left: 2px; }
+    label .optional { font-weight: 400; color: var(--text-light); font-size: 0.8rem; margin-left: 4px; }
+    input[type="text"], input[type="email"], textarea { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.95rem; color: var(--text); background: var(--gold-light); transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
+    input[type="text"]:focus, input[type="email"]:focus, textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(47,83,97,0.1); background: var(--white); }
+    textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
+    .field-hint { margin-top: 6px; font-size: 0.82rem; color: var(--text-light); line-height: 1.5; }
+    .bio-guidance { background: var(--cream); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; padding: 16px 18px; margin-bottom: 12px; }
+    .bio-guidance p { font-size: 0.84rem; color: var(--text-mid); line-height: 1.6; margin-bottom: 8px; }
     .bio-guidance p:last-child { margin-bottom: 0; }
-    .bio-guidance strong {
-      color: var(--teal);
-      font-weight: 600;
-    }
-    .bio-guidance ul {
-      padding-left: 18px;
-      margin-top: 6px;
-    }
-    .bio-guidance ul li {
-      font-size: 0.84rem;
-      color: var(--text-mid);
-      line-height: 1.7;
-    }
-
-    /* ---- Photo upload ---- */
-    .photo-upload-area {
-      border: 2px dashed var(--border);
-      border-radius: 12px;
-      padding: 28px 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      background: var(--gold-light);
-      position: relative;
-    }
-    .photo-upload-area:hover {
-      border-color: var(--teal);
-      background: #eef3f5;
-    }
-    .photo-upload-area input[type="file"] {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
-    }
-    .upload-icon {
-      width: 40px;
-      height: 40px;
-      margin: 0 auto 10px;
-      color: var(--teal-light);
-    }
-    .photo-upload-area .upload-label {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--teal);
-      display: block;
-      margin-bottom: 4px;
-    }
-    .photo-upload-area .upload-sub {
-      font-size: 0.8rem;
-      color: var(--text-light);
-    }
-    .photo-preview {
-      display: none;
-      margin-top: 14px;
-      align-items: center;
-      gap: 12px;
-      background: var(--cream);
-      border-radius: 10px;
-      padding: 10px 14px;
-    }
-    .photo-preview img {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--border);
-    }
-    .photo-preview .preview-info {
-      flex: 1;
-      text-align: left;
-    }
-    .photo-preview .preview-name {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .photo-preview .preview-size {
-      font-size: 0.78rem;
-      color: var(--text-light);
-    }
-    .photo-preview .remove-photo {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-light);
-      font-size: 1.1rem;
-      padding: 4px;
-      border-radius: 4px;
-      transition: color 0.15s;
-    }
+    .bio-guidance strong { color: var(--teal); font-weight: 600; }
+    .bio-guidance ul { padding-left: 18px; margin-top: 6px; }
+    .bio-guidance ul li { font-size: 0.84rem; color: var(--text-mid); line-height: 1.7; margin-bottom: 4px; }
+    .photo-upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 28px 20px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; background: var(--gold-light); position: relative; }
+    .photo-upload-area:hover { border-color: var(--teal); background: #eef3f5; }
+    .photo-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-icon { width: 40px; height: 40px; margin: 0 auto 10px; color: var(--teal-light); }
+    .photo-upload-area .upload-label { font-size: 0.9rem; font-weight: 600; color: var(--teal); display: block; margin-bottom: 4px; }
+    .photo-upload-area .upload-sub { font-size: 0.8rem; color: var(--text-light); }
+    .photo-preview { display: none; margin-top: 14px; align-items: center; gap: 12px; background: var(--cream); border-radius: 10px; padding: 10px 14px; }
+    .photo-preview img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+    .photo-preview .preview-info { flex: 1; text-align: left; }
+    .photo-preview .preview-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .photo-preview .preview-size { font-size: 0.78rem; color: var(--text-light); }
+    .photo-preview .remove-photo { background: none; border: none; cursor: pointer; color: var(--text-light); font-size: 1.1rem; padding: 4px; border-radius: 4px; transition: color 0.15s; }
     .photo-preview .remove-photo:hover { color: var(--coral); }
-
-    /* ---- Divider ---- */
-    .section-divider {
-      border: none;
-      border-top: 1.5px solid var(--border);
-      margin: 32px 0;
-    }
-
-    /* ---- Submit button ---- */
-    .submit-btn {
-      width: 100%;
-      padding: 16px;
-      background: var(--teal);
-      color: var(--white);
-      border: none;
-      border-radius: 12px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      letter-spacing: 0.02em;
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-      box-shadow: var(--shadow-sm);
-      margin-top: 32px;
-    }
-    .submit-btn:hover {
-      background: var(--teal-dark);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-md);
-    }
+    .section-divider { border: none; border-top: 1.5px solid var(--border); margin: 32px 0; }
+    .submit-btn { width: 100%; padding: 16px; background: var(--teal); color: var(--white); border: none; border-radius: 12px; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; letter-spacing: 0.02em; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: var(--shadow-sm); margin-top: 32px; }
+    .submit-btn:hover { background: var(--teal-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
     .submit-btn:active { transform: translateY(0); }
-
-    /* ---- Success state ---- */
-    .success-message {
-      display: none;
-      text-align: center;
-      padding: 20px 0 10px;
-    }
-    .success-icon {
-      width: 56px;
-      height: 56px;
-      background: #e8f5e9;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-    }
+    .success-message { display: none; text-align: center; padding: 20px 0 10px; }
+    .success-icon { width: 56px; height: 56px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
     .success-icon svg { color: #388e3c; }
-    .success-message h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      color: var(--teal);
-      margin-bottom: 10px;
-    }
-    .success-message p {
-      color: var(--text-mid);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    /* ---- Footer ---- */
-    .page-footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 0.78rem;
-      color: var(--text-light);
-    }
-
-    /* ---- Name row (first + last side by side) ---- */
-    .name-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
+    .success-message h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--teal); margin-bottom: 10px; }
+    .success-message p { color: var(--text-mid); font-size: 0.95rem; line-height: 1.6; }
+    .page-footer { text-align: center; padding: 20px; font-size: 0.78rem; color: var(--text-light); }
+    .name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .name-row .field-group { margin-bottom: 0; }
-
     @media (max-width: 600px) {
       .form-card { padding: 28px 20px; }
       .page-header h1 { font-size: 1.7rem; }
@@ -380,10 +92,10 @@
 
 <header class="page-header">
   <a class="header-logo" href="/">
-    <img src="Gemini_Generated_Image_2pc65x2pc65x2pc6.png" alt="SETD5 Syndrome Foundation" onerror="this.style.display='none'">
+    <img src="logo_transparent.png" alt="SETD5 Syndrome Foundation" onerror="this.style.display='none'">
     <div class="header-logo-text">
       <span class="name">SETD5 Syndrome Foundation</span>
-      <span class="tagline">research · advocacy · community</span>
+      <span class="tagline">research &middot; advocacy &middot; community</span>
     </div>
   </a>
   <div class="header-content">
@@ -396,7 +108,6 @@
 <div class="container">
   <div class="form-card">
 
-    <!-- Success message (shown after submit) -->
     <div class="success-message" id="success-msg">
       <div class="success-icon">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -405,14 +116,7 @@
       <p>We've received your information and will be in touch soon.</p>
     </div>
 
-    <!-- The form — submits to Jotform (form ID 260836109470053) -->
-    <form
-      id="intake-form"
-      action="https://submit.jotform.com/submit/260836109470053"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-      <!-- Required Jotform hidden fields -->
+    <form id="intake-form" action="https://submit.jotform.com/submit/260836109470053" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="formID" value="260836109470053">
       <input type="hidden" name="simple_spc" value="260836109470053-260836109470053">
 
@@ -449,7 +153,7 @@
             <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
           </svg>
           <span class="upload-label">Click to upload a photo</span>
-          <span class="upload-sub">JPG or PNG · Square crop works best · Max 5MB</span>
+          <span class="upload-sub">JPG or PNG &middot; Square crop works best &middot; Max 5MB</span>
         </div>
         <div class="photo-preview" id="photo-preview">
           <img id="preview-img" src="" alt="Preview">
@@ -457,7 +161,7 @@
             <div class="preview-name" id="preview-name"></div>
             <div class="preview-size" id="preview-size"></div>
           </div>
-          <button type="button" class="remove-photo" onclick="removePhoto()" title="Remove photo">✕</button>
+          <button type="button" class="remove-photo" onclick="removePhoto()" title="Remove photo">&#x2715;</button>
         </div>
         <p class="field-hint">A friendly headshot is ideal. Don't worry if you don't have one — we can add it later.</p>
       </div>
@@ -466,49 +170,36 @@
 
       <div class="field-group">
         <label for="bio">Your bio <span class="required">*</span></label>
-
         <div class="bio-guidance">
           <p><strong>What to include:</strong></p>
           <ul>
-            <li>Your connection to SETD5 Syndrome (e.g., parent, sibling, caregiver, or professional ally)</li>
-            <li>What you bring to the board — your skills, background, or lived experience</li>
-            <li>What you hope to help the Foundation achieve</li>
+            <li>Your professional background or role — how you'd describe yourself in a sentence (e.g., nurse, educator, counselor, stay-at-home parent)</li>
+            <li>Why you joined the board — what specifically drew you to this work, not just your connection to SETD5 Syndrome</li>
+            <li>What you hope to help families with — be as specific as you can. Is it access to resources? Earlier diagnosis? Building community? Reducing isolation? This is the most important part of your bio.</li>
           </ul>
           <p style="margin-top:10px;"><strong>Aim for 3–5 sentences.</strong> Write in first or third person — whichever feels natural. We'll lightly edit for consistency before publishing.</p>
-          <p style="margin-top:8px; font-style:italic;">Example: "Jane is a speech-language pathologist and mom to a child with SETD5 Syndrome. She joined the SETD5 Syndrome Foundation board to help bridge the gap between families and the clinical community, and to push for earlier diagnosis and better access to therapy resources."</p>
+          <p style="margin-top:8px; font-style:italic;">Example: "Jane is a speech-language pathologist who joined the SETD5 Syndrome Foundation board because she kept meeting families who couldn't find therapists with any knowledge of the condition. She hopes to help close that gap by building better connections between clinicians and the families who need them, and by creating resources that help families advocate for their children in therapy settings."</p>
         </div>
-
-        <textarea
-          id="bio"
-          name="q7_typeA7"
-          placeholder="Write your bio here..."
-          required
-        ></textarea>
+        <textarea id="bio" name="q7_typeA7" placeholder="Write your bio here..." required></textarea>
         <p class="field-hint">Not sure where to start? Just write a few sentences and we can refine it together.</p>
       </div>
 
       <div class="field-group">
         <label for="anything-else">Anything else you'd like us to know <span class="optional">(optional)</span></label>
-        <textarea
-          id="anything-else"
-          name="q8_typeA"
-          placeholder="Questions, preferences, or anything you'd like to share..."
-          style="min-height:90px;"
-        ></textarea>
+        <textarea id="anything-else" name="q8_typeA" placeholder="Questions, preferences, or anything you'd like to share..." style="min-height:90px;"></textarea>
       </div>
 
-      <button type="submit" class="submit-btn" id="submit-btn">Submit my information →</button>
+      <button type="submit" class="submit-btn" id="submit-btn">Submit my information &#x2192;</button>
     </form>
 
   </div>
 </div>
 
 <footer class="page-footer">
-  &copy; 2025 SETD5 Syndrome Foundation · <a href="/" style="color:inherit;">Return to website</a>
+  &copy; 2025 SETD5 Syndrome Foundation &middot; <a href="/" style="color:inherit;">Return to website</a>
 </footer>
 
 <script>
-  // Photo preview
   function handlePhotoChange(input) {
     const file = input.files[0];
     if (!file) return;
@@ -536,10 +227,9 @@
     document.getElementById('upload-area').style.borderColor = 'var(--border)';
   }
 
-  // Show loading state on submit (form POSTs normally to Jotform)
   document.getElementById('intake-form').addEventListener('submit', function() {
     const btn = document.getElementById('submit-btn');
-    btn.textContent = 'Sending…';
+    btn.textContent = 'Sending\u2026';
     btn.disabled = true;
   });
 </script>
