@@ -441,6 +441,30 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .page-banner h1 { font-size: 1.9rem; }
   .page-banner { padding: 48px 0 56px; }
 }
+  /* ===== CHAT CHANNEL BUTTONS ===== */
+  .chat-channel-btn {
+    padding: 7px 14px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: background 0.12s, color 0.12s;
+    user-select: none;
+  }
+  .chat-channel-btn:hover { background: rgba(26,92,90,0.06); color: var(--teal); }
+  .chat-channel-btn.active { background: var(--teal-light); color: var(--teal); font-weight: 600; border-left-color: var(--teal); }
+  /* Chat message rows */
+  .chat-msg-row { display:flex; gap:10px; padding:5px 6px; border-radius:8px; transition:background 0.1s; }
+  .chat-msg-row:hover { background: var(--bg); }
+  .chat-avatar { width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:white;margin-top:1px; }
+  .chat-msg-author { font-size:0.84rem; font-weight:700; color:var(--teal); }
+  .chat-msg-time   { font-size:0.68rem; color:var(--text-light); margin-left:8px; }
+  .chat-msg-text   { font-size:0.85rem; line-height:1.5; color:var(--text); margin-top:2px; word-break:break-word; }
+  .chat-date-divider { display:flex;align-items:center;gap:10px;margin:12px 0 6px;font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-light); }
+  .chat-date-divider::before,.chat-date-divider::after { content:'';flex:1;height:1px;background:var(--border); }
+  .chat-empty { text-align:center;padding:40px 20px;color:var(--text-light);font-size:0.875rem; }
+  .chat-loading { text-align:center;padding:20px;color:var(--text-light);font-size:0.82rem; }
 </style>
 </head>
 <body>
@@ -503,6 +527,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <a href="#board-programs"   onclick="boardNavClick(event,'board-programs')">Programs</a>
       <a href="#board-comms"      onclick="boardNavClick(event,'board-comms')">Communications</a>
       <a href="#board-operations" onclick="boardNavClick(event,'board-operations')">Operations</a>
+      <a href="#board-messaging"  onclick="boardNavClick(event,'board-messaging')">💬 Messaging</a>
     </div>
     <div class="board-sidebar-search">
       <input type="search" id="board-search-input" placeholder="Search sections…" oninput="boardSearch(this.value)" autocomplete="off" aria-label="Search board portal" />
@@ -1037,6 +1062,93 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   </div>
 </div>
 
+  <!-- ===== BOARD MESSAGING ===== -->
+  <section class="section section--white board-section" id="board-messaging">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:24px;">
+        <span class="subhead">Internal</span>
+        <h2>Board Messaging</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Real-time messaging for board members. Messages are private and visible only to authenticated members.</p>
+      </div>
+
+      <!-- Name setup prompt (shown on first visit) -->
+      <div id="chat-setup" style="display:none; max-width:480px; margin:0 auto 24px; background:var(--teal-light); border-radius:12px; padding:28px; border:1px solid var(--border); text-align:center;">
+        <div style="font-size:2rem; margin-bottom:12px;">👋</div>
+        <h3 style="font-size:1.1rem; color:var(--teal); margin-bottom:8px;">Set your display name</h3>
+        <p style="font-size:0.875rem; color:var(--text-light); margin-bottom:20px;">This is how you'll appear to other board members in chat. You can change it anytime.</p>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="chat-name-input" placeholder="Your name (e.g. Kate C.)"
+            style="flex:1; padding:10px 14px; border:1.5px solid var(--border); border-radius:8px; font-family:inherit; font-size:0.875rem; outline:none; transition:border-color 0.2s;"
+            maxlength="30" />
+          <button onclick="chatSetName()" style="padding:10px 20px; background:var(--teal); color:white; border:none; border-radius:8px; font-family:inherit; font-size:0.875rem; font-weight:600; cursor:pointer; white-space:nowrap; transition:background 0.15s;">Start chatting</button>
+        </div>
+      </div>
+
+      <!-- Chat interface -->
+      <div id="chat-app" style="display:none; border-radius:16px; border:1px solid var(--border); overflow:hidden; box-shadow:var(--shadow-sm); height:560px; display:none; flex-direction:column;">
+
+        <!-- Chat header -->
+        <div style="background:var(--teal-dark); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(200,146,42,0.22);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">💬</div>
+            <div>
+              <div style="font-family:'Source Serif 4',serif;font-size:1rem;font-weight:600;color:var(--white);line-height:1.2;">Board Messaging</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.55);margin-top:1px;" id="chat-status">Connecting…</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:0.72rem;color:rgba(255,255,255,0.5);">Signed in as</span>
+            <span id="chat-current-name" style="font-size:0.78rem;font-weight:600;color:var(--gold);"></span>
+            <button onclick="chatChangeName()" style="font-size:0.68rem;padding:3px 8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:rgba(255,255,255,0.6);cursor:pointer;font-family:inherit;transition:background 0.15s;">change</button>
+          </div>
+        </div>
+
+        <!-- Chat body -->
+        <div style="display:flex;flex:1;min-height:0;">
+
+          <!-- Channel list -->
+          <div style="width:175px;flex-shrink:0;background:#f0f5f5;border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 0;overflow-y:auto;">
+            <div style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-light);padding:8px 14px 4px;">Channels</div>
+            <div class="chat-channel-btn active" data-channel="general"    onclick="chatSwitchChannel('general')">#&nbsp; General</div>
+            <div class="chat-channel-btn"        data-channel="meetings"   onclick="chatSwitchChannel('meetings')">#&nbsp; Meetings</div>
+            <div class="chat-channel-btn"        data-channel="finance"    onclick="chatSwitchChannel('finance')">#&nbsp; Finance</div>
+            <div class="chat-channel-btn"        data-channel="fundraising" onclick="chatSwitchChannel('fundraising')">#&nbsp; Fundraising</div>
+            <div class="chat-channel-btn"        data-channel="research"   onclick="chatSwitchChannel('research')">#&nbsp; Research</div>
+          </div>
+
+          <!-- Messages + input -->
+          <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+
+            <!-- Channel header -->
+            <div style="padding:10px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <span style="font-size:0.95rem;opacity:0.4;">#</span>
+              <span id="chat-channel-label" style="font-size:0.88rem;font-weight:700;color:var(--teal);">general</span>
+            </div>
+
+            <!-- Messages scroll area -->
+            <div id="chat-messages" style="flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:1px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;"></div>
+
+            <!-- Compose -->
+            <div style="padding:12px 16px;border-top:1px solid var(--border);background:var(--white);flex-shrink:0;">
+              <div id="chat-input-box" style="display:flex;align-items:flex-end;gap:10px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:8px 10px 8px 14px;transition:border-color 0.2s;">
+                <textarea id="chat-input" rows="1" placeholder="Message #general…"
+                  style="flex:1;border:none;outline:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;color:var(--text);resize:none;min-height:22px;max-height:100px;line-height:1.5;"
+                  oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';chatUpdatePlaceholder()"
+                  onkeydown="chatKeyDown(event)"></textarea>
+                <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+                  <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
+                </div>
+              </div>
+              <div style="font-size:0.67rem;color:var(--text-light);margin-top:5px;padding-left:2px;">Enter to send · Shift+Enter for new line</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- ===== FOOTER ===== -->
@@ -1122,7 +1234,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   // ===== BOARD SUB-NAV =====
   var BOARD_SECTIONS = [
     'board-meetings','board-finance','board-governance','board-committees',
-    'board-fundraising','board-programs','board-comms','board-operations','tracker-section'
+    'board-fundraising','board-programs','board-comms','board-operations','tracker-section','board-messaging'
   ];
   var _boardObserver = null;
   var _boardNavScrolling = false;
@@ -1557,6 +1669,210 @@ function docSave() {
 }
 
 document.addEventListener('DOMContentLoaded', docRender);
+</script>
+
+<!-- ===== FIREBASE MESSAGING ===== -->
+<script type="module">
+import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getFirestore, collection, addDoc,
+         query, orderBy, limit, onSnapshot,
+         serverTimestamp }                        from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyD5imh_WikBHbTufh0os2a7nxgqEDFKmb4",
+  authDomain:        "setd5-syndrome-foundation.firebaseapp.com",
+  projectId:         "setd5-syndrome-foundation",
+  storageBucket:     "setd5-syndrome-foundation.firebasestorage.app",
+  messagingSenderId: "1041702466779",
+  appId:             "1:1041702466779:web:22d00333b4fd011e11c8fe"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── Colour palette for avatars ──────────────────────────────────────────────
+const AVATAR_COLORS = ['#1a5c5a','#c8922a','#5b7fa6','#7b5ea7','#2e7d52','#b85450'];
+function nameToColor(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
+  return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length];
+}
+function nameToInitials(name) {
+  return name.trim().split(/\s+/).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+// ── State ────────────────────────────────────────────────────────────────────
+let currentChannel  = 'general';
+let unsubscribe     = null;
+let chatUserName    = '';
+
+// ── Expose functions on window so inline onclick handlers can reach them ─────
+window.chatSetName       = chatSetName;
+window.chatChangeName    = chatChangeName;
+window.chatSwitchChannel = chatSwitchChannel;
+window.chatSend          = chatSend;
+window.chatKeyDown       = chatKeyDown;
+window.chatUpdatePlaceholder = chatUpdatePlaceholder;
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+  chatUserName = localStorage.getItem('board_chat_name') || '';
+  if (chatUserName) {
+    showChatApp();
+  } else {
+    document.getElementById('chat-setup').style.display = 'block';
+    setTimeout(() => {
+      const ni = document.getElementById('chat-name-input');
+      if (ni) ni.addEventListener('keydown', e => { if (e.key === 'Enter') chatSetName(); });
+    }, 0);
+  }
+});
+
+function showChatApp() {
+  document.getElementById('chat-setup').style.display = 'none';
+  const app = document.getElementById('chat-app');
+  app.style.display = 'flex';
+  document.getElementById('chat-current-name').textContent = chatUserName;
+  chatSubscribe('general');
+}
+
+function chatSetName() {
+  const input = document.getElementById('chat-name-input');
+  const val   = input ? input.value.trim() : '';
+  if (!val) { if (input) input.focus(); return; }
+  chatUserName = val;
+  localStorage.setItem('board_chat_name', val);
+  showChatApp();
+}
+
+function chatChangeName() {
+  const newName = prompt('Enter your new display name:', chatUserName);
+  if (newName && newName.trim()) {
+    chatUserName = newName.trim();
+    localStorage.setItem('board_chat_name', chatUserName);
+    document.getElementById('chat-current-name').textContent = chatUserName;
+  }
+}
+
+// ── Channel switching ─────────────────────────────────────────────────────────
+function chatSwitchChannel(channel) {
+  if (channel === currentChannel) return;
+  currentChannel = channel;
+
+  // Update sidebar active state
+  document.querySelectorAll('.chat-channel-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.channel === channel);
+  });
+
+  // Update channel label & placeholder
+  document.getElementById('chat-channel-label').textContent = channel;
+  chatUpdatePlaceholder();
+
+  // Clear messages and resubscribe
+  document.getElementById('chat-messages').innerHTML = '<div class="chat-loading">Loading…</div>';
+  chatSubscribe(channel);
+}
+
+function chatUpdatePlaceholder() {
+  const input = document.getElementById('chat-input');
+  if (input) input.placeholder = `Message #${currentChannel}…`;
+}
+
+// ── Firestore subscription ────────────────────────────────────────────────────
+function chatSubscribe(channel) {
+  if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+
+  const q = query(
+    collection(db, 'channels', channel, 'messages'),
+    orderBy('ts', 'asc'),
+    limit(100)
+  );
+
+  unsubscribe = onSnapshot(q, snapshot => {
+    renderMessages(snapshot);
+    document.getElementById('chat-status').textContent = '5 members · live';
+  }, err => {
+    console.error('Firestore error:', err);
+    document.getElementById('chat-status').textContent = 'Connection error';
+  });
+}
+
+// ── Render messages ───────────────────────────────────────────────────────────
+function renderMessages(snapshot) {
+  const container = document.getElementById('chat-messages');
+  if (!container) return;
+
+  if (snapshot.empty) {
+    container.innerHTML = `<div class="chat-empty">No messages yet in #${currentChannel}.<br>Be the first to say something!</div>`;
+    return;
+  }
+
+  const docs     = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+  let   html     = '';
+  let   lastDate = '';
+
+  docs.forEach(msg => {
+    const ts     = msg.ts ? msg.ts.toDate() : new Date();
+    const dateStr = ts.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+    const timeStr = ts.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
+    const author  = msg.author || 'Unknown';
+    const color   = nameToColor(author);
+    const initials = nameToInitials(author);
+    const text    = escapeHtml(msg.text || '');
+
+    if (dateStr !== lastDate) {
+      lastDate = dateStr;
+      html += `<div class="chat-date-divider"><span>${dateStr}</span></div>`;
+    }
+
+    html += `
+      <div class="chat-msg-row">
+        <div class="chat-avatar" style="background:${color};">${initials}</div>
+        <div style="flex:1;min-width:0;">
+          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span></div>
+          <div class="chat-msg-text">${text}</div>
+        </div>
+      </div>`;
+  });
+
+  container.innerHTML = html;
+  container.scrollTop = container.scrollHeight;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;').replace(/\n/g,'<br>');
+}
+
+// ── Send message ──────────────────────────────────────────────────────────────
+async function chatSend() {
+  const input = document.getElementById('chat-input');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text || !chatUserName) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+
+  try {
+    await addDoc(collection(db, 'channels', currentChannel, 'messages'), {
+      text,
+      author: chatUserName,
+      ts:     serverTimestamp()
+    });
+  } catch (err) {
+    console.error('Send error:', err);
+    alert('Message failed to send. Please try again.');
+    input.value = text;
+  }
+}
+
+function chatKeyDown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    chatSend();
+  }
+}
 </script>
 
 </body>
