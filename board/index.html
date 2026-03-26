@@ -188,6 +188,78 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 .section--white .card { background: var(--cream); }
 .section--white .card { box-shadow: var(--shadow-md); }
 
+
+/* ===== DOCUMENT UPLOAD ===== */
+.section-upload-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 14px; padding: 8px 18px; border-radius: 6px;
+  background: var(--teal); color: #fff; font-size: 0.82rem;
+  font-weight: 600; font-family: inherit; cursor: pointer;
+  border: none; letter-spacing: 0.03em; transition: background 0.18s;
+}
+.section-upload-btn:hover { background: var(--teal-dark); }
+
+.doc-upload-modal-bg {
+  display: none; position: fixed; inset: 0; background: rgba(26,51,64,0.45);
+  z-index: 9000; align-items: center; justify-content: center;
+}
+.doc-upload-modal-bg.open { display: flex; }
+.doc-upload-modal {
+  background: #fff; border-radius: 14px; padding: 32px 36px;
+  max-width: 480px; width: 94%; box-shadow: var(--shadow-xl);
+}
+.doc-upload-modal h3 {
+  font-size: 1.1rem; margin-bottom: 20px; color: var(--teal);
+}
+.doc-upload-field { margin-bottom: 14px; }
+.doc-upload-field label {
+  display: block; font-size: 0.78rem; font-weight: 600;
+  color: var(--text-mid); margin-bottom: 5px; text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.doc-upload-field input,
+.doc-upload-field select {
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--border);
+  border-radius: 7px; font-family: inherit; font-size: 0.9rem;
+  color: var(--text); background: var(--cream);
+}
+.doc-upload-field input:focus,
+.doc-upload-field select:focus { outline: none; border-color: var(--teal); }
+.doc-upload-zone {
+  border: 2px dashed var(--border); border-radius: 8px;
+  padding: 14px; text-align: center; cursor: pointer;
+  color: var(--text-light); font-size: 0.88rem; position: relative;
+}
+.doc-upload-zone input[type=file] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.doc-upload-zone:hover { border-color: var(--teal); color: var(--teal); }
+.doc-upload-chosen {
+  display: none; align-items: center; gap: 8px; font-size: 0.85rem;
+  color: var(--coral); padding: 6px 0;
+}
+.doc-upload-chosen.visible { display: flex; }
+.doc-upload-clear {
+  background: none; border: none; cursor: pointer; color: var(--text-light);
+  font-size: 0.9rem; padding: 0 4px;
+}
+.doc-upload-actions {
+  display: flex; gap: 12px; margin-top: 20px; align-items: center;
+}
+.doc-upload-msg { font-size: 0.82rem; color: var(--coral); }
+.doc-item {
+  padding: 10px 14px; background: var(--cream); border-radius: 8px;
+  border-left: 3px solid var(--teal); text-decoration: none; color: var(--teal);
+  display: flex; align-items: center; gap: 10px; font-size: 0.88rem;
+}
+.doc-item:hover { color: var(--coral); }
+.doc-item-del {
+  margin-left: auto; background: none; border: none; cursor: pointer;
+  color: var(--text-light); font-size: 0.75rem; padding: 0 2px;
+  flex-shrink: 0;
+}
+.doc-item-del:hover { color: var(--coral); }
+
 /* ===== DOCUMENT EMPTY STATE ===== */
 .doc-empty {
   padding: 10px 14px; background: transparent; border-radius: 8px;
@@ -420,11 +492,12 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <span class="subhead">Governance</span>
         <h2>Board Meeting Materials</h2>
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Minutes, agendas, and presentation decks from board meetings and special sessions.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-meetings','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Minutes</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-meetings" data-doc-sub="Meeting Minutes" >
             <a href="../SETD5_1st_Meeting_Minutes.docx" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               SETD5 1st Meeting Minutes
@@ -433,13 +506,13 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Agendas</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-meetings" data-doc-sub="Meeting Agendas" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Presentations</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-meetings" data-doc-sub="Presentations" >
             <a href="../SETD5_Founding_Meeting.pptx" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               SETD5 Founding Meeting
@@ -457,23 +530,24 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <span class="subhead">Finance</span>
         <h2>Financial Documents</h2>
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Budgets, annual reports, tax filings, and audit materials for board review and compliance.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-finance','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Budgets &amp; Reports</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-finance" data-doc-sub="Budgets & Reports" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Tax Filings</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-finance" data-doc-sub="Tax Filings" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Audit &amp; Compliance</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-finance" data-doc-sub="Audit & Compliance" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
@@ -488,11 +562,12 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <span class="subhead">Policies</span>
         <h2>Governance Documents</h2>
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Bylaws, organizational policies, and conflict of interest forms that guide how the foundation operates.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-governance','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Bylaws &amp; Articles</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-governance" data-doc-sub="Bylaws & Articles" >
             <a href="../SETD5_Certificate_of_Incorporation.pdf" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Certificate of Incorporation
@@ -501,13 +576,13 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Policies</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-governance" data-doc-sub="Policies" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Conflict of Interest Forms</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-governance" data-doc-sub="Conflict of Interest Forms" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
@@ -522,23 +597,24 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <span class="subhead">Committees</span>
         <h2>Committee Documents</h2>
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Working files, reports, and resources organized by each standing committee of the board.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-committees','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Research Committee</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-committees" data-doc-sub="Research Committee" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Finance Committee</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-committees" data-doc-sub="Finance Committee" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Other Committees</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-committees" data-doc-sub="Other Committees" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
@@ -553,23 +629,24 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <span class="subhead">Development</span>
         <h2>Fundraising &amp; Development</h2>
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Donor reports, grant applications, campaign materials, and fundraising strategy documents.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-fundraising','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Donor Reports</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-fundraising" data-doc-sub="Donor Reports" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Funding Applications</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-fundraising" data-doc-sub="Funding Applications" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Campaign Materials</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-fundraising" data-doc-sub="Campaign Materials" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
@@ -584,23 +661,24 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <span class="subhead">Programs</span>
         <h2>Programs &amp; Grantmaking</h2>
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Research grant agreements, program guidelines, grantee reports, and impact documentation.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-programs','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grant Agreements</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-programs" data-doc-sub="Grant Agreements" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Program Guidelines</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-programs" data-doc-sub="Program Guidelines" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grantee Reports</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-programs" data-doc-sub="Grantee Reports" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
@@ -615,23 +693,24 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <span class="subhead">Communications</span>
         <h2>Communications &amp; Outreach</h2>
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Press releases, newsletter archives, social media plans, and brand assets for board awareness.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-comms','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Press Releases</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-comms" data-doc-sub="Press Releases" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Newsletter Archives</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-comms" data-doc-sub="Newsletter Archives" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Brand &amp; Media Assets</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-comms" data-doc-sub="Brand & Media Assets" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
@@ -646,23 +725,24 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <span class="subhead">Operations</span>
         <h2>Foundation Operations</h2>
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Insurance, vendor contracts, HR documents, and day-to-day operational records for the foundation.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-operations','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
       <div class="grid-3" style="align-items:start;">
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Insurance &amp; Liability</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-operations" data-doc-sub="Insurance & Liability" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Vendor Contracts</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-operations" data-doc-sub="Vendor Contracts" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">HR &amp; Personnel</h3>
-          <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:var(--text-light);">
+          <div data-doc-section="board-operations" data-doc-sub="HR & Personnel" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
@@ -779,6 +859,48 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <div class="tracker-list" id="tracker-list"></div>
     </div>
   </section>
+
+
+<!-- ===== DOCUMENT UPLOAD MODAL ===== -->
+<div class="doc-upload-modal-bg" id="doc-upload-modal-bg" onclick="docModalClose(event)">
+  <div class="doc-upload-modal" onclick="event.stopPropagation()">
+    <h3>Upload a Document</h3>
+    <div class="doc-upload-field">
+      <label>Section</label>
+      <select id="doc-sec-select" onchange="docModalUpdateSubs()"></select>
+    </div>
+    <div class="doc-upload-field">
+      <label>Category</label>
+      <select id="doc-sub-select"></select>
+    </div>
+    <div class="doc-upload-field">
+      <label>Document Name</label>
+      <input type="text" id="doc-name-input" placeholder="e.g. Board Meeting Minutes – March 2026" />
+    </div>
+    <div class="doc-upload-field">
+      <label>Date</label>
+      <input type="date" id="doc-date-input" />
+    </div>
+    <div class="doc-upload-field">
+      <label>File <span style="font-weight:400;color:var(--text-light);">(PDF, Word, PPTX — max 4 MB)</span></label>
+      <div class="doc-upload-zone" id="doc-upload-zone">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3-3 3 3M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Choose a file or drag it here
+        <input type="file" id="doc-file-input" accept=".pdf,.doc,.docx,.pptx,.xlsx,.txt,.png,.jpg" onchange="docFileChosen(this)">
+      </div>
+      <div class="doc-upload-chosen" id="doc-upload-chosen">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#c96a38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="doc-chosen-name"></span>
+        <button class="doc-upload-clear" onclick="docFileClear()" type="button">✕</button>
+      </div>
+    </div>
+    <div class="doc-upload-actions">
+      <button class="btn btn-primary" onclick="docSave()">Save Document</button>
+      <button class="btn btn-outline" onclick="docModalClose()">Cancel</button>
+      <span class="doc-upload-msg" id="doc-upload-msg" style="display:none;"></span>
+    </div>
+  </div>
+</div>
 
 </main>
 
@@ -1149,6 +1271,144 @@ document.addEventListener('DOMContentLoaded', () => {
   if (d) d.value = new Date().toISOString().slice(0, 10);
   trackerRender();
 });
+</script>
+
+
+<script>
+// ===== DOCUMENT LIBRARY =====
+const DOC_KEY = 'setd5_docs';
+const DOC_SECTIONS = {
+  'board-meetings':    { label: 'Board Meeting Materials',   subs: ['Meeting Minutes','Meeting Agendas','Presentations'] },
+  'board-finance':     { label: 'Financial Documents',       subs: ['Budgets & Reports','Tax Filings','Audit & Compliance'] },
+  'board-governance':  { label: 'Governance Documents',      subs: ['Bylaws & Articles','Policies','Conflict of Interest Forms'] },
+  'board-committees':  { label: 'Committee Documents',       subs: ['Research Committee','Finance Committee','Other Committees'] },
+  'board-fundraising': { label: 'Fundraising & Development', subs: ['Donor Reports','Funding Applications','Campaign Materials'] },
+  'board-programs':    { label: 'Programs & Grantmaking',    subs: ['Grant Agreements','Program Guidelines','Grantee Reports'] },
+  'board-comms':       { label: 'Communications & Outreach', subs: ['Press Releases','Newsletter Archives','Brand & Media Assets'] },
+  'board-operations':  { label: 'Foundation Operations',     subs: ['Insurance & Liability','Vendor Contracts','HR & Personnel'] },
+};
+
+function docLoad() {
+  try { return JSON.parse(localStorage.getItem(DOC_KEY) || '[]'); } catch { return []; }
+}
+function docSaveAll(data) { localStorage.setItem(DOC_KEY, JSON.stringify(data)); }
+
+// Render uploaded docs into each card
+function docRender() {
+  const data = docLoad();
+  // Clear previously rendered upload items from each target
+  document.querySelectorAll('[data-doc-section][data-doc-sub]').forEach(container => {
+    container.querySelectorAll('.doc-item').forEach(el => el.remove());
+    const sec = container.dataset.docSection;
+    const sub = container.dataset.docSub;
+    const docs = data.filter(d => d.section === sec && d.sub === sub);
+    const empty = container.querySelector('.doc-empty');
+    docs.forEach(doc => {
+      const a = document.createElement('a');
+      a.className = 'doc-item';
+      if (doc.file && doc.file.data) {
+        a.href = doc.file.data;
+        a.download = doc.file.name || doc.name;
+      } else { a.href = '#'; }
+      a.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>${doc.name}${doc.date ? ' <span style="color:var(--text-light);font-size:0.8em;margin-left:auto;">'+doc.date+'</span>' : ''}<button class="doc-item-del" onclick="docDelete(${doc.id},event)" title="Remove">✕</button>`;
+      container.appendChild(a);
+    });
+    if (empty) empty.style.display = (docs.length === 0 && !container.querySelector('a[href]')) ? '' : 'none';
+  });
+}
+
+function docDelete(id, e) {
+  e.preventDefault(); e.stopPropagation();
+  if (!confirm('Remove this document from the portal?')) return;
+  docSaveAll(docLoad().filter(d => d.id !== id));
+  docRender();
+}
+
+// Modal
+function docModalOpen(sectionId, sub) {
+  const bg = document.getElementById('doc-upload-modal-bg');
+  const secSel = document.getElementById('doc-sec-select');
+  secSel.innerHTML = '';
+  Object.entries(DOC_SECTIONS).forEach(([id, info]) => {
+    const opt = document.createElement('option');
+    opt.value = id; opt.textContent = info.label;
+    if (id === sectionId) opt.selected = true;
+    secSel.appendChild(opt);
+  });
+  docModalUpdateSubs(sub);
+  document.getElementById('doc-date-input').value = new Date().toISOString().slice(0,10);
+  document.getElementById('doc-name-input').value = '';
+  docFileClear();
+  bg.classList.add('open');
+}
+
+function docModalUpdateSubs(preselect) {
+  const sec = document.getElementById('doc-sec-select').value;
+  const subSel = document.getElementById('doc-sub-select');
+  subSel.innerHTML = '<option value="">— Select category —</option>';
+  (DOC_SECTIONS[sec]?.subs || []).forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    if (s === preselect) opt.selected = true;
+    subSel.appendChild(opt);
+  });
+}
+
+function docModalClose(e) {
+  if (e && e.target !== document.getElementById('doc-upload-modal-bg')) return;
+  document.getElementById('doc-upload-modal-bg').classList.remove('open');
+}
+
+function docFileChosen(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('doc-upload-zone').style.opacity = '0.4';
+  document.getElementById('doc-upload-chosen').classList.add('visible');
+  document.getElementById('doc-chosen-name').textContent = file.name;
+}
+
+function docFileClear() {
+  const inp = document.getElementById('doc-file-input');
+  if (inp) inp.value = '';
+  document.getElementById('doc-upload-zone').style.opacity = '';
+  document.getElementById('doc-upload-chosen').classList.remove('visible');
+  document.getElementById('doc-chosen-name').textContent = '';
+}
+
+function docSave() {
+  const sec  = document.getElementById('doc-sec-select').value;
+  const sub  = document.getElementById('doc-sub-select').value;
+  const name = document.getElementById('doc-name-input').value.trim();
+  const date = document.getElementById('doc-date-input').value;
+  const file = document.getElementById('doc-file-input').files[0];
+  const msg  = document.getElementById('doc-upload-msg');
+
+  if (!sec || !sub || !name) {
+    msg.textContent = 'Please fill in section, category, and document name.';
+    msg.style.display = 'inline'; setTimeout(() => msg.style.display='none', 3500); return;
+  }
+  if (file && file.size > 4 * 1024 * 1024) {
+    msg.textContent = 'File is too large (max 4 MB).';
+    msg.style.display = 'inline'; setTimeout(() => msg.style.display='none', 3500); return;
+  }
+
+  function persist(attachment) {
+    const data = docLoad();
+    data.unshift({ id: Date.now(), section: sec, sub, name, date, file: attachment || null });
+    docSaveAll(data);
+    document.getElementById('doc-upload-modal-bg').classList.remove('open');
+    docRender();
+  }
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = e => persist({ name: file.name, data: e.target.result, type: file.type });
+    reader.onerror = () => persist(null);
+    reader.readAsDataURL(file);
+  } else { persist(null); }
+}
+
+document.addEventListener('DOMContentLoaded', docRender);
 </script>
 
 </body>
