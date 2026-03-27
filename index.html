@@ -988,7 +988,8 @@ strong { color: var(--text); }
 .bio-modal-initials { font-size: 1.4rem; font-weight: 600; color: var(--teal); }
 .bio-modal-name { font-family: 'Source Serif 4', serif; font-size: 1.4rem; font-weight: 600; color: var(--teal); text-align: center; margin-bottom: 4px; }
 .bio-modal-role { font-size: 0.78rem; color: var(--coral); font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; text-align: center; margin-bottom: 24px; }
-.bio-modal-text p { font-size: 0.96rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 0; }
+.bio-modal-text p { font-size: 0.96rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 1em; }
+.bio-modal-text p:last-child { margin-bottom: 0; }
 @media (max-width: 640px) {
   .board-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .bio-modal-inner { padding: 36px 24px 28px; }
@@ -2465,7 +2466,7 @@ footer {
           <div class="board-photo-wrap"><img src="kate.png" alt="Kate Carr" class="board-photo" onerror="this.style.display='none'; this.parentNode.innerHTML='<span class=\'board-initials\'>KC</span>'"></div>
           <h3>Kate Carr</h3>
           <div class="board-role">Board Member</div>
-          <p class="board-preview">Educator and nonprofit founder bringing communication and community-building experience to make complex medical information accessible to families.</p>
+          <p class="board-preview">Educator and founder of an animal rescue nonprofit bringing communication and community-building experience to make complex medical information accessible to families.</p>
           <button class="board-bio-btn" onclick="openBio('kate'); event.stopPropagation()">Read bio →</button>
         </div>
 
@@ -3255,7 +3256,7 @@ footer {
     },
     kate: {
       name: 'Kate Carr', role: 'Board Member', photo: 'kate.png', initials: 'KC',
-      bio: 'Kate is an educator, a mom of four, and the founder of her own family nonprofit who came to the SETD5 Syndrome Foundation after an 11-year diagnostic odyssey that ended with her son\'s SETD5 Syndrome diagnosis. Her experience building and running a nonprofit from the ground up has given her a practical understanding of what it takes to create something meaningful for a community, and that long road to a diagnosis gave her a firsthand understanding of how isolating and overwhelming a rare disease journey can be. She joins the board with a deep commitment to ensuring other families don\'t have to navigate it the same way, and brings her focus on creating plain-language resources that help families navigate a SETD5 Syndrome diagnosis.'
+      bio: 'Kate is an educator, a mom of four, and the founder of an animal rescue nonprofit. She came to the SETD5 Syndrome Foundation after an 11-year diagnostic odyssey that ended with her son\'s SETD5 Syndrome diagnosis two years ago. That long road gave her a firsthand understanding of how isolating and overwhelming a rare disease journey can be — and a deep commitment to ensuring other families don\'t have to navigate it the same way.\n\nShe channeled that commitment into building setd5syndrome.com, a plain-language resource hub for SETD5 Syndrome families, drawing on the hands-on experience in website development, marketing, graphic design, and community building she gained while founding and running her own nonprofit.\n\nShe is committed to making information about SETD5 Syndrome easily accessible to families and demystifying the diagnosis.'
     },
     samantha: {
       name: 'Samantha Cotter', role: 'Board Member', photo: 'Samantha.png', initials: 'SC',
@@ -3288,7 +3289,7 @@ jesiree: {
       <div class="bio-modal-photo-wrap">${photoHtml}</div>
       <div class="bio-modal-name">${d.name}</div>
       <div class="bio-modal-role">${d.role}</div>
-      <div class="bio-modal-text"><p>${d.bio}</p></div>
+      <div class="bio-modal-text"><p>${d.bio.replace(/\n\n/g, '</p><p>')}</p></div>
     `;
     document.getElementById('bio-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
