@@ -1523,25 +1523,32 @@ function trackerRender() {
     const followupIcon = e.done
       ? `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#2a8a2a" stroke-width="1.4"/><path d="M4 7l2 2 4-4" stroke="#2a8a2a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
       : `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+    const safeFollowup = escapeHtml(e.followup || '');
     const followupText = e.followup
-      ? `<div class="tracker-followup ${e.done ? '' : 'has-action'}">${followupIcon} ${e.done ? '<s>' + e.followup + '</s>' : e.followup}</div>`
+      ? `<div class="tracker-followup ${e.done ? '' : 'has-action'}">${followupIcon} ${e.done ? '<s>' + safeFollowup + '</s>' : safeFollowup}</div>`
       : `<div class="tracker-followup">No follow-up action noted.</div>`;
 
+    const safeAttachName = escapeHtml(e.attachment ? e.attachment.name : '');
     const attachmentHTML = e.attachment
       ? `<div class="tracker-attachment-chip">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#c96a38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <a href="${e.attachment.data}" download="${e.attachment.name}">${e.attachment.name}</a>
+          <a href="${e.attachment.data}" download="${safeAttachName}">${safeAttachName}</a>
         </div>`
       : '';
+
+    const safeEntity   = escapeHtml(e.entity   || '');
+    const safeName     = escapeHtml(e.name     || '');
+    const safeInternal = escapeHtml(e.internal || '');
+    const safeTakeaway = escapeHtml(e.takeaway || '');
 
     return `<div class="tracker-entry ${e.done ? 'done' : ''}">
       <div class="tracker-entry-main">
         <div class="tracker-entry-top">
-          <span class="tracker-entity">${e.entity}${e.name ? '<span class="tracker-contact-name"> · ' + e.name + '</span>' : ''}${e.internal ? '<span class="tracker-internal-name"> via ' + e.internal + '</span>' : ''}</span>
+          <span class="tracker-entity">${safeEntity}${safeName ? '<span class="tracker-contact-name"> · ' + safeName + '</span>' : ''}${safeInternal ? '<span class="tracker-internal-name"> via ' + safeInternal + '</span>' : ''}</span>
           <span class="tracker-badge badge-${e.category}">${label}</span>
           <span class="tracker-date">${dateStr}</span>
         </div>
-        <div class="tracker-takeaway">${e.takeaway}</div>
+        <div class="tracker-takeaway">${safeTakeaway}</div>
         ${followupText}
         ${attachmentHTML}
       </div>

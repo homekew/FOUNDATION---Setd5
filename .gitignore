@@ -16,3 +16,12 @@ index copy.html
 
 # Screenshots
 Screenshot*.png
+
+# Draft/dev HTML files
+board-chat-mockup.html
+nav-color-wash.html
+
+# Internal documents (store in Firebase Storage, not the public repo)
+*.docx
+*.pptx
+slack-onboarding.pdf
