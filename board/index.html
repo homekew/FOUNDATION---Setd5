@@ -398,7 +398,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   flex-shrink: 0; transition: transform 0.2s;
 }
 .board-sidebar.open .board-sidebar-toggle { transform: rotate(180deg); }
-.board-content { flex: 1; min-width: 0; }
+.board-content { flex: 1; min-width: 0; overflow-x: hidden; }
 .board-section { transition: opacity 0.2s; }
 .board-section.bsearch-hidden { opacity: 0.18; pointer-events: none; }
 
@@ -484,6 +484,10 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .chat-keyboard-hint { display: none; }
   .tracker-filter-bar input { min-width: 0 !important; width: 100%; }
   #chat-search-toggle { display: block !important; }
+  /* Break long email / URL strings so they wrap within their column */
+  .board-content a { word-break: break-all; overflow-wrap: anywhere; }
+  /* Ensure directory rows don't overflow on small screens */
+  #board-directory [style*="1fr 1fr"] { grid-template-columns: 44px 1fr 1fr !important; gap: 8px !important; padding: 12px 12px !important; }
 }
   /* ===== CHAT CHANNEL BUTTONS ===== */
   .chat-channel-btn {
@@ -1192,6 +1196,16 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             </a>
           </div>
         </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:8px;">Historical Communications</h3>
+          <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:12px;line-height:1.5;">Pre-portal board conversations exported from Messenger and other channels.</p>
+          <div data-doc-section="board-meetings" data-doc-sub="Historical Communications" >
+            <a href="../MESSENGER - Board.pdf" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Messenger &#8212; Board (pre-portal archive)
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1709,7 +1723,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== DOCUMENT LIBRARY =====
 const DOC_KEY = 'setd5_docs';
 const DOC_SECTIONS = {
-  'board-meetings':    { label: 'Board Meeting Materials',   subs: ['Meeting Minutes','Meeting Agendas','Presentations'] },
+  'board-meetings':    { label: 'Board Meeting Materials',   subs: ['Meeting Minutes','Meeting Agendas','Presentations','Historical Communications'] },
   'board-finance':     { label: 'Financial Documents',       subs: ['Budgets & Reports','Tax Filings','Audit & Compliance'] },
   'board-governance':  { label: 'Governance Documents',      subs: ['Bylaws & Articles','Policies','Conflict of Interest Forms'] },
   'board-committees':  { label: 'Committee Documents',       subs: ['Research Committee','Finance Committee','Other Committees'] },
@@ -2085,6 +2099,7 @@ function escapeHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
             .replace(/"/g,'&quot;').replace(/\n/g,'<br>');
 }
+window.escapeHtml = escapeHtml;
 
 // ── File attachment helpers ───────────────────────────────────────────────────
 // ── @mention system ───────────────────────────────────────────────────────────
