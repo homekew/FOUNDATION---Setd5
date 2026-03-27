@@ -2083,6 +2083,12 @@ function renderMessages(snapshot) {
 
   container.innerHTML = html;
   container.scrollTop = container.scrollHeight;
+
+  // Re-apply any active search filter after re-render
+  const searchInput = document.getElementById('chat-channel-search');
+  if (searchInput && searchInput.value.trim()) {
+    chatSearchMessages(searchInput.value);
+  }
 }
 
 function escapeHtml(str) {
