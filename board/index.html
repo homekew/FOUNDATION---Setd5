@@ -683,8 +683,9 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .mention-tag { display:inline-block; background:var(--gold-light); color:var(--gold); font-weight:700; font-size:0.82em; border-radius:4px; padding:0 4px; border:1px solid #e8d4a8; }
   /* Message action menu */
   .chat-msg-row { position:relative; }
-  .chat-msg-actions { position:absolute;right:8px;top:6px;display:none;gap:3px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,0.08); }
-  .chat-msg-row:hover .chat-msg-actions { display:flex; }
+  .chat-msg-actions { position:absolute;right:8px;top:6px;display:none;gap:3px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,0.08);z-index:20; }
+  .chat-msg-row:hover .chat-msg-actions,
+  .chat-msg-row.actions-open .chat-msg-actions { display:flex; }
   .chat-action-btn { font-size:0.72rem;padding:3px 8px;border:none;background:none;border-radius:5px;cursor:pointer;font-family:inherit;color:var(--text-light);transition:background 0.12s,color 0.12s;white-space:nowrap; }
   .chat-action-btn:hover { background:var(--teal-light);color:var(--teal); }
   .chat-action-btn.delete:hover { background:#fef2f2;color:#dc2626; }
@@ -2283,7 +2284,7 @@ function renderMessages(snapshot) {
       </a>` : '';
 
     html += `
-      <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}" data-msg-id="${msg.id}">
+      <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''}>
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
           <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}</div>
@@ -2547,6 +2548,24 @@ window.chatEditMessage  = chatEditMessage;
 window.chatSaveEdit     = chatSaveEdit;
 window.chatCancelEdit   = chatCancelEdit;
 window.chatDeleteMessage = chatDeleteMessage;
+
+// Toggle action menu on tap (works on all platforms; hover also works on desktop)
+function chatToggleActions(row, e) {
+  // Don't toggle if the tap was directly on a button (Edit/Delete/Save/Cancel)
+  if (e && e.target.closest('button')) return;
+  const isOpen = row.classList.contains('actions-open');
+  // Close any other open rows first
+  document.querySelectorAll('.chat-msg-row.actions-open').forEach(r => r.classList.remove('actions-open'));
+  if (!isOpen) row.classList.add('actions-open');
+}
+window.chatToggleActions = chatToggleActions;
+
+// Close actions menu when clicking anywhere else
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.chat-msg-row')) {
+    document.querySelectorAll('.chat-msg-row.actions-open').forEach(r => r.classList.remove('actions-open'));
+  }
+});
 
 function chatEditMessage(msgId, btn) {
   const row     = btn.closest('.chat-msg-row');
