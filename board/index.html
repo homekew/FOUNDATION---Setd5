@@ -607,17 +607,12 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Real-time messaging for board members. Messages are private and visible only to authenticated members.</p>
       </div>
 
-      <!-- Name setup prompt (shown on first visit) -->
-      <div id="chat-setup" style="display:none; max-width:480px; margin:0 auto 24px; background:var(--teal-light); border-radius:12px; padding:28px; border:1px solid var(--border); text-align:center;">
+      <!-- Name setup prompt (shown on first visit or when changing identity) -->
+      <div id="chat-setup" style="display:none; max-width:520px; margin:0 auto 24px; background:var(--teal-light); border-radius:12px; padding:28px; border:1px solid var(--border); text-align:center;">
         <div style="font-size:2rem; margin-bottom:12px;">👋</div>
-        <h3 style="font-size:1.1rem; color:var(--teal); margin-bottom:8px;">Set your display name</h3>
-        <p style="font-size:0.875rem; color:var(--text-light); margin-bottom:20px;">This is how you'll appear to other board members in chat. You can change it anytime.</p>
-        <div style="display:flex; gap:10px;">
-          <input type="text" id="chat-name-input" placeholder="Your name (e.g. Kate C.)"
-            style="flex:1; padding:10px 14px; border:1.5px solid var(--border); border-radius:8px; font-family:inherit; font-size:0.875rem; outline:none; transition:border-color 0.2s;"
-            maxlength="30" />
-          <button onclick="chatSetName()" style="padding:10px 20px; background:var(--teal); color:white; border:none; border-radius:8px; font-family:inherit; font-size:0.875rem; font-weight:600; cursor:pointer; white-space:nowrap; transition:background 0.15s;">Start chatting</button>
-        </div>
+        <h3 style="font-size:1.1rem; color:var(--teal); margin-bottom:8px;">Who are you?</h3>
+        <p style="font-size:0.875rem; color:var(--text-light); margin-bottom:20px;">Select your name to start chatting. This is saved on this device.</p>
+        <div id="chat-member-picker" style="display:flex; flex-direction:column; gap:8px;"></div>
       </div>
 
       <!-- Chat interface -->
@@ -1896,17 +1891,36 @@ window.chatSend          = chatSend;
 window.chatKeyDown       = chatKeyDown;
 window.chatUpdatePlaceholder = chatUpdatePlaceholder;
 
+// ── Member picker ─────────────────────────────────────────────────────────────
+function buildMemberPicker() {
+  const container = document.getElementById('chat-member-picker');
+  if (!container) return;
+  container.innerHTML = '';
+  BOARD_MEMBERS.forEach(m => {
+    const btn = document.createElement('button');
+    btn.style.cssText = 'display:flex;align-items:center;gap:12px;width:100%;padding:10px 16px;background:white;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:0.95rem;font-weight:600;color:var(--text);cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s;text-align:left;';
+    btn.onmouseenter = () => { btn.style.borderColor = 'var(--teal)'; btn.style.boxShadow = '0 2px 8px rgba(47,83,97,0.12)'; };
+    btn.onmouseleave = () => { btn.style.borderColor = 'var(--border)'; btn.style.boxShadow = 'none'; };
+    const avatar = document.createElement('div');
+    avatar.style.cssText = `width:34px;height:34px;border-radius:50%;background:${m.color};display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;color:white;flex-shrink:0;`;
+    avatar.textContent = m.initials;
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = m.name;
+    btn.appendChild(avatar);
+    btn.appendChild(nameSpan);
+    btn.addEventListener('click', () => chatSetName(m.name));
+    container.appendChild(btn);
+  });
+}
+
 // ── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
   chatUserName = localStorage.getItem('board_chat_name') || '';
   if (chatUserName) {
     showChatApp();
   } else {
+    buildMemberPicker();
     document.getElementById('chat-setup').style.display = 'block';
-    setTimeout(() => {
-      const ni = document.getElementById('chat-name-input');
-      if (ni) ni.addEventListener('keydown', e => { if (e.key === 'Enter') chatSetName(); });
-    }, 0);
   }
 });
 
@@ -1921,22 +1935,19 @@ function showChatApp() {
   ALL_CHANNELS.forEach(ch => { if (ch !== 'general') watchUnread(ch); });
 }
 
-function chatSetName() {
-  const input = document.getElementById('chat-name-input');
-  const val   = input ? input.value.trim() : '';
-  if (!val) { if (input) input.focus(); return; }
-  chatUserName = val;
-  localStorage.setItem('board_chat_name', val);
+function chatSetName(name) {
+  if (!name) return;
+  chatUserName = name;
+  localStorage.setItem('board_chat_name', name);
   showChatApp();
 }
 
 function chatChangeName() {
-  const newName = prompt('Enter your new display name:', chatUserName);
-  if (newName && newName.trim()) {
-    chatUserName = newName.trim();
-    localStorage.setItem('board_chat_name', chatUserName);
-    document.getElementById('chat-current-name').textContent = chatUserName;
-  }
+  // Hide chat app, show picker again so user can switch identity
+  const app = document.getElementById('chat-app');
+  app.style.display = 'none';
+  buildMemberPicker();
+  document.getElementById('chat-setup').style.display = 'block';
 }
 
 // ── Channel switching ─────────────────────────────────────────────────────────
