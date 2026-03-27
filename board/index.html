@@ -1469,13 +1469,16 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     requestAnimationFrame(() => requestAnimationFrame(boardSyncSubnavTop));
     boardScrollspySetup();
 
-    // Hide nav sidebar when messaging section scrolls into view
+    // Hide nav sidebar when messaging section is the primary focus
     const msgSection = document.getElementById('board-messaging');
     const layout     = document.querySelector('.board-layout');
     if (msgSection && layout) {
       const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => layout.classList.toggle('messaging-open', e.isIntersecting));
-      }, { threshold: 0.08 });
+        entries.forEach(e => {
+          // Only hide sidebar when messaging takes up more than half the viewport
+          layout.classList.toggle('messaging-open', e.intersectionRatio > 0.5);
+        });
+      }, { threshold: [0, 0.5, 1.0] });
       obs.observe(msgSection);
     }
   });
