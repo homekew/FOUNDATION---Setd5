@@ -698,6 +698,39 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .chat-edit-cancel { padding:4px 10px;background:none;border:1px solid var(--border);border-radius:6px;font-size:0.78rem;cursor:pointer;font-family:inherit;color:var(--text-light);transition:border-color 0.15s; }
   .chat-edit-cancel:hover { border-color:var(--teal);color:var(--teal); }
   .chat-msg-edited { font-size:0.65rem;color:var(--text-light);margin-left:6px;font-style:italic; }
+
+  /* ── Reply threading ── */
+  .chat-reply-quote {
+    border-left:3px solid var(--gold);
+    background:rgba(216,171,103,0.07);
+    border-radius:0 5px 5px 0;
+    padding:4px 10px;
+    margin-bottom:6px;
+    cursor:pointer;
+    max-width:480px;
+  }
+  .chat-reply-quote:hover { background:rgba(216,171,103,0.13); }
+  .chat-reply-quote-author { font-size:0.7rem;font-weight:700;color:var(--teal);margin-bottom:1px; }
+  .chat-reply-quote-text   { font-size:0.75rem;color:var(--text-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px; }
+  .chat-reply-btn {
+    font-size:0.68rem;padding:2px 8px;border:1px solid var(--border);
+    border-radius:5px;background:none;color:var(--text-light);
+    cursor:pointer;opacity:0;transition:opacity 0.12s;margin-left:6px;
+    font-family:inherit;
+  }
+  .chat-msg-row:hover .chat-reply-btn { opacity:1; }
+  #chat-reply-indicator {
+    display:none;align-items:center;gap:8px;
+    padding:6px 10px;margin-bottom:7px;
+    background:rgba(216,171,103,0.1);
+    border-left:3px solid var(--gold);
+    border-radius:0 6px 6px 0;
+    font-size:0.8rem;
+  }
+  #chat-reply-indicator.visible { display:flex; }
+  .chat-reply-ind-label { color:var(--text-light);font-size:0.72rem; }
+  .chat-reply-ind-author { font-weight:700;color:var(--teal);font-size:0.78rem; }
+  .chat-reply-ind-text { color:var(--text-mid);font-size:0.78rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 </style>
 </head>
 <body>
@@ -868,6 +901,15 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <div style="padding:12px 16px;border-top:1px solid var(--border);background:var(--white);flex-shrink:0;position:relative;">
               <!-- @mention dropdown -->
               <div class="mention-dropdown" id="mention-dropdown"></div>
+              <!-- Reply indicator -->
+              <div id="chat-reply-indicator">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 00-4-4H4"/></svg>
+                <span class="chat-reply-ind-label">Replying to&nbsp;</span>
+                <span class="chat-reply-ind-author" id="chat-reply-ind-author"></span>
+                <span style="color:var(--text-light);margin:0 4px;">·</span>
+                <span class="chat-reply-ind-text" id="chat-reply-ind-text"></span>
+                <button onclick="chatClearReply()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:1px 4px;border-radius:4px;margin-left:auto;flex-shrink:0;" title="Cancel reply">✕</button>
+              </div>
               <!-- File preview -->
               <div id="chat-file-preview" style="display:none;align-items:center;gap:8px;margin-bottom:8px;padding:8px 12px;background:var(--teal-light);border-radius:8px;border:1px solid var(--border);">
                 <span style="font-size:1rem;">📎</span>
@@ -1942,6 +1984,16 @@ function renderMessages(snapshot) {
         <button class="chat-action-btn delete" onclick="chatDeleteMessage('${msg.id}')">Delete</button>
       </div>` : '';
 
+    const replyAuthorSafe = (author).replace(/'/g, "\\'");
+    const replyTextSafe   = (msg.text || '').slice(0, 120).replace(/'/g, "\\'").replace(/\n/g, ' ');
+    const replyBtn = `<button class="chat-reply-btn" onclick="chatSetReply('${msg.id}','${replyAuthorSafe}','${replyTextSafe}')">↩ Reply</button>`;
+
+    const quoteHtml = msg.replyTo ? `
+      <div class="chat-reply-quote" onclick="chatScrollToMsg('${msg.replyTo.id}')">
+        <div class="chat-reply-quote-author">↩ ${escapeHtml(msg.replyTo.author)}</div>
+        <div class="chat-reply-quote-text">${escapeHtml((msg.replyTo.text || '').slice(0, 100))}</div>
+      </div>` : '';
+
     const fileHtml = msg.file ? `
       <a href="${msg.file.url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-top:6px;padding:7px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--teal);font-size:0.78rem;font-weight:500;transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--border)'">
         <span style="font-size:1rem;">${fileIcon(msg.file.name)}</span>
@@ -1954,7 +2006,8 @@ function renderMessages(snapshot) {
       <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''}>
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
-          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}</div>
+          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${replyBtn}</div>
+          ${quoteHtml}
           ${text ? `<div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>` : ''}
           ${fileHtml}
         </div>
@@ -1987,6 +2040,32 @@ window.BOARD_MEMBERS = BOARD_MEMBERS;   // expose for config
 let mentionQuery      = null;   // current @query string or null
 let mentionFocusIdx   = -1;
 let mentionStart      = -1;     // caret position where @ was typed
+let replyingTo        = null;   // { id, author, text } or null
+
+function chatSetReply(msgId, author, text) {
+  replyingTo = { id: msgId, author, text };
+  document.getElementById('chat-reply-ind-author').textContent = author;
+  document.getElementById('chat-reply-ind-text').textContent   = text.length > 70 ? text.slice(0, 70) + '…' : text;
+  document.getElementById('chat-reply-indicator').classList.add('visible');
+  document.getElementById('chat-input').focus();
+}
+window.chatSetReply = chatSetReply;
+
+function chatClearReply() {
+  replyingTo = null;
+  document.getElementById('chat-reply-indicator').classList.remove('visible');
+}
+window.chatClearReply = chatClearReply;
+
+function chatScrollToMsg(msgId) {
+  const row = document.querySelector(`.chat-msg-row[data-msg-id="${msgId}"]`);
+  if (!row) return;
+  row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  row.style.transition = 'background 0.2s';
+  row.style.background = 'rgba(216,171,103,0.18)';
+  setTimeout(() => { row.style.background = ''; }, 1400);
+}
+window.chatScrollToMsg = chatScrollToMsg;
 
 window.chatMentionKey   = chatMentionKey;
 window.chatMentionInput = chatMentionInput;
@@ -2188,6 +2267,8 @@ async function chatSend() {
 
     const msgData = { text: sendText, author: chatUserName, ts: serverTimestamp() };
     if (fileData) msgData.file = fileData;
+    if (replyingTo) msgData.replyTo = { id: replyingTo.id, author: replyingTo.author, text: replyingTo.text };
+    chatClearReply();
 
     await addDoc(collection(db, 'channels', currentChannel, 'messages'), msgData);
 
@@ -2207,6 +2288,9 @@ function chatKeyDown(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     chatSend();
+  }
+  if (e.key === 'Escape') {
+    chatClearReply();
   }
 }
 
