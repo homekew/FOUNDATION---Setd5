@@ -270,6 +270,14 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 .doc-item--no-file { border-left-color: var(--border); opacity: 0.65; cursor: default; }
 .doc-item--no-file:hover { color: var(--teal); }
 .doc-no-file-tag { font-size: 0.7rem; color: var(--text-light); background: rgba(0,0,0,0.05); border-radius: 4px; padding: 1px 7px; font-style: italic; flex-shrink: 0; margin-left: 4px; white-space: nowrap; }
+.doc-multi-loc-tag { font-size: 0.68rem; color: var(--white); background: var(--teal); border-radius: 10px; padding: 1px 7px; flex-shrink: 0; margin-left: 4px; white-space: nowrap; opacity: 0.75; }
+.doc-cat-rows { display: flex; flex-direction: column; gap: 10px; margin-bottom: 6px; }
+.doc-cat-row { display: flex; gap: 8px; align-items: flex-end; }
+.doc-cat-row .doc-upload-field { flex: 1; margin-bottom: 0; }
+.doc-cat-row-remove { background: none; border: none; color: var(--text-light); cursor: pointer; font-size: 0.8rem; padding: 2px 4px; flex-shrink: 0; margin-bottom: 2px; }
+.doc-cat-row-remove:hover { color: var(--coral); }
+.doc-add-location { font-size: 0.8rem; color: var(--teal); background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; margin-bottom: 14px; display: block; text-align: left; }
+.doc-add-location:hover { color: var(--coral); }
 
 /* ===== DOCUMENT EMPTY STATE ===== */
 .doc-empty {
@@ -1505,14 +1513,8 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 <div class="doc-upload-modal-bg" id="doc-upload-modal-bg" onclick="docModalClose(event)">
   <div class="doc-upload-modal" onclick="event.stopPropagation()">
     <h3>Upload a Document</h3>
-    <div class="doc-upload-field">
-      <label>Section</label>
-      <select id="doc-sec-select" onchange="docModalUpdateSubs()"></select>
-    </div>
-    <div class="doc-upload-field">
-      <label>Category</label>
-      <select id="doc-sub-select"></select>
-    </div>
+    <div id="doc-cat-rows" class="doc-cat-rows"></div>
+    <button type="button" class="doc-add-location" onclick="docCatRowAdd()">+ Add to another location</button>
     <div class="doc-upload-field">
       <label>Document Name</label>
       <input type="text" id="doc-name-input" placeholder="e.g. Board Meeting Minutes – March 2026" />
@@ -1595,14 +1597,8 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   <div class="doc-upload-modal" onclick="event.stopPropagation()">
     <h3>File This Document</h3>
     <p id="inbox-fileit-doc-name" style="font-size:0.875rem;color:var(--text-light);margin-bottom:16px;font-style:italic;"></p>
-    <div class="doc-upload-field">
-      <label>Section</label>
-      <select id="inbox-fileit-sec" onchange="inboxFileItUpdateSubs()"></select>
-    </div>
-    <div class="doc-upload-field">
-      <label>Category</label>
-      <select id="inbox-fileit-sub"></select>
-    </div>
+    <div id="fileit-cat-rows" class="doc-cat-rows"></div>
+    <button type="button" class="doc-add-location" onclick="fileItCatRowAdd()">+ Add to another location</button>
     <div class="doc-upload-actions">
       <button class="btn btn-primary" onclick="inboxFileItSave()">Move to Section</button>
       <button class="btn btn-outline" onclick="inboxFileItClose()">Cancel</button>
@@ -2838,10 +2834,14 @@ function docRender() {
     container.querySelectorAll('.doc-item').forEach(el => el.remove());
     const sec   = container.dataset.docSection;
     const sub   = container.dataset.docSub;
-    const docs  = docEntries.filter(d => d.section === sec && d.sub === sub);
+    const docs  = docEntries.filter(d => {
+      if (d.categories?.some(c => c.section === sec && c.sub === sub)) return true;
+      return d.section === sec && d.sub === sub;
+    });
     const empty = container.querySelector('.doc-empty');
     docs.forEach(docObj => {
       const hasFile = !!docObj.fileURL;
+      const locCount = docObj.categories ? docObj.categories.length : 1;
       const el = document.createElement(hasFile ? 'a' : 'div');
       el.className = 'doc-item' + (hasFile ? '' : ' doc-item--no-file');
       if (hasFile) {
@@ -2853,7 +2853,8 @@ function docRender() {
         ? `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
         : `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 2H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V6l-3-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 2v4h3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
       const noFileBadge = hasFile ? '' : '<span class="doc-no-file-tag">no file attached</span>';
-      el.innerHTML = `${fileIcon}${escapeHtml(docObj.name)}${noFileBadge}${docObj.date ? ' <span style="color:var(--text-light);font-size:0.8em;margin-left:auto;">' + docObj.date + '</span>' : ''}<button class="doc-item-del" onclick="docDelete('${docObj.id}',event)" title="Remove">✕</button>`;
+      const multiLocBadge = locCount > 1 ? `<span class="doc-multi-loc-tag">${locCount} locations</span>` : '';
+      el.innerHTML = `${fileIcon}${escapeHtml(docObj.name)}${noFileBadge}${multiLocBadge}${docObj.date ? ' <span style="color:var(--text-light);font-size:0.8em;margin-left:auto;">' + docObj.date + '</span>' : ''}<button class="doc-item-del" onclick="docDelete('${docObj.id}',event)" title="Remove">✕</button>`;
       container.appendChild(el);
     });
     if (empty) empty.style.display = docs.length === 0 ? '' : 'none';
@@ -2875,15 +2876,7 @@ window.docDelete = docDelete;
 
 function docModalOpen(sectionId, sub) {
   const bg = document.getElementById('doc-upload-modal-bg');
-  const secSel = document.getElementById('doc-sec-select');
-  secSel.innerHTML = '';
-  Object.entries(DOC_SECTIONS).forEach(([id, info]) => {
-    const opt = document.createElement('option');
-    opt.value = id; opt.textContent = info.label;
-    if (id === sectionId) opt.selected = true;
-    secSel.appendChild(opt);
-  });
-  docModalUpdateSubs(sub);
+  _initCatRows('doc-cat-rows', sectionId || Object.keys(DOC_SECTIONS)[0], sub || '');
   document.getElementById('doc-date-input').value = new Date().toISOString().slice(0, 10);
   document.getElementById('doc-name-input').value = '';
   docFileClear();
@@ -2891,17 +2884,82 @@ function docModalOpen(sectionId, sub) {
 }
 window.docModalOpen = docModalOpen;
 
-function docModalUpdateSubs(preselect) {
-  const sec = document.getElementById('doc-sec-select').value;
-  const subSel = document.getElementById('doc-sub-select');
+/* ---- shared category-row helpers ---- */
+function _buildCatRow(containerId, secId, subVal) {
+  const row = document.createElement('div');
+  row.className = 'doc-cat-row';
+  const secField = document.createElement('div');
+  secField.className = 'doc-upload-field';
+  const secLbl = document.createElement('label'); secLbl.textContent = 'Section';
+  const secSel = document.createElement('select'); secSel.className = 'cat-row-sec';
+  secSel.onchange = () => _updateRowSubs(secSel);
+  Object.entries(DOC_SECTIONS).forEach(([id, info]) => {
+    const opt = document.createElement('option'); opt.value = id; opt.textContent = info.label;
+    if (id === secId) opt.selected = true;
+    secSel.appendChild(opt);
+  });
+  secField.appendChild(secLbl); secField.appendChild(secSel);
+  const subField = document.createElement('div');
+  subField.className = 'doc-upload-field';
+  const subLbl = document.createElement('label'); subLbl.textContent = 'Category';
+  const subSel = document.createElement('select'); subSel.className = 'cat-row-sub';
+  subSel.innerHTML = '<option value="">— Select category —</option>';
+  (DOC_SECTIONS[secSel.value]?.subs || []).forEach(s => {
+    const opt = document.createElement('option'); opt.value = s; opt.textContent = s;
+    if (s === subVal) opt.selected = true;
+    subSel.appendChild(opt);
+  });
+  subField.appendChild(subLbl); subField.appendChild(subSel);
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button'; removeBtn.className = 'doc-cat-row-remove';
+  removeBtn.textContent = '✕'; removeBtn.title = 'Remove this location';
+  removeBtn.onclick = () => { row.remove(); _updateRemoveBtns(containerId); };
+  row.appendChild(secField); row.appendChild(subField); row.appendChild(removeBtn);
+  return row;
+}
+function _updateRowSubs(secSel) {
+  const row = secSel.closest('.doc-cat-row');
+  const subSel = row.querySelector('.cat-row-sub');
+  const sec = secSel.value;
   subSel.innerHTML = '<option value="">— Select category —</option>';
   (DOC_SECTIONS[sec]?.subs || []).forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s; opt.textContent = s;
-    if (s === preselect) opt.selected = true;
+    const opt = document.createElement('option'); opt.value = s; opt.textContent = s;
     subSel.appendChild(opt);
   });
 }
+function _updateRemoveBtns(containerId) {
+  const rows = document.querySelectorAll(`#${containerId} .doc-cat-row`);
+  rows.forEach(r => { r.querySelector('.doc-cat-row-remove').style.visibility = rows.length > 1 ? 'visible' : 'hidden'; });
+}
+function _addCatRow(containerId, secId, subVal) {
+  const container = document.getElementById(containerId);
+  const secToUse = secId || Object.keys(DOC_SECTIONS)[0];
+  const row = _buildCatRow(containerId, secToUse, subVal || '');
+  container.appendChild(row);
+  _updateRemoveBtns(containerId);
+}
+function _getCatRows(containerId) {
+  const cats = [];
+  document.querySelectorAll(`#${containerId} .doc-cat-row`).forEach(row => {
+    const sec = row.querySelector('.cat-row-sec')?.value;
+    const sub = row.querySelector('.cat-row-sub')?.value;
+    if (sec && sub) cats.push({ section: sec, sub });
+  });
+  return cats;
+}
+function _initCatRows(containerId, secId, subVal) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  _addCatRow(containerId, secId, subVal);
+}
+
+function docCatRowAdd() { _addCatRow('doc-cat-rows'); }
+window.docCatRowAdd = docCatRowAdd;
+function fileItCatRowAdd() { _addCatRow('fileit-cat-rows'); }
+window.fileItCatRowAdd = fileItCatRowAdd;
+
+/* keep docModalUpdateSubs as no-op for safety */
+function docModalUpdateSubs() {}
 window.docModalUpdateSubs = docModalUpdateSubs;
 
 function docModalClose(e) {
@@ -2929,14 +2987,13 @@ function docFileClear() {
 window.docFileClear = docFileClear;
 
 async function docSave() {
-  const sec  = document.getElementById('doc-sec-select').value;
-  const sub  = document.getElementById('doc-sub-select').value;
+  const categories = _getCatRows('doc-cat-rows');
   const name = document.getElementById('doc-name-input').value.trim();
   const date = document.getElementById('doc-date-input').value;
   const file = document.getElementById('doc-file-input').files[0];
   const msgEl = document.getElementById('doc-upload-msg');
 
-  if (!sec || !sub || !name) {
+  if (!categories.length || !name) {
     msgEl.textContent = 'Please fill in section, category, and document name.';
     msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 3500); return;
   }
@@ -2959,7 +3016,11 @@ async function docSave() {
       });
       fileName = file.name;
     }
-    const docData = { section: sec, sub, name, date, createdAt: serverTimestamp() };
+    const docData = {
+      section: categories[0].section, sub: categories[0].sub, // backward compat
+      categories,
+      name, date, createdAt: serverTimestamp()
+    };
     if (fileName) { docData.fileName = fileName; docData.fileURL = fileURL; }
     await addDoc(docColRef, docData);
     document.getElementById('doc-upload-modal-bg').classList.remove('open');
@@ -3125,23 +3186,18 @@ function inboxFileItOpen(id) {
   inboxFileItId = id;
   const item = inboxEntries.find(e => e.id === id); if (!item) return;
   document.getElementById('inbox-fileit-doc-name').textContent = item.name;
-  const secSel = document.getElementById('inbox-fileit-sec');
-  secSel.innerHTML = '';
-  Object.entries(DOC_SECTIONS).forEach(([sid, info]) => {
-    const opt = document.createElement('option'); opt.value = sid; opt.textContent = info.label; secSel.appendChild(opt);
-  });
-  inboxFileItUpdateSubs();
+  _initCatRows('fileit-cat-rows', Object.keys(DOC_SECTIONS)[0], '');
   document.getElementById('inbox-fileit-modal-bg').classList.add('open');
+  // legacy secSel stub to prevent errors from old references
+  const secSel = { innerHTML: '' };
+  secSel.innerHTML = '';
 }
 window.inboxFileItOpen = inboxFileItOpen;
 
 function inboxFileItUpdateSubs() {
-  const sec = document.getElementById('inbox-fileit-sec').value;
-  const subSel = document.getElementById('inbox-fileit-sub');
-  subSel.innerHTML = '<option value="">— Select category —</option>';
+  // no-op — rows handled by _updateRowSubs
+  const subSel = { innerHTML: '' };
   (DOC_SECTIONS[sec]?.subs || []).forEach(s => {
-    const opt = document.createElement('option'); opt.value = s; opt.textContent = s; subSel.appendChild(opt);
-  });
 }
 window.inboxFileItUpdateSubs = inboxFileItUpdateSubs;
 
@@ -3153,15 +3209,18 @@ function inboxFileItClose(e) {
 window.inboxFileItClose = inboxFileItClose;
 
 async function inboxFileItSave() {
-  const sec = document.getElementById('inbox-fileit-sec').value;
-  const sub = document.getElementById('inbox-fileit-sub').value;
+  const categories = _getCatRows('fileit-cat-rows');
   const msgEl = document.getElementById('inbox-fileit-msg');
-  if (!sec || !sub) { msgEl.textContent = 'Please select a section and category.'; msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 3000); return; }
+  if (!categories.length) { msgEl.textContent = 'Please select a section and category.'; msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 3000); return; }
   const item = inboxEntries.find(e => e.id === inboxFileItId); if (!item) return;
   const saveBtn = document.querySelector('#inbox-fileit-modal-bg .btn-primary');
   if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Moving…'; }
   try {
-    const docData = { section: sec, sub, name: item.name, date: item.date || '', createdAt: serverTimestamp() };
+    const docData = {
+      section: categories[0].section, sub: categories[0].sub,
+      categories,
+      name: item.name, date: item.date || '', createdAt: serverTimestamp()
+    };
     if (item.fileURL)  { docData.fileURL  = item.fileURL; }
     if (item.fileName) { docData.fileName = item.fileName; }
     await addDoc(docColRef, docData);
