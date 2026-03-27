@@ -25,3 +25,8 @@ nav-color-wash.html
 *.docx
 *.pptx
 slack-onboarding.pdf
+
+# Internal reference documents — store in iCloud, not the repo
+_archive/
+*Tech_Reference*
+*Style_Guide*
