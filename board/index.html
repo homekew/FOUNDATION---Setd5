@@ -267,6 +267,9 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   flex-shrink: 0;
 }
 .doc-item-del:hover { color: var(--coral); }
+.doc-item--no-file { border-left-color: var(--border); opacity: 0.65; cursor: default; }
+.doc-item--no-file:hover { color: var(--teal); }
+.doc-no-file-tag { font-size: 0.7rem; color: var(--text-light); background: rgba(0,0,0,0.05); border-radius: 4px; padding: 1px 7px; font-style: italic; flex-shrink: 0; margin-left: 4px; white-space: nowrap; }
 
 /* ===== DOCUMENT EMPTY STATE ===== */
 .doc-empty {
@@ -2798,15 +2801,20 @@ function docRender() {
     const docs  = docEntries.filter(d => d.section === sec && d.sub === sub);
     const empty = container.querySelector('.doc-empty');
     docs.forEach(docObj => {
-      const a = document.createElement('a');
-      a.className = 'doc-item';
-      if (docObj.fileURL) {
-        a.href   = docObj.fileURL;
-        a.target = '_blank';
-        a.rel    = 'noopener';
-      } else { a.href = '#'; }
-      a.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>${escapeHtml(docObj.name)}${docObj.date ? ' <span style="color:var(--text-light);font-size:0.8em;margin-left:auto;">' + docObj.date + '</span>' : ''}<button class="doc-item-del" onclick="docDelete('${docObj.id}',event)" title="Remove">✕</button>`;
-      container.appendChild(a);
+      const hasFile = !!docObj.fileURL;
+      const el = document.createElement(hasFile ? 'a' : 'div');
+      el.className = 'doc-item' + (hasFile ? '' : ' doc-item--no-file');
+      if (hasFile) {
+        el.href   = docObj.fileURL;
+        el.target = '_blank';
+        el.rel    = 'noopener';
+      }
+      const fileIcon = hasFile
+        ? `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+        : `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 2H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V6l-3-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 2v4h3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+      const noFileBadge = hasFile ? '' : '<span class="doc-no-file-tag">no file attached</span>';
+      el.innerHTML = `${fileIcon}${escapeHtml(docObj.name)}${noFileBadge}${docObj.date ? ' <span style="color:var(--text-light);font-size:0.8em;margin-left:auto;">' + docObj.date + '</span>' : ''}<button class="doc-item-del" onclick="docDelete('${docObj.id}',event)" title="Remove">✕</button>`;
+      container.appendChild(el);
     });
     if (empty) empty.style.display = docs.length === 0 ? '' : 'none';
   });
