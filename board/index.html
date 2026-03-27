@@ -286,13 +286,14 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 .tracker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
 .tracker-grid.full { grid-template-columns: 1fr; }
 .tracker-grid--three-col { grid-template-columns: repeat(3, 1fr); }
-@media (max-width: 640px) { .tracker-grid { grid-template-columns: 1fr; } }
-@media (max-width: 640px) { .tracker-grid--three-col { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .tracker-grid--three-col { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .tracker-grid, .tracker-grid--three-col { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .tracker-form { padding: 20px; } }
 .tracker-form-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--teal); color: var(--white); border: none; border-radius: 10px; font-family: inherit; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: background 0.15s; margin-bottom: 4px; }
 .tracker-form-toggle:hover { background: var(--teal-dark, #16605e); }
 .tracker-field { display: flex; flex-direction: column; gap: 6px; }
 .tracker-field label { font-size: 0.8rem; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 0.05em; }
-.tracker-field input, .tracker-field select, .tracker-field textarea { padding: 10px 14px; border: 1.5px solid #d0e0e8; border-radius: 8px; font-family: inherit; font-size: 0.9rem; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+.tracker-field input, .tracker-field select, .tracker-field textarea { width: 100%; box-sizing: border-box; padding: 10px 14px; border: 1.5px solid #d0e0e8; border-radius: 8px; font-family: inherit; font-size: 0.9rem; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
 .tracker-field input:focus, .tracker-field select:focus, .tracker-field textarea:focus { border-color: var(--teal); background: var(--white); }
 .tracker-field textarea { resize: vertical; min-height: 72px; }
 .tracker-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
