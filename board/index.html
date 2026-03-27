@@ -3188,17 +3188,10 @@ function inboxFileItOpen(id) {
   document.getElementById('inbox-fileit-doc-name').textContent = item.name;
   _initCatRows('fileit-cat-rows', Object.keys(DOC_SECTIONS)[0], '');
   document.getElementById('inbox-fileit-modal-bg').classList.add('open');
-  // legacy secSel stub to prevent errors from old references
-  const secSel = { innerHTML: '' };
-  secSel.innerHTML = '';
 }
 window.inboxFileItOpen = inboxFileItOpen;
 
-function inboxFileItUpdateSubs() {
-  // no-op — rows handled by _updateRowSubs
-  const subSel = { innerHTML: '' };
-  (DOC_SECTIONS[sec]?.subs || []).forEach(s => {
-}
+function inboxFileItUpdateSubs() { /* no-op — rows handled by _updateRowSubs */ }
 window.inboxFileItUpdateSubs = inboxFileItUpdateSubs;
 
 function inboxFileItClose(e) {
