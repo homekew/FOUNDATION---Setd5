@@ -1636,428 +1636,8 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   }, { passive: true });
 </script>
 
-<script>
-// ===== CONVERSATION TRACKER =====
-const TRACKER_KEY = 'setd5_conversations';
+<!-- Tracker and Document Library are now handled by the Firebase module below -->
 
-function trackerLoad() {
-  try { return JSON.parse(localStorage.getItem(TRACKER_KEY) || '[]'); }
-  catch { return []; }
-}
-
-function trackerSave(data) {
-  localStorage.setItem(TRACKER_KEY, JSON.stringify(data));
-}
-
-function trackerFileChosen(input) {
-  const file = input.files[0];
-  if (!file) return;
-  document.getElementById('tr-attachment-zone').style.display = 'none';
-  document.getElementById('tr-attachment-chosen').style.display = 'flex';
-  document.getElementById('tr-attachment-chosen-name').textContent = file.name;
-}
-
-function trackerFileClear() {
-  const input = document.getElementById('tr-attachment');
-  if (input) input.value = '';
-  document.getElementById('tr-attachment-zone').style.display = 'flex';
-  document.getElementById('tr-attachment-chosen').style.display = 'none';
-  document.getElementById('tr-attachment-chosen-name').textContent = '';
-}
-
-function trackerToggleForm() {
-  const form = document.getElementById('tracker-form');
-  const btn  = document.getElementById('tracker-form-toggle');
-  const isOpen = form.style.display !== 'none';
-  form.style.display = isOpen ? 'none' : 'block';
-  if (!isOpen) {
-    // Opening: set today as default date
-    const d = document.getElementById('tr-date');
-    if (d && !d.value) d.value = new Date().toISOString().slice(0, 10);
-  }
-}
-
-function trackerAdd() {
-  const name      = document.getElementById('tr-name').value.trim();
-  const entity    = document.getElementById('tr-entity').value.trim();
-  const internal  = document.getElementById('tr-internal').value.trim();
-  const date      = document.getElementById('tr-date').value;
-  const category  = document.getElementById('tr-category').value;
-  const how       = document.getElementById('tr-how').value;
-  const purpose   = document.getElementById('tr-purpose').value;
-  const relstatus = document.getElementById('tr-relstatus').value;
-  const takeaway  = document.getElementById('tr-takeaway').value.trim();
-  const followup  = document.getElementById('tr-followup').value.trim();
-  const msg       = document.getElementById('tr-msg');
-  const fileInput = document.getElementById('tr-attachment');
-  const file      = fileInput?.files[0];
-
-  if (!entity || !date || !category || !takeaway) {
-    msg.textContent = 'Please fill in Organization, Date, Category, and Key Takeaway.';
-    msg.style.display = 'inline';
-    setTimeout(() => msg.style.display = 'none', 3500);
-    return;
-  }
-
-  function saveEntry(attachment) {
-    const data = trackerLoad();
-    const editIdEl = document.getElementById('tr-edit-id');
-    const editId = editIdEl ? Number(editIdEl.value) : 0;
-    if (editId) {
-      // Update existing entry
-      const idx = data.findIndex(d => d.id === editId);
-      if (idx !== -1) {
-        const oldAttach = data[idx].attachment;
-        data[idx] = { ...data[idx], name, entity, internal, date, category, how, purpose, relstatus, takeaway, followup,
-          attachment: attachment !== null ? attachment : oldAttach };
-      }
-      editIdEl.value = '';
-      const saveBtn = document.getElementById('tr-save-btn');
-      if (saveBtn) saveBtn.textContent = 'Save Entry';
-    } else {
-      // New entry
-      data.unshift({ id: Date.now(), name, entity, internal, date, category, how, purpose, relstatus, takeaway, followup, attachment: attachment || null, done: false });
-    }
-    trackerSave(data);
-    ['tr-name','tr-entity','tr-internal','tr-date','tr-takeaway','tr-followup'].forEach(id => document.getElementById(id).value = '');
-    ['tr-category','tr-how','tr-purpose','tr-relstatus'].forEach(id => document.getElementById(id).value = '');
-    trackerFileClear();
-    trackerRender();
-    // Collapse form after saving
-    document.getElementById('tracker-form').style.display = 'none';
-  }
-
-  if (file) {
-    if (file.size > 4 * 1024 * 1024) {
-      msg.textContent = 'File is too large (max 4 MB). Please use a smaller file.';
-      msg.style.display = 'inline';
-      setTimeout(() => msg.style.display = 'none', 4000);
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = function(e) { saveEntry({ name: file.name, data: e.target.result, type: file.type }); };
-    reader.onerror = function() { saveEntry(null); };
-    reader.readAsDataURL(file);
-  } else {
-    // When editing and no new file chosen, pass null so old attachment is preserved
-    saveEntry(null);
-  }
-}
-
-function trackerEditEntry(id) {
-  const data = trackerLoad();
-  const e = data.find(d => d.id === id);
-  if (!e) return;
-  // Populate form fields
-  document.getElementById('tr-name').value      = e.name     || '';
-  document.getElementById('tr-entity').value    = e.entity   || '';
-  document.getElementById('tr-internal').value  = e.internal || '';
-  document.getElementById('tr-date').value      = e.date     || '';
-  document.getElementById('tr-category').value  = e.category || '';
-  document.getElementById('tr-how').value       = e.how      || '';
-  document.getElementById('tr-purpose').value   = e.purpose  || '';
-  document.getElementById('tr-relstatus').value = e.relstatus|| '';
-  document.getElementById('tr-takeaway').value  = e.takeaway || '';
-  document.getElementById('tr-followup').value  = e.followup || '';
-  // Attachment: show current name if exists
-  if (e.attachment) {
-    document.getElementById('tr-attachment-zone').style.display = 'none';
-    document.getElementById('tr-attachment-chosen').style.display = 'flex';
-    document.getElementById('tr-attachment-chosen-name').textContent = e.attachment.name + ' (keep or replace)';
-  }
-  // Set edit mode
-  document.getElementById('tr-edit-id').value = id;
-  const saveBtn = document.getElementById('tr-save-btn');
-  if (saveBtn) saveBtn.textContent = 'Update Entry';
-  // Open and scroll to form
-  document.getElementById('tracker-form').style.display = 'block';
-  document.getElementById('tracker-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function trackerToggleDone(id) {
-  const data = trackerLoad();
-  const entry = data.find(e => e.id === id);
-  if (entry) { entry.done = !entry.done; trackerSave(data); trackerRender(); }
-}
-
-function trackerDelete(id) {
-  const data = trackerLoad().filter(e => e.id !== id);
-  trackerSave(data);
-  trackerRender();
-}
-
-const categoryLabels = {
-  raredisease: 'Rare Disease Foundation', patientadvocacy: 'Patient Advocacy Group',
-  research: 'Research Institution', funder: 'Funder / Grantmaker',
-  government: 'Government / Regulatory', corporate: 'Corporate / Industry', other: 'Other'
-};
-const howLabels = {
-  phone: 'Phone Call', email: 'Email', video: 'Video Call',
-  inperson: 'In-Person Meeting', conference: 'Conference / Event'
-};
-const purposeLabels = {
-  learn: 'Learn their model', partnership: 'Explore partnership',
-  funding: 'Funding inquiry', research: 'Research collaboration',
-  intro: 'General introduction', referral: 'Referral / connection'
-};
-const relStatusLabels = {
-  firstcontact: 'First Contact', ongoing: 'Ongoing',
-  active: 'Active Partner', cold: 'Cold'
-};
-
-function trackerRender() {
-  const list      = document.getElementById('tracker-list');
-  const search    = (document.getElementById('tr-search')?.value || '').toLowerCase();
-  const catF      = document.getElementById('tr-filter-cat')?.value || '';
-  const relStatF  = document.getElementById('tr-filter-relstatus')?.value || '';
-  let data = trackerLoad();
-
-  if (search) data = data.filter(e =>
-    (e.name || '').toLowerCase().includes(search) ||
-    (e.internal || '').toLowerCase().includes(search) ||
-    (e.entity || '').toLowerCase().includes(search) ||
-    (e.takeaway || '').toLowerCase().includes(search) ||
-    (e.followup || '').toLowerCase().includes(search)
-  );
-  if (catF)     data = data.filter(e => e.category === catF);
-  if (relStatF) data = data.filter(e => e.relstatus === relStatF);
-
-  document.getElementById('tr-count').textContent =
-    data.length + ' entr' + (data.length === 1 ? 'y' : 'ies');
-
-  if (!data.length) {
-    list.innerHTML = '<div class="tracker-empty">No entries logged yet. Click "Log a New Entry" above to add your first entry.</div>';
-    return;
-  }
-
-  list.innerHTML = data.map(e => {
-    const catLabel = categoryLabels[e.category] || 'Other';
-    const howLabel = howLabels[e.how] || '';
-    const purpLabel = purposeLabels[e.purpose] || '';
-    const relLabel = relStatusLabels[e.relstatus] || '';
-    const dateStr = e.date ? new Date(e.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
-
-    const followupIcon = e.done
-      ? `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#2a8a2a" stroke-width="1.4"/><path d="M4 7l2 2 4-4" stroke="#2a8a2a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-      : `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
-    const safeFollowup = escapeHtml(e.followup || '');
-    const followupText = e.followup
-      ? `<div class="tracker-followup ${e.done ? '' : 'has-action'}">${followupIcon} ${e.done ? '<s>' + safeFollowup + '</s>' : safeFollowup}</div>`
-      : '';
-
-    const safeAttachName = escapeHtml(e.attachment ? e.attachment.name : '');
-    const attachmentHTML = e.attachment
-      ? `<div class="tracker-attachment-chip">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#c96a38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <a href="${e.attachment.data}" download="${safeAttachName}">${safeAttachName}</a>
-        </div>`
-      : '';
-
-    const safeEntity   = escapeHtml(e.entity   || '');
-    const safeName     = escapeHtml(e.name     || '');
-    const safeInternal = escapeHtml(e.internal || '');
-    const safeTakeaway = escapeHtml(e.takeaway || '');
-
-    const metaPills = [
-      howLabel   ? `<span class="tracker-meta-pill">${howLabel}</span>` : '',
-      purpLabel  ? `<span class="tracker-meta-pill">${purpLabel}</span>` : '',
-      relLabel   ? `<span class="tracker-meta-pill tracker-rel-${e.relstatus}">${relLabel}</span>` : '',
-    ].filter(Boolean).join('');
-
-    return `<div class="tracker-entry ${e.done ? 'done' : ''}">
-      <div class="tracker-entry-main">
-        <div class="tracker-entry-top">
-          <span class="tracker-entity">${safeEntity}${safeName ? '<span class="tracker-contact-name"> · ' + safeName + '</span>' : ''}${safeInternal ? '<span class="tracker-internal-name"> via ' + safeInternal + '</span>' : ''}</span>
-          <span class="tracker-badge badge-${e.category}">${catLabel}</span>
-          <span class="tracker-date">${dateStr}</span>
-        </div>
-        ${metaPills ? '<div class="tracker-meta-pills">' + metaPills + '</div>' : ''}
-        <div class="tracker-takeaway">${safeTakeaway}</div>
-        ${followupText}
-        ${attachmentHTML}
-      </div>
-      <div class="tracker-entry-controls">
-        <button class="btn-icon" title="Edit entry" onclick="trackerEditEntry(${e.id})" style="color:var(--teal);">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5a1.415 1.415 0 012 2L5 13 2 14l1-3 8.5-8.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="btn-icon done-btn ${e.done ? 'active' : ''}" title="${e.done ? 'Mark follow-up open' : 'Mark follow-up complete'}" onclick="trackerToggleDone(${e.id})">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9l2.5 2.5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="btn-icon danger" title="Delete entry" onclick="if(confirm('Delete this entry?')) trackerDelete(${e.id})">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 5h12M7 5V3.5h4V5M6 5l.5 9.5h5L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function trackerExportCSV() {
-  const data = trackerLoad();
-  if (!data.length) { alert('No entries to export.'); return; }
-  const headers = ['Date','Contact Name','Organization','Board Member','Category','How Connected','Purpose','Relationship Status','Key Takeaway','Follow-up Action','Follow-up Complete','Attachment'];
-  const rows = data.map(e => [
-    e.date,
-    '"' + (e.name || '').replace(/"/g, '""') + '"',
-    '"' + (e.entity || '').replace(/"/g, '""') + '"',
-    '"' + (e.internal || '').replace(/"/g, '""') + '"',
-    categoryLabels[e.category] || e.category,
-    howLabels[e.how] || (e.how || ''),
-    purposeLabels[e.purpose] || (e.purpose || ''),
-    relStatusLabels[e.relstatus] || (e.relstatus || ''),
-    '"' + (e.takeaway || '').replace(/"/g, '""') + '"',
-    '"' + (e.followup || '').replace(/"/g, '""') + '"',
-    e.done ? 'Yes' : 'No',
-    e.attachment ? e.attachment.name : ''
-  ].join(','));
-  const csv = [headers.join(','), ...rows].join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'SETD5_OutreachLog_' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click();
-}
-
-// Render on load
-document.addEventListener('DOMContentLoaded', () => {
-  trackerRender();
-});
-</script>
-
-
-<script>
-// ===== DOCUMENT LIBRARY =====
-const DOC_KEY = 'setd5_docs';
-const DOC_SECTIONS = {
-  'board-meetings':    { label: 'Board Meeting Materials',   subs: ['Meeting Minutes','Meeting Agendas','Presentations','Historical Communications'] },
-  'board-finance':     { label: 'Financial Documents',       subs: ['Budgets & Reports','Tax Filings','Audit & Compliance'] },
-  'board-governance':  { label: 'Governance Documents',      subs: ['Bylaws & Articles','Policies','Conflict of Interest Forms'] },
-  'board-committees':  { label: 'Committee Documents',       subs: ['Research Committee','Finance Committee','Other Committees'] },
-  'board-fundraising': { label: 'Fundraising & Development', subs: ['Donor Reports','Funding Applications','Campaign Materials','Grant Agreements','Grantee Reports'] },
-  'board-comms':       { label: 'Marketing', subs: ['Press Releases','Newsletter Archives','Brand & Media Assets'] },
-  'board-operations':  { label: 'Foundation Operations',     subs: ['Insurance & Liability','Vendor Contracts','HR & Personnel'] },
-};
-
-function docLoad() {
-  try { return JSON.parse(localStorage.getItem(DOC_KEY) || '[]'); } catch { return []; }
-}
-function docSaveAll(data) { localStorage.setItem(DOC_KEY, JSON.stringify(data)); }
-
-// Render uploaded docs into each card
-function docRender() {
-  const data = docLoad();
-  // Clear previously rendered upload items from each target
-  document.querySelectorAll('[data-doc-section][data-doc-sub]').forEach(container => {
-    container.querySelectorAll('.doc-item').forEach(el => el.remove());
-    const sec = container.dataset.docSection;
-    const sub = container.dataset.docSub;
-    const docs = data.filter(d => d.section === sec && d.sub === sub);
-    const empty = container.querySelector('.doc-empty');
-    docs.forEach(doc => {
-      const a = document.createElement('a');
-      a.className = 'doc-item';
-      if (doc.file && doc.file.data) {
-        a.href = doc.file.data;
-        a.download = doc.file.name || doc.name;
-      } else { a.href = '#'; }
-      a.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>${doc.name}${doc.date ? ' <span style="color:var(--text-light);font-size:0.8em;margin-left:auto;">'+doc.date+'</span>' : ''}<button class="doc-item-del" onclick="docDelete(${doc.id},event)" title="Remove">✕</button>`;
-      container.appendChild(a);
-    });
-    if (empty) empty.style.display = (docs.length === 0 && !container.querySelector('a[href]')) ? '' : 'none';
-  });
-}
-
-function docDelete(id, e) {
-  e.preventDefault(); e.stopPropagation();
-  if (!confirm('Remove this document from the portal?')) return;
-  docSaveAll(docLoad().filter(d => d.id !== id));
-  docRender();
-}
-
-// Modal
-function docModalOpen(sectionId, sub) {
-  const bg = document.getElementById('doc-upload-modal-bg');
-  const secSel = document.getElementById('doc-sec-select');
-  secSel.innerHTML = '';
-  Object.entries(DOC_SECTIONS).forEach(([id, info]) => {
-    const opt = document.createElement('option');
-    opt.value = id; opt.textContent = info.label;
-    if (id === sectionId) opt.selected = true;
-    secSel.appendChild(opt);
-  });
-  docModalUpdateSubs(sub);
-  document.getElementById('doc-date-input').value = new Date().toISOString().slice(0,10);
-  document.getElementById('doc-name-input').value = '';
-  docFileClear();
-  bg.classList.add('open');
-}
-
-function docModalUpdateSubs(preselect) {
-  const sec = document.getElementById('doc-sec-select').value;
-  const subSel = document.getElementById('doc-sub-select');
-  subSel.innerHTML = '<option value="">— Select category —</option>';
-  (DOC_SECTIONS[sec]?.subs || []).forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s; opt.textContent = s;
-    if (s === preselect) opt.selected = true;
-    subSel.appendChild(opt);
-  });
-}
-
-function docModalClose(e) {
-  if (e && e.target !== document.getElementById('doc-upload-modal-bg')) return;
-  document.getElementById('doc-upload-modal-bg').classList.remove('open');
-}
-
-function docFileChosen(input) {
-  const file = input.files[0];
-  if (!file) return;
-  document.getElementById('doc-upload-zone').style.opacity = '0.4';
-  document.getElementById('doc-upload-chosen').classList.add('visible');
-  document.getElementById('doc-chosen-name').textContent = file.name;
-}
-
-function docFileClear() {
-  const inp = document.getElementById('doc-file-input');
-  if (inp) inp.value = '';
-  document.getElementById('doc-upload-zone').style.opacity = '';
-  document.getElementById('doc-upload-chosen').classList.remove('visible');
-  document.getElementById('doc-chosen-name').textContent = '';
-}
-
-function docSave() {
-  const sec  = document.getElementById('doc-sec-select').value;
-  const sub  = document.getElementById('doc-sub-select').value;
-  const name = document.getElementById('doc-name-input').value.trim();
-  const date = document.getElementById('doc-date-input').value;
-  const file = document.getElementById('doc-file-input').files[0];
-  const msg  = document.getElementById('doc-upload-msg');
-
-  if (!sec || !sub || !name) {
-    msg.textContent = 'Please fill in section, category, and document name.';
-    msg.style.display = 'inline'; setTimeout(() => msg.style.display='none', 3500); return;
-  }
-  if (file && file.size > 4 * 1024 * 1024) {
-    msg.textContent = 'File is too large (max 4 MB).';
-    msg.style.display = 'inline'; setTimeout(() => msg.style.display='none', 3500); return;
-  }
-
-  function persist(attachment) {
-    const data = docLoad();
-    data.unshift({ id: Date.now(), section: sec, sub, name, date, file: attachment || null });
-    docSaveAll(data);
-    document.getElementById('doc-upload-modal-bg').classList.remove('open');
-    docRender();
-  }
-
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = e => persist({ name: file.name, data: e.target.result, type: file.type });
-    reader.onerror = () => persist(null);
-    reader.readAsDataURL(file);
-  } else { persist(null); }
-}
-
-document.addEventListener('DOMContentLoaded', docRender);
-</script>
 
 <!-- ===== FIREBASE MESSAGING ===== -->
 <script type="module">
@@ -2727,6 +2307,452 @@ async function chatSearchMessages(val) {
     chatSubscribe(currentChannel); // restore live view on error
   }
 }
+
+// ===== OUTREACH LOG (Firestore - shared, real-time) =====
+let trackerEntries = [];
+
+const trackerColRef = collection(db, 'outreach_log');
+const trackerQ = query(trackerColRef, orderBy('createdAt', 'desc'));
+onSnapshot(trackerQ, snap => {
+  trackerEntries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  trackerRender();
+}, err => console.error('Outreach log error:', err));
+
+const categoryLabels = {
+  raredisease: 'Rare Disease Foundation', patientadvocacy: 'Patient Advocacy Group',
+  research: 'Research Institution', funder: 'Funder / Grantmaker',
+  government: 'Government / Regulatory', corporate: 'Corporate / Industry', other: 'Other'
+};
+const howLabels = {
+  phone: 'Phone Call', email: 'Email', video: 'Video Call',
+  inperson: 'In-Person Meeting', conference: 'Conference / Event'
+};
+const purposeLabels = {
+  learn: 'Learn their model', partnership: 'Explore partnership',
+  funding: 'Funding inquiry', research: 'Research collaboration',
+  intro: 'General introduction', referral: 'Referral / connection'
+};
+const relStatusLabels = {
+  firstcontact: 'First Contact', ongoing: 'Ongoing',
+  active: 'Active Partner', cold: 'Cold'
+};
+
+function trackerFileChosen(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('tr-attachment-zone').style.display = 'none';
+  document.getElementById('tr-attachment-chosen').style.display = 'flex';
+  document.getElementById('tr-attachment-chosen-name').textContent = file.name;
+}
+window.trackerFileChosen = trackerFileChosen;
+
+function trackerFileClear() {
+  const input = document.getElementById('tr-attachment');
+  if (input) input.value = '';
+  document.getElementById('tr-attachment-zone').style.display = 'flex';
+  document.getElementById('tr-attachment-chosen').style.display = 'none';
+  document.getElementById('tr-attachment-chosen-name').textContent = '';
+}
+window.trackerFileClear = trackerFileClear;
+
+function trackerToggleForm() {
+  const form = document.getElementById('tracker-form');
+  const isOpen = form.style.display !== 'none';
+  form.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) {
+    const d = document.getElementById('tr-date');
+    if (d && !d.value) d.value = new Date().toISOString().slice(0, 10);
+  }
+}
+window.trackerToggleForm = trackerToggleForm;
+
+async function trackerAdd() {
+  const name      = document.getElementById('tr-name').value.trim();
+  const entity    = document.getElementById('tr-entity').value.trim();
+  const internal  = document.getElementById('tr-internal').value.trim();
+  const date      = document.getElementById('tr-date').value;
+  const category  = document.getElementById('tr-category').value;
+  const how       = document.getElementById('tr-how').value;
+  const purpose   = document.getElementById('tr-purpose').value;
+  const relstatus = document.getElementById('tr-relstatus').value;
+  const takeaway  = document.getElementById('tr-takeaway').value.trim();
+  const followup  = document.getElementById('tr-followup').value.trim();
+  const msgEl     = document.getElementById('tr-msg');
+  const fileInput = document.getElementById('tr-attachment');
+  const file      = fileInput?.files[0];
+  const editIdEl  = document.getElementById('tr-edit-id');
+  const editId    = editIdEl?.value || '';
+
+  if (!entity || !date || !category || !takeaway) {
+    msgEl.textContent = 'Please fill in Organization, Date, Category, and Key Takeaway.';
+    msgEl.style.display = 'inline';
+    setTimeout(() => msgEl.style.display = 'none', 3500);
+    return;
+  }
+  if (file && file.size > 10 * 1024 * 1024) {
+    msgEl.textContent = 'File is too large (max 10 MB).';
+    msgEl.style.display = 'inline';
+    setTimeout(() => msgEl.style.display = 'none', 4000);
+    return;
+  }
+
+  const saveBtn = document.getElementById('tr-save-btn');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving…'; }
+
+  try {
+    let attachmentName = null;
+    let attachmentURL  = null;
+    if (file) {
+      const storageRef = ref(storage, `outreach-attachments/${Date.now()}_${file.name}`);
+      attachmentURL = await new Promise((resolve, reject) => {
+        const task = uploadBytesResumable(storageRef, file);
+        task.on('state_changed', null, reject, async () => resolve(await getDownloadURL(storageRef)));
+      });
+      attachmentName = file.name;
+    }
+
+    const fields = { name, entity, internal, date, category, how, purpose, relstatus, takeaway, followup };
+    if (attachmentName) { fields.attachmentName = attachmentName; fields.attachmentURL = attachmentURL; }
+
+    if (editId) {
+      await updateDoc(doc(db, 'outreach_log', editId), fields);
+    } else {
+      await addDoc(trackerColRef, { ...fields, done: false, createdAt: serverTimestamp() });
+    }
+
+    ['tr-name','tr-entity','tr-internal','tr-date','tr-takeaway','tr-followup'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    ['tr-category','tr-how','tr-purpose','tr-relstatus'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = '';
+    });
+    if (editIdEl) editIdEl.value = '';
+    trackerFileClear();
+    document.getElementById('tracker-form').style.display = 'none';
+  } catch (err) {
+    console.error('Tracker save error:', err);
+    msgEl.textContent = 'Could not save entry. Please try again.';
+    msgEl.style.display = 'inline';
+    setTimeout(() => msgEl.style.display = 'none', 4000);
+  } finally {
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = editId ? 'Update Entry' : 'Save Entry'; }
+  }
+}
+window.trackerAdd = trackerAdd;
+
+function trackerEditEntry(id) {
+  const e = trackerEntries.find(t => t.id === id);
+  if (!e) return;
+  document.getElementById('tr-name').value      = e.name     || '';
+  document.getElementById('tr-entity').value    = e.entity   || '';
+  document.getElementById('tr-internal').value  = e.internal || '';
+  document.getElementById('tr-date').value      = e.date     || '';
+  document.getElementById('tr-category').value  = e.category || '';
+  document.getElementById('tr-how').value       = e.how      || '';
+  document.getElementById('tr-purpose').value   = e.purpose  || '';
+  document.getElementById('tr-relstatus').value = e.relstatus|| '';
+  document.getElementById('tr-takeaway').value  = e.takeaway || '';
+  document.getElementById('tr-followup').value  = e.followup || '';
+  if (e.attachmentName) {
+    document.getElementById('tr-attachment-zone').style.display = 'none';
+    document.getElementById('tr-attachment-chosen').style.display = 'flex';
+    document.getElementById('tr-attachment-chosen-name').textContent = e.attachmentName + ' (keep or replace)';
+  }
+  document.getElementById('tr-edit-id').value = id;
+  const saveBtn = document.getElementById('tr-save-btn');
+  if (saveBtn) saveBtn.textContent = 'Update Entry';
+  document.getElementById('tracker-form').style.display = 'block';
+  document.getElementById('tracker-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+window.trackerEditEntry = trackerEditEntry;
+
+async function trackerToggleDone(id) {
+  const entry = trackerEntries.find(t => t.id === id);
+  if (!entry) return;
+  try {
+    await updateDoc(doc(db, 'outreach_log', id), { done: !entry.done });
+  } catch (err) { console.error('Toggle done error:', err); }
+}
+window.trackerToggleDone = trackerToggleDone;
+
+async function trackerDelete(id) {
+  if (!confirm('Delete this entry?')) return;
+  try {
+    await deleteDoc(doc(db, 'outreach_log', id));
+  } catch (err) {
+    console.error('Delete entry error:', err);
+    alert('Could not delete entry. Please try again.');
+  }
+}
+window.trackerDelete = trackerDelete;
+
+function trackerRender() {
+  const list = document.getElementById('tracker-list');
+  if (!list) return;
+  const search   = (document.getElementById('tr-search')?.value || '').toLowerCase();
+  const catF     = document.getElementById('tr-filter-cat')?.value || '';
+  const relStatF = document.getElementById('tr-filter-relstatus')?.value || '';
+
+  let data = [...trackerEntries];
+  if (search) data = data.filter(e =>
+    (e.name     || '').toLowerCase().includes(search) ||
+    (e.internal || '').toLowerCase().includes(search) ||
+    (e.entity   || '').toLowerCase().includes(search) ||
+    (e.takeaway || '').toLowerCase().includes(search) ||
+    (e.followup || '').toLowerCase().includes(search)
+  );
+  if (catF)     data = data.filter(e => e.category  === catF);
+  if (relStatF) data = data.filter(e => e.relstatus === relStatF);
+
+  const countEl = document.getElementById('tr-count');
+  if (countEl) countEl.textContent = data.length + ' entr' + (data.length === 1 ? 'y' : 'ies');
+
+  if (!data.length) {
+    list.innerHTML = '<div class="tracker-empty">No entries logged yet. Click "Log a New Entry" above to add your first entry.</div>';
+    return;
+  }
+
+  list.innerHTML = data.map(e => {
+    const catLabel  = categoryLabels[e.category]  || 'Other';
+    const howLabel  = howLabels[e.how]             || '';
+    const purpLabel = purposeLabels[e.purpose]     || '';
+    const relLabel  = relStatusLabels[e.relstatus] || '';
+    const dateStr   = e.date ? new Date(e.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
+    const followupIcon = e.done
+      ? `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#2a8a2a" stroke-width="1.4"/><path d="M4 7l2 2 4-4" stroke="#2a8a2a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      : `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+    const safeFollowup = escapeHtml(e.followup || '');
+    const followupText = e.followup
+      ? `<div class="tracker-followup ${e.done ? '' : 'has-action'}">${followupIcon} ${e.done ? '<s>' + safeFollowup + '</s>' : safeFollowup}</div>`
+      : '';
+
+    const safeAttachName = escapeHtml(e.attachmentName || '');
+    const attachmentHTML = e.attachmentURL
+      ? `<div class="tracker-attachment-chip">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#c96a38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="${e.attachmentURL}" target="_blank" rel="noopener">${safeAttachName}</a>
+        </div>`
+      : '';
+
+    const safeEntity   = escapeHtml(e.entity   || '');
+    const safeName     = escapeHtml(e.name     || '');
+    const safeInternal = escapeHtml(e.internal || '');
+    const safeTakeaway = escapeHtml(e.takeaway || '');
+
+    const metaPills = [
+      howLabel  ? `<span class="tracker-meta-pill">${howLabel}</span>` : '',
+      purpLabel ? `<span class="tracker-meta-pill">${purpLabel}</span>` : '',
+      relLabel  ? `<span class="tracker-meta-pill tracker-rel-${e.relstatus}">${relLabel}</span>` : '',
+    ].filter(Boolean).join('');
+
+    return `<div class="tracker-entry ${e.done ? 'done' : ''}">
+      <div class="tracker-entry-main">
+        <div class="tracker-entry-top">
+          <span class="tracker-entity">${safeEntity}${safeName ? '<span class="tracker-contact-name"> · ' + safeName + '</span>' : ''}${safeInternal ? '<span class="tracker-internal-name"> via ' + safeInternal + '</span>' : ''}</span>
+          <span class="tracker-badge badge-${e.category}">${catLabel}</span>
+          <span class="tracker-date">${dateStr}</span>
+        </div>
+        ${metaPills ? '<div class="tracker-meta-pills">' + metaPills + '</div>' : ''}
+        <div class="tracker-takeaway">${safeTakeaway}</div>
+        ${followupText}
+        ${attachmentHTML}
+      </div>
+      <div class="tracker-entry-controls">
+        <button class="btn-icon" title="Edit entry" onclick="trackerEditEntry('${e.id}')" style="color:var(--teal);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5a1.415 1.415 0 012 2L5 13 2 14l1-3 8.5-8.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn-icon done-btn ${e.done ? 'active' : ''}" title="${e.done ? 'Mark follow-up open' : 'Mark follow-up complete'}" onclick="trackerToggleDone('${e.id}')">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9l2.5 2.5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn-icon danger" title="Delete entry" onclick="trackerDelete('${e.id}')">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 5h12M7 5V3.5h4V5M6 5l.5 9.5h5L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+window.trackerRender = trackerRender;
+
+function trackerExportCSV() {
+  if (!trackerEntries.length) { alert('No entries to export.'); return; }
+  const headers = ['Date','Contact Name','Organization','Board Member','Category','How Connected','Purpose','Relationship Status','Key Takeaway','Follow-up Action','Follow-up Complete','Attachment'];
+  const rows = trackerEntries.map(e => [
+    e.date,
+    '"' + (e.name     || '').replace(/"/g, '""') + '"',
+    '"' + (e.entity   || '').replace(/"/g, '""') + '"',
+    '"' + (e.internal || '').replace(/"/g, '""') + '"',
+    categoryLabels[e.category]   || e.category   || '',
+    howLabels[e.how]             || e.how         || '',
+    purposeLabels[e.purpose]     || e.purpose     || '',
+    relStatusLabels[e.relstatus] || e.relstatus   || '',
+    '"' + (e.takeaway || '').replace(/"/g, '""') + '"',
+    '"' + (e.followup || '').replace(/"/g, '""') + '"',
+    e.done ? 'Yes' : 'No',
+    e.attachmentName || ''
+  ].join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'SETD5_OutreachLog_' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+}
+window.trackerExportCSV = trackerExportCSV;
+
+
+// ===== DOCUMENT LIBRARY (Firestore - shared, real-time) =====
+let docEntries = [];
+
+const DOC_SECTIONS = {
+  'board-meetings':    { label: 'Board Meeting Materials',   subs: ['Meeting Minutes','Meeting Agendas','Presentations','Historical Communications'] },
+  'board-finance':     { label: 'Financial Documents',       subs: ['Budgets & Reports','Tax Filings','Audit & Compliance'] },
+  'board-governance':  { label: 'Governance Documents',      subs: ['Bylaws & Articles','Policies','Conflict of Interest Forms'] },
+  'board-committees':  { label: 'Committee Documents',       subs: ['Research Committee','Finance Committee','Other Committees'] },
+  'board-fundraising': { label: 'Fundraising & Development', subs: ['Donor Reports','Funding Applications','Campaign Materials','Grant Agreements','Grantee Reports'] },
+  'board-comms':       { label: 'Marketing',                 subs: ['Press Releases','Newsletter Archives','Brand & Media Assets'] },
+  'board-operations':  { label: 'Foundation Operations',     subs: ['Insurance & Liability','Vendor Contracts','HR & Personnel'] },
+};
+
+const docColRef = collection(db, 'board_documents');
+onSnapshot(query(docColRef, orderBy('createdAt', 'desc')), snap => {
+  docEntries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  docRender();
+}, err => console.error('Doc library error:', err));
+
+function docRender() {
+  document.querySelectorAll('[data-doc-section][data-doc-sub]').forEach(container => {
+    container.querySelectorAll('.doc-item').forEach(el => el.remove());
+    const sec   = container.dataset.docSection;
+    const sub   = container.dataset.docSub;
+    const docs  = docEntries.filter(d => d.section === sec && d.sub === sub);
+    const empty = container.querySelector('.doc-empty');
+    docs.forEach(docObj => {
+      const a = document.createElement('a');
+      a.className = 'doc-item';
+      if (docObj.fileURL) {
+        a.href   = docObj.fileURL;
+        a.target = '_blank';
+        a.rel    = 'noopener';
+      } else { a.href = '#'; }
+      a.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>${escapeHtml(docObj.name)}${docObj.date ? ' <span style="color:var(--text-light);font-size:0.8em;margin-left:auto;">' + docObj.date + '</span>' : ''}<button class="doc-item-del" onclick="docDelete('${docObj.id}',event)" title="Remove">✕</button>`;
+      container.appendChild(a);
+    });
+    if (empty) empty.style.display = docs.length === 0 ? '' : 'none';
+  });
+}
+window.docRender = docRender;
+
+async function docDelete(id, e) {
+  e.preventDefault(); e.stopPropagation();
+  if (!confirm('Remove this document from the portal?')) return;
+  try {
+    await deleteDoc(doc(db, 'board_documents', id));
+  } catch (err) {
+    console.error('Doc delete error:', err);
+    alert('Could not remove document. Please try again.');
+  }
+}
+window.docDelete = docDelete;
+
+function docModalOpen(sectionId, sub) {
+  const bg = document.getElementById('doc-upload-modal-bg');
+  const secSel = document.getElementById('doc-sec-select');
+  secSel.innerHTML = '';
+  Object.entries(DOC_SECTIONS).forEach(([id, info]) => {
+    const opt = document.createElement('option');
+    opt.value = id; opt.textContent = info.label;
+    if (id === sectionId) opt.selected = true;
+    secSel.appendChild(opt);
+  });
+  docModalUpdateSubs(sub);
+  document.getElementById('doc-date-input').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('doc-name-input').value = '';
+  docFileClear();
+  bg.classList.add('open');
+}
+window.docModalOpen = docModalOpen;
+
+function docModalUpdateSubs(preselect) {
+  const sec = document.getElementById('doc-sec-select').value;
+  const subSel = document.getElementById('doc-sub-select');
+  subSel.innerHTML = '<option value="">— Select category —</option>';
+  (DOC_SECTIONS[sec]?.subs || []).forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    if (s === preselect) opt.selected = true;
+    subSel.appendChild(opt);
+  });
+}
+window.docModalUpdateSubs = docModalUpdateSubs;
+
+function docModalClose(e) {
+  if (e && e.target !== document.getElementById('doc-upload-modal-bg')) return;
+  document.getElementById('doc-upload-modal-bg').classList.remove('open');
+}
+window.docModalClose = docModalClose;
+
+function docFileChosen(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('doc-upload-zone').style.opacity = '0.4';
+  document.getElementById('doc-upload-chosen').classList.add('visible');
+  document.getElementById('doc-chosen-name').textContent = file.name;
+}
+window.docFileChosen = docFileChosen;
+
+function docFileClear() {
+  const inp = document.getElementById('doc-file-input');
+  if (inp) inp.value = '';
+  document.getElementById('doc-upload-zone').style.opacity = '';
+  document.getElementById('doc-upload-chosen').classList.remove('visible');
+  document.getElementById('doc-chosen-name').textContent = '';
+}
+window.docFileClear = docFileClear;
+
+async function docSave() {
+  const sec  = document.getElementById('doc-sec-select').value;
+  const sub  = document.getElementById('doc-sub-select').value;
+  const name = document.getElementById('doc-name-input').value.trim();
+  const date = document.getElementById('doc-date-input').value;
+  const file = document.getElementById('doc-file-input').files[0];
+  const msgEl = document.getElementById('doc-upload-msg');
+
+  if (!sec || !sub || !name) {
+    msgEl.textContent = 'Please fill in section, category, and document name.';
+    msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 3500); return;
+  }
+  if (file && file.size > 20 * 1024 * 1024) {
+    msgEl.textContent = 'File is too large (max 20 MB).';
+    msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 3500); return;
+  }
+
+  const saveBtn = document.querySelector('#doc-upload-modal-bg .btn-primary');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Uploading…'; }
+
+  try {
+    let fileName = null;
+    let fileURL  = null;
+    if (file) {
+      const storageRef = ref(storage, `board-documents/${sec}/${Date.now()}_${file.name}`);
+      fileURL = await new Promise((resolve, reject) => {
+        const task = uploadBytesResumable(storageRef, file);
+        task.on('state_changed', null, reject, async () => resolve(await getDownloadURL(storageRef)));
+      });
+      fileName = file.name;
+    }
+    const docData = { section: sec, sub, name, date, createdAt: serverTimestamp() };
+    if (fileName) { docData.fileName = fileName; docData.fileURL = fileURL; }
+    await addDoc(docColRef, docData);
+    document.getElementById('doc-upload-modal-bg').classList.remove('open');
+  } catch (err) {
+    console.error('Doc save error:', err);
+    msgEl.textContent = 'Upload failed. Please try again.';
+    msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 4000);
+  } finally {
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Document'; }
+  }
+}
+window.docSave = docSave;
 </script>
 
 </body>
