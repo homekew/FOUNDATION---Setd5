@@ -118,8 +118,8 @@ strong { color: var(--text); }
   box-shadow: 0 2px 12px rgba(47,83,97,0.08);
 }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 80px; padding: 12px 0; }
-.nav-logo { display: flex; align-items: center; gap: 0; cursor: pointer; text-decoration: none; margin-left: -20px; }
-.nav-logo-text { line-height: 1.15; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; margin-left: -8px; }
+.nav-logo { display: flex; align-items: center; gap: 0; cursor: pointer; text-decoration: none; }
+.nav-logo-text { line-height: 1.15; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; margin-left: 4px; }
 .nav-logo-text .name { font-family: 'Source Serif 4', serif; font-weight: 600; font-size: 1.65rem; color: var(--teal); display: block; white-space: nowrap; }
 .nav-logo-text .tagline { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 400; font-size: 0.78rem; margin-top: 5px; margin-bottom: 0; color: var(--coral); letter-spacing: 0.09em; display: block; }
 .nav-links { display: flex; align-items: center; gap: 16px; list-style: none; }
@@ -288,6 +288,8 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 .tracker-grid--three-col { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 640px) { .tracker-grid { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .tracker-grid--three-col { grid-template-columns: 1fr; } }
+.tracker-form-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--teal); color: var(--white); border: none; border-radius: 10px; font-family: inherit; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: background 0.15s; margin-bottom: 4px; }
+.tracker-form-toggle:hover { background: var(--teal-dark, #16605e); }
 .tracker-field { display: flex; flex-direction: column; gap: 6px; }
 .tracker-field label { font-size: 0.8rem; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 0.05em; }
 .tracker-field input, .tracker-field select, .tracker-field textarea { padding: 10px 14px; border: 1.5px solid #d0e0e8; border-radius: 8px; font-family: inherit; font-size: 0.9rem; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
@@ -308,14 +310,19 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 .tracker-contact-name { font-weight: 400; font-size: 0.9rem; color: var(--text-light); }
 .tracker-internal-name { font-weight: 400; font-size: 0.78rem; color: var(--text-light); font-style: italic; }
 .tracker-badge { font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.04em; }
-.badge-research    { background: #e4eeeb; color: #2F5361; }
-.badge-donor       { background: #F2F2F0; color: #9a6e20; }
-.badge-government  { background: #eef0fd; color: #3a3d8f; }
-.badge-foundation  { background: #fdf0ef; color: #8f3a2a; }
-.badge-corporate   { background: #f0fdf0; color: #2a6b2a; }
-.badge-media       { background: #fdf5fa; color: #7a2a6b; }
-.badge-vendor      { background: #f5f5f5; color: #555; }
-.badge-other       { background: #f0f0f0; color: #666; }
+.badge-raredisease    { background: #fdf0ef; color: #8f3a2a; }
+.badge-patientadvocacy{ background: #fdf5e4; color: #8a5a00; }
+.badge-research       { background: #e4eeeb; color: #2F5361; }
+.badge-funder         { background: #F2F2F0; color: #9a6e20; }
+.badge-government     { background: #eef0fd; color: #3a3d8f; }
+.badge-corporate      { background: #f0fdf0; color: #2a6b2a; }
+.badge-other          { background: #f0f0f0; color: #666; }
+.tracker-meta-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.tracker-meta-pill  { font-size: 0.72rem; padding: 2px 9px; border-radius: 20px; background: var(--cream); color: var(--text-light); border: 1px solid #d0e0e8; }
+.tracker-rel-firstcontact { background: #e8f4e8; color: #2a6b2a; border-color: #b0d9b0; }
+.tracker-rel-ongoing      { background: #e8f0fd; color: #2a3d8f; border-color: #b0c4f0; }
+.tracker-rel-active       { background: #e4eeeb; color: #2F5361; border-color: #a0c8c0; }
+.tracker-rel-cold         { background: #f5f5f5; color: #888; border-color: #ccc; }
 .tracker-date { font-size: 0.8rem; color: var(--text-light); }
 .tracker-takeaway { font-size: 0.88rem; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
 .tracker-followup { font-size: 0.82rem; color: var(--text-light); display: flex; align-items: flex-start; gap: 6px; }
@@ -565,7 +572,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <a href="#board-messaging"  onclick="boardNavClick(event,'board-messaging')">💬 Messaging</a>
       <a href="#board-directory"  onclick="boardNavClick(event,'board-directory')">Directory</a>
       <a href="#board-committees" onclick="boardNavClick(event,'board-committees')">Committees</a>
-      <a href="#tracker-section"  onclick="boardNavClick(event,'tracker-section')">Conversations</a>
+      <a href="#tracker-section"  onclick="boardNavClick(event,'tracker-section')">Outreach Log</a>
       <a href="#board-finance"    onclick="boardNavClick(event,'board-finance')">Finance</a>
       <a href="#board-fundraising" onclick="boardNavClick(event,'board-fundraising')">Fundraising</a>
       <a href="#board-governance" onclick="boardNavClick(event,'board-governance')">Governance</a>
@@ -829,21 +836,23 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     </div>
   </section>
 
-  <!-- Conversation Tracker -->
+  <!-- Outreach Log -->
   <section class="section section--white board-section" id="tracker-section">
     <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
+      <div class="section-header" style="margin-bottom:24px;">
         <span class="subhead">Relationship Management</span>
-        <h2>Conversation Tracker</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Log important conversations with external partners, donors, researchers, and agencies so nothing falls through the cracks.</p>
+        <h2>Outreach Log</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Track conversations with rare disease organizations, researchers, funders, and other external partners so nothing falls through the cracks.</p>
       </div>
 
-      <!-- Add entry form -->
-      <div class="tracker-form">
-        <h3>
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1v16M1 9h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          Log a Conversation
-        </h3>
+      <!-- Toggle form button -->
+      <button class="tracker-form-toggle" id="tracker-form-toggle" onclick="trackerToggleForm()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Log a New Entry
+      </button>
+
+      <!-- Add entry form (collapsed by default) -->
+      <div class="tracker-form" id="tracker-form" style="display:none; margin-top:12px;">
         <div class="tracker-grid tracker-grid--three-col">
           <div class="tracker-field">
             <label>Contact Name</label>
@@ -854,40 +863,74 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <input type="text" id="tr-entity" placeholder="e.g. NIH Office of Rare Diseases" />
           </div>
           <div class="tracker-field">
-            <label>SETD5F Board / Committee Member</label>
+            <label>Board Member</label>
             <input type="text" id="tr-internal" placeholder="e.g. Kate Carr" />
           </div>
         </div>
-        <div class="tracker-grid">
+        <div class="tracker-grid tracker-grid--three-col">
           <div class="tracker-field">
-            <label>Date of Conversation</label>
+            <label>Date</label>
             <input type="date" id="tr-date" />
           </div>
           <div class="tracker-field">
             <label>Category</label>
             <select id="tr-category">
               <option value="">— Select category —</option>
-              <option value="research">Research Partner</option>
-              <option value="donor">Donor / Funder</option>
+              <option value="raredisease">Rare Disease Foundation</option>
+              <option value="patientadvocacy">Patient Advocacy Group</option>
+              <option value="research">Research Institution</option>
+              <option value="funder">Funder / Grantmaker</option>
               <option value="government">Government / Regulatory</option>
-              <option value="foundation">Foundation / Nonprofit</option>
-              <option value="corporate">Corporate Partner</option>
-              <option value="media">Media / Press</option>
-              <option value="vendor">Vendor / Service Provider</option>
+              <option value="corporate">Corporate / Industry</option>
               <option value="other">Other</option>
             </select>
           </div>
-        </div>
-        <div class="tracker-grid full" style="margin-bottom:0;">
           <div class="tracker-field">
-            <label>Follow-up Action</label>
-            <input type="text" id="tr-followup" placeholder="e.g. Send MOU draft by April 1" />
+            <label>How We Connected</label>
+            <select id="tr-how">
+              <option value="">— Select method —</option>
+              <option value="phone">Phone Call</option>
+              <option value="email">Email</option>
+              <option value="video">Video Call</option>
+              <option value="inperson">In-Person Meeting</option>
+              <option value="conference">Conference / Event</option>
+            </select>
+          </div>
+        </div>
+        <div class="tracker-grid">
+          <div class="tracker-field">
+            <label>Purpose</label>
+            <select id="tr-purpose">
+              <option value="">— Select purpose —</option>
+              <option value="learn">Learn their model</option>
+              <option value="partnership">Explore partnership</option>
+              <option value="funding">Funding inquiry</option>
+              <option value="research">Research collaboration</option>
+              <option value="intro">General introduction</option>
+              <option value="referral">Referral / connection</option>
+            </select>
+          </div>
+          <div class="tracker-field">
+            <label>Relationship Status</label>
+            <select id="tr-relstatus">
+              <option value="">— Select status —</option>
+              <option value="firstcontact">First Contact</option>
+              <option value="ongoing">Ongoing</option>
+              <option value="active">Active Partner</option>
+              <option value="cold">Cold</option>
+            </select>
           </div>
         </div>
         <div class="tracker-grid full" style="margin-bottom:0;">
           <div class="tracker-field">
             <label>Key Takeaway</label>
             <textarea id="tr-takeaway" placeholder="What was the main outcome or insight from this conversation?"></textarea>
+          </div>
+        </div>
+        <div class="tracker-grid full" style="margin-bottom:0;">
+          <div class="tracker-field">
+            <label>Follow-up Action <span style="font-weight:400;color:var(--text-light);">(optional)</span></label>
+            <input type="text" id="tr-followup" placeholder="e.g. Send MOU draft by April 1" />
           </div>
         </div>
         <div class="tracker-grid full" style="margin-bottom:20px;">
@@ -908,28 +951,30 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <div class="tracker-actions">
           <button class="btn btn-primary" onclick="trackerAdd()">Save Entry</button>
           <button class="btn btn-outline" onclick="trackerExportCSV()">Export CSV</button>
+          <button class="btn btn-outline" onclick="trackerToggleForm()" style="margin-left:auto;">Cancel</button>
           <span id="tr-msg" style="font-size:0.85rem;color:var(--coral);display:none;"></span>
         </div>
       </div>
 
       <!-- Filter bar -->
-      <div class="tracker-filter-bar">
-        <input type="text" id="tr-search" placeholder="Search by name or keyword…" oninput="trackerRender()" />
+      <div class="tracker-filter-bar" style="margin-top:24px;">
+        <input type="text" id="tr-search" placeholder="Search by name, org, or keyword…" oninput="trackerRender()" />
         <select id="tr-filter-cat" onchange="trackerRender()">
           <option value="">All categories</option>
-          <option value="research">Research Partner</option>
-          <option value="donor">Donor / Funder</option>
+          <option value="raredisease">Rare Disease Foundation</option>
+          <option value="patientadvocacy">Patient Advocacy Group</option>
+          <option value="research">Research Institution</option>
+          <option value="funder">Funder / Grantmaker</option>
           <option value="government">Government / Regulatory</option>
-          <option value="foundation">Foundation / Nonprofit</option>
-          <option value="corporate">Corporate Partner</option>
-          <option value="media">Media / Press</option>
-          <option value="vendor">Vendor / Service Provider</option>
+          <option value="corporate">Corporate / Industry</option>
           <option value="other">Other</option>
         </select>
-        <select id="tr-filter-status" onchange="trackerRender()">
+        <select id="tr-filter-relstatus" onchange="trackerRender()">
           <option value="">All statuses</option>
-          <option value="open">Follow-up open</option>
-          <option value="done">Follow-up complete</option>
+          <option value="firstcontact">First Contact</option>
+          <option value="ongoing">Ongoing</option>
+          <option value="active">Active Partner</option>
+          <option value="cold">Cold</option>
         </select>
         <span class="tracker-count" id="tr-count"></span>
       </div>
@@ -1430,15 +1475,30 @@ function trackerFileClear() {
   document.getElementById('tr-attachment-chosen-name').textContent = '';
 }
 
+function trackerToggleForm() {
+  const form = document.getElementById('tracker-form');
+  const btn  = document.getElementById('tracker-form-toggle');
+  const isOpen = form.style.display !== 'none';
+  form.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) {
+    // Opening: set today as default date
+    const d = document.getElementById('tr-date');
+    if (d && !d.value) d.value = new Date().toISOString().slice(0, 10);
+  }
+}
+
 function trackerAdd() {
-  const name     = document.getElementById('tr-name').value.trim();
-  const entity   = document.getElementById('tr-entity').value.trim();
-  const internal = document.getElementById('tr-internal').value.trim();
-  const date     = document.getElementById('tr-date').value;
-  const category = document.getElementById('tr-category').value;
-  const takeaway = document.getElementById('tr-takeaway').value.trim();
-  const followup = document.getElementById('tr-followup').value.trim();
-  const msg      = document.getElementById('tr-msg');
+  const name      = document.getElementById('tr-name').value.trim();
+  const entity    = document.getElementById('tr-entity').value.trim();
+  const internal  = document.getElementById('tr-internal').value.trim();
+  const date      = document.getElementById('tr-date').value;
+  const category  = document.getElementById('tr-category').value;
+  const how       = document.getElementById('tr-how').value;
+  const purpose   = document.getElementById('tr-purpose').value;
+  const relstatus = document.getElementById('tr-relstatus').value;
+  const takeaway  = document.getElementById('tr-takeaway').value.trim();
+  const followup  = document.getElementById('tr-followup').value.trim();
+  const msg       = document.getElementById('tr-msg');
   const fileInput = document.getElementById('tr-attachment');
   const file      = fileInput?.files[0];
 
@@ -1451,12 +1511,14 @@ function trackerAdd() {
 
   function saveEntry(attachment) {
     const data = trackerLoad();
-    data.unshift({ id: Date.now(), name, entity, internal, date, category, takeaway, followup, attachment: attachment || null, done: false });
+    data.unshift({ id: Date.now(), name, entity, internal, date, category, how, purpose, relstatus, takeaway, followup, attachment: attachment || null, done: false });
     trackerSave(data);
     ['tr-name','tr-entity','tr-internal','tr-date','tr-takeaway','tr-followup'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('tr-category').value = '';
+    ['tr-category','tr-how','tr-purpose','tr-relstatus'].forEach(id => document.getElementById(id).value = '');
     trackerFileClear();
     trackerRender();
+    // Collapse form after saving
+    document.getElementById('tracker-form').style.display = 'none';
   }
 
   if (file) {
@@ -1488,48 +1550,63 @@ function trackerDelete(id) {
 }
 
 const categoryLabels = {
-  research: 'Research Partner', donor: 'Donor / Funder',
-  government: 'Government / Regulatory', foundation: 'Foundation / Nonprofit',
-  corporate: 'Corporate Partner', media: 'Media / Press',
-  vendor: 'Vendor / Service Provider', other: 'Other'
+  raredisease: 'Rare Disease Foundation', patientadvocacy: 'Patient Advocacy Group',
+  research: 'Research Institution', funder: 'Funder / Grantmaker',
+  government: 'Government / Regulatory', corporate: 'Corporate / Industry', other: 'Other'
+};
+const howLabels = {
+  phone: 'Phone Call', email: 'Email', video: 'Video Call',
+  inperson: 'In-Person Meeting', conference: 'Conference / Event'
+};
+const purposeLabels = {
+  learn: 'Learn their model', partnership: 'Explore partnership',
+  funding: 'Funding inquiry', research: 'Research collaboration',
+  intro: 'General introduction', referral: 'Referral / connection'
+};
+const relStatusLabels = {
+  firstcontact: 'First Contact', ongoing: 'Ongoing',
+  active: 'Active Partner', cold: 'Cold'
 };
 
 function trackerRender() {
-  const list   = document.getElementById('tracker-list');
-  const search = (document.getElementById('tr-search')?.value || '').toLowerCase();
-  const catF   = document.getElementById('tr-filter-cat')?.value || '';
-  const statF  = document.getElementById('tr-filter-status')?.value || '';
+  const list      = document.getElementById('tracker-list');
+  const search    = (document.getElementById('tr-search')?.value || '').toLowerCase();
+  const catF      = document.getElementById('tr-filter-cat')?.value || '';
+  const relStatF  = document.getElementById('tr-filter-relstatus')?.value || '';
   let data = trackerLoad();
 
   if (search) data = data.filter(e =>
     (e.name || '').toLowerCase().includes(search) ||
     (e.internal || '').toLowerCase().includes(search) ||
-    e.entity.toLowerCase().includes(search) ||
-    e.takeaway.toLowerCase().includes(search) ||
+    (e.entity || '').toLowerCase().includes(search) ||
+    (e.takeaway || '').toLowerCase().includes(search) ||
     (e.followup || '').toLowerCase().includes(search)
   );
-  if (catF)  data = data.filter(e => e.category === catF);
-  if (statF === 'open') data = data.filter(e => !e.done);
-  if (statF === 'done') data = data.filter(e =>  e.done);
+  if (catF)     data = data.filter(e => e.category === catF);
+  if (relStatF) data = data.filter(e => e.relstatus === relStatF);
 
   document.getElementById('tr-count').textContent =
     data.length + ' entr' + (data.length === 1 ? 'y' : 'ies');
 
   if (!data.length) {
-    list.innerHTML = '<div class="tracker-empty">No conversations logged yet. Use the form above to add your first entry.</div>';
+    list.innerHTML = '<div class="tracker-empty">No entries logged yet. Click "Log a New Entry" above to add your first entry.</div>';
     return;
   }
 
   list.innerHTML = data.map(e => {
-    const label = categoryLabels[e.category] || 'Other';
+    const catLabel = categoryLabels[e.category] || 'Other';
+    const howLabel = howLabels[e.how] || '';
+    const purpLabel = purposeLabels[e.purpose] || '';
+    const relLabel = relStatusLabels[e.relstatus] || '';
     const dateStr = e.date ? new Date(e.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
     const followupIcon = e.done
       ? `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#2a8a2a" stroke-width="1.4"/><path d="M4 7l2 2 4-4" stroke="#2a8a2a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
       : `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
     const safeFollowup = escapeHtml(e.followup || '');
     const followupText = e.followup
       ? `<div class="tracker-followup ${e.done ? '' : 'has-action'}">${followupIcon} ${e.done ? '<s>' + safeFollowup + '</s>' : safeFollowup}</div>`
-      : `<div class="tracker-followup">No follow-up action noted.</div>`;
+      : '';
 
     const safeAttachName = escapeHtml(e.attachment ? e.attachment.name : '');
     const attachmentHTML = e.attachment
@@ -1544,13 +1621,20 @@ function trackerRender() {
     const safeInternal = escapeHtml(e.internal || '');
     const safeTakeaway = escapeHtml(e.takeaway || '');
 
+    const metaPills = [
+      howLabel   ? `<span class="tracker-meta-pill">${howLabel}</span>` : '',
+      purpLabel  ? `<span class="tracker-meta-pill">${purpLabel}</span>` : '',
+      relLabel   ? `<span class="tracker-meta-pill tracker-rel-${e.relstatus}">${relLabel}</span>` : '',
+    ].filter(Boolean).join('');
+
     return `<div class="tracker-entry ${e.done ? 'done' : ''}">
       <div class="tracker-entry-main">
         <div class="tracker-entry-top">
           <span class="tracker-entity">${safeEntity}${safeName ? '<span class="tracker-contact-name"> · ' + safeName + '</span>' : ''}${safeInternal ? '<span class="tracker-internal-name"> via ' + safeInternal + '</span>' : ''}</span>
-          <span class="tracker-badge badge-${e.category}">${label}</span>
+          <span class="tracker-badge badge-${e.category}">${catLabel}</span>
           <span class="tracker-date">${dateStr}</span>
         </div>
+        ${metaPills ? '<div class="tracker-meta-pills">' + metaPills + '</div>' : ''}
         <div class="tracker-takeaway">${safeTakeaway}</div>
         ${followupText}
         ${attachmentHTML}
@@ -1570,13 +1654,16 @@ function trackerRender() {
 function trackerExportCSV() {
   const data = trackerLoad();
   if (!data.length) { alert('No entries to export.'); return; }
-  const headers = ['Date','Contact Name','Organization','SETD5F Board/Committee Member','Category','Key Takeaway','Follow-up Action','Follow-up Complete','Attachment'];
+  const headers = ['Date','Contact Name','Organization','Board Member','Category','How Connected','Purpose','Relationship Status','Key Takeaway','Follow-up Action','Follow-up Complete','Attachment'];
   const rows = data.map(e => [
     e.date,
     '"' + (e.name || '').replace(/"/g, '""') + '"',
     '"' + (e.entity || '').replace(/"/g, '""') + '"',
     '"' + (e.internal || '').replace(/"/g, '""') + '"',
     categoryLabels[e.category] || e.category,
+    howLabels[e.how] || (e.how || ''),
+    purposeLabels[e.purpose] || (e.purpose || ''),
+    relStatusLabels[e.relstatus] || (e.relstatus || ''),
     '"' + (e.takeaway || '').replace(/"/g, '""') + '"',
     '"' + (e.followup || '').replace(/"/g, '""') + '"',
     e.done ? 'Yes' : 'No',
@@ -1585,14 +1672,12 @@ function trackerExportCSV() {
   const csv = [headers.join(','), ...rows].join('\n');
   const a = document.createElement('a');
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'SETD5_Conversations_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.download = 'SETD5_OutreachLog_' + new Date().toISOString().slice(0,10) + '.csv';
   a.click();
 }
 
-// Set today's date as default
+// Render on load
 document.addEventListener('DOMContentLoaded', () => {
-  const d = document.getElementById('tr-date');
-  if (d) d.value = new Date().toISOString().slice(0, 10);
   trackerRender();
 });
 </script>
@@ -2022,7 +2107,6 @@ function renderMentionDropdown(query) {
   const dropdown = document.getElementById('mention-dropdown');
   if (!dropdown) return;
   const matches = BOARD_MEMBERS.filter(m =>
-    m.name !== chatUserName &&
     m.name.toLowerCase().includes(query)
   );
   if (!matches.length) { closeMentionDropdown(); return; }
