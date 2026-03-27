@@ -688,7 +688,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                   onkeydown="if(event.key==='Enter'){chatSearchMessages(this.value);} if(event.key==='Escape'){this.value='';chatSearchMessages('');}"
                   style="width:100%;padding:6px 26px 6px 10px;border:1.5px solid rgba(255,255,255,0.18);border-radius:7px;font-family:inherit;font-size:0.75rem;background:rgba(255,255,255,0.08);color:white;outline:none;transition:border-color 0.2s;"
                   autocomplete="off" />
-                <span onclick="chatSearchMessages(document.getElementById('chat-channel-search').value)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:0.75rem;color:rgba(255,255,255,0.45);cursor:pointer;" title="Search">🔍</span>
+                <button type="button" onclick="chatSearchMessages(document.getElementById('chat-channel-search').value)" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:0.85rem;color:rgba(255,255,255,0.55);cursor:pointer;padding:4px 6px;line-height:1;" title="Search">🔍</button>
               </div>
             </div>
           </div>
