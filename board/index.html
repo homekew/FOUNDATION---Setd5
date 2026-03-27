@@ -554,22 +554,21 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       </div>
       <button class="board-sidebar-toggle" aria-label="Toggle sidebar">▾</button>
     </div>
-    <div class="board-sidebar-links" id="board-sidebar-links">
-      <a href="#board-directory"  onclick="boardNavClick(event,'board-directory')">Directory</a>
-      <a href="#board-meetings"   class="bsnav-active" onclick="boardNavClick(event,'board-meetings')">Meetings</a>
-      <a href="#tracker-section"  onclick="boardNavClick(event,'tracker-section')">Conversations</a>
-      <a href="#board-finance"    onclick="boardNavClick(event,'board-finance')">Finance</a>
-      <a href="#board-governance" onclick="boardNavClick(event,'board-governance')">Governance</a>
-      <a href="#board-committees" onclick="boardNavClick(event,'board-committees')">Committees</a>
-      <a href="#board-fundraising" onclick="boardNavClick(event,'board-fundraising')">Fundraising</a>
-      <a href="#board-programs"   onclick="boardNavClick(event,'board-programs')">Programs</a>
-      <a href="#board-comms"      onclick="boardNavClick(event,'board-comms')">Marketing</a>
-      <a href="#board-operations" onclick="boardNavClick(event,'board-operations')">Operations</a>
-      <a href="#board-messaging"  onclick="boardNavClick(event,'board-messaging')">💬 Messaging</a>
-    </div>
     <div class="board-sidebar-search">
       <input type="search" id="board-search-input" placeholder="Search sections…" oninput="boardSearch(this.value)" autocomplete="off" aria-label="Search board portal" />
       <button class="board-search-clear" id="board-search-clear" onclick="boardSearchClear()" aria-label="Clear search" type="button">✕</button>
+    </div>
+    <div class="board-sidebar-links" id="board-sidebar-links">
+      <a href="#board-messaging"  onclick="boardNavClick(event,'board-messaging')">💬 Messaging</a>
+      <a href="#board-directory"  onclick="boardNavClick(event,'board-directory')">Directory</a>
+      <a href="#board-committees" onclick="boardNavClick(event,'board-committees')">Committees</a>
+      <a href="#tracker-section"  onclick="boardNavClick(event,'tracker-section')">Conversations</a>
+      <a href="#board-finance"    onclick="boardNavClick(event,'board-finance')">Finance</a>
+      <a href="#board-fundraising" onclick="boardNavClick(event,'board-fundraising')">Fundraising</a>
+      <a href="#board-governance" onclick="boardNavClick(event,'board-governance')">Governance</a>
+      <a href="#board-comms"      onclick="boardNavClick(event,'board-comms')">Marketing</a>
+      <a href="#board-meetings"   class="bsnav-active" onclick="boardNavClick(event,'board-meetings')">Meetings</a>
+      <a href="#board-operations" onclick="boardNavClick(event,'board-operations')">Operations</a>
     </div>
   </nav>
   <div class="board-content">
@@ -587,7 +586,119 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   </div>
 
   <!-- Member Directory -->
-  <section class="section section--cream board-section" id="board-directory">
+
+  <!-- Board Messaging -->
+  <section class="section section--cream board-section" id="board-messaging">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:24px;">
+        <span class="subhead">Internal</span>
+        <h2>Board Messaging</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Real-time messaging for board members. Messages are private and visible only to authenticated members.</p>
+      </div>
+
+      <!-- Name setup prompt (shown on first visit) -->
+      <div id="chat-setup" style="display:none; max-width:480px; margin:0 auto 24px; background:var(--teal-light); border-radius:12px; padding:28px; border:1px solid var(--border); text-align:center;">
+        <div style="font-size:2rem; margin-bottom:12px;">👋</div>
+        <h3 style="font-size:1.1rem; color:var(--teal); margin-bottom:8px;">Set your display name</h3>
+        <p style="font-size:0.875rem; color:var(--text-light); margin-bottom:20px;">This is how you'll appear to other board members in chat. You can change it anytime.</p>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="chat-name-input" placeholder="Your name (e.g. Kate C.)"
+            style="flex:1; padding:10px 14px; border:1.5px solid var(--border); border-radius:8px; font-family:inherit; font-size:0.875rem; outline:none; transition:border-color 0.2s;"
+            maxlength="30" />
+          <button onclick="chatSetName()" style="padding:10px 20px; background:var(--teal); color:white; border:none; border-radius:8px; font-family:inherit; font-size:0.875rem; font-weight:600; cursor:pointer; white-space:nowrap; transition:background 0.15s;">Start chatting</button>
+        </div>
+      </div>
+
+      <!-- Chat interface -->
+      <div id="chat-app" style="display:none; border-radius:16px; border:1px solid var(--border); overflow:hidden; box-shadow:var(--shadow-sm); height:560px; display:none; flex-direction:column;">
+
+        <!-- Chat header -->
+        <div style="background:var(--teal-dark); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(200,146,42,0.22);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">💬</div>
+            <div>
+              <div style="font-family:'Source Serif 4',serif;font-size:1rem;font-weight:600;color:var(--white);line-height:1.2;">Board Messaging</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.55);margin-top:1px;" id="chat-status">Connecting…</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:0.72rem;color:rgba(255,255,255,0.5);">Signed in as</span>
+            <span id="chat-current-name" style="font-size:0.78rem;font-weight:600;color:var(--gold);"></span>
+            <button onclick="chatChangeName()" style="font-size:0.68rem;padding:3px 8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:rgba(255,255,255,0.6);cursor:pointer;font-family:inherit;transition:background 0.15s;">change</button>
+          </div>
+        </div>
+
+        <!-- Chat body -->
+        <div style="display:flex;flex:1;min-height:0;">
+
+          <!-- Channel list -->
+          <div style="width:185px;flex-shrink:0;background:var(--teal-dark);display:flex;flex-direction:column;padding:10px 0;overflow-y:auto;">
+            <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.4);padding:8px 14px 6px;">Channels</div>
+            <div class="chat-channel-btn"        data-channel="announcements" onclick="chatSwitchChannel('announcements')"><span class="ch-label">📣 Announcements</span><span class="chat-unread-badge" id="badge-announcements"></span></div>
+            <div class="chat-channel-btn"        data-channel="admin"         onclick="chatSwitchChannel('admin')"><span class="ch-label"># Admin</span><span class="chat-unread-badge" id="badge-admin"></span></div>
+            <div class="chat-channel-btn"        data-channel="fundraising"   onclick="chatSwitchChannel('fundraising')"><span class="ch-label"># Fundraising</span><span class="chat-unread-badge" id="badge-fundraising"></span></div>
+            <div class="chat-channel-btn active" data-channel="general"       onclick="chatSwitchChannel('general')"><span class="ch-label"># General</span><span class="chat-unread-badge" id="badge-general"></span></div>
+            <div class="chat-channel-btn"        data-channel="outreach"      onclick="chatSwitchChannel('outreach')"><span class="ch-label"># Outreach</span><span class="chat-unread-badge" id="badge-outreach"></span></div>
+            <div class="chat-channel-btn"        data-channel="research"      onclick="chatSwitchChannel('research')"><span class="ch-label"># Research</span><span class="chat-unread-badge" id="badge-research"></span></div>
+            <div class="chat-channel-btn"        data-channel="website"       onclick="chatSwitchChannel('website')"><span class="ch-label"># Website</span><span class="chat-unread-badge" id="badge-website"></span></div>
+            <!-- Search -->
+            <div style="padding:10px 10px 6px; border-top:1px solid rgba(255,255,255,0.1); margin-top:8px;">
+              <div style="position:relative;">
+                <input type="search" id="chat-channel-search" placeholder="Search messages…"
+                  oninput="chatSearchMessages(this.value)"
+                  style="width:100%;padding:6px 26px 6px 10px;border:1.5px solid rgba(255,255,255,0.18);border-radius:7px;font-family:inherit;font-size:0.75rem;background:rgba(255,255,255,0.08);color:white;outline:none;transition:border-color 0.2s;"
+                  autocomplete="off" />
+                <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:0.75rem;color:rgba(255,255,255,0.35);pointer-events:none;">🔍</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Messages + input -->
+          <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+
+            <!-- Channel header -->
+            <div style="padding:10px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <span style="font-size:0.95rem;opacity:0.4;">#</span>
+              <span id="chat-channel-label" style="font-size:0.88rem;font-weight:700;color:var(--teal);">general</span>
+            </div>
+
+            <!-- Messages scroll area -->
+            <div id="chat-messages" style="flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:1px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;"></div>
+
+            <!-- Compose -->
+            <div style="padding:12px 16px;border-top:1px solid var(--border);background:var(--white);flex-shrink:0;position:relative;">
+              <!-- @mention dropdown -->
+              <div class="mention-dropdown" id="mention-dropdown"></div>
+              <!-- File preview -->
+              <div id="chat-file-preview" style="display:none;align-items:center;gap:8px;margin-bottom:8px;padding:8px 12px;background:var(--teal-light);border-radius:8px;border:1px solid var(--border);">
+                <span style="font-size:1rem;">📎</span>
+                <span id="chat-file-name" style="font-size:0.8rem;font-weight:500;color:var(--teal);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+                <span id="chat-file-size" style="font-size:0.72rem;color:var(--text-light);"></span>
+                <button onclick="chatClearFile()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:2px 4px;border-radius:4px;" title="Remove file">✕</button>
+              </div>
+              <div id="chat-input-box" style="display:flex;align-items:flex-end;gap:8px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:8px 10px 8px 14px;transition:border-color 0.2s;">
+                <textarea id="chat-input" rows="1" placeholder="Message #general… (type @ to mention someone)"
+                  style="flex:1;border:none;outline:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;color:var(--text);resize:none;min-height:22px;max-height:100px;line-height:1.5;"
+                  oninput="chatMentionInput(event)"
+                  onkeydown="chatMentionKey(event)"></textarea>
+                <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+                  <input type="file" id="chat-file-input" style="display:none;" onchange="chatFileSelected(this)" accept="*/*" />
+                  <button onclick="document.getElementById('chat-file-input').click()" style="width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.12s;" title="Attach file">📎</button>
+                  <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
+                </div>
+              </div>
+              <div style="font-size:0.67rem;color:var(--text-light);margin-top:5px;padding-left:2px;">Enter to send · Shift+Enter for new line · 📎 to attach a file</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Member Directory -->
+  <section class="section section--white board-section" id="board-directory">
     <div class="container">
       <div class="section-header" style="margin-bottom:32px;">
         <span class="subhead">Contact</span>
@@ -683,111 +794,6 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     </div>
   </section>
 
-  <!-- Board Meeting Materials -->
-  <section class="section section--white board-section" id="board-meetings">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
-        <span class="subhead">Governance</span>
-        <h2>Board Meeting Materials</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Minutes, agendas, and presentation decks from board meetings and special sessions.</p>
-      <button class="section-upload-btn" onclick="docModalOpen('board-meetings','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
-      </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Minutes</h3>
-          <div data-doc-section="board-meetings" data-doc-sub="Meeting Minutes" >
-            <a href="../SETD5_1st_Meeting_Minutes.docx" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              SETD5 1st Meeting Minutes
-            </a>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Agendas</h3>
-          <div data-doc-section="board-meetings" data-doc-sub="Meeting Agendas" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Presentations</h3>
-          <div data-doc-section="board-meetings" data-doc-sub="Presentations" >
-            <a href="../SETD5_Founding_Meeting.pptx" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              SETD5 Founding Meeting
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Financial Documents -->
-  <section class="section section--cream board-section" id="board-finance">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
-        <span class="subhead">Finance</span>
-        <h2>Financial Documents</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Budgets, annual reports, tax filings, and audit materials for board review and compliance.</p>
-      <button class="section-upload-btn" onclick="docModalOpen('board-finance','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
-      </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Budgets &amp; Reports</h3>
-          <div data-doc-section="board-finance" data-doc-sub="Budgets & Reports" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Tax Filings</h3>
-          <div data-doc-section="board-finance" data-doc-sub="Tax Filings" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Audit &amp; Compliance</h3>
-          <div data-doc-section="board-finance" data-doc-sub="Audit & Compliance" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Governance Documents -->
-  <section class="section section--white board-section" id="board-governance">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
-        <span class="subhead">Policies</span>
-        <h2>Governance Documents</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Bylaws, organizational policies, and conflict of interest forms that guide how the foundation operates.</p>
-      <button class="section-upload-btn" onclick="docModalOpen('board-governance','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
-      </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Bylaws &amp; Articles</h3>
-          <div data-doc-section="board-governance" data-doc-sub="Bylaws & Articles" >
-            <a href="../SETD5_Certificate_of_Incorporation.pdf" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Certificate of Incorporation
-            </a>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Policies</h3>
-          <div data-doc-section="board-governance" data-doc-sub="Policies" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Conflict of Interest Forms</h3>
-          <div data-doc-section="board-governance" data-doc-sub="Conflict of Interest Forms" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Committee Documents -->
   <section class="section section--cream board-section" id="board-committees">
     <div class="container">
@@ -813,134 +819,6 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Other Committees</h3>
           <div data-doc-section="board-committees" data-doc-sub="Other Committees" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Fundraising & Development -->
-  <section class="section section--white board-section" id="board-fundraising">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
-        <span class="subhead">Development</span>
-        <h2>Fundraising &amp; Development</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Donor reports, grant applications, campaign materials, and fundraising strategy documents.</p>
-      <button class="section-upload-btn" onclick="docModalOpen('board-fundraising','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
-      </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Donor Reports</h3>
-          <div data-doc-section="board-fundraising" data-doc-sub="Donor Reports" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Funding Applications</h3>
-          <div data-doc-section="board-fundraising" data-doc-sub="Funding Applications" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Campaign Materials</h3>
-          <div data-doc-section="board-fundraising" data-doc-sub="Campaign Materials" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Programs & Grantmaking -->
-  <section class="section section--cream board-section" id="board-programs">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
-        <span class="subhead">Programs</span>
-        <h2>Programs &amp; Grantmaking</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Research grant agreements, program guidelines, grantee reports, and impact documentation.</p>
-      <button class="section-upload-btn" onclick="docModalOpen('board-programs','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
-      </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grant Agreements</h3>
-          <div data-doc-section="board-programs" data-doc-sub="Grant Agreements" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Program Guidelines</h3>
-          <div data-doc-section="board-programs" data-doc-sub="Program Guidelines" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grantee Reports</h3>
-          <div data-doc-section="board-programs" data-doc-sub="Grantee Reports" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Marketing -->
-  <section class="section section--white board-section" id="board-comms">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
-        <span class="subhead">Marketing</span>
-        <h2>Marketing</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Press releases, newsletter archives, social media plans, and brand assets for board awareness.</p>
-      <button class="section-upload-btn" onclick="docModalOpen('board-comms','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
-      </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Press Releases</h3>
-          <div data-doc-section="board-comms" data-doc-sub="Press Releases" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Newsletter Archives</h3>
-          <div data-doc-section="board-comms" data-doc-sub="Newsletter Archives" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Brand &amp; Media Assets</h3>
-          <div data-doc-section="board-comms" data-doc-sub="Brand & Media Assets" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Foundation Operations -->
-  <section class="section section--cream board-section" id="board-operations">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
-        <span class="subhead">Operations</span>
-        <h2>Foundation Operations</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Insurance, vendor contracts, HR documents, and day-to-day operational records for the foundation.</p>
-      <button class="section-upload-btn" onclick="docModalOpen('board-operations','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
-      </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Insurance &amp; Liability</h3>
-          <div data-doc-section="board-operations" data-doc-sub="Insurance & Liability" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Vendor Contracts</h3>
-          <div data-doc-section="board-operations" data-doc-sub="Vendor Contracts" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
-        </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">HR &amp; Personnel</h3>
-          <div data-doc-section="board-operations" data-doc-sub="HR & Personnel" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
@@ -1058,6 +936,220 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     </div>
   </section>
 
+  <!-- Finance -->
+  <section class="section section--cream board-section" id="board-finance">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Finance</span>
+        <h2>Financial Documents</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Budgets, annual reports, tax filings, and audit materials for board review and compliance.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-finance','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Budgets &amp; Reports</h3>
+          <div data-doc-section="board-finance" data-doc-sub="Budgets & Reports" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Tax Filings</h3>
+          <div data-doc-section="board-finance" data-doc-sub="Tax Filings" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Audit &amp; Compliance</h3>
+          <div data-doc-section="board-finance" data-doc-sub="Audit & Compliance" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fundraising & Development -->
+  <section class="section section--white board-section" id="board-fundraising">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Development</span>
+        <h2>Fundraising &amp; Development</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Donor reports, grant applications, campaign materials, and fundraising strategy documents.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-fundraising','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Donor Reports</h3>
+          <div data-doc-section="board-fundraising" data-doc-sub="Donor Reports" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Funding Applications</h3>
+          <div data-doc-section="board-fundraising" data-doc-sub="Funding Applications" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Campaign Materials</h3>
+          <div data-doc-section="board-fundraising" data-doc-sub="Campaign Materials" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grant Agreements</h3>
+          <div data-doc-section="board-fundraising" data-doc-sub="Grant Agreements" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grantee Reports</h3>
+          <div data-doc-section="board-fundraising" data-doc-sub="Grantee Reports" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Governance -->
+  <section class="section section--cream board-section" id="board-governance">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Policies</span>
+        <h2>Governance Documents</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Bylaws, organizational policies, and conflict of interest forms that guide how the foundation operates.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-governance','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Bylaws &amp; Articles</h3>
+          <div data-doc-section="board-governance" data-doc-sub="Bylaws & Articles" >
+            <a href="../SETD5_Certificate_of_Incorporation.pdf" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Certificate of Incorporation
+            </a>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Policies</h3>
+          <div data-doc-section="board-governance" data-doc-sub="Policies" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Conflict of Interest Forms</h3>
+          <div data-doc-section="board-governance" data-doc-sub="Conflict of Interest Forms" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marketing -->
+  <section class="section section--white board-section" id="board-comms">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Marketing</span>
+        <h2>Marketing</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Press releases, newsletter archives, social media plans, and brand assets for board awareness.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-comms','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Press Releases</h3>
+          <div data-doc-section="board-comms" data-doc-sub="Press Releases" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Newsletter Archives</h3>
+          <div data-doc-section="board-comms" data-doc-sub="Newsletter Archives" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Brand &amp; Media Assets</h3>
+          <div data-doc-section="board-comms" data-doc-sub="Brand & Media Assets" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Board Meetings -->
+  <section class="section section--cream board-section" id="board-meetings">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Governance</span>
+        <h2>Board Meeting Materials</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Minutes, agendas, and presentation decks from board meetings and special sessions.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-meetings','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Minutes</h3>
+          <div data-doc-section="board-meetings" data-doc-sub="Meeting Minutes" >
+            <a href="../SETD5_1st_Meeting_Minutes.docx" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              SETD5 1st Meeting Minutes
+            </a>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Agendas</h3>
+          <div data-doc-section="board-meetings" data-doc-sub="Meeting Agendas" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Presentations</h3>
+          <div data-doc-section="board-meetings" data-doc-sub="Presentations" >
+            <a href="../SETD5_Founding_Meeting.pptx" download style="padding:10px 14px; background:var(--cream); border-radius:8px; border-left:3px solid var(--teal); text-decoration:none; color:var(--teal); display:flex; align-items:center; gap:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14h12M8 2v8M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              SETD5 Founding Meeting
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Foundation Operations -->
+  <section class="section section--white board-section" id="board-operations">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Operations</span>
+        <h2>Foundation Operations</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Insurance, vendor contracts, HR documents, and day-to-day operational records for the foundation.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-operations','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
+      </div>
+      <div class="grid-3" style="align-items:start;">
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Insurance &amp; Liability</h3>
+          <div data-doc-section="board-operations" data-doc-sub="Insurance & Liability" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Vendor Contracts</h3>
+          <div data-doc-section="board-operations" data-doc-sub="Vendor Contracts" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+        <div class="card" style="padding:28px;">
+          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">HR &amp; Personnel</h3>
+          <div data-doc-section="board-operations" data-doc-sub="HR & Personnel" >
+            <div class="doc-empty">No documents yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
 
 <!-- ===== DOCUMENT UPLOAD MODAL ===== -->
 <div class="doc-upload-modal-bg" id="doc-upload-modal-bg" onclick="docModalClose(event)">
@@ -1100,115 +1192,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   </div>
 </div>
 
-  <!-- ===== BOARD MESSAGING ===== -->
-  <section class="section section--white board-section" id="board-messaging">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:24px;">
-        <span class="subhead">Internal</span>
-        <h2>Board Messaging</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Real-time messaging for board members. Messages are private and visible only to authenticated members.</p>
-      </div>
 
-      <!-- Name setup prompt (shown on first visit) -->
-      <div id="chat-setup" style="display:none; max-width:480px; margin:0 auto 24px; background:var(--teal-light); border-radius:12px; padding:28px; border:1px solid var(--border); text-align:center;">
-        <div style="font-size:2rem; margin-bottom:12px;">👋</div>
-        <h3 style="font-size:1.1rem; color:var(--teal); margin-bottom:8px;">Set your display name</h3>
-        <p style="font-size:0.875rem; color:var(--text-light); margin-bottom:20px;">This is how you'll appear to other board members in chat. You can change it anytime.</p>
-        <div style="display:flex; gap:10px;">
-          <input type="text" id="chat-name-input" placeholder="Your name (e.g. Kate C.)"
-            style="flex:1; padding:10px 14px; border:1.5px solid var(--border); border-radius:8px; font-family:inherit; font-size:0.875rem; outline:none; transition:border-color 0.2s;"
-            maxlength="30" />
-          <button onclick="chatSetName()" style="padding:10px 20px; background:var(--teal); color:white; border:none; border-radius:8px; font-family:inherit; font-size:0.875rem; font-weight:600; cursor:pointer; white-space:nowrap; transition:background 0.15s;">Start chatting</button>
-        </div>
-      </div>
-
-      <!-- Chat interface -->
-      <div id="chat-app" style="display:none; border-radius:16px; border:1px solid var(--border); overflow:hidden; box-shadow:var(--shadow-sm); height:560px; display:none; flex-direction:column;">
-
-        <!-- Chat header -->
-        <div style="background:var(--teal-dark); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="width:36px;height:36px;border-radius:10px;background:rgba(200,146,42,0.22);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">💬</div>
-            <div>
-              <div style="font-family:'Source Serif 4',serif;font-size:1rem;font-weight:600;color:var(--white);line-height:1.2;">Board Messaging</div>
-              <div style="font-size:0.72rem;color:rgba(255,255,255,0.55);margin-top:1px;" id="chat-status">Connecting…</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="font-size:0.72rem;color:rgba(255,255,255,0.5);">Signed in as</span>
-            <span id="chat-current-name" style="font-size:0.78rem;font-weight:600;color:var(--gold);"></span>
-            <button onclick="chatChangeName()" style="font-size:0.68rem;padding:3px 8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:rgba(255,255,255,0.6);cursor:pointer;font-family:inherit;transition:background 0.15s;">change</button>
-          </div>
-        </div>
-
-        <!-- Chat body -->
-        <div style="display:flex;flex:1;min-height:0;">
-
-          <!-- Channel list -->
-          <div style="width:185px;flex-shrink:0;background:var(--teal-dark);display:flex;flex-direction:column;padding:10px 0;overflow-y:auto;">
-            <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.4);padding:8px 14px 6px;">Channels</div>
-            <div class="chat-channel-btn"        data-channel="announcements" onclick="chatSwitchChannel('announcements')"><span class="ch-label">📣 Announcements</span><span class="chat-unread-badge" id="badge-announcements"></span></div>
-            <div class="chat-channel-btn"        data-channel="admin"         onclick="chatSwitchChannel('admin')"><span class="ch-label"># Admin</span><span class="chat-unread-badge" id="badge-admin"></span></div>
-            <div class="chat-channel-btn"        data-channel="fundraising"   onclick="chatSwitchChannel('fundraising')"><span class="ch-label"># Fundraising</span><span class="chat-unread-badge" id="badge-fundraising"></span></div>
-            <div class="chat-channel-btn active" data-channel="general"       onclick="chatSwitchChannel('general')"><span class="ch-label"># General</span><span class="chat-unread-badge" id="badge-general"></span></div>
-            <div class="chat-channel-btn"        data-channel="outreach"      onclick="chatSwitchChannel('outreach')"><span class="ch-label"># Outreach</span><span class="chat-unread-badge" id="badge-outreach"></span></div>
-            <div class="chat-channel-btn"        data-channel="research"      onclick="chatSwitchChannel('research')"><span class="ch-label"># Research</span><span class="chat-unread-badge" id="badge-research"></span></div>
-            <div class="chat-channel-btn"        data-channel="website"       onclick="chatSwitchChannel('website')"><span class="ch-label"># Website</span><span class="chat-unread-badge" id="badge-website"></span></div>
-            <!-- Search -->
-            <div style="padding:10px 10px 6px; border-top:1px solid rgba(255,255,255,0.1); margin-top:8px;">
-              <div style="position:relative;">
-                <input type="search" id="chat-channel-search" placeholder="Search messages…"
-                  oninput="chatSearchMessages(this.value)"
-                  style="width:100%;padding:6px 26px 6px 10px;border:1.5px solid rgba(255,255,255,0.18);border-radius:7px;font-family:inherit;font-size:0.75rem;background:rgba(255,255,255,0.08);color:white;outline:none;transition:border-color 0.2s;"
-                  autocomplete="off" />
-                <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:0.75rem;color:rgba(255,255,255,0.35);pointer-events:none;">🔍</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Messages + input -->
-          <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
-
-            <!-- Channel header -->
-            <div style="padding:10px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-shrink:0;">
-              <span style="font-size:0.95rem;opacity:0.4;">#</span>
-              <span id="chat-channel-label" style="font-size:0.88rem;font-weight:700;color:var(--teal);">general</span>
-            </div>
-
-            <!-- Messages scroll area -->
-            <div id="chat-messages" style="flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:1px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;"></div>
-
-            <!-- Compose -->
-            <div style="padding:12px 16px;border-top:1px solid var(--border);background:var(--white);flex-shrink:0;position:relative;">
-              <!-- @mention dropdown -->
-              <div class="mention-dropdown" id="mention-dropdown"></div>
-              <!-- File preview -->
-              <div id="chat-file-preview" style="display:none;align-items:center;gap:8px;margin-bottom:8px;padding:8px 12px;background:var(--teal-light);border-radius:8px;border:1px solid var(--border);">
-                <span style="font-size:1rem;">📎</span>
-                <span id="chat-file-name" style="font-size:0.8rem;font-weight:500;color:var(--teal);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
-                <span id="chat-file-size" style="font-size:0.72rem;color:var(--text-light);"></span>
-                <button onclick="chatClearFile()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:2px 4px;border-radius:4px;" title="Remove file">✕</button>
-              </div>
-              <div id="chat-input-box" style="display:flex;align-items:flex-end;gap:8px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:8px 10px 8px 14px;transition:border-color 0.2s;">
-                <textarea id="chat-input" rows="1" placeholder="Message #general… (type @ to mention someone)"
-                  style="flex:1;border:none;outline:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;color:var(--text);resize:none;min-height:22px;max-height:100px;line-height:1.5;"
-                  oninput="chatMentionInput(event)"
-                  onkeydown="chatMentionKey(event)"></textarea>
-                <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
-                  <input type="file" id="chat-file-input" style="display:none;" onchange="chatFileSelected(this)" accept="*/*" />
-                  <button onclick="document.getElementById('chat-file-input').click()" style="width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.12s;" title="Attach file">📎</button>
-                  <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
-                </div>
-              </div>
-              <div style="font-size:0.67rem;color:var(--text-light);margin-top:5px;padding-left:2px;">Enter to send · Shift+Enter for new line · 📎 to attach a file</div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
 
 </main>
 
@@ -1294,8 +1278,8 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 
   // ===== BOARD SUB-NAV =====
   var BOARD_SECTIONS = [
-    'board-meetings','board-finance','board-governance','board-committees',
-    'board-fundraising','board-programs','board-comms','board-operations','tracker-section','board-messaging'
+    'board-messaging','board-directory','board-committees','tracker-section',
+    'board-finance','board-fundraising','board-governance','board-comms','board-meetings','board-operations'
   ];
   var _boardObserver = null;
   var _boardNavScrolling = false;
@@ -1612,8 +1596,7 @@ const DOC_SECTIONS = {
   'board-finance':     { label: 'Financial Documents',       subs: ['Budgets & Reports','Tax Filings','Audit & Compliance'] },
   'board-governance':  { label: 'Governance Documents',      subs: ['Bylaws & Articles','Policies','Conflict of Interest Forms'] },
   'board-committees':  { label: 'Committee Documents',       subs: ['Research Committee','Finance Committee','Other Committees'] },
-  'board-fundraising': { label: 'Fundraising & Development', subs: ['Donor Reports','Funding Applications','Campaign Materials'] },
-  'board-programs':    { label: 'Programs & Grantmaking',    subs: ['Grant Agreements','Program Guidelines','Grantee Reports'] },
+  'board-fundraising': { label: 'Fundraising & Development', subs: ['Donor Reports','Funding Applications','Campaign Materials','Grant Agreements','Grantee Reports'] },
   'board-comms':       { label: 'Marketing', subs: ['Press Releases','Newsletter Archives','Brand & Media Assets'] },
   'board-operations':  { label: 'Foundation Operations',     subs: ['Insurance & Liability','Vendor Contracts','HR & Personnel'] },
 };
@@ -1974,10 +1957,11 @@ function escapeHtml(str) {
 // ── @mention system ───────────────────────────────────────────────────────────
 // Board member registry — name, email, initials, colour
 const BOARD_MEMBERS = [
-  { name: 'Kate Carr',        email: 'kate@fourrootsranch.com', initials: 'KC', color: '#c8922a' },
-  { name: 'Jennifer Barnett', email: '',                        initials: 'JB', color: '#1a5c5a' },
-  { name: 'Rachel S.',        email: '',                        initials: 'RS', color: '#5b7fa6' },
-  { name: 'Taryn M.',         email: '',                        initials: 'TM', color: '#7b5ea7' },
+  { name: 'Kate Carr',          email: 'katecarr@mac.com',           initials: 'KC', color: '#c8922a' },
+  { name: 'Taryn Mildenhall',   email: 'tarynmildenhall@gmail.com',  initials: 'TM', color: '#7b5ea7' },
+  { name: 'Laura Biazon',       email: 'laura.biazon19@gmail.com',   initials: 'LB', color: '#1a5c5a' },
+  { name: 'Samantha Cotter',    email: 'scotter424@gmail.com',       initials: 'SC', color: '#5b7fa6' },
+  { name: 'Amy Kreller-Kochis', email: 'kochismedical@gmail.com',    initials: 'AK', color: '#c0555a' },
 ];
 window.BOARD_MEMBERS = BOARD_MEMBERS;   // expose for config
 
@@ -2098,9 +2082,9 @@ function extractMentions(text) {
 
 // ── EmailJS notifications ─────────────────────────────────────────────────────
 // Set these after configuring EmailJS at emailjs.com
-const EMAILJS_SERVICE_ID  = '';   // e.g. 'service_xxxxxxx'
-const EMAILJS_TEMPLATE_ID = '';   // e.g. 'template_xxxxxxx'
-const EMAILJS_PUBLIC_KEY  = '';   // e.g. 'xxxxxxxxxxxxxxxx'
+const EMAILJS_SERVICE_ID  = 'service_7mrdcul';
+const EMAILJS_TEMPLATE_ID = 'template_kx0n1a4';
+const EMAILJS_PUBLIC_KEY  = '6pg6N6BN0V5OZM8MG';
 
 async function sendMentionEmails(mentionedMembers, senderName, messageText, channel) {
   if (!EMAILJS_SERVICE_ID || !EMAILJS_PUBLIC_KEY) return;   // not configured yet
