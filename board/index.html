@@ -465,6 +465,22 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .chat-date-divider::before,.chat-date-divider::after { content:'';flex:1;height:1px;background:var(--border); }
   .chat-empty { text-align:center;padding:40px 20px;color:var(--text-light);font-size:0.875rem; }
   .chat-loading { text-align:center;padding:20px;color:var(--text-light);font-size:0.82rem; }
+  /* Message action menu */
+  .chat-msg-row { position:relative; }
+  .chat-msg-actions { position:absolute;right:8px;top:6px;display:none;gap:3px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+  .chat-msg-row:hover .chat-msg-actions { display:flex; }
+  .chat-action-btn { font-size:0.72rem;padding:3px 8px;border:none;background:none;border-radius:5px;cursor:pointer;font-family:inherit;color:var(--text-light);transition:background 0.12s,color 0.12s;white-space:nowrap; }
+  .chat-action-btn:hover { background:var(--teal-light);color:var(--teal); }
+  .chat-action-btn.delete:hover { background:#fef2f2;color:#dc2626; }
+  /* Inline edit */
+  .chat-edit-area { margin-top:4px; }
+  .chat-edit-input { width:100%;padding:6px 10px;border:1.5px solid var(--teal);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;outline:none;resize:none;line-height:1.5;min-height:36px; }
+  .chat-edit-btns { display:flex;gap:6px;margin-top:5px; }
+  .chat-edit-save { padding:4px 12px;background:var(--teal);color:white;border:none;border-radius:6px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s; }
+  .chat-edit-save:hover { background:var(--teal-dark); }
+  .chat-edit-cancel { padding:4px 10px;background:none;border:1px solid var(--border);border-radius:6px;font-size:0.78rem;cursor:pointer;font-family:inherit;color:var(--text-light);transition:border-color 0.15s; }
+  .chat-edit-cancel:hover { border-color:var(--teal);color:var(--teal); }
+  .chat-msg-edited { font-size:0.65rem;color:var(--text-light);margin-left:6px;font-style:italic; }
 </style>
 </head>
 <body>
@@ -1688,7 +1704,8 @@ document.addEventListener('DOMContentLoaded', docRender);
 import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getFirestore, collection, addDoc,
          query, orderBy, limit, onSnapshot,
-         serverTimestamp }                        from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+         serverTimestamp, doc, updateDoc,
+         deleteDoc }                              from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey:            "AIzaSyD5imh_WikBHbTufh0os2a7nxgqEDFKmb4",
@@ -1824,26 +1841,35 @@ function renderMessages(snapshot) {
   let   lastDate = '';
 
   docs.forEach(msg => {
-    const ts     = msg.ts ? msg.ts.toDate() : new Date();
+    const ts      = msg.ts ? msg.ts.toDate() : new Date();
     const dateStr = ts.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
     const timeStr = ts.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
     const author  = msg.author || 'Unknown';
     const color   = nameToColor(author);
     const initials = nameToInitials(author);
     const text    = escapeHtml(msg.text || '');
+    const isOwn   = author === chatUserName;
+    const edited  = msg.edited ? '<span class="chat-msg-edited">(edited)</span>' : '';
 
     if (dateStr !== lastDate) {
       lastDate = dateStr;
       html += `<div class="chat-date-divider"><span>${dateStr}</span></div>`;
     }
 
+    const actions = isOwn ? `
+      <div class="chat-msg-actions">
+        <button class="chat-action-btn" onclick="chatEditMessage('${msg.id}', this)">Edit</button>
+        <button class="chat-action-btn delete" onclick="chatDeleteMessage('${msg.id}')">Delete</button>
+      </div>` : '';
+
     html += `
-      <div class="chat-msg-row">
+      <div class="chat-msg-row" data-msg-id="${msg.id}">
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
-          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span></div>
-          <div class="chat-msg-text">${text}</div>
+          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}</div>
+          <div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>
         </div>
+        ${actions}
       </div>`;
   });
 
@@ -1883,6 +1909,74 @@ function chatKeyDown(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     chatSend();
+  }
+}
+
+// ── Edit & delete ─────────────────────────────────────────────────────────────
+window.chatEditMessage  = chatEditMessage;
+window.chatSaveEdit     = chatSaveEdit;
+window.chatCancelEdit   = chatCancelEdit;
+window.chatDeleteMessage = chatDeleteMessage;
+
+function chatEditMessage(msgId, btn) {
+  const row     = btn.closest('.chat-msg-row');
+  const textDiv = row.querySelector('.chat-msg-text');
+  if (!textDiv || row.querySelector('.chat-edit-area')) return; // already editing
+  const original = textDiv.dataset.original || textDiv.textContent;
+  textDiv.style.display = 'none';
+  row.querySelector('.chat-msg-actions').style.display = 'none';
+  const area = document.createElement('div');
+  area.className = 'chat-edit-area';
+  area.innerHTML = `
+    <textarea class="chat-edit-input" rows="2">${original.replace(/</g,'&lt;')}</textarea>
+    <div class="chat-edit-btns">
+      <button class="chat-edit-save"   onclick="chatSaveEdit('${msgId}', this)">Save</button>
+      <button class="chat-edit-cancel" onclick="chatCancelEdit(this)">Cancel</button>
+    </div>`;
+  textDiv.after(area);
+  const ta = area.querySelector('textarea');
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+  ta.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatSaveEdit(msgId, ta); }
+    if (e.key === 'Escape') chatCancelEdit(ta);
+  });
+}
+
+async function chatSaveEdit(msgId, el) {
+  const row  = el.closest('.chat-msg-row');
+  const area = row.querySelector('.chat-edit-area');
+  const ta   = area.querySelector('textarea');
+  const newText = ta.value.trim();
+  if (!newText) return;
+  try {
+    await updateDoc(doc(db, 'channels', currentChannel, 'messages', msgId), {
+      text: newText, edited: true
+    });
+    // snapshot listener will re-render
+  } catch (err) {
+    console.error('Edit error:', err);
+    alert('Could not save edit. Please try again.');
+  }
+}
+
+function chatCancelEdit(el) {
+  const row     = el.closest('.chat-msg-row');
+  const area    = row.querySelector('.chat-edit-area');
+  const textDiv = row.querySelector('.chat-msg-text');
+  const actions = row.querySelector('.chat-msg-actions');
+  if (area)    area.remove();
+  if (textDiv) textDiv.style.display = '';
+  if (actions) actions.style.display = '';
+}
+
+async function chatDeleteMessage(msgId) {
+  if (!confirm('Delete this message? This cannot be undone.')) return;
+  try {
+    await deleteDoc(doc(db, 'channels', currentChannel, 'messages', msgId));
+  } catch (err) {
+    console.error('Delete error:', err);
+    alert('Could not delete message. Please try again.');
   }
 }
 
