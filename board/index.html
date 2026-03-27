@@ -755,6 +755,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     </div>
     <div class="board-sidebar-links" id="board-sidebar-links">
       <a href="#board-messaging"  onclick="boardNavClick(event,'board-messaging')">💬 Messaging</a>
+      <a href="#board-inbox" onclick="boardNavClick(event,'board-inbox')" id="inbox-nav-link" style="display:flex;align-items:center;gap:6px;">📥 Doc Inbox <span id="inbox-nav-badge" style="display:none;background:var(--coral);color:white;font-size:0.65rem;font-weight:700;padding:1px 7px;border-radius:10px;line-height:1.6;"></span></a>
       <a href="#board-directory"  onclick="boardNavClick(event,'board-directory')">Directory</a>
       <a href="#board-committees" onclick="boardNavClick(event,'board-committees')">Committees</a>
       <a href="#tracker-section"  onclick="boardNavClick(event,'tracker-section')">Outreach Log</a>
@@ -1398,6 +1399,24 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 
 
 
+<!-- ===== DOCUMENT INBOX ===== -->
+<section class="section section--cream board-section" id="board-inbox">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:24px;">
+      <span class="subhead">Internal</span>
+      <h2>Document Inbox</h2>
+      <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Not sure where a document belongs? Drop it here with a note. Pick a suggested section and it'll be filed automatically — or leave it for Kate to sort.</p>
+    </div>
+    <div style="margin-bottom:20px;">
+      <button class="section-upload-btn" onclick="inboxModalOpen()"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Add to Inbox</button>
+    </div>
+    <div id="inbox-list" style="display:flex;flex-direction:column;gap:10px;">
+      <div id="inbox-empty" style="color:var(--text-light);font-size:0.9rem;padding:16px 0;">No items in the inbox — you're all caught up!</div>
+    </div>
+  </div>
+</section>
+
+
 <!-- ===== DOCUMENT UPLOAD MODAL ===== -->
 <div class="doc-upload-modal-bg" id="doc-upload-modal-bg" onclick="docModalClose(event)">
   <div class="doc-upload-modal" onclick="event.stopPropagation()">
@@ -1439,6 +1458,74 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   </div>
 </div>
 
+
+<!-- ===== INBOX UPLOAD MODAL ===== -->
+<div class="doc-upload-modal-bg" id="inbox-upload-modal-bg" onclick="inboxModalClose(event)">
+  <div class="doc-upload-modal" onclick="event.stopPropagation()">
+    <h3>Add to Document Inbox</h3>
+    <div class="doc-upload-field">
+      <label>Document Name</label>
+      <input type="text" id="inbox-name-input" placeholder="e.g. Q1 Donor Summary" />
+    </div>
+    <div class="doc-upload-field">
+      <label>What's this about? <span style="font-weight:400;color:var(--text-light);">(helps with sorting)</span></label>
+      <input type="text" id="inbox-note-input" placeholder="e.g. Received from Sarah — looks like a finance doc" />
+    </div>
+    <div class="doc-upload-field">
+      <label>Suggested section <span style="font-weight:400;color:var(--text-light);">(auto-files if you pick one + category)</span></label>
+      <select id="inbox-sec-select" onchange="inboxUpdateSubs()">
+        <option value="">I'm not sure — add to inbox</option>
+      </select>
+    </div>
+    <div class="doc-upload-field" id="inbox-sub-field" style="display:none;">
+      <label>Category</label>
+      <select id="inbox-sub-select"></select>
+    </div>
+    <div class="doc-upload-field">
+      <label>Date</label>
+      <input type="date" id="inbox-date-input" />
+    </div>
+    <div class="doc-upload-field">
+      <label>File <span style="font-weight:400;color:var(--text-light);">(max 20 MB)</span></label>
+      <div class="doc-upload-zone" id="inbox-upload-zone">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3-3 3 3M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Choose a file or drag it here
+        <input type="file" id="inbox-file-input" accept=".pdf,.doc,.docx,.pptx,.xlsx,.txt,.png,.jpg" onchange="inboxFileChosen(this)">
+      </div>
+      <div class="doc-upload-chosen" id="inbox-upload-chosen">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="#c96a38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="inbox-chosen-name"></span>
+        <button class="doc-upload-clear" onclick="inboxFileClear()" type="button">✕</button>
+      </div>
+    </div>
+    <div class="doc-upload-actions">
+      <button class="btn btn-primary" onclick="inboxSave()">Upload</button>
+      <button class="btn btn-outline" onclick="inboxModalClose()">Cancel</button>
+      <span class="doc-upload-msg" id="inbox-upload-msg" style="display:none;"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== INBOX FILE-IT MODAL ===== -->
+<div class="doc-upload-modal-bg" id="inbox-fileit-modal-bg" onclick="inboxFileItClose(event)">
+  <div class="doc-upload-modal" onclick="event.stopPropagation()">
+    <h3>File This Document</h3>
+    <p id="inbox-fileit-doc-name" style="font-size:0.875rem;color:var(--text-light);margin-bottom:16px;font-style:italic;"></p>
+    <div class="doc-upload-field">
+      <label>Section</label>
+      <select id="inbox-fileit-sec" onchange="inboxFileItUpdateSubs()"></select>
+    </div>
+    <div class="doc-upload-field">
+      <label>Category</label>
+      <select id="inbox-fileit-sub"></select>
+    </div>
+    <div class="doc-upload-actions">
+      <button class="btn btn-primary" onclick="inboxFileItSave()">Move to Section</button>
+      <button class="btn btn-outline" onclick="inboxFileItClose()">Cancel</button>
+      <span class="doc-upload-msg" id="inbox-fileit-msg" style="display:none;"></span>
+    </div>
+  </div>
+</div>
 
 
 </main>
@@ -2753,6 +2840,210 @@ async function docSave() {
   }
 }
 window.docSave = docSave;
+
+// ═══════════════════════════════════════════════
+// DOCUMENT INBOX
+// ═══════════════════════════════════════════════
+
+let inboxEntries = [];
+const inboxColRef = collection(db, 'board_inbox');
+onSnapshot(query(inboxColRef, orderBy('createdAt', 'desc')), snap => {
+  inboxEntries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  inboxRender();
+}, err => console.error('Inbox error:', err));
+
+function inboxRender() {
+  const list  = document.getElementById('inbox-list');
+  const empty = document.getElementById('inbox-empty');
+  const badge = document.getElementById('inbox-nav-badge');
+  list.querySelectorAll('.inbox-item').forEach(el => el.remove());
+  if (badge) {
+    if (inboxEntries.length > 0) { badge.style.display = ''; badge.textContent = inboxEntries.length; }
+    else { badge.style.display = 'none'; }
+  }
+  inboxEntries.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'inbox-item';
+    div.style.cssText = 'background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:flex-start;gap:14px;';
+    const fileLink = item.fileURL
+      ? `<a href="${item.fileURL}" target="_blank" rel="noopener" style="font-size:0.8rem;color:var(--teal);text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:4px;"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M14 8.5l-6.5 6.5A4 4 0 012 9.5l7-7a2.5 2.5 0 013.5 3.5L6 12.5A1 1 0 014.5 11L10 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>${escapeHtml(item.fileName || 'View file')}</a>`
+      : '';
+    const noteTxt = item.note ? `<div style="font-size:0.82rem;color:var(--text-light);margin-top:3px;">${escapeHtml(item.note)}</div>` : '';
+    const dateTxt = item.date ? `<span style="font-size:0.78rem;color:var(--text-light);">${item.date}</span>` : '';
+    div.innerHTML = `
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:600;font-size:0.93rem;color:var(--text);">${escapeHtml(item.name)}</div>
+        ${noteTxt}
+        ${fileLink}
+        ${dateTxt}
+      </div>
+      <div style="display:flex;gap:8px;flex-shrink:0;align-items:center;margin-top:2px;">
+        <button onclick="inboxFileItOpen('${item.id}')" style="font-size:0.78rem;font-weight:600;padding:5px 12px;border-radius:6px;border:none;background:var(--teal);color:white;cursor:pointer;">File It</button>
+        <button onclick="inboxDelete('${item.id}')" style="font-size:0.78rem;padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--text-light);cursor:pointer;">✕</button>
+      </div>`;
+    list.appendChild(div);
+  });
+  if (empty) empty.style.display = inboxEntries.length === 0 ? '' : 'none';
+}
+window.inboxRender = inboxRender;
+
+async function inboxDelete(id) {
+  if (!confirm('Remove this item from the inbox?')) return;
+  try { await deleteDoc(doc(db, 'board_inbox', id)); }
+  catch (err) { console.error('Inbox delete error:', err); alert('Could not remove item. Please try again.'); }
+}
+window.inboxDelete = inboxDelete;
+
+function inboxModalOpen() {
+  const secSel = document.getElementById('inbox-sec-select');
+  secSel.innerHTML = '<option value="">I\'m not sure — add to inbox</option>';
+  Object.entries(DOC_SECTIONS).forEach(([id, info]) => {
+    const opt = document.createElement('option');
+    opt.value = id; opt.textContent = info.label;
+    secSel.appendChild(opt);
+  });
+  document.getElementById('inbox-sub-field').style.display = 'none';
+  document.getElementById('inbox-name-input').value = '';
+  document.getElementById('inbox-note-input').value = '';
+  document.getElementById('inbox-date-input').value = new Date().toISOString().slice(0,10);
+  inboxFileClear();
+  document.getElementById('inbox-upload-modal-bg').classList.add('open');
+}
+window.inboxModalOpen = inboxModalOpen;
+
+function inboxModalClose(e) {
+  if (e && e.target !== document.getElementById('inbox-upload-modal-bg')) return;
+  document.getElementById('inbox-upload-modal-bg').classList.remove('open');
+}
+window.inboxModalClose = inboxModalClose;
+
+function inboxUpdateSubs() {
+  const sec = document.getElementById('inbox-sec-select').value;
+  const subField = document.getElementById('inbox-sub-field');
+  const subSel = document.getElementById('inbox-sub-select');
+  if (!sec) { subField.style.display = 'none'; return; }
+  subSel.innerHTML = '<option value="">— Select category —</option>';
+  (DOC_SECTIONS[sec]?.subs || []).forEach(s => {
+    const opt = document.createElement('option'); opt.value = s; opt.textContent = s; subSel.appendChild(opt);
+  });
+  subField.style.display = '';
+}
+window.inboxUpdateSubs = inboxUpdateSubs;
+
+function inboxFileChosen(input) {
+  const file = input.files[0]; if (!file) return;
+  document.getElementById('inbox-upload-zone').style.opacity = '0.4';
+  document.getElementById('inbox-upload-chosen').classList.add('visible');
+  document.getElementById('inbox-chosen-name').textContent = file.name;
+}
+window.inboxFileChosen = inboxFileChosen;
+
+function inboxFileClear() {
+  const inp = document.getElementById('inbox-file-input'); if (inp) inp.value = '';
+  document.getElementById('inbox-upload-zone').style.opacity = '';
+  document.getElementById('inbox-upload-chosen').classList.remove('visible');
+  document.getElementById('inbox-chosen-name').textContent = '';
+}
+window.inboxFileClear = inboxFileClear;
+
+async function inboxSave() {
+  const name    = document.getElementById('inbox-name-input').value.trim();
+  const note    = document.getElementById('inbox-note-input').value.trim();
+  const sec     = document.getElementById('inbox-sec-select').value;
+  const sub     = document.getElementById('inbox-sub-select').value;
+  const date    = document.getElementById('inbox-date-input').value;
+  const file    = document.getElementById('inbox-file-input').files[0];
+  const msgEl   = document.getElementById('inbox-upload-msg');
+  if (!name) { msgEl.textContent = 'Please enter a document name.'; msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 3000); return; }
+  if (file && file.size > 20 * 1024 * 1024) { msgEl.textContent = 'File is too large (max 20 MB).'; msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 3000); return; }
+  const saveBtn = document.querySelector('#inbox-upload-modal-bg .btn-primary');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Uploading…'; }
+  try {
+    let fileURL = null; let fileName = null;
+    if (file) {
+      const storageRef = ref(storage, `board-inbox/${Date.now()}_${file.name}`);
+      fileURL = await new Promise((resolve, reject) => {
+        const task = uploadBytesResumable(storageRef, file);
+        task.on('state_changed', null, reject, async () => resolve(await getDownloadURL(storageRef)));
+      });
+      fileName = file.name;
+    }
+    // Auto-file if section AND sub both chosen
+    const targetCol = (sec && sub) ? docColRef : inboxColRef;
+    const docData = { name, note, date, createdAt: serverTimestamp() };
+    if (sec && sub) { docData.section = sec; docData.sub = sub; }
+    if (fileURL) { docData.fileURL = fileURL; docData.fileName = fileName; }
+    await addDoc(targetCol, docData);
+    document.getElementById('inbox-upload-modal-bg').classList.remove('open');
+    if (sec && sub) {
+      const label = DOC_SECTIONS[sec]?.label || sec;
+      setTimeout(() => alert(`✅ Filed directly to ${label} › ${sub}`), 200);
+    }
+  } catch (err) {
+    console.error('Inbox save error:', err);
+    msgEl.textContent = 'Upload failed. Please try again.'; msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 4000);
+  } finally {
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Upload'; }
+  }
+}
+window.inboxSave = inboxSave;
+
+let inboxFileItId = null;
+function inboxFileItOpen(id) {
+  inboxFileItId = id;
+  const item = inboxEntries.find(e => e.id === id); if (!item) return;
+  document.getElementById('inbox-fileit-doc-name').textContent = item.name;
+  const secSel = document.getElementById('inbox-fileit-sec');
+  secSel.innerHTML = '';
+  Object.entries(DOC_SECTIONS).forEach(([sid, info]) => {
+    const opt = document.createElement('option'); opt.value = sid; opt.textContent = info.label; secSel.appendChild(opt);
+  });
+  inboxFileItUpdateSubs();
+  document.getElementById('inbox-fileit-modal-bg').classList.add('open');
+}
+window.inboxFileItOpen = inboxFileItOpen;
+
+function inboxFileItUpdateSubs() {
+  const sec = document.getElementById('inbox-fileit-sec').value;
+  const subSel = document.getElementById('inbox-fileit-sub');
+  subSel.innerHTML = '<option value="">— Select category —</option>';
+  (DOC_SECTIONS[sec]?.subs || []).forEach(s => {
+    const opt = document.createElement('option'); opt.value = s; opt.textContent = s; subSel.appendChild(opt);
+  });
+}
+window.inboxFileItUpdateSubs = inboxFileItUpdateSubs;
+
+function inboxFileItClose(e) {
+  if (e && e.target !== document.getElementById('inbox-fileit-modal-bg')) return;
+  document.getElementById('inbox-fileit-modal-bg').classList.remove('open');
+  inboxFileItId = null;
+}
+window.inboxFileItClose = inboxFileItClose;
+
+async function inboxFileItSave() {
+  const sec = document.getElementById('inbox-fileit-sec').value;
+  const sub = document.getElementById('inbox-fileit-sub').value;
+  const msgEl = document.getElementById('inbox-fileit-msg');
+  if (!sec || !sub) { msgEl.textContent = 'Please select a section and category.'; msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 3000); return; }
+  const item = inboxEntries.find(e => e.id === inboxFileItId); if (!item) return;
+  const saveBtn = document.querySelector('#inbox-fileit-modal-bg .btn-primary');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Moving…'; }
+  try {
+    const docData = { section: sec, sub, name: item.name, date: item.date || '', createdAt: serverTimestamp() };
+    if (item.fileURL)  { docData.fileURL  = item.fileURL; }
+    if (item.fileName) { docData.fileName = item.fileName; }
+    await addDoc(docColRef, docData);
+    await deleteDoc(doc(db, 'board_inbox', inboxFileItId));
+    document.getElementById('inbox-fileit-modal-bg').classList.remove('open');
+    inboxFileItId = null;
+  } catch (err) {
+    console.error('File-it error:', err);
+    msgEl.textContent = 'Could not move document. Please try again.'; msgEl.style.display = 'inline'; setTimeout(() => msgEl.style.display = 'none', 4000);
+  } finally {
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Move to Section'; }
+  }
+}
+window.inboxFileItSave = inboxFileItSave;
 </script>
 
 </body>
