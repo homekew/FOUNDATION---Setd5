@@ -456,53 +456,188 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .page-banner h1 { font-size: 1.9rem; }
   .page-banner { padding: 48px 0 56px; }
 }
+/* ===================================================
+   MOBILE CHAT — ≤768px
+   Text / tap-target pass. Structural layout below.
+   Desktop (>768px) is completely unaffected.
+   =================================================== */
+@media (max-width: 768px) {
+  /* 16px minimum for all chat reading surfaces */
+  .chat-msg-text  { font-size: 1rem !important; line-height: 1.65 !important; }
+  .chat-msg-author { font-size: 0.8rem !important; }
+  .chat-msg-time   { font-size: 0.68rem !important; }
+  .chat-edit-input { font-size: 1rem !important; line-height: 1.5 !important; }
+  .chat-empty  { font-size: 1rem !important; padding: 48px 24px !important; }
+  .chat-loading { font-size: 0.9rem !important; }
+  /* Roomier bubbles at tablet+ */
+  .chat-msg-row.mine  .chat-msg-text { padding: 11px 16px !important; max-width: 86% !important; }
+  .chat-msg-row.other .chat-msg-text { padding: 11px 16px !important; max-width: 86% !important; }
+  /* Override the inline gap:1px on #chat-messages */
+  #chat-messages { gap: 10px !important; }
+  /* Input / compose: prevent iOS auto-zoom (needs ≥16px) */
+  #chat-input { font-size: 1rem !important; line-height: 1.5 !important; }
+  /* Send button: minimum 44px tap target */
+  [title="Send message"] { width: 44px !important; height: 44px !important; border-radius: 12px !important; font-size: 1.1rem !important; }
+  /* Attach button: minimum 44px tap target */
+  [title="Attach file"] { width: 40px !important; height: 44px !important; font-size: 1.1rem !important; }
+  /* Date dividers: slightly more breathing room */
+  .chat-date-divider { margin: 14px 0 8px !important; font-size: 0.7rem !important; }
+}
+
+/* ===================================================
+   MOBILE CHAT — ≤640px
+   Structural: full-screen frame, stacked channel tabs,
+   Messenger-style bubbles, all mobile layout concerns.
+   =================================================== */
 @media (max-width: 640px) {
-  /* Chat: full-height, stack channels above messages */
+  /* ── Section preamble: hide on mobile, go straight to chat ── */
+  #board-messaging .section-header { display: none !important; }
   #board-messaging { padding: 0 !important; }
   #board-messaging .container { padding: 0 !important; max-width: 100% !important; }
-  .chat-app-frame { height: calc(100dvh - 60px) !important; min-height: 0 !important; border-radius: 0 !important; border-left: none !important; border-right: none !important; border-bottom: none !important; box-shadow: none !important; }
-  /* Messenger-style message bubbles on mobile */
-  .chat-msg-row { padding: 3px 12px !important; gap: 8px !important; align-items: flex-end !important; }
-  .chat-msg-row.mine { flex-direction: row-reverse !important; }
-  .chat-msg-row.mine .chat-avatar { display: none !important; }
-  .chat-msg-row.mine > div > div:first-child { display: none !important; } /* hide "name + time" header for own msgs */
-  .chat-msg-row.mine .chat-msg-text { background: var(--teal) !important; color: #fff !important; border-radius: 18px 18px 4px 18px !important; padding: 10px 14px !important; font-size: 1rem !important; display: inline-block !important; max-width: 82% !important; margin-top: 0 !important; }
-  .chat-msg-row.other .chat-msg-text { background: #eef0f2 !important; color: var(--text) !important; border-radius: 18px 18px 18px 4px !important; padding: 10px 14px !important; font-size: 1rem !important; display: inline-block !important; max-width: 82% !important; margin-top: 0 !important; }
-  .chat-msg-row.other .chat-msg-author { font-size: 0.72rem !important; }
-  .chat-msg-row.mine .chat-msg-actions { right: auto !important; left: 8px !important; }
-  /* Larger input area on mobile */
-  #chat-input { font-size: 1rem !important; padding: 10px 14px !important; }
+
+  /* ── Chat frame: fill available viewport ──
+     Nav is sticky ~72px. Board sidebar is sticky 52px below nav.
+     Total offset ≈ 128px. min-height guards very short viewports. */
+  .chat-app-frame {
+    height: calc(100dvh - 128px) !important;
+    min-height: 440px !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ── Layout: stack channels above messages ── */
   .chat-body { flex-direction: column !important; }
+
+  /* ── Channel tab strip ── */
   .chat-channel-list {
     width: 100% !important;
     flex-direction: row !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
-    padding: 6px 8px !important;
+    padding: 0 4px !important;
     flex-shrink: 0 !important;
-    gap: 2px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    scrollbar-width: none;
+    gap: 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,0.14) !important;
+    scrollbar-width: none !important;
+    align-items: stretch !important;
   }
   .chat-channel-list::-webkit-scrollbar { display: none; }
-  .chat-channel-list > div:first-child { display: none; } /* hide "Channels" label */
-  .chat-channel-list > div:last-child { display: none; }  /* hide search box */
+  .chat-channel-list > div:first-child { display: none !important; } /* "Channels" label */
+  .chat-channel-list > div:last-child  { display: none !important; } /* desktop search box */
+
+  /* Channel buttons — 44px minimum tap target */
   .chat-channel-btn {
     flex-shrink: 0 !important;
     border-left: none !important;
     border-bottom: 3px solid transparent !important;
-    padding: 6px 12px !important;
-    border-radius: 6px 6px 0 0 !important;
-    white-space: nowrap;
+    border-radius: 0 !important;
+    padding: 0 14px !important;
+    min-height: 44px !important;
+    font-size: 0.85rem !important;
+    white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
   }
-  .chat-channel-btn.active { border-bottom-color: var(--gold) !important; }
-  .chat-main { min-height: 0; }
-  .chat-keyboard-hint { display: none; }
+  .chat-channel-btn.active {
+    border-bottom-color: var(--gold) !important;
+    background: rgba(255,255,255,0.11) !important;
+    color: var(--white) !important;
+    font-weight: 600 !important;
+  }
+  .chat-channel-btn:hover { background: rgba(255,255,255,0.07) !important; }
+
+  /* ── Messages scroll area ── */
+  #chat-messages { padding: 12px 14px !important; }
+
+  /* ── Message rows ── */
+  .chat-msg-row {
+    padding: 2px 0 !important;
+    gap: 8px !important;
+    align-items: flex-end !important;
+  }
+  .chat-msg-row.mine { flex-direction: row-reverse !important; }
+
+  /* Own messages: no avatar */
+  .chat-msg-row.mine .chat-avatar { display: none !important; }
+  /* Others: smaller avatar to give bubbles more width */
+  .chat-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.67rem !important;
+    align-self: flex-end !important;
+    margin-top: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Hide "name · time" header row on own messages */
+  .chat-msg-row.mine > div > div:first-child { display: none !important; }
+
+  /* ── Sent bubble ── */
+  .chat-msg-row.mine .chat-msg-text {
+    background: var(--teal) !important;
+    color: #fff !important;
+    border-radius: 18px 18px 4px 18px !important;
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+    display: inline-block !important;
+    max-width: 86% !important;
+    margin-top: 0 !important;
+    word-break: break-word !important;
+  }
+
+  /* ── Received bubble ── */
+  .chat-msg-row.other .chat-msg-text {
+    background: #eef0f2 !important;
+    color: var(--text) !important;
+    border-radius: 18px 18px 18px 4px !important;
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+    display: inline-block !important;
+    max-width: 86% !important;
+    margin-top: 0 !important;
+    word-break: break-word !important;
+  }
+  .chat-msg-row.other .chat-msg-author {
+    font-size: 0.75rem !important;
+    margin-bottom: 3px !important;
+    display: block !important;
+  }
+
+  /* Flip action menu for own messages */
+  .chat-msg-row.mine .chat-msg-actions { right: auto !important; left: 8px !important; }
+
+  /* ── Compose area ── */
+  #chat-input {
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+    padding: 10px 0 !important;
+    min-height: 24px !important;
+  }
+  #chat-input-box {
+    padding: 6px 8px 6px 16px !important;
+    border-radius: 26px !important;
+    align-items: center !important;
+    gap: 4px !important;
+  }
+
+  /* ── Misc ── */
+  .chat-main { min-height: 0 !important; }
+  .chat-keyboard-hint { display: none !important; }
+  #chat-search-toggle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+  }
+
+  /* ── Other general mobile fixes (non-chat) ── */
   .tracker-filter-bar input { min-width: 0 !important; width: 100%; }
-  #chat-search-toggle { display: block !important; }
-  /* Break long email / URL strings so they wrap within their column */
   .board-content a { word-break: break-all; overflow-wrap: anywhere; }
-  /* Ensure directory rows don't overflow on small screens */
   #board-directory [style*="1fr 1fr"] { grid-template-columns: 44px 1fr 1fr !important; gap: 8px !important; padding: 12px 12px !important; }
 }
   /* ===== CHAT CHANNEL BUTTONS ===== */
@@ -720,7 +855,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
               <input type="text" id="chat-mobile-search-input" placeholder="Search messages…"
                 oninput="chatSearchMessages(this.value)"
                 onkeydown="if(event.key==='Enter'){chatSearchMessages(this.value);} if(event.key==='Escape'){chatToggleMobileSearch();}"
-                style="width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:0.875rem;outline:none;box-sizing:border-box;" />
+                style="width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:1rem;outline:none;box-sizing:border-box;" />
             </div>
 
             <!-- Messages scroll area -->
