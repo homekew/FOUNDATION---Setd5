@@ -1109,11 +1109,23 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
           <!-- Channel list -->
           <div style="width:175px;flex-shrink:0;background:#f0f5f5;border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 0;overflow-y:auto;">
             <div style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-light);padding:8px 14px 4px;">Channels</div>
-            <div class="chat-channel-btn active" data-channel="general"    onclick="chatSwitchChannel('general')">#&nbsp; General</div>
-            <div class="chat-channel-btn"        data-channel="meetings"   onclick="chatSwitchChannel('meetings')">#&nbsp; Meetings</div>
-            <div class="chat-channel-btn"        data-channel="finance"    onclick="chatSwitchChannel('finance')">#&nbsp; Finance</div>
-            <div class="chat-channel-btn"        data-channel="fundraising" onclick="chatSwitchChannel('fundraising')">#&nbsp; Fundraising</div>
-            <div class="chat-channel-btn"        data-channel="research"   onclick="chatSwitchChannel('research')">#&nbsp; Research</div>
+            <div class="chat-channel-btn"        data-channel="announcements" onclick="chatSwitchChannel('announcements')">📣&nbsp; Announcements</div>
+            <div class="chat-channel-btn"        data-channel="admin"         onclick="chatSwitchChannel('admin')">#&nbsp; Admin</div>
+            <div class="chat-channel-btn"        data-channel="fundraising"   onclick="chatSwitchChannel('fundraising')">#&nbsp; Fundraising</div>
+            <div class="chat-channel-btn active" data-channel="general"       onclick="chatSwitchChannel('general')">#&nbsp; General</div>
+            <div class="chat-channel-btn"        data-channel="outreach"      onclick="chatSwitchChannel('outreach')">#&nbsp; Outreach</div>
+            <div class="chat-channel-btn"        data-channel="research"      onclick="chatSwitchChannel('research')">#&nbsp; Research</div>
+            <div class="chat-channel-btn"        data-channel="website"       onclick="chatSwitchChannel('website')">#&nbsp; Website</div>
+            <!-- Search -->
+            <div style="padding:10px 10px 4px; border-top:1px solid var(--border); margin-top:8px;">
+              <div style="position:relative;">
+                <input type="search" id="chat-channel-search" placeholder="Search messages…"
+                  oninput="chatSearchMessages(this.value)"
+                  style="width:100%;padding:6px 26px 6px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:inherit;font-size:0.75rem;background:white;outline:none;transition:border-color 0.2s;"
+                  autocomplete="off" />
+                <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:0.75rem;opacity:0.4;pointer-events:none;">🔍</span>
+              </div>
+            </div>
           </div>
 
           <!-- Messages + input -->
@@ -1872,6 +1884,35 @@ function chatKeyDown(e) {
     e.preventDefault();
     chatSend();
   }
+}
+
+// ── Message search ────────────────────────────────────────────────────────────
+window.chatSearchMessages = chatSearchMessages;
+function chatSearchMessages(val) {
+  const q = val.trim().toLowerCase();
+  const rows = document.querySelectorAll('#chat-messages .chat-msg-row');
+  if (!q) {
+    rows.forEach(r => r.style.display = '');
+    document.querySelectorAll('#chat-messages .chat-date-divider').forEach(d => d.style.display = '');
+    return;
+  }
+  rows.forEach(row => {
+    const text = row.querySelector('.chat-msg-text');
+    const author = row.querySelector('.chat-msg-author');
+    const match = (text && text.textContent.toLowerCase().includes(q)) ||
+                  (author && author.textContent.toLowerCase().includes(q));
+    row.style.display = match ? '' : 'none';
+  });
+  // Hide date dividers that have no visible messages after them
+  document.querySelectorAll('#chat-messages .chat-date-divider').forEach(divider => {
+    let next = divider.nextElementSibling;
+    let hasVisible = false;
+    while (next && !next.classList.contains('chat-date-divider')) {
+      if (next.style.display !== 'none') { hasVisible = true; break; }
+      next = next.nextElementSibling;
+    }
+    divider.style.display = hasVisible ? '' : 'none';
+  });
 }
 </script>
 
