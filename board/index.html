@@ -349,11 +349,6 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 
 /* ===== BOARD SIDEBAR ===== */
 .board-layout { display: flex; align-items: flex-start; }
-/* Hide nav sidebar when messaging section is active */
-.board-layout.messaging-open .board-sidebar {
-  width: 0; overflow: hidden; opacity: 0; pointer-events: none;
-  transition: width 0.28s ease, opacity 0.2s ease;
-}
 .board-sidebar { transition: width 0.28s ease, opacity 0.2s ease; }
 .board-sidebar {
   width: 216px; flex-shrink: 0;
