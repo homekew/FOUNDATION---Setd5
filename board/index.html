@@ -423,6 +423,8 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .nav-toggle { display: flex; }
   .nav-logo-text .name { font-size: 1.1rem; }
   .nav-logo-text .tagline { font-size: 0.9rem; }
+  .logo-svg { width: 52px !important; height: 52px !important; }
+  .nav-inner { min-height: 0 !important; }
   .nav-item-dropdown { width: 100%; flex-wrap: wrap; }
   .nav-item-dropdown:hover .nav-dropdown-menu { display: none; }
   .nav-item-dropdown.open .nav-dropdown-menu { display: block; }
@@ -455,7 +457,20 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 }
 @media (max-width: 640px) {
   /* Chat: full-height, stack channels above messages */
-  .chat-app-frame { height: 75vh !important; min-height: 420px; border-radius: 10px !important; }
+  #board-messaging { padding: 0 !important; }
+  #board-messaging .container { padding: 0 !important; max-width: 100% !important; }
+  .chat-app-frame { height: calc(100dvh - 60px) !important; min-height: 0 !important; border-radius: 0 !important; border-left: none !important; border-right: none !important; border-bottom: none !important; box-shadow: none !important; }
+  /* Messenger-style message bubbles on mobile */
+  .chat-msg-row { padding: 3px 12px !important; gap: 8px !important; align-items: flex-end !important; }
+  .chat-msg-row.mine { flex-direction: row-reverse !important; }
+  .chat-msg-row.mine .chat-avatar { display: none !important; }
+  .chat-msg-row.mine > div > div:first-child { display: none !important; } /* hide "name + time" header for own msgs */
+  .chat-msg-row.mine .chat-msg-text { background: var(--teal) !important; color: #fff !important; border-radius: 18px 18px 4px 18px !important; padding: 10px 14px !important; font-size: 1rem !important; display: inline-block !important; max-width: 82% !important; margin-top: 0 !important; }
+  .chat-msg-row.other .chat-msg-text { background: #eef0f2 !important; color: var(--text) !important; border-radius: 18px 18px 18px 4px !important; padding: 10px 14px !important; font-size: 1rem !important; display: inline-block !important; max-width: 82% !important; margin-top: 0 !important; }
+  .chat-msg-row.other .chat-msg-author { font-size: 0.72rem !important; }
+  .chat-msg-row.mine .chat-msg-actions { right: auto !important; left: 8px !important; }
+  /* Larger input area on mobile */
+  #chat-input { font-size: 1rem !important; padding: 10px 14px !important; }
   .chat-body { flex-direction: column !important; }
   .chat-channel-list {
     width: 100% !important;
@@ -983,8 +998,9 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             </div>
           </div>
         </div>
+        <input type="hidden" id="tr-edit-id" value="">
         <div class="tracker-actions">
-          <button class="btn btn-primary" onclick="trackerAdd()">Save Entry</button>
+          <button class="btn btn-primary" id="tr-save-btn" onclick="trackerAdd()">Save Entry</button>
           <button class="btn btn-outline" onclick="trackerExportCSV()">Export CSV</button>
           <button class="btn btn-outline" onclick="trackerToggleForm()" style="margin-left:auto;">Cancel</button>
           <span id="tr-msg" style="font-size:0.85rem;color:var(--coral);display:none;"></span>
@@ -1547,7 +1563,23 @@ function trackerAdd() {
 
   function saveEntry(attachment) {
     const data = trackerLoad();
-    data.unshift({ id: Date.now(), name, entity, internal, date, category, how, purpose, relstatus, takeaway, followup, attachment: attachment || null, done: false });
+    const editIdEl = document.getElementById('tr-edit-id');
+    const editId = editIdEl ? Number(editIdEl.value) : 0;
+    if (editId) {
+      // Update existing entry
+      const idx = data.findIndex(d => d.id === editId);
+      if (idx !== -1) {
+        const oldAttach = data[idx].attachment;
+        data[idx] = { ...data[idx], name, entity, internal, date, category, how, purpose, relstatus, takeaway, followup,
+          attachment: attachment !== null ? attachment : oldAttach };
+      }
+      editIdEl.value = '';
+      const saveBtn = document.getElementById('tr-save-btn');
+      if (saveBtn) saveBtn.textContent = 'Save Entry';
+    } else {
+      // New entry
+      data.unshift({ id: Date.now(), name, entity, internal, date, category, how, purpose, relstatus, takeaway, followup, attachment: attachment || null, done: false });
+    }
     trackerSave(data);
     ['tr-name','tr-entity','tr-internal','tr-date','tr-takeaway','tr-followup'].forEach(id => document.getElementById(id).value = '');
     ['tr-category','tr-how','tr-purpose','tr-relstatus'].forEach(id => document.getElementById(id).value = '');
@@ -1569,8 +1601,39 @@ function trackerAdd() {
     reader.onerror = function() { saveEntry(null); };
     reader.readAsDataURL(file);
   } else {
+    // When editing and no new file chosen, pass null so old attachment is preserved
     saveEntry(null);
   }
+}
+
+function trackerEditEntry(id) {
+  const data = trackerLoad();
+  const e = data.find(d => d.id === id);
+  if (!e) return;
+  // Populate form fields
+  document.getElementById('tr-name').value      = e.name     || '';
+  document.getElementById('tr-entity').value    = e.entity   || '';
+  document.getElementById('tr-internal').value  = e.internal || '';
+  document.getElementById('tr-date').value      = e.date     || '';
+  document.getElementById('tr-category').value  = e.category || '';
+  document.getElementById('tr-how').value       = e.how      || '';
+  document.getElementById('tr-purpose').value   = e.purpose  || '';
+  document.getElementById('tr-relstatus').value = e.relstatus|| '';
+  document.getElementById('tr-takeaway').value  = e.takeaway || '';
+  document.getElementById('tr-followup').value  = e.followup || '';
+  // Attachment: show current name if exists
+  if (e.attachment) {
+    document.getElementById('tr-attachment-zone').style.display = 'none';
+    document.getElementById('tr-attachment-chosen').style.display = 'flex';
+    document.getElementById('tr-attachment-chosen-name').textContent = e.attachment.name + ' (keep or replace)';
+  }
+  // Set edit mode
+  document.getElementById('tr-edit-id').value = id;
+  const saveBtn = document.getElementById('tr-save-btn');
+  if (saveBtn) saveBtn.textContent = 'Update Entry';
+  // Open and scroll to form
+  document.getElementById('tracker-form').style.display = 'block';
+  document.getElementById('tracker-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function trackerToggleDone(id) {
@@ -1676,6 +1739,9 @@ function trackerRender() {
         ${attachmentHTML}
       </div>
       <div class="tracker-entry-controls">
+        <button class="btn-icon" title="Edit entry" onclick="trackerEditEntry(${e.id})" style="color:var(--teal);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5a1.415 1.415 0 012 2L5 13 2 14l1-3 8.5-8.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <button class="btn-icon done-btn ${e.done ? 'active' : ''}" title="${e.done ? 'Mark follow-up open' : 'Mark follow-up complete'}" onclick="trackerToggleDone(${e.id})">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9l2.5 2.5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -2080,7 +2146,7 @@ function renderMessages(snapshot) {
       </a>` : '';
 
     html += `
-      <div class="chat-msg-row" data-msg-id="${msg.id}">
+      <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}" data-msg-id="${msg.id}">
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
           <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}</div>
@@ -2486,7 +2552,7 @@ async function chatSearchMessages(val) {
         </a>` : '';
 
       html += `
-        <div class="chat-msg-row" style="position:relative;">
+        <div class="chat-msg-row other" style="position:relative;">
           <div class="chat-avatar" style="background:${color};">${initials}</div>
           <div style="flex:1;min-width:0;">
             <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span><span style="font-size:0.68rem;font-weight:600;color:var(--teal);margin-left:8px;background:var(--teal-light);padding:1px 7px;border-radius:10px;">#${msg.channel}</span></div>
