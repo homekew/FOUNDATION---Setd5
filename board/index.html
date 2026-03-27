@@ -1861,7 +1861,7 @@ document.addEventListener('DOMContentLoaded', docRender);
 <script type="module">
 import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getFirestore, collection, addDoc,
-         query, orderBy, limit, onSnapshot,
+         query, orderBy, limit, onSnapshot, getDocs,
          serverTimestamp, doc, updateDoc,
          deleteDoc }                              from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getStorage, ref, uploadBytesResumable,
@@ -2095,12 +2095,6 @@ function renderMessages(snapshot) {
 
   container.innerHTML = html;
   container.scrollTop = container.scrollHeight;
-
-  // Re-apply any active search filter after re-render
-  const searchInput = document.getElementById('chat-channel-search');
-  if (searchInput && searchInput.value.trim()) {
-    chatSearchMessages(searchInput.value);
-  }
 }
 
 function escapeHtml(str) {
@@ -2428,31 +2422,89 @@ function chatToggleMobileSearch() {
   if (isOpen) chatSearchMessages(''); // clear filter when closing
 }
 
-function chatSearchMessages(val) {
+async function chatSearchMessages(val) {
   const q = val.trim().toLowerCase();
-  const rows = document.querySelectorAll('#chat-messages .chat-msg-row');
+  const container = document.getElementById('chat-messages');
+  if (!container) return;
+
+  // Clear search — restore normal channel view
   if (!q) {
-    rows.forEach(r => r.style.display = '');
-    document.querySelectorAll('#chat-messages .chat-date-divider').forEach(d => d.style.display = '');
+    chatSubscribe(currentChannel);
     return;
   }
-  rows.forEach(row => {
-    const text = row.querySelector('.chat-msg-text');
-    const author = row.querySelector('.chat-msg-author');
-    const match = (text && text.textContent.toLowerCase().includes(q)) ||
-                  (author && author.textContent.toLowerCase().includes(q));
-    row.style.display = match ? '' : 'none';
-  });
-  // Hide date dividers that have no visible messages after them
-  document.querySelectorAll('#chat-messages .chat-date-divider').forEach(divider => {
-    let next = divider.nextElementSibling;
-    let hasVisible = false;
-    while (next && !next.classList.contains('chat-date-divider')) {
-      if (next.style.display !== 'none') { hasVisible = true; break; }
-      next = next.nextElementSibling;
+
+  // Pause the live listener while showing search results
+  if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+  container.innerHTML = '<div class="chat-loading">Searching all channels…</div>';
+
+  try {
+    const results = [];
+    await Promise.all(ALL_CHANNELS.map(async ch => {
+      const snap = await getDocs(query(
+        collection(db, 'channels', ch, 'messages'),
+        orderBy('ts', 'asc'),
+        limit(200)
+      ));
+      snap.docs.forEach(d => {
+        const data = d.data();
+        const msgText   = (data.text   || '').toLowerCase();
+        const msgAuthor = (data.author || '').toLowerCase();
+        const msgFile   = (data.file   ? data.file.name.toLowerCase() : '');
+        if (msgText.includes(q) || msgAuthor.includes(q) || msgFile.includes(q)) {
+          results.push({ id: d.id, channel: ch, ...data });
+        }
+      });
+    }));
+
+    if (results.length === 0) {
+      container.innerHTML = `<div class="chat-empty">No messages found for "<strong>${escapeHtml(val)}</strong>" in any channel.<br><span style="font-size:0.8rem;color:var(--text-light);">Clear the search to return to ${currentChannel}.</span></div>`;
+      return;
     }
-    divider.style.display = hasVisible ? '' : 'none';
-  });
+
+    // Sort by timestamp ascending
+    results.sort((a, b) => {
+      const ta = a.ts ? a.ts.toMillis() : 0;
+      const tb = b.ts ? b.ts.toMillis() : 0;
+      return ta - tb;
+    });
+
+    const escQ = val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const highlightRE = new RegExp(`(${escQ})`, 'gi');
+
+    let html = `<div style="padding:8px 18px 4px;font-size:0.72rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.06em;">${results.length} result${results.length !== 1 ? 's' : ''} across all channels</div>`;
+
+    results.forEach(msg => {
+      const ts      = msg.ts ? msg.ts.toDate() : new Date();
+      const timeStr = ts.toLocaleDateString('en-US', { month:'short', day:'numeric' }) + ' · ' + ts.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
+      const author  = msg.author || 'Unknown';
+      const color   = nameToColor(author);
+      const initials = nameToInitials(author);
+      const rawText  = escapeHtml(msg.text || '');
+      const text     = renderMentions(rawText).replace(highlightRE, '<mark style="background:#fff3b0;border-radius:2px;padding:0 1px;">$1</mark>');
+      const fileHtml = msg.file ? `
+        <a href="${msg.file.url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:5px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;text-decoration:none;color:var(--teal);font-size:0.78rem;">
+          <span>${fileIcon(msg.file.name)}</span><span>${escapeHtml(msg.file.name)}</span>
+        </a>` : '';
+
+      html += `
+        <div class="chat-msg-row" style="position:relative;">
+          <div class="chat-avatar" style="background:${color};">${initials}</div>
+          <div style="flex:1;min-width:0;">
+            <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span><span style="font-size:0.68rem;font-weight:600;color:var(--teal);margin-left:8px;background:var(--teal-light);padding:1px 7px;border-radius:10px;">#${msg.channel}</span></div>
+            ${text ? `<div class="chat-msg-text">${text}</div>` : ''}
+            ${fileHtml}
+          </div>
+        </div>`;
+    });
+
+    container.innerHTML = html;
+    container.scrollTop = 0;
+
+  } catch(err) {
+    console.error('Search error:', err);
+    container.innerHTML = '<div class="chat-empty">Search failed. Please try again.</div>';
+    chatSubscribe(currentChannel); // restore live view on error
+  }
 }
 </script>
 
