@@ -443,17 +443,24 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 }
   /* ===== CHAT CHANNEL BUTTONS ===== */
   .chat-channel-btn {
-    padding: 7px 14px;
+    padding: 7px 12px 7px 14px;
     font-size: 0.82rem;
     font-weight: 500;
-    color: var(--text-light);
+    color: rgba(255,255,255,0.65);
     cursor: pointer;
     border-left: 3px solid transparent;
     transition: background 0.12s, color 0.12s;
     user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
   }
-  .chat-channel-btn:hover { background: rgba(26,92,90,0.06); color: var(--teal); }
-  .chat-channel-btn.active { background: var(--teal-light); color: var(--teal); font-weight: 600; border-left-color: var(--teal); }
+  .chat-channel-btn:hover { background: rgba(255,255,255,0.09); color: rgba(255,255,255,0.9); }
+  .chat-channel-btn.active { background: rgba(255,255,255,0.13); color: var(--white); font-weight: 600; border-left-color: var(--gold); }
+  .chat-channel-btn .ch-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chat-unread-badge { font-size: 0.62rem; font-weight: 700; background: var(--gold); color: white; border-radius: 20px; padding: 1px 6px; min-width: 18px; text-align: center; flex-shrink: 0; display: none; }
+  .chat-unread-badge.visible { display: block; }
   /* Chat message rows */
   .chat-msg-row { display:flex; gap:10px; padding:5px 6px; border-radius:8px; transition:background 0.1s; }
   .chat-msg-row:hover { background: var(--bg); }
@@ -1123,23 +1130,23 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <div style="display:flex;flex:1;min-height:0;">
 
           <!-- Channel list -->
-          <div style="width:175px;flex-shrink:0;background:#f0f5f5;border-right:1px solid var(--border);display:flex;flex-direction:column;padding:10px 0;overflow-y:auto;">
-            <div style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-light);padding:8px 14px 4px;">Channels</div>
-            <div class="chat-channel-btn"        data-channel="announcements" onclick="chatSwitchChannel('announcements')">📣&nbsp; Announcements</div>
-            <div class="chat-channel-btn"        data-channel="admin"         onclick="chatSwitchChannel('admin')">#&nbsp; Admin</div>
-            <div class="chat-channel-btn"        data-channel="fundraising"   onclick="chatSwitchChannel('fundraising')">#&nbsp; Fundraising</div>
-            <div class="chat-channel-btn active" data-channel="general"       onclick="chatSwitchChannel('general')">#&nbsp; General</div>
-            <div class="chat-channel-btn"        data-channel="outreach"      onclick="chatSwitchChannel('outreach')">#&nbsp; Outreach</div>
-            <div class="chat-channel-btn"        data-channel="research"      onclick="chatSwitchChannel('research')">#&nbsp; Research</div>
-            <div class="chat-channel-btn"        data-channel="website"       onclick="chatSwitchChannel('website')">#&nbsp; Website</div>
+          <div style="width:185px;flex-shrink:0;background:var(--teal-dark);display:flex;flex-direction:column;padding:10px 0;overflow-y:auto;">
+            <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.4);padding:8px 14px 6px;">Channels</div>
+            <div class="chat-channel-btn"        data-channel="announcements" onclick="chatSwitchChannel('announcements')"><span class="ch-label">📣 Announcements</span><span class="chat-unread-badge" id="badge-announcements"></span></div>
+            <div class="chat-channel-btn"        data-channel="admin"         onclick="chatSwitchChannel('admin')"><span class="ch-label"># Admin</span><span class="chat-unread-badge" id="badge-admin"></span></div>
+            <div class="chat-channel-btn"        data-channel="fundraising"   onclick="chatSwitchChannel('fundraising')"><span class="ch-label"># Fundraising</span><span class="chat-unread-badge" id="badge-fundraising"></span></div>
+            <div class="chat-channel-btn active" data-channel="general"       onclick="chatSwitchChannel('general')"><span class="ch-label"># General</span><span class="chat-unread-badge" id="badge-general"></span></div>
+            <div class="chat-channel-btn"        data-channel="outreach"      onclick="chatSwitchChannel('outreach')"><span class="ch-label"># Outreach</span><span class="chat-unread-badge" id="badge-outreach"></span></div>
+            <div class="chat-channel-btn"        data-channel="research"      onclick="chatSwitchChannel('research')"><span class="ch-label"># Research</span><span class="chat-unread-badge" id="badge-research"></span></div>
+            <div class="chat-channel-btn"        data-channel="website"       onclick="chatSwitchChannel('website')"><span class="ch-label"># Website</span><span class="chat-unread-badge" id="badge-website"></span></div>
             <!-- Search -->
-            <div style="padding:10px 10px 4px; border-top:1px solid var(--border); margin-top:8px;">
+            <div style="padding:10px 10px 6px; border-top:1px solid rgba(255,255,255,0.1); margin-top:8px;">
               <div style="position:relative;">
                 <input type="search" id="chat-channel-search" placeholder="Search messages…"
                   oninput="chatSearchMessages(this.value)"
-                  style="width:100%;padding:6px 26px 6px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:inherit;font-size:0.75rem;background:white;outline:none;transition:border-color 0.2s;"
+                  style="width:100%;padding:6px 26px 6px 10px;border:1.5px solid rgba(255,255,255,0.18);border-radius:7px;font-family:inherit;font-size:0.75rem;background:rgba(255,255,255,0.08);color:white;outline:none;transition:border-color 0.2s;"
                   autocomplete="off" />
-                <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:0.75rem;opacity:0.4;pointer-events:none;">🔍</span>
+                <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:0.75rem;color:rgba(255,255,255,0.35);pointer-events:none;">🔍</span>
               </div>
             </div>
           </div>
@@ -1158,16 +1165,25 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 
             <!-- Compose -->
             <div style="padding:12px 16px;border-top:1px solid var(--border);background:var(--white);flex-shrink:0;">
-              <div id="chat-input-box" style="display:flex;align-items:flex-end;gap:10px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:8px 10px 8px 14px;transition:border-color 0.2s;">
+              <!-- File preview -->
+              <div id="chat-file-preview" style="display:none;align-items:center;gap:8px;margin-bottom:8px;padding:8px 12px;background:var(--teal-light);border-radius:8px;border:1px solid var(--border);">
+                <span style="font-size:1rem;">📎</span>
+                <span id="chat-file-name" style="font-size:0.8rem;font-weight:500;color:var(--teal);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+                <span id="chat-file-size" style="font-size:0.72rem;color:var(--text-light);"></span>
+                <button onclick="chatClearFile()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:2px 4px;border-radius:4px;" title="Remove file">✕</button>
+              </div>
+              <div id="chat-input-box" style="display:flex;align-items:flex-end;gap:8px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:8px 10px 8px 14px;transition:border-color 0.2s;">
                 <textarea id="chat-input" rows="1" placeholder="Message #general…"
                   style="flex:1;border:none;outline:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;color:var(--text);resize:none;min-height:22px;max-height:100px;line-height:1.5;"
                   oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';chatUpdatePlaceholder()"
                   onkeydown="chatKeyDown(event)"></textarea>
                 <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+                  <input type="file" id="chat-file-input" style="display:none;" onchange="chatFileSelected(this)" accept="*/*" />
+                  <button onclick="document.getElementById('chat-file-input').click()" style="width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.12s;" title="Attach file">📎</button>
                   <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
                 </div>
               </div>
-              <div style="font-size:0.67rem;color:var(--text-light);margin-top:5px;padding-left:2px;">Enter to send · Shift+Enter for new line</div>
+              <div style="font-size:0.67rem;color:var(--text-light);margin-top:5px;padding-left:2px;">Enter to send · Shift+Enter for new line · 📎 to attach a file</div>
             </div>
 
           </div>
@@ -1706,6 +1722,8 @@ import { getFirestore, collection, addDoc,
          query, orderBy, limit, onSnapshot,
          serverTimestamp, doc, updateDoc,
          deleteDoc }                              from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getStorage, ref, uploadBytesResumable,
+         getDownloadURL }                         from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
 
 const firebaseConfig = {
   apiKey:            "AIzaSyD5imh_WikBHbTufh0os2a7nxgqEDFKmb4",
@@ -1716,8 +1734,9 @@ const firebaseConfig = {
   appId:             "1:1041702466779:web:22d00333b4fd011e11c8fe"
 };
 
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+const app      = initializeApp(firebaseConfig);
+const db       = getFirestore(app);
+const storage  = getStorage(app);
 
 // ── Colour palette for avatars ──────────────────────────────────────────────
 const AVATAR_COLORS = ['#1a5c5a','#c8922a','#5b7fa6','#7b5ea7','#2e7d52','#b85450'];
@@ -1731,9 +1750,38 @@ function nameToInitials(name) {
 }
 
 // ── State ────────────────────────────────────────────────────────────────────
+const ALL_CHANNELS  = ['announcements','admin','fundraising','general','outreach','research','website'];
 let currentChannel  = 'general';
 let unsubscribe     = null;
 let chatUserName    = '';
+let pendingFile     = null;   // file selected for attachment
+const bgUnsubs      = {};     // background listeners for unread tracking
+
+// ── Unread helpers ────────────────────────────────────────────────────────────
+function unreadKey(ch)  { return `chat_last_seen_${ch}`; }
+function markSeen(ch)   { localStorage.setItem(unreadKey(ch), Date.now().toString()); }
+function lastSeen(ch)   { return parseInt(localStorage.getItem(unreadKey(ch)) || '0', 10); }
+
+function updateBadge(ch, count) {
+  const badge = document.getElementById(`badge-${ch}`);
+  if (!badge) return;
+  if (count > 0) { badge.textContent = count > 9 ? '9+' : count; badge.classList.add('visible'); }
+  else           { badge.textContent = ''; badge.classList.remove('visible'); }
+}
+
+function watchUnread(ch) {
+  if (bgUnsubs[ch]) return;   // already watching
+  const q = query(collection(db, 'channels', ch, 'messages'), orderBy('ts', 'desc'), limit(20));
+  bgUnsubs[ch] = onSnapshot(q, snap => {
+    if (ch === currentChannel) { updateBadge(ch, 0); return; }
+    const cutoff = lastSeen(ch);
+    const count  = snap.docs.filter(d => {
+      const ts = d.data().ts;
+      return ts && ts.toMillis() > cutoff;
+    }).length;
+    updateBadge(ch, count);
+  });
+}
 
 // ── Expose functions on window so inline onclick handlers can reach them ─────
 window.chatSetName       = chatSetName;
@@ -1762,7 +1810,10 @@ function showChatApp() {
   const app = document.getElementById('chat-app');
   app.style.display = 'flex';
   document.getElementById('chat-current-name').textContent = chatUserName;
+  markSeen('general');
   chatSubscribe('general');
+  // Start background listeners for unread counts on all other channels
+  ALL_CHANNELS.forEach(ch => { if (ch !== 'general') watchUnread(ch); });
 }
 
 function chatSetName() {
@@ -1787,6 +1838,8 @@ function chatChangeName() {
 function chatSwitchChannel(channel) {
   if (channel === currentChannel) return;
   currentChannel = channel;
+  markSeen(channel);
+  updateBadge(channel, 0);
 
   // Update sidebar active state
   document.querySelectorAll('.chat-channel-btn').forEach(btn => {
@@ -1862,12 +1915,21 @@ function renderMessages(snapshot) {
         <button class="chat-action-btn delete" onclick="chatDeleteMessage('${msg.id}')">Delete</button>
       </div>` : '';
 
+    const fileHtml = msg.file ? `
+      <a href="${msg.file.url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-top:6px;padding:7px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--teal);font-size:0.78rem;font-weight:500;transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--border)'">
+        <span style="font-size:1rem;">${fileIcon(msg.file.name)}</span>
+        <span>${escapeHtml(msg.file.name)}</span>
+        <span style="color:var(--text-light);font-size:0.68rem;">${formatBytes(msg.file.size)}</span>
+        <span style="font-size:0.72rem;opacity:0.6;">↓</span>
+      </a>` : '';
+
     html += `
       <div class="chat-msg-row" data-msg-id="${msg.id}">
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
           <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}</div>
-          <div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>
+          ${text ? `<div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>` : ''}
+          ${fileHtml}
         </div>
         ${actions}
       </div>`;
@@ -1882,26 +1944,80 @@ function escapeHtml(str) {
             .replace(/"/g,'&quot;').replace(/\n/g,'<br>');
 }
 
+// ── File attachment helpers ───────────────────────────────────────────────────
+window.chatFileSelected = chatFileSelected;
+window.chatClearFile    = chatClearFile;
+
+function chatFileSelected(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 20 * 1024 * 1024) { alert('File must be under 20 MB.'); input.value = ''; return; }
+  pendingFile = file;
+  document.getElementById('chat-file-preview').style.display = 'flex';
+  document.getElementById('chat-file-name').textContent = file.name;
+  document.getElementById('chat-file-size').textContent = formatBytes(file.size);
+}
+
+function chatClearFile() {
+  pendingFile = null;
+  document.getElementById('chat-file-preview').style.display = 'none';
+  document.getElementById('chat-file-input').value = '';
+}
+
+function formatBytes(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+function fileIcon(name) {
+  const ext = (name.split('.').pop() || '').toLowerCase();
+  if (['jpg','jpeg','png','gif','webp','svg'].includes(ext)) return '🖼️';
+  if (['pdf'].includes(ext))                                  return '📄';
+  if (['doc','docx'].includes(ext))                          return '📝';
+  if (['xls','xlsx','csv'].includes(ext))                    return '📊';
+  if (['ppt','pptx'].includes(ext))                          return '📋';
+  if (['zip','tar','gz'].includes(ext))                      return '🗜️';
+  return '📎';
+}
+
 // ── Send message ──────────────────────────────────────────────────────────────
 async function chatSend() {
   const input = document.getElementById('chat-input');
   if (!input) return;
   const text = input.value.trim();
-  if (!text || !chatUserName) return;
+  if (!text && !pendingFile) return;
+  if (!chatUserName) return;
+
+  const sendText   = text || '';
+  const fileToSend = pendingFile;
 
   input.value = '';
   input.style.height = 'auto';
+  chatClearFile();
 
   try {
-    await addDoc(collection(db, 'channels', currentChannel, 'messages'), {
-      text,
-      author: chatUserName,
-      ts:     serverTimestamp()
-    });
+    let fileData = null;
+    if (fileToSend) {
+      const fileRef  = ref(storage, `board-chat/${currentChannel}/${Date.now()}_${fileToSend.name}`);
+      const snapshot = await uploadBytesResumable(fileRef, fileToSend).then
+        ? await new Promise((resolve, reject) => {
+            const task = uploadBytesResumable(fileRef, fileToSend);
+            task.on('state_changed', null, reject, () => resolve(task.snapshot));
+          })
+        : null;
+      const url = await getDownloadURL(fileRef);
+      fileData = { name: fileToSend.name, size: fileToSend.size, url };
+    }
+
+    const msgData = { text: sendText, author: chatUserName, ts: serverTimestamp() };
+    if (fileData) msgData.file = fileData;
+
+    await addDoc(collection(db, 'channels', currentChannel, 'messages'), msgData);
   } catch (err) {
     console.error('Send error:', err);
     alert('Message failed to send. Please try again.');
-    input.value = text;
+    input.value = sendText;
   }
 }
 
