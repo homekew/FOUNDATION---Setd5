@@ -3210,7 +3210,10 @@ function docRender() {
         : `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 2H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V6l-3-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 2v4h3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
       const noFileBadge = hasFile ? '' : '<span class="doc-no-file-tag">no file attached</span>';
       const multiLocBadge = locCount > 1 ? `<span class="doc-multi-loc-tag">${locCount} locations</span>` : '';
-      el.innerHTML = `${fileIcon}${escapeHtml(docObj.name)}${noFileBadge}${multiLocBadge}${docObj.date ? ' <span style="color:var(--text-light);font-size:0.8em;margin-left:auto;">' + docObj.date + '</span>' : ''}<button class="doc-item-del" onclick="docDelete('${docObj.id}',event)" title="Remove">✕</button>`;
+      const editBtn = (docObj.sub === 'Meeting Minutes' && docObj.formData)
+        ? `<a href="meeting-minutes.html?edit=${docObj.id}" style="font-size:0.68rem;color:var(--teal);border:1px solid var(--border);border-radius:4px;padding:1px 7px;margin-left:6px;text-decoration:none;flex-shrink:0;" title="Edit minutes">Edit</a>`
+        : '';
+      el.innerHTML = `${fileIcon}${escapeHtml(docObj.name)}${noFileBadge}${multiLocBadge}${docObj.date ? ' <span style="color:var(--text-light);font-size:0.8em;margin-left:auto;">' + docObj.date + '</span>' : ''}${editBtn}<button class="doc-item-del" onclick="docDelete('${docObj.id}',event)" title="Remove">✕</button>`;
       container.appendChild(el);
     });
     if (empty) empty.style.display = docs.length === 0 ? '' : 'none';

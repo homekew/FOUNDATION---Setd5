@@ -229,6 +229,10 @@
       .rep-item { border: 0.75pt solid #ddd; }
 
       /* ── Blank template: expand fields into writable lines ── */
+      /* Hide all placeholder and typed text — blank form only */
+      body.print-blank input::placeholder,
+      body.print-blank textarea::placeholder { color: transparent !important; }
+
       /* Single-line fields — tall enough for clear handwriting */
       body.print-blank input[type="text"],
       body.print-blank input[type="date"],
@@ -248,15 +252,15 @@
       body.print-blank textarea {
         display: block;
         width: 100%;
-        height: 156pt !important;
+        height: 240pt !important;
         border: none !important;
         border-bottom: 1.5pt solid #333 !important;
-        /* Ruled lines every 26pt — comfortable handwriting spacing */
+        /* Ruled lines every 24pt — comfortable handwriting spacing */
         background: repeating-linear-gradient(
           transparent,
-          transparent 25pt,
-          #bbb 25pt,
-          #bbb 26pt
+          transparent 23pt,
+          #bbb 23pt,
+          #bbb 24pt
         ) !important;
         overflow: visible;
         color: transparent !important;
@@ -478,7 +482,7 @@
 <!-- Firebase -->
 <script type="module">
 import { initializeApp }   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import { getFirestore, collection, addDoc, serverTimestamp }
+import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, serverTimestamp }
                            from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getStorage, ref, uploadBytes, getDownloadURL }
                            from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
@@ -654,6 +658,123 @@ window.printBlank = function() {
   setTimeout(() => window.print(), 80);
 };
 
+// ── Collect / restore form data (for edit round-trip) ────────────────────────
+function collectFormData() {
+  const attendance = {};
+  document.querySelectorAll('.att-item').forEach(el => {
+    const name = el.dataset.name;
+    if (name) attendance[name] = el.classList.contains('present');
+  });
+
+  const reports = [];
+  document.querySelectorAll('#reports-list .rep-item').forEach(el => {
+    const inputs = el.querySelectorAll('input, textarea');
+    reports.push([...inputs].map(i => i.value));
+  });
+
+  const oldBiz = [];
+  document.querySelectorAll('#old-biz-list .rep-item').forEach(el => {
+    const inputs = el.querySelectorAll('input, textarea');
+    oldBiz.push([...inputs].map(i => i.value));
+  });
+
+  const newBiz = [];
+  document.querySelectorAll('#new-biz-list .rep-item').forEach(el => {
+    const inputs = el.querySelectorAll('input, textarea');
+    newBiz.push([...inputs].map(i => i.value));
+  });
+
+  const actions = [];
+  document.querySelectorAll('#action-items-body tr').forEach(tr => {
+    const inputs = tr.querySelectorAll('input');
+    actions.push([...inputs].map(i => i.value));
+  });
+
+  return {
+    date:         gv('mtg-date'),
+    type:         document.getElementById('mtg-type').value,
+    start:        gv('mtg-start'),
+    location:     gv('mtg-location'),
+    presider:     gv('mtg-presider'),
+    secretary:    gv('mtg-secretary'),
+    guests:       gv('mtg-guests'),
+    attendance,
+    priorDate:    gv('prior-date'),
+    priorMotion:  gv('prior-motion'),
+    priorSecond:  gv('prior-second'),
+    priorResult:  document.getElementById('prior-result').value,
+    priorNotes:   gv('prior-notes'),
+    reports, oldBiz, newBiz, actions,
+    nextDate:     gv('next-date'),
+    nextTime:     gv('next-time'),
+    nextLocation: gv('next-location'),
+    endTime:      gv('mtg-end'),
+    adjMotion:    gv('adj-motion'),
+    adjSecond:    gv('adj-second'),
+    adjNotes:     gv('adj-notes'),
+  };
+}
+
+function restoreFormData(d) {
+  const sv = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+  sv('mtg-date', d.date); sv('mtg-start', d.start); sv('mtg-location', d.location);
+  sv('mtg-presider', d.presider); sv('mtg-secretary', d.secretary); sv('mtg-guests', d.guests);
+  sv('prior-date', d.priorDate); sv('prior-motion', d.priorMotion); sv('prior-second', d.priorSecond);
+  sv('prior-notes', d.priorNotes); sv('next-date', d.nextDate); sv('next-time', d.nextTime);
+  sv('next-location', d.nextLocation); sv('mtg-end', d.endTime);
+  sv('adj-motion', d.adjMotion); sv('adj-second', d.adjSecond); sv('adj-notes', d.adjNotes);
+  if (d.type) document.getElementById('mtg-type').value = d.type;
+  if (d.priorResult) document.getElementById('prior-result').value = d.priorResult;
+
+  if (d.attendance) {
+    document.querySelectorAll('.att-item').forEach(el => {
+      const name = el.dataset.name;
+      if (name && d.attendance[name] !== undefined) {
+        el.classList.toggle('present', d.attendance[name]);
+        el.classList.toggle('absent',  !d.attendance[name]);
+      }
+    });
+    updateAttendanceCount();
+  }
+
+  const fillRepeatable = (listId, addFn, rows) => {
+    if (!rows || !rows.length) return;
+    const list = document.getElementById(listId);
+    list.innerHTML = '';
+    rows.forEach(vals => {
+      addFn();
+      const inputs = list.querySelectorAll('.rep-item:last-child input, .rep-item:last-child textarea');
+      inputs.forEach((inp, i) => { if (vals[i] !== undefined) inp.value = vals[i]; });
+    });
+  };
+
+  fillRepeatable('reports-list', addReport, d.reports);
+  fillRepeatable('old-biz-list', addOldBiz, d.oldBiz);
+  fillRepeatable('new-biz-list', addNewBiz, d.newBiz);
+
+  if (d.actions && d.actions.length) {
+    const tbody = document.getElementById('action-items-body');
+    tbody.innerHTML = '';
+    d.actions.forEach(vals => {
+      addActionItem();
+      const inputs = tbody.querySelectorAll('tr:last-child input');
+      inputs.forEach((inp, i) => { if (vals[i] !== undefined) inp.value = vals[i]; });
+    });
+  }
+}
+
+// ── Edit mode: load existing record ──────────────────────────────────────────
+const editDocId = new URLSearchParams(location.search).get('edit');
+if (editDocId) {
+  document.querySelector('.action-bar-title').textContent = 'Edit Meeting Minutes';
+  document.getElementById('save-btn').textContent = '💾 Update Board Portal';
+  getDoc(doc(db, 'board_documents', editDocId)).then(snap => {
+    if (snap.exists() && snap.data().formData) {
+      restoreFormData(snap.data().formData);
+    }
+  }).catch(err => console.warn('Could not load minutes for editing:', err));
+}
+
 // ── Save to portal ───────────────────────────────────────────────────────────
 window.saveToPortal = async function() {
   const btn    = document.getElementById('save-btn');
@@ -666,7 +787,7 @@ window.saveToPortal = async function() {
   }
 
   btn.disabled    = true;
-  btn.textContent = 'Saving…';
+  btn.textContent = editDocId ? 'Updating…' : 'Saving…';
   status.className = '';
   status.textContent = 'Uploading to board portal…';
 
@@ -677,31 +798,41 @@ window.saveToPortal = async function() {
     const storRef   = ref(storage, `board-documents/meeting-minutes/${Date.now()}_${fileName}`);
     await uploadBytes(storRef, blob);
     const fileURL   = await getDownloadURL(storRef);
+    const docName   = `Board Meeting Minutes — ${fmtDate(date)}`;
+    const formData  = collectFormData();
 
-    const docName = `Board Meeting Minutes — ${fmtDate(date)}`;
-    await addDoc(collection(db, 'board_documents'), {
-      name:       docName,
-      date,
-      section:    'board-meetings',
-      sub:        'Meeting Minutes',
-      categories: [{ section: 'board-meetings', sub: 'Meeting Minutes' }],
-      fileURL,
-      createdAt:  serverTimestamp(),
-    });
+    if (editDocId) {
+      await updateDoc(doc(db, 'board_documents', editDocId), {
+        name: docName, date, fileURL, formData, updatedAt: serverTimestamp(),
+      });
+    } else {
+      await addDoc(collection(db, 'board_documents'), {
+        name:       docName,
+        date,
+        section:    'board-meetings',
+        sub:        'Meeting Minutes',
+        categories: [{ section: 'board-meetings', sub: 'Meeting Minutes' }],
+        fileURL,
+        formData,
+        createdAt:  serverTimestamp(),
+      });
+    }
 
     status.className   = 'success';
-    status.textContent = '✓ Saved to Board Portal under Board Meeting Materials → Meeting Minutes';
-    btn.textContent    = '✓ Saved';
+    status.textContent = editDocId
+      ? '✓ Minutes updated in Board Portal'
+      : '✓ Saved to Board Portal under Board Meeting Materials → Meeting Minutes';
+    btn.textContent = '✓ Saved';
     setTimeout(() => {
       btn.disabled    = false;
-      btn.textContent = '💾 Save to Board Portal';
+      btn.textContent = editDocId ? '💾 Update Board Portal' : '💾 Save to Board Portal';
     }, 5000);
   } catch (err) {
     console.error(err);
     status.className   = 'error';
     status.textContent = 'Save failed — please try again or check your connection.';
     btn.disabled    = false;
-    btn.textContent = '💾 Save to Board Portal';
+    btn.textContent = editDocId ? '💾 Update Board Portal' : '💾 Save to Board Portal';
   }
 };
 
