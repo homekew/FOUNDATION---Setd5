@@ -233,17 +233,32 @@
       body.print-blank input[type="date"],
       body.print-blank input[type="time"],
       body.print-blank select {
-        min-height: 26pt;
-        border-bottom: 1pt solid #555 !important;
+        display: block;
+        width: 100%;
+        height: 30pt;
+        padding-bottom: 18pt;
+        border: none !important;
+        border-bottom: 1pt solid #444 !important;
+        background: transparent !important;
+        -webkit-appearance: none;
+        appearance: none;
       }
       body.print-blank textarea {
-        min-height: 72pt !important;
-        border-bottom: 1pt solid #555 !important;
+        display: block;
+        width: 100%;
+        height: 84pt !important;
+        min-height: 84pt !important;
+        padding-bottom: 64pt;
+        border: none !important;
+        border-bottom: 1pt solid #444 !important;
+        background: transparent !important;
+        overflow: visible;
       }
-      body.print-blank .action-table td input[type="text"] { min-height: 22pt; }
-      body.print-blank .action-table td input[type="date"] { min-height: 22pt; }
-      body.print-blank .rep-item { min-height: 80pt; }
-      body.print-blank .att-item { min-height: 30pt; }
+      body.print-blank .action-table td input { height: 24pt !important; padding-bottom: 14pt; }
+      body.print-blank .field-row,
+      body.print-blank .field-full { margin-bottom: 22pt; }
+      body.print-blank .rep-item { padding-bottom: 20pt; }
+      body.print-blank .att-item { height: 28pt; }
 
       @page { margin: 2cm; }
     }
