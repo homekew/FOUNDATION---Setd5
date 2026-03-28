@@ -2362,24 +2362,44 @@ function extractMentions(text) {
 }
 
 // ── EmailJS notifications ─────────────────────────────────────────────────────
-// Set these after configuring EmailJS at emailjs.com
 const EMAILJS_SERVICE_ID  = 'service_7mrdcul';
 const EMAILJS_TEMPLATE_ID = 'template_kx0n1a4';
 const EMAILJS_PUBLIC_KEY  = '6pg6N6BN0V5OZM8MG';
 
+let emailjsLib = null;
+async function getEmailJS() {
+  if (emailjsLib) return emailjsLib;
+  const mod = await import('https://cdn.jsdelivr.net/npm/@emailjs/browser@4/+esm');
+  emailjsLib = mod.default || mod;
+  emailjsLib.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  return emailjsLib;
+}
+
 async function sendMentionEmails(mentionedMembers, senderName, messageText, channel) {
-  if (!EMAILJS_SERVICE_ID || !EMAILJS_PUBLIC_KEY) return;   // not configured yet
-  const { send } = await import('https://cdn.jsdelivr.net/npm/@emailjs/browser@4/+esm');
+  if (!EMAILJS_SERVICE_ID || !EMAILJS_PUBLIC_KEY) return;
+  let ejs;
+  try {
+    ejs = await getEmailJS();
+  } catch (err) {
+    console.error('EmailJS failed to load:', err);
+    return;
+  }
   for (const member of mentionedMembers) {
     if (!member.email || member.name === senderName) continue;
-    await send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      to_email:    member.email,
-      to_name:     member.name,
-      from_name:   senderName,
-      channel:     channel,
-      message:     messageText,
-      portal_url:  'https://setd5syndrome.org/board/'
-    }, EMAILJS_PUBLIC_KEY).catch(err => console.warn('Email notification failed:', err));
+    console.log(`Sending mention email to ${member.name} <${member.email}>`);
+    try {
+      await ejs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_email:   member.email,
+        to_name:    member.name,
+        from_name:  senderName,
+        channel:    channel,
+        message:    messageText,
+        portal_url: 'https://setd5syndrome.org/board/'
+      });
+      console.log(`Mention email sent to ${member.name}`);
+    } catch (err) {
+      console.error(`Mention email to ${member.name} failed:`, err);
+    }
   }
 }
 
