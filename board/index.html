@@ -131,7 +131,7 @@ strong { color: var(--text); }
 .nav-donate:hover { background: #b06438 !important; color: var(--white) !important; }
 .nav-item-dropdown { position: relative; display: flex; align-items: center; }
 .nav-dropdown-trigger { display: flex !important; align-items: center; gap: 0; }
-.nav-caret-btn { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 4px 4px 4px 2px; color: var(--text); font-size: 0.65rem; transition: color 0.15s; line-height: 1; }
+.nav-caret-btn { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 6px 12px; color: var(--text); font-size: 0.93rem; font-weight: 400; font-family: inherit; -webkit-font-smoothing: antialiased; transition: color 0.15s; line-height: 1; border-radius: 6px; }
 .nav-caret-btn:hover { color: var(--teal); }
 .nav-caret { font-size: 0.65rem; transition: transform 0.2s; display: inline-block; }
 .nav-item-dropdown:hover .nav-caret, .nav-item-dropdown.open .nav-caret { transform: rotate(180deg); }
@@ -765,7 +765,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       </a>
       <ul class="nav-links" id="nav-links">
         <li class="nav-item-dropdown" id="dropdown-about">
-          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-about')" style="font-weight:600; font-size:1rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">About <span class="nav-caret">▾</span></button>
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-about')">About <span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
             <li><a href="/#about">About the Syndrome</a></li>
             <li><a href="/#who">About the Foundation</a></li>
@@ -775,7 +775,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <li><a href="/#research">Research</a></li>
         <li><a href="/#resources">Resources</a></li>
         <li class="nav-item-dropdown" id="dropdown-involve">
-          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-involve')" style="font-weight:600; font-size:1rem; font-family:inherit; color:var(--text); padding:6px 12px; border-radius:6px;">Get Involved <span class="nav-caret">▾</span></button>
+          <button class="nav-dropdown-trigger nav-caret-btn" onclick="toggleDropdown(event,'dropdown-involve')">Get Involved <span class="nav-caret">▾</span></button>
           <ul class="nav-dropdown-menu">
             <li><a href="/#fundraising">Fundraising</a></li>
             <li><a href="/#volunteer">Volunteer</a></li>
