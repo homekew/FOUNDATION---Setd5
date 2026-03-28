@@ -795,14 +795,6 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     border: none !important;
     box-shadow: none !important;
   }
-  /* Darken the page behind when expanded */
-  #chat-expand-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(26,51,64,0.45);
-    z-index: 7999;
-  }
   #chat-expand-btn:hover { background: rgba(255,255,255,0.18) !important; }
 
   #chat-reply-indicator {
@@ -2611,30 +2603,37 @@ async function chatDeleteMessage(msgId) {
 
 // ── Expand / collapse chat to full window (desktop) ──────────────────────────
 let chatIsExpanded = false;
+let chatOriginalParent = null;
+let chatNextSibling = null;
 
 window.chatToggleExpand = function() {
   const app      = document.getElementById('chat-app');
-  const backdrop = document.getElementById('chat-expand-backdrop');
   const icon     = document.getElementById('chat-expand-icon');
   const label    = document.getElementById('chat-expand-label');
   chatIsExpanded = !chatIsExpanded;
 
   if (chatIsExpanded) {
+    // Remember where the element lives so we can put it back
+    chatOriginalParent = app.parentNode;
+    chatNextSibling    = app.nextSibling;
+    // Move directly into <body> so no parent stacking context can trap it
+    document.body.appendChild(app);
     app.classList.add('chat-expanded');
-    backdrop.style.display = 'block';
-    // Collapse icon (X marks / shrink arrows)
+    document.body.style.overflow = 'hidden';
     icon.innerHTML = '<path d="M9 1v4h4M13 1L9 5M5 13H1V9M1 13l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
     label.textContent = 'Collapse';
-    document.body.style.overflow = 'hidden';
   } else {
     app.classList.remove('chat-expanded');
-    backdrop.style.display = 'none';
-    // Expand icon
+    // Return to original position in the DOM
+    if (chatNextSibling) {
+      chatOriginalParent.insertBefore(app, chatNextSibling);
+    } else {
+      chatOriginalParent.appendChild(app);
+    }
+    document.body.style.overflow = '';
     icon.innerHTML = '<path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
     label.textContent = 'Expand';
-    document.body.style.overflow = '';
   }
-  // Scroll to bottom after resize
   setTimeout(() => {
     const msgs = document.getElementById('chat-messages');
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
@@ -3559,9 +3558,6 @@ async function inboxFileItSave() {
 window.inboxFileItSave = inboxFileItSave;
 </script>
 
-
-<!-- Chat expand backdrop -->
-<div id="chat-expand-backdrop" onclick="chatToggleExpand()"></div>
 
 <!-- Who-reacted popover -->
 <div id="chat-who-reacted">
