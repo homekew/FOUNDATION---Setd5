@@ -743,6 +743,24 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     cursor:pointer;transition:background 0.1s;line-height:1;
   }
   #chat-react-popup button:hover { background:var(--teal-light); }
+  /* Who-reacted popover */
+  #chat-who-reacted {
+    position:fixed;z-index:9991;
+    background:var(--white);border:1px solid var(--border);
+    border-radius:10px;padding:10px 14px;min-width:160px;max-width:240px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.14);
+    display:none;
+  }
+  #chat-who-reacted .wr-emoji { font-size:1.4rem;text-align:center;margin-bottom:6px; }
+  #chat-who-reacted .wr-names { font-size:0.78rem;color:var(--text);line-height:1.6; }
+  #chat-who-reacted .wr-toggle {
+    display:block;width:100%;margin-top:8px;padding:4px 0;
+    background:none;border:1px solid var(--border);border-radius:6px;
+    font-size:0.72rem;font-weight:600;cursor:pointer;font-family:inherit;
+    color:var(--text-light);transition:all 0.12s;
+  }
+  #chat-who-reacted .wr-toggle:hover { border-color:var(--teal);color:var(--teal);background:var(--teal-light); }
+  #chat-who-reacted .wr-toggle.mine { border-color:var(--teal);color:var(--teal);background:rgba(47,83,97,0.08); }
 
   /* ── Reply threading ── */
   .chat-reply-quote {
@@ -2134,7 +2152,7 @@ function renderMessages(snapshot) {
       .map(([emoji, users]) => {
         const isMine = users.includes(chatUserName);
         const names  = users.join(', ');
-        return `<button class="chat-reaction-pill${isMine ? ' mine' : ''}" title="${escapeHtml(names)}" onclick="chatToggleReaction('${msg.id}','${emoji}')">${emoji} <span class="react-count">${users.length}</span></button>`;
+        return `<button class="chat-reaction-pill${isMine ? ' mine' : ''}" onclick="chatShowWhoReacted(event,'${msg.id}','${emoji.replace(/'/g,"\\'")}',${JSON.stringify(users)},${isMine})">${emoji} <span class="react-count">${users.length}</span></button>`;
       }).join('');
     const reactionsHtml = reactionPills ? `<div class="chat-reactions">${reactionPills}</div>` : '';
 
@@ -2622,6 +2640,51 @@ window.chatAddReaction = async function(emoji) {
 window.chatToggleReaction = async function(msgId, emoji) {
   reactTargetMsgId = msgId;
   await chatAddReaction(emoji);
+};
+
+// ── Who-reacted popover ───────────────────────────────────────────────────────
+let wrMsgId = null, wrEmoji = null;
+
+document.addEventListener('click', e => {
+  const pop = document.getElementById('chat-who-reacted');
+  if (pop && pop.style.display !== 'none' && !pop.contains(e.target) && !e.target.closest('.chat-reaction-pill')) {
+    pop.style.display = 'none';
+  }
+});
+
+window.chatShowWhoReacted = function(event, msgId, emoji, users, isMine) {
+  event.stopPropagation();
+  wrMsgId = msgId; wrEmoji = emoji;
+  const pop = document.getElementById('chat-who-reacted');
+  document.getElementById('wr-emoji').textContent = emoji;
+  const nameList = users.length ? users.join('\n') : 'No reactions yet';
+  document.getElementById('wr-names').textContent = nameList;
+  const btn = document.getElementById('wr-toggle');
+  if (isMine) {
+    btn.textContent = 'Remove my reaction';
+    btn.className = 'wr-toggle mine';
+  } else {
+    btn.textContent = 'React with ' + emoji;
+    btn.className = 'wr-toggle';
+  }
+  pop.style.display = 'block';
+  // Position near the pill
+  const rect = event.currentTarget.getBoundingClientRect();
+  const popW = 240, popH = 110;
+  let left = rect.left;
+  let top  = rect.bottom + 6;
+  if (left + popW > window.innerWidth - 8) left = window.innerWidth - popW - 8;
+  if (top  + popH > window.innerHeight - 8) top = rect.top - popH - 6;
+  pop.style.left = left + 'px';
+  pop.style.top  = top  + 'px';
+};
+
+window.chatWrToggle = async function() {
+  document.getElementById('chat-who-reacted').style.display = 'none';
+  if (!wrMsgId || !wrEmoji) return;
+  reactTargetMsgId = wrMsgId;
+  await chatAddReaction(wrEmoji);
+  wrMsgId = null; wrEmoji = null;
 };
 
 // ── Message search ────────────────────────────────────────────────────────────
@@ -3436,6 +3499,13 @@ async function inboxFileItSave() {
 window.inboxFileItSave = inboxFileItSave;
 </script>
 
+
+<!-- Who-reacted popover -->
+<div id="chat-who-reacted">
+  <div class="wr-emoji" id="wr-emoji"></div>
+  <div class="wr-names" id="wr-names"></div>
+  <button class="wr-toggle" id="wr-toggle" onclick="chatWrToggle()"></button>
+</div>
 
 <!-- Emoji reaction quick-picker -->
 <div id="chat-react-popup">
