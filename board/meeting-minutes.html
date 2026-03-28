@@ -477,6 +477,17 @@
     </div>
   </div>
 
+  <!-- Bottom action bar -->
+  <div class="action-bar" style="margin-top:32px;border-top:2px solid var(--border);padding-top:24px;">
+    <div class="action-bar-title" style="font-size:1rem;color:var(--text-light);font-weight:500;">Ready to save or print?</div>
+    <div class="action-bar-btns">
+      <button class="btn btn-secondary" onclick="printBlank()">🖨️ Print Blank Template</button>
+      <button class="btn btn-gold"      onclick="window.print()">📄 Print / Export</button>
+      <button class="btn btn-primary"   onclick="saveToPortal()" id="save-btn-bottom">💾 Save to Board Portal</button>
+    </div>
+  </div>
+  <div id="save-status-bottom" style="margin-top:8px;font-size:0.85rem;text-align:right;"></div>
+
 </main>
 
 <!-- Firebase -->
@@ -767,7 +778,7 @@ function restoreFormData(d) {
 const editDocId = new URLSearchParams(location.search).get('edit');
 if (editDocId) {
   document.querySelector('.action-bar-title').textContent = 'Edit Meeting Minutes';
-  document.getElementById('save-btn').textContent = '💾 Update Board Portal';
+  setSaveBtns(false, '💾 Update Board Portal');
   getDoc(doc(db, 'board_documents', editDocId)).then(snap => {
     if (snap.exists() && snap.data().formData) {
       restoreFormData(snap.data().formData);
@@ -776,20 +787,29 @@ if (editDocId) {
 }
 
 // ── Save to portal ───────────────────────────────────────────────────────────
+function setSaveBtns(disabled, text) {
+  ['save-btn', 'save-btn-bottom'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.disabled = disabled; el.textContent = text; }
+  });
+}
+function setSaveStatus(cls, text) {
+  ['save-status', 'save-status-bottom'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.className = cls; el.textContent = text; }
+  });
+}
+
 window.saveToPortal = async function() {
-  const btn    = document.getElementById('save-btn');
-  const status = document.getElementById('save-status');
-  const date   = document.getElementById('mtg-date').value;
+  const date = document.getElementById('mtg-date').value;
 
   if (!date) {
     alert('Please enter a meeting date before saving.');
     return;
   }
 
-  btn.disabled    = true;
-  btn.textContent = editDocId ? 'Updating…' : 'Saving…';
-  status.className = '';
-  status.textContent = 'Uploading to board portal…';
+  setSaveBtns(true, editDocId ? 'Updating…' : 'Saving…');
+  setSaveStatus('', 'Uploading to board portal…');
 
   try {
     const html      = buildMinutesHTML();
@@ -818,21 +838,17 @@ window.saveToPortal = async function() {
       });
     }
 
-    status.className   = 'success';
-    status.textContent = editDocId
+    setSaveStatus('success', editDocId
       ? '✓ Minutes updated in Board Portal'
-      : '✓ Saved to Board Portal under Board Meeting Materials → Meeting Minutes';
-    btn.textContent = '✓ Saved';
+      : '✓ Saved to Board Portal under Board Meeting Materials → Meeting Minutes');
+    setSaveBtns(false, '✓ Saved');
     setTimeout(() => {
-      btn.disabled    = false;
-      btn.textContent = editDocId ? '💾 Update Board Portal' : '💾 Save to Board Portal';
+      setSaveBtns(false, editDocId ? '💾 Update Board Portal' : '💾 Save to Board Portal');
     }, 5000);
   } catch (err) {
     console.error(err);
-    status.className   = 'error';
-    status.textContent = 'Save failed — please try again or check your connection.';
-    btn.disabled    = false;
-    btn.textContent = editDocId ? '💾 Update Board Portal' : '💾 Save to Board Portal';
+    setSaveStatus('error', 'Save failed — please try again or check your connection.');
+    setSaveBtns(false, editDocId ? '💾 Update Board Portal' : '💾 Save to Board Portal');
   }
 };
 
