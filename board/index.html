@@ -2389,7 +2389,7 @@ async function sendMentionEmails(mentionedMembers, senderName, messageText, chan
     console.log(`Sending mention email to ${member.name} <${member.email}>`);
     try {
       await ejs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        to_email:   member.email,
+        email:      member.email,
         to_name:    member.name,
         from_name:  senderName,
         channel:    channel,
