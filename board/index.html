@@ -716,6 +716,34 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .chat-edit-cancel:hover { border-color:var(--teal);color:var(--teal); }
   .chat-msg-edited { font-size:0.65rem;color:var(--text-light);margin-left:6px;font-style:italic; }
 
+  /* ── Emoji reactions ── */
+  .chat-reactions { display:flex;flex-wrap:wrap;gap:4px;margin-top:5px; }
+  .chat-reaction-pill {
+    display:inline-flex;align-items:center;gap:4px;
+    background:var(--bg);border:1.5px solid var(--border);
+    border-radius:20px;padding:2px 8px;font-size:0.82rem;
+    cursor:pointer;transition:all 0.12s;line-height:1.4;
+    font-family:inherit;
+  }
+  .chat-reaction-pill:hover { border-color:var(--teal);background:var(--teal-light); }
+  .chat-reaction-pill.mine  { background:rgba(47,83,97,0.1);border-color:var(--teal);color:var(--teal); }
+  .chat-reaction-pill .react-count { font-size:0.72rem;font-weight:600;color:var(--text-light); }
+  .chat-reaction-pill.mine .react-count { color:var(--teal); }
+  /* Quick-reaction popup */
+  #chat-react-popup {
+    position:fixed;z-index:9990;
+    background:var(--white);border:1px solid var(--border);
+    border-radius:12px;padding:6px 8px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.14);
+    display:none;gap:2px;
+  }
+  #chat-react-popup button {
+    font-size:1.25rem;background:none;border:none;
+    border-radius:8px;width:36px;height:36px;
+    cursor:pointer;transition:background 0.1s;line-height:1;
+  }
+  #chat-react-popup button:hover { background:var(--teal-light); }
+
   /* ── Reply threading ── */
   .chat-reply-quote {
     border-left:3px solid var(--gold);
@@ -2064,14 +2092,26 @@ function renderMessages(snapshot) {
         <span style="font-size:0.72rem;opacity:0.6;">↓</span>
       </a>` : '';
 
+    // Build reaction pills
+    const reactions = msg.reactions || {};
+    const reactionPills = Object.entries(reactions)
+      .filter(([, users]) => users.length > 0)
+      .map(([emoji, users]) => {
+        const isMine = users.includes(chatUserName);
+        const names  = users.join(', ');
+        return `<button class="chat-reaction-pill${isMine ? ' mine' : ''}" title="${escapeHtml(names)}" onclick="chatToggleReaction('${msg.id}','${emoji}')">${emoji} <span class="react-count">${users.length}</span></button>`;
+      }).join('');
+    const reactionsHtml = reactionPills ? `<div class="chat-reactions">${reactionPills}</div>` : '';
+
     html += `
-      <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''}>
+      <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''} ondblclick="chatShowReactPopup('${msg.id}',event)">
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
           <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${replyBtn}</div>
           ${quoteHtml}
           ${text ? `<div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>` : ''}
           ${fileHtml}
+          ${reactionsHtml}
         </div>
         ${actions}
       </div>`;
@@ -2492,6 +2532,62 @@ async function chatDeleteMessage(msgId) {
     alert('Could not delete message. Please try again.');
   }
 }
+
+// ── Emoji reactions ───────────────────────────────────────────────────────────
+let reactTargetMsgId = null;
+const reactPopup = document.getElementById('chat-react-popup');
+
+document.addEventListener('click', e => {
+  if (reactPopup && reactPopup.style.display === 'flex' && !reactPopup.contains(e.target)) {
+    reactPopup.style.display = 'none';
+    reactTargetMsgId = null;
+  }
+});
+
+window.chatShowReactPopup = function(msgId, event) {
+  event.preventDefault();
+  event.stopPropagation();
+  reactTargetMsgId = msgId;
+  const popup = document.getElementById('chat-react-popup');
+  popup.style.display = 'flex';
+  // Position near the double-clicked message
+  const x = Math.min(event.clientX, window.innerWidth - 320);
+  const y = event.clientY - 56;
+  popup.style.left = x + 'px';
+  popup.style.top  = Math.max(y, 8) + 'px';
+};
+
+window.chatAddReaction = async function(emoji) {
+  const popup = document.getElementById('chat-react-popup');
+  popup.style.display = 'none';
+  if (!reactTargetMsgId || !chatUserName) return;
+  const msgId = reactTargetMsgId;
+  reactTargetMsgId = null;
+
+  const msgRef = doc(db, 'channels', currentChannel, 'messages', msgId);
+  // Read current reactions, toggle this user's entry
+  try {
+    const { getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const snap = await getDoc(msgRef);
+    const data = snap.data() || {};
+    const reactions = data.reactions || {};
+    const users = reactions[emoji] || [];
+    if (users.includes(chatUserName)) {
+      reactions[emoji] = users.filter(u => u !== chatUserName);
+      if (reactions[emoji].length === 0) delete reactions[emoji];
+    } else {
+      reactions[emoji] = [...users, chatUserName];
+    }
+    await updateDoc(msgRef, { reactions });
+  } catch (err) {
+    console.error('Reaction error:', err);
+  }
+};
+
+window.chatToggleReaction = async function(msgId, emoji) {
+  reactTargetMsgId = msgId;
+  await chatAddReaction(emoji);
+};
 
 // ── Message search ────────────────────────────────────────────────────────────
 window.chatSearchMessages = chatSearchMessages;
@@ -3305,6 +3401,18 @@ async function inboxFileItSave() {
 window.inboxFileItSave = inboxFileItSave;
 </script>
 
+
+<!-- Emoji reaction quick-picker -->
+<div id="chat-react-popup">
+  <button onclick="chatAddReaction('👍')">👍</button>
+  <button onclick="chatAddReaction('❤️')">❤️</button>
+  <button onclick="chatAddReaction('😂')">😂</button>
+  <button onclick="chatAddReaction('😮')">😮</button>
+  <button onclick="chatAddReaction('😢')">😢</button>
+  <button onclick="chatAddReaction('🙏')">🙏</button>
+  <button onclick="chatAddReaction('🎉')">🎉</button>
+  <button onclick="chatAddReaction('✅')">✅</button>
+</div>
 
 <!-- Foundation Setup Roadmap Modal -->
 <div id="roadmap-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(26,51,64,0.55);align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;">
