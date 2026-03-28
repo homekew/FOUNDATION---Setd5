@@ -228,6 +228,23 @@
 
       .rep-item { border: 0.75pt solid #ddd; }
 
+      /* ── Blank template: expand fields into writable lines ── */
+      body.print-blank input[type="text"],
+      body.print-blank input[type="date"],
+      body.print-blank input[type="time"],
+      body.print-blank select {
+        min-height: 26pt;
+        border-bottom: 1pt solid #555 !important;
+      }
+      body.print-blank textarea {
+        min-height: 72pt !important;
+        border-bottom: 1pt solid #555 !important;
+      }
+      body.print-blank .action-table td input[type="text"] { min-height: 22pt; }
+      body.print-blank .action-table td input[type="date"] { min-height: 22pt; }
+      body.print-blank .rep-item { min-height: 80pt; }
+      body.print-blank .att-item { min-height: 30pt; }
+
       @page { margin: 2cm; }
     }
   </style>
@@ -583,30 +600,31 @@ addActionItem();
 
 // ── Print blank ──────────────────────────────────────────────────────────────
 window.printBlank = function() {
-  // Save current values
-  const fields = [...document.querySelectorAll('input:not([type=radio]), textarea, select')];
-  const saved  = fields.map(el => ({ el, val: el.value, idx: el.selectedIndex }));
+  const fields        = [...document.querySelectorAll('input:not([type=radio]), textarea, select')];
+  const saved         = fields.map(el => ({ el, val: el.value, idx: el.selectedIndex }));
+  const savedAttend   = { ...attendState };
 
   // Clear everything
-  fields.forEach(el => {
-    if (el.tagName === 'SELECT') el.selectedIndex = 0;
-    else el.value = '';
-  });
-  BOARD_MEMBERS.forEach(n => {
-    attendState[n] = 'unknown';
-    renderAttend(n);
-  });
+  fields.forEach(el => { if (el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = ''; });
+  BOARD_MEMBERS.forEach(n => { attendState[n] = 'unknown'; renderAttend(n); });
   updateQuorumCount();
 
-  window.print();
+  // Apply blank-template class so fields print with extra space
+  document.body.classList.add('print-blank');
 
-  // Restore
-  saved.forEach(({ el, val, idx }) => {
-    if (el.tagName === 'SELECT') el.selectedIndex = idx;
-    else el.value = val;
-  });
-  BOARD_MEMBERS.forEach(n => renderAttend(n));
-  updateQuorumCount();
+  function restore() {
+    window.removeEventListener('afterprint', restore);
+    document.body.classList.remove('print-blank');
+    saved.forEach(({ el, val, idx }) => { if (el.tagName === 'SELECT') el.selectedIndex = idx; else el.value = val; });
+    BOARD_MEMBERS.forEach(n => { attendState[n] = savedAttend[n]; renderAttend(n); });
+    updateQuorumCount();
+  }
+
+  window.addEventListener('afterprint', restore);
+  // Fallback restore in case afterprint doesn't fire
+  setTimeout(() => restore(), 5000);
+
+  setTimeout(() => window.print(), 80);
 };
 
 // ── Save to portal ───────────────────────────────────────────────────────────
