@@ -267,6 +267,12 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   flex-shrink: 0;
 }
 .doc-item-del:hover { color: var(--coral); }
+/* ── Emoji picker ── */
+#emoji-picker { display:none; position:absolute; bottom:calc(100% + 8px); right:0; background:var(--white); border:1.5px solid var(--border); border-radius:12px; box-shadow:var(--shadow); padding:10px; width:248px; z-index:200; }
+#emoji-picker.open { display:block; }
+.emoji-picker-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+.emoji-btn-pick { background:none; border:none; font-size:1.2rem; padding:4px; border-radius:6px; cursor:pointer; line-height:1; transition:background 0.1s; }
+.emoji-btn-pick:hover { background:var(--teal-light); }
 .doc-item--no-file { border-left-color: var(--border); opacity: 0.65; cursor: default; }
 .doc-item--no-file:hover { color: var(--teal); }
 .doc-no-file-tag { font-size: 0.7rem; color: var(--text-light); background: rgba(0,0,0,0.05); border-radius: 4px; padding: 1px 7px; font-style: italic; flex-shrink: 0; margin-left: 4px; white-space: nowrap; }
@@ -934,8 +940,13 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                   style="flex:1;border:none;outline:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;color:var(--text);resize:none;min-height:22px;max-height:100px;line-height:1.5;"
                   oninput="chatMentionInput(event)"
                   onkeydown="chatMentionKey(event)"></textarea>
-                <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
+                <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;position:relative;">
+                  <!-- Emoji picker panel -->
+                  <div id="emoji-picker">
+                    <div class="emoji-picker-grid" id="emoji-picker-grid"></div>
+                  </div>
                   <input type="file" id="chat-file-input" style="display:none;" onchange="chatFileSelected(this)" accept="*/*" />
+                  <button onclick="chatToggleEmoji(event)" style="width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.12s;" title="Emoji">😊</button>
                   <button onclick="document.getElementById('chat-file-input').click()" style="width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.12s;" title="Attach file">📎</button>
                   <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
                 </div>
@@ -2261,6 +2272,52 @@ function chatClearFile() {
   document.getElementById('chat-file-preview').style.display = 'none';
   document.getElementById('chat-file-input').value = '';
 }
+
+// ── Emoji picker ──────────────────────────────────────────────────────────────
+const EMOJI_LIST = [
+  '😀','😂','😊','😍','🥹','😭','😅','😬','🤔','😎','🥰','😢',
+  '😡','🤩','😴','🤗','🙄','😏','😤','🤯','🥳','😇','🫡','🫠',
+  '👍','👎','❤️','🙌','🎉','🔥','💯','✅','⚡','💪','🤝','👏',
+  '🫶','👀','💡','📌','📎','🗓️','📋','💬','📢','🚀','⭐','🌟',
+  '🙏','💙','💚','💛','🧡','💜','🖤','🤍','💔','❓','❗','➕',
+];
+
+function chatToggleEmoji(e) {
+  e.stopPropagation();
+  const picker = document.getElementById('emoji-picker');
+  if (!picker.classList.contains('open')) {
+    // Populate grid lazily on first open
+    const grid = document.getElementById('emoji-picker-grid');
+    if (!grid.children.length) {
+      grid.innerHTML = EMOJI_LIST.map(em =>
+        `<button class="emoji-btn-pick" onclick="chatInsertEmoji('${em}')" title="${em}">${em}</button>`
+      ).join('');
+    }
+  }
+  picker.classList.toggle('open');
+}
+
+function chatInsertEmoji(emoji) {
+  const ta = document.getElementById('chat-input');
+  const start = ta.selectionStart;
+  const end   = ta.selectionEnd;
+  ta.value = ta.value.slice(0, start) + emoji + ta.value.slice(end);
+  const pos = start + emoji.length;
+  ta.setSelectionRange(pos, pos);
+  ta.focus();
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
+  chatUpdatePlaceholder();
+  document.getElementById('emoji-picker').classList.remove('open');
+}
+
+// Close emoji picker when clicking outside
+document.addEventListener('click', () => {
+  document.getElementById('emoji-picker')?.classList.remove('open');
+});
+
+window.chatToggleEmoji  = chatToggleEmoji;
+window.chatInsertEmoji  = chatInsertEmoji;
 
 function formatBytes(bytes) {
   if (bytes < 1024) return bytes + ' B';
