@@ -229,36 +229,48 @@
       .rep-item { border: 0.75pt solid #ddd; }
 
       /* ── Blank template: expand fields into writable lines ── */
+      /* Single-line fields — tall enough for clear handwriting */
       body.print-blank input[type="text"],
       body.print-blank input[type="date"],
       body.print-blank input[type="time"],
       body.print-blank select {
         display: block;
         width: 100%;
-        height: 30pt;
-        padding-bottom: 18pt;
+        height: 40pt;
         border: none !important;
-        border-bottom: 1pt solid #444 !important;
+        border-bottom: 1.5pt solid #333 !important;
         background: transparent !important;
         -webkit-appearance: none;
         appearance: none;
+        color: transparent !important;
       }
+      /* Multi-line fields — ruled lines so there's clear space to write */
       body.print-blank textarea {
         display: block;
         width: 100%;
-        height: 84pt !important;
-        min-height: 84pt !important;
-        padding-bottom: 64pt;
+        height: 156pt !important;
         border: none !important;
-        border-bottom: 1pt solid #444 !important;
-        background: transparent !important;
+        border-bottom: 1.5pt solid #333 !important;
+        /* Ruled lines every 26pt — comfortable handwriting spacing */
+        background: repeating-linear-gradient(
+          transparent,
+          transparent 25pt,
+          #bbb 25pt,
+          #bbb 26pt
+        ) !important;
         overflow: visible;
+        color: transparent !important;
       }
-      body.print-blank .action-table td input { height: 24pt !important; padding-bottom: 14pt; }
+      body.print-blank .action-table td input {
+        height: 32pt !important;
+        border-bottom: 1pt solid #333 !important;
+        background: transparent !important;
+        color: transparent !important;
+      }
       body.print-blank .field-row,
-      body.print-blank .field-full { margin-bottom: 22pt; }
-      body.print-blank .rep-item { padding-bottom: 20pt; }
-      body.print-blank .att-item { height: 28pt; }
+      body.print-blank .field-full { margin-bottom: 28pt; }
+      body.print-blank .rep-item { padding-bottom: 24pt; }
+      body.print-blank .att-item { height: 32pt; }
 
       @page { margin: 2cm; }
     }
