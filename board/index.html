@@ -1430,7 +1430,10 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
           </div>
         </div>
         <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:8px;">Historical Communications</h3>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
+            <h3 style="font-size:1rem; color:var(--teal); margin:0;">Historical Communications</h3>
+            <button class="section-upload-btn" style="flex-shrink:0;margin:0;" onclick="docModalOpen('board-meetings','Historical Communications')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload</button>
+          </div>
           <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:12px;line-height:1.5;">Pre-portal board conversations exported from Messenger and other channels.</p>
           <div data-doc-section="board-meetings" data-doc-sub="Historical Communications" >
             <div class="doc-empty">No documents yet</div>
