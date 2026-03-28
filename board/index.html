@@ -2197,21 +2197,26 @@ function closeMentionDropdown() {
 
 // Render @mentions as gold pills in message text
 function renderMentions(text) {
-  return text.replace(/@([\w][\w\s]*?)(?=\s|$|[.,!?])/g, (match, name) => {
-    const member = BOARD_MEMBERS.find(m => m.name.toLowerCase() === name.toLowerCase());
-    if (member) return `<span class="mention-tag">@${escapeHtml(member.name)}</span>`;
-    return match;
-  });
+  // Sort longest name first to avoid partial-name collisions
+  const sorted = [...BOARD_MEMBERS].sort((a, b) => b.name.length - a.name.length);
+  let result = text;
+  for (const member of sorted) {
+    const esc = member.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    result = result.replace(
+      new RegExp('@' + esc, 'gi'),
+      `<span class="mention-tag">@${escapeHtml(member.name)}</span>`
+    );
+  }
+  return result;
 }
 
 // Extract mentioned members from text
 function extractMentions(text) {
   const found = [];
-  const regex = /@([\w][\w\s]*?)(?=\s|$|[.,!?])/g;
-  let m;
-  while ((m = regex.exec(text)) !== null) {
-    const member = BOARD_MEMBERS.find(mb => mb.name.toLowerCase() === m[1].toLowerCase());
-    if (member && member.email && !found.includes(member)) found.push(member);
+  for (const member of BOARD_MEMBERS) {
+    if (member.email && text.toLowerCase().includes('@' + member.name.toLowerCase()) && !found.includes(member)) {
+      found.push(member);
+    }
   }
   return found;
 }
