@@ -3084,7 +3084,7 @@ async function docSave() {
     let fileName = null;
     let fileURL  = null;
     if (file) {
-      const storageRef = ref(storage, `board-documents/${sec}/${Date.now()}_${file.name}`);
+      const storageRef = ref(storage, `board-documents/${categories[0].section}/${Date.now()}_${file.name}`);
       fileURL = await new Promise((resolve, reject) => {
         const task = uploadBytesResumable(storageRef, file);
         task.on('state_changed', null, reject, async () => resolve(await getDownloadURL(storageRef)));
