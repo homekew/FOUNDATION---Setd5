@@ -1900,16 +1900,49 @@ let chatUserName    = '';
 let pendingFile     = null;   // file selected for attachment
 const bgUnsubs      = {};     // background listeners for unread tracking
 
-// ── Unread helpers ────────────────────────────────────────────────────────────
-function unreadKey(ch)  { return `chat_last_seen_${ch}`; }
-function markSeen(ch)   { localStorage.setItem(unreadKey(ch), Date.now().toString()); }
-function lastSeen(ch)   { return parseInt(localStorage.getItem(unreadKey(ch)) || '0', 10); }
+// ── Unread helpers (Firestore-synced across devices) ─────────────────────────
+const readStateCache = {};   // { channel: timestampMillis } — in-memory cache
 
 function updateBadge(ch, count) {
   const badge = document.getElementById(`badge-${ch}`);
   if (!badge) return;
   if (count > 0) { badge.textContent = count > 9 ? '9+' : count; badge.classList.add('visible'); }
   else           { badge.textContent = ''; badge.classList.remove('visible'); }
+}
+
+async function markSeen(ch) {
+  const now = Date.now();
+  readStateCache[ch] = now;
+  if (!chatUserName) return;
+  try {
+    const stateRef = doc(db, 'read_state', chatUserName);
+    await updateDoc(stateRef, { [ch]: now }).catch(async () => {
+      // Document may not exist yet — create it
+      const { setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+      await setDoc(stateRef, { [ch]: now }, { merge: true });
+    });
+  } catch (err) {
+    console.warn('markSeen error:', err);
+  }
+}
+
+async function loadReadState() {
+  if (!chatUserName) return;
+  try {
+    const { getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const snap = await getDoc(doc(db, 'read_state', chatUserName));
+    if (snap.exists()) {
+      Object.assign(readStateCache, snap.data());
+    }
+  } catch (err) {
+    console.warn('loadReadState error:', err);
+  }
+}
+
+function lastSeen(ch) {
+  // Fall back to localStorage for first-load before Firestore resolves
+  const local = parseInt(localStorage.getItem(`chat_last_seen_${ch}`) || '0', 10);
+  return readStateCache[ch] || local;
 }
 
 function watchUnread(ch) {
@@ -1967,11 +2000,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-function showChatApp() {
+async function showChatApp() {
   document.getElementById('chat-setup').style.display = 'none';
   const app = document.getElementById('chat-app');
   app.style.display = 'flex';
   document.getElementById('chat-current-name').textContent = chatUserName;
+  // Load cross-device read state before starting watchers
+  await loadReadState();
   markSeen('general');
   chatSubscribe('general');
   // Start background listeners for unread counts on all other channels
