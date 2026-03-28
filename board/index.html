@@ -794,6 +794,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     border-radius: 0 !important;
     border: none !important;
     box-shadow: none !important;
+    background: var(--white) !important;
   }
   #chat-expand-btn:hover { background: rgba(255,255,255,0.18) !important; }
 
@@ -2171,7 +2172,7 @@ function renderMessages(snapshot) {
       .map(([emoji, users]) => {
         const isMine = users.includes(chatUserName);
         const names  = users.join(', ');
-        return `<button class="chat-reaction-pill${isMine ? ' mine' : ''}" onclick="chatShowWhoReacted(event,'${msg.id}','${emoji.replace(/'/g,"\\'")}',${JSON.stringify(users)},${isMine})">${emoji} <span class="react-count">${users.length}</span></button>`;
+        return `<button class="chat-reaction-pill${isMine ? ' mine' : ''}" onclick="chatShowWhoReacted(event,'${msg.id}','${emoji.replace(/'/g,"\\'")}',${JSON.stringify(users)},${isMine})" ondblclick="event.stopPropagation()">${emoji} <span class="react-count">${users.length}</span></button>`;
       }).join('');
     const reactionsHtml = reactionPills ? `<div class="chat-reactions">${reactionPills}</div>` : '';
 
