@@ -1024,7 +1024,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                   <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
                 </div>
               </div>
-              <div class="chat-keyboard-hint" style="font-size:0.67rem;color:var(--text-light);margin-top:5px;padding-left:2px;">Enter to send · Shift+Enter for new line · 📎 to attach a file</div>
+              <div class="chat-keyboard-hint" style="font-size:0.67rem;color:var(--text-light);margin-top:5px;padding-left:2px;">Enter for new line · ↑ to send · 📎 to attach a file</div>
             </div>
 
           </div>
@@ -2518,10 +2518,6 @@ async function chatSend() {
 }
 
 function chatKeyDown(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    chatSend();
-  }
   if (e.key === 'Escape') {
     chatClearReply();
   }
