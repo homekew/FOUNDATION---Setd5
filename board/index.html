@@ -525,8 +525,19 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     border-bottom: none !important;
     box-shadow: none !important;
   }
-  /* Hide expand button on mobile — full-height is already the default */
-  #chat-expand-btn { display: none !important; }
+  /* Show expand button on mobile too */
+  #chat-expand-btn { display: flex !important; }
+  /* Full-screen expanded on mobile covers everything including browser chrome */
+  #chat-app.chat-expanded {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100% !important;
+    height: -webkit-fill-available !important;
+    z-index: 8000 !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
 
   /* ── Layout: stack channels above messages ── */
   .chat-body { flex-direction: column !important; }
