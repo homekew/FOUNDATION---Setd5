@@ -362,6 +362,36 @@
     </div>
   </div>
 
+  <!-- APPROVAL OF AGENDA -->
+  <div class="card">
+    <div class="card-title">Approval of Agenda</div>
+    <div class="field-row">
+      <div>
+        <label>Motion to Approve Agenda By</label>
+        <input type="text" id="agenda-motion" placeholder="Name">
+      </div>
+      <div>
+        <label>Seconded By</label>
+        <input type="text" id="agenda-second" placeholder="Name">
+      </div>
+    </div>
+    <div class="field-row">
+      <div>
+        <label>Result</label>
+        <select id="agenda-result">
+          <option>Approved unanimously</option>
+          <option>Approved</option>
+          <option>Approved as amended</option>
+          <option>Tabled</option>
+        </select>
+      </div>
+      <div>
+        <label>Amendments / Notes</label>
+        <input type="text" id="agenda-notes" placeholder="Any changes to the proposed agenda">
+      </div>
+    </div>
+  </div>
+
   <!-- APPROVAL OF PRIOR MINUTES -->
   <div class="card">
     <div class="card-title">Approval of Prior Minutes</div>
@@ -472,8 +502,21 @@
       <textarea id="adj-notes" placeholder="Any closing notes..."></textarea>
     </div>
     <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);">
-      <label>Secretary Name (attestation)</label>
-      <input type="text" id="sec-sig" placeholder="Your typed name serves as your attestation">
+      <p style="font-size:0.82rem;color:var(--text-light);line-height:1.65;margin-bottom:14px;">
+        I certify that the foregoing constitutes a true and accurate record of the actions taken
+        at a duly called meeting of the Board of Directors of SETD5 Syndrome Foundation, Inc.,
+        held on the date stated above, and that a quorum was present throughout.
+      </p>
+      <div class="field-row">
+        <div>
+          <label>Secretary Signature (Typed Name)</label>
+          <input type="text" id="sec-sig" placeholder="Type full name to certify">
+        </div>
+        <div>
+          <label>Date of Certification</label>
+          <input type="date" id="sec-date">
+        </div>
+      </div>
     </div>
   </div>
 
@@ -597,8 +640,30 @@ window.addOldBiz = function() {
       <input type="text" placeholder="Brief description of the item">
     </div>
     <div class="field-full">
-      <label>Discussion &amp; Outcome</label>
-      <textarea placeholder="Discussion summary, motion, vote result..."></textarea>
+      <label>Discussion Summary</label>
+      <textarea placeholder="Key points raised during discussion..."></textarea>
+    </div>
+    <div class="field-row-3">
+      <div><label>Motion By</label>
+           <input type="text" placeholder="Name (or N/A)"></div>
+      <div><label>Seconded By</label>
+           <input type="text" placeholder="Name (or N/A)"></div>
+      <div><label>Vote (Y / N / Abstain)</label>
+           <input type="text" placeholder="e.g., 5-0-0"></div>
+    </div>
+    <div class="field-row">
+      <div><label>Result</label>
+        <select>
+          <option>Motion carried</option>
+          <option>Motion carried unanimously</option>
+          <option>Motion failed</option>
+          <option>Tabled</option>
+          <option>Deferred</option>
+          <option>No vote taken — discussion only</option>
+        </select>
+      </div>
+      <div><label>Notes</label>
+           <input type="text" placeholder="Any follow-up or conditions"></div>
     </div>`;
   div.appendChild(removeBtn(div));
   list.appendChild(div);
@@ -614,8 +679,30 @@ window.addNewBiz = function() {
       <input type="text" placeholder="Brief description of the item">
     </div>
     <div class="field-full">
-      <label>Discussion &amp; Outcome</label>
-      <textarea placeholder="Discussion summary, motion, vote result..."></textarea>
+      <label>Discussion Summary</label>
+      <textarea placeholder="Key points raised during discussion..."></textarea>
+    </div>
+    <div class="field-row-3">
+      <div><label>Motion By</label>
+           <input type="text" placeholder="Name (or N/A)"></div>
+      <div><label>Seconded By</label>
+           <input type="text" placeholder="Name (or N/A)"></div>
+      <div><label>Vote (Y / N / Abstain)</label>
+           <input type="text" placeholder="e.g., 5-0-0"></div>
+    </div>
+    <div class="field-row">
+      <div><label>Result</label>
+        <select>
+          <option>Motion carried</option>
+          <option>Motion carried unanimously</option>
+          <option>Motion failed</option>
+          <option>Tabled</option>
+          <option>Deferred</option>
+          <option>No vote taken — discussion only</option>
+        </select>
+      </div>
+      <div><label>Notes</label>
+           <input type="text" placeholder="Any follow-up or conditions"></div>
     </div>`;
   div.appendChild(removeBtn(div));
   list.appendChild(div);
