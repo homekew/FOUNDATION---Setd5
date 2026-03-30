@@ -795,6 +795,17 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     font-family:inherit;
   }
   .chat-msg-row:hover .chat-reply-btn { opacity:1; }
+  .chat-delete-btn {
+    font-size:0.68rem;padding:2px 7px;border:1px solid var(--border);
+    border-radius:5px;background:none;color:var(--text-light);
+    cursor:pointer;opacity:0;transition:opacity 0.12s;margin-left:4px;
+    font-family:inherit;
+  }
+  .chat-msg-row:hover .chat-delete-btn { opacity:1; }
+  /* Always visible on touch devices */
+  @media (hover: none) {
+    .chat-reply-btn, .chat-delete-btn { opacity:1; }
+  }
 
   /* ── Expanded / full-window chat (desktop only) ── */
   #chat-app.chat-expanded {
@@ -2159,6 +2170,7 @@ function renderMessages(snapshot) {
     const replyAuthorSafe = (author).replace(/'/g, "\\'");
     const replyTextSafe   = (msg.text || '').slice(0, 120).replace(/'/g, "\\'").replace(/\n/g, ' ');
     const replyBtn = `<button class="chat-reply-btn" onclick="chatSetReply('${msg.id}','${replyAuthorSafe}','${replyTextSafe}')">↩ Reply</button>`;
+    const deleteBtn = isOwn ? `<button class="chat-delete-btn" onclick="chatDeleteMessage('${msg.id}')" title="Delete message">🗑</button>` : '';
 
     const quoteHtml = msg.replyTo ? `
       <div class="chat-reply-quote" onclick="chatScrollToMsg('${msg.replyTo.id}')">
@@ -2189,7 +2201,7 @@ function renderMessages(snapshot) {
       <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''} ondblclick="chatShowReactPopup('${msg.id}',event)">
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
-          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${replyBtn}</div>
+          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${replyBtn}${deleteBtn}</div>
           ${quoteHtml}
           ${text ? `<div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>` : ''}
           ${fileHtml}
