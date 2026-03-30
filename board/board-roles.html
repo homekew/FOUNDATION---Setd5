@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Board Roles Reference | SETD5 Syndrome Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal:       #2F5361;
+  --teal-dark:  #1e3a45;
+  --teal-light: #d5ddde;
+  --coral:      #c96a38;
+  --coral-light:#eeebe7;
+  --gold:       #D8AB67;
+  --gold-light: #F2F2F0;
+  --white:      #ffffff;
+  --cream:      #F7F3EE;
+  --text:       #1A3340;
+  --text-mid:   #4a6b78;
+  --text-light: #7a9bab;
+  --border:     #dde8ec;
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.05);
+  --shadow-md:  0 2px 6px rgba(0,0,0,0.06), 0 6px 20px rgba(0,0,0,0.07);
+}
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.68;
+  font-size: 16px;
+}
+h1, h2, h3 {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 600;
+  color: var(--teal);
+  line-height: 1.2;
+}
+.subhead {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  color: var(--coral);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* ── Page layout ── */
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+/* ── Header ── */
+.doc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 28px;
+  border-bottom: 2px solid var(--teal-light);
+  margin-bottom: 40px;
+}
+.doc-header-left h1 {
+  font-size: 1.85rem;
+  margin-bottom: 6px;
+}
+.doc-header-left p {
+  color: var(--text-mid);
+  font-size: 0.88rem;
+  margin: 0;
+}
+.doc-meta {
+  text-align: right;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  line-height: 1.8;
+  flex-shrink: 0;
+}
+.doc-meta strong {
+  color: var(--teal);
+}
+
+/* ── Section intro ── */
+.section-intro {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--teal);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 22px;
+  margin-bottom: 36px;
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+}
+.section-intro strong { color: var(--text); }
+
+/* ── Section headings ── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  margin-top: 44px;
+}
+.section-label:first-of-type { margin-top: 0; }
+.section-label h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+.section-label .pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--coral-light);
+  color: var(--coral);
+}
+.section-label .pill.optional {
+  background: var(--gold-light);
+  color: #8a6820;
+}
+.section-label .pill.atlarge {
+  background: #eef3f5;
+  color: var(--teal);
+}
+
+/* ── Role cards ── */
+.roles-grid {
+  display: grid;
+  gap: 16px;
+}
+.role-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.15s;
+}
+.role-card:hover { box-shadow: var(--shadow-md); }
+
+.role-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.role-title {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--teal);
+}
+.role-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 11px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge-required {
+  background: rgba(47,83,97,0.1);
+  color: var(--teal);
+}
+.badge-optional {
+  background: var(--gold-light);
+  color: #8a6820;
+}
+.badge-atlarge {
+  background: var(--coral-light);
+  color: var(--coral);
+}
+
+.role-desc {
+  color: var(--text-mid);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.role-duties {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 7px;
+}
+.role-duties li {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  padding-left: 18px;
+  position: relative;
+  line-height: 1.55;
+}
+.role-duties li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 0.8rem;
+  top: 1px;
+}
+
+.role-note {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: var(--cream);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+/* ── Fiduciary duties section ── */
+.duties-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 4px;
+}
+.duty-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  text-align: center;
+}
+.duty-card .duty-name {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+.duty-card p {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ── Committee section ── */
+.committee-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow-sm);
+}
+.committee-title {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.committee-desc {
+  font-size: 0.86rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Print styles ── */
+@media print {
+  body { background: white; font-size: 13px; }
+  .page { padding: 24px 24px 40px; max-width: 100%; }
+  .role-card, .duty-card, .committee-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+  .doc-header { border-bottom: 1.5pt solid #2F5361; }
+  .section-label { margin-top: 28px; }
+}
+@media (max-width: 600px) {
+  .doc-header { flex-direction: column; }
+  .doc-meta { text-align: left; }
+  .duties-grid { grid-template-columns: 1fr; }
+  .page { padding: 28px 18px 60px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="doc-header-left">
+      <span class="subhead">SETD5 Syndrome Foundation, Inc.</span>
+      <h1>Board Roles & Responsibilities</h1>
+      <p>Reference guide for the Organizational Meeting — Bylaws Adoption</p>
+    </div>
+    <div class="doc-meta">
+      <strong>Virginia Nonstock Corporation</strong><br>
+      Governing document: Bylaws_Final<br>
+      Articles III, IV &amp; V<br>
+      Prepared: March 2026
+    </div>
+  </div>
+
+  <!-- Intro note -->
+  <div class="section-intro">
+    <strong>All board members hold equal voting power regardless of title.</strong> The roles below describe governance responsibilities, not authority over one another. Every director — whether Chair, Treasurer, or at-large member — carries the same three fiduciary duties and the same legal accountability for the organization's conduct.
+  </div>
+
+  <!-- Required Officers -->
+  <div class="section-label">
+    <h2>Required Officer Positions</h2>
+    <span class="pill">Required by Bylaws</span>
+  </div>
+
+  <div class="roles-grid">
+
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Chair</div>
+        <span class="role-badge badge-required">Required</span>
+      </div>
+      <p class="role-desc">Presides over all board meetings, sets agendas, and signs official documents on behalf of the organization. Serves as the primary point of contact between the board and any staff or executive director.</p>
+      <ul class="role-duties">
+        <li>Facilitate all regular and special board meetings</li>
+        <li>Sign contracts, deeds, and formal instruments authorized by the board</li>
+        <li>Serve as liaison between the board and the Executive Director (if hired)</li>
+        <li>May delegate signing authority to another officer with board approval</li>
+      </ul>
+      <div class="role-note">The Chair holds one vote equal to all other directors. The role confers presiding authority, not supervisory authority over fellow board members.</div>
+    </div>
+
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Secretary</div>
+        <span class="role-badge badge-required">Required</span>
+      </div>
+      <p class="role-desc">The official keeper of records. Responsible for accurate minutes of every board meeting and maintaining the organization's governing documents.</p>
+      <ul class="role-duties">
+        <li>Take and maintain accurate minutes of all board meetings</li>
+        <li>Distribute draft minutes to directors at least 7 days before the next meeting</li>
+        <li>Maintain the corporation's official records (bylaws, resolutions, articles)</li>
+        <li>Send required meeting notices to directors</li>
+      </ul>
+      <div class="role-note">An active operational role carrying ongoing recordkeeping obligations between meetings, not solely during them.</div>
+    </div>
+
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Treasurer</div>
+        <span class="role-badge badge-required">Required</span>
+      </div>
+      <p class="role-desc">Owns the financial health of the organization. Oversees all accounts, ensures accurate recordkeeping, and keeps the board informed on financial standing at every meeting.</p>
+      <ul class="role-duties">
+        <li>Maintain full and accurate financial records of all receipts and disbursements</li>
+        <li>Present financial reports to the board at every regular meeting</li>
+        <li>Oversee preparation of the annual budget</li>
+        <li>Ensure compliance with IRS Form 990 and applicable tax obligations</li>
+        <li>Chair the Finance Committee if one is established</li>
+      </ul>
+      <div class="role-note">This position requires sufficient financial acumen to fulfill its oversight obligations. All financial records of the Corporation shall be maintained at the principal place of business and made available for inspection by any director upon reasonable advance notice.</div>
+    </div>
+
+  </div>
+
+  <!-- At-Large Directors -->
+  <div class="section-label" style="margin-top:44px;">
+    <h2>Director (At-Large)</h2>
+    <span class="pill atlarge">All Board Members</span>
+  </div>
+
+  <div class="role-card">
+    <div class="role-card-header">
+      <div class="role-title">Director / Board Member</div>
+      <span class="role-badge badge-atlarge">Full Voting Member</span>
+    </div>
+    <p class="role-desc">Every person on the board — including all officers above — is first and foremost a Director with equal voting rights and equal legal responsibility. At-large members hold no officer title but carry identical authority, obligations, and accountability.</p>
+    <ul class="role-duties">
+      <li>Attend and vote at all regular and special board meetings</li>
+      <li>Serve on and chair committees as assigned</li>
+      <li>Contribute expertise, connections, and time to the organization's mission</li>
+      <li>Review financial reports and hold the organization accountable</li>
+      <li>Sign and comply with the annual Conflict of Interest Policy</li>
+      <li>Recuse from any vote where a personal financial interest exists</li>
+    </ul>
+    <div class="role-note">A director serving as committee chair exercises formal delegated authority within that committee's designated scope, constituting a substantive leadership function within the governance structure of the Corporation.</div>
+  </div>
+
+  <!-- Optional Officers -->
+  <div class="section-label" style="margin-top:44px;">
+    <h2>Optional Officer Positions</h2>
+    <span class="pill optional">Board May Elect</span>
+  </div>
+
+  <div class="roles-grid">
+
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Vice Chair</div>
+        <span class="role-badge badge-optional">Optional</span>
+      </div>
+      <p class="role-desc">Steps in for the Chair when unavailable and often leads a specific area of work delegated by the Chair. In many organizations this role develops into the next Chair.</p>
+      <ul class="role-duties">
+        <li>Fulfill Chair responsibilities during the Chair's absence or incapacitation</li>
+        <li>Assist the Chair as directed</li>
+        <li>May lead a specific committee or initiative on behalf of the board</li>
+      </ul>
+    </div>
+
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">President / Executive Director</div>
+        <span class="role-badge badge-optional">Optional</span>
+      </div>
+      <p class="role-desc">The chief executive responsible for day-to-day operations. May be hired from outside the board as the organization grows — this person does not need to be a director.</p>
+      <ul class="role-duties">
+        <li>Carry out policies and programs approved by the board</li>
+        <li>Manage day-to-day operations</li>
+        <li>Report to the board; serves as a non-voting participant if not a director</li>
+      </ul>
+      <div class="role-note">Most small founding boards do not hire an Executive Director initially. This role is typically added later.</div>
+    </div>
+
+  </div>
+
+  <!-- Committees -->
+  <div class="section-label" style="margin-top:44px;">
+    <h2>Committees</h2>
+    <span class="pill optional">Established by Board Vote</span>
+  </div>
+
+  <div class="section-intro" style="margin-bottom:18px;">
+    Committees are created by a majority board vote at any time (Article V). Each committee brings recommendations to the full board for collective vote — no committee has the authority to act independently. This means a board member who chairs a committee is not reporting to themselves: they are presenting their committee's work to the board <em>as a governing body</em>, where all members — including the committee chair — deliberate and vote together. <strong>A board member may chair or co-chair more than one committee</strong> — this is common on small founding boards where expertise and interest naturally overlap across areas.
+  </div>
+
+  <div class="roles-grid">
+    <div class="committee-card">
+      <div class="committee-title">Nominating &amp; Governance Committee <span style="font-size:0.75rem;font-weight:400;color:var(--text-light);font-family:'Plus Jakarta Sans',sans-serif;">(Required by bylaws)</span></div>
+      <p class="committee-desc">Recruits board candidates, oversees the annual conflict of interest review, and monitors governance best practices. Consists of a minimum of two directors, appointed annually by the Chair. Brings recommendations to the full board for vote.</p>
+    </div>
+    <div class="committee-card">
+      <div class="committee-title">Finance Committee</div>
+      <p class="committee-desc">Oversees budgeting, financial controls, audit or Form 990 review, and financial reporting to the board. Chaired by the Treasurer. Brings recommendations to the full board for vote.</p>
+    </div>
+    <div class="committee-card">
+      <div class="committee-title">Research Committee</div>
+      <p class="committee-desc">Evaluates research priorities, coordinates with the Scientific Advisory Board, reviews grant applications, and monitors funded projects. Brings recommendations to the full board for vote.</p>
+    </div>
+    <div class="committee-card">
+      <div class="committee-title">Communications &amp; Technology Committee</div>
+      <p class="committee-desc">Oversees the organization's website, digital presence, family-facing content, and communications strategy. Brings recommendations to the full board for vote.</p>
+    </div>
+    <div class="committee-card">
+      <div class="committee-title">Family Outreach Committee</div>
+      <p class="committee-desc">Connects with affected families, coordinates community support resources, and ensures the family voice informs the board's priorities. Brings recommendations to the full board for vote.</p>
+    </div>
+    <div class="committee-card">
+      <div class="committee-title">Fundraising &amp; Development Committee</div>
+      <p class="committee-desc">Plans and oversees fundraising campaigns, donor relations, grants strategy, and development activities to support the organization's programs. Brings recommendations to the full board for vote.</p>
+    </div>
+  </div>
+
+  <!-- Working Groups -->
+  <div class="section-label" style="margin-top:44px;">
+    <h2>Working Groups</h2>
+    <span class="pill optional">Open to Volunteers</span>
+  </div>
+
+  <div class="section-intro" style="margin-bottom:18px;">
+    Working groups — referred to in the bylaws as <em>ad hoc committees</em> (Article V) — are temporary, task-specific groups formed to accomplish a defined objective and dissolved upon completion. Unlike standing committees, working groups may include non-board members such as volunteers, community members, and subject matter experts. They carry no independent governance authority; all formal decisions arising from their work are brought to the full board for vote.
+  </div>
+
+  <div class="roles-grid" style="grid-template-columns: 1fr 1fr; gap: 16px;">
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Committees</div>
+        <span class="role-badge badge-required">Board Members Only</span>
+      </div>
+      <ul class="role-duties">
+        <li>Created by majority board vote</li>
+        <li>Standing — ongoing scope and responsibilities</li>
+        <li>Chaired by a board member appointed by the Chair</li>
+        <li>Bring recommendations to the full board for vote</li>
+        <li>Membership limited to directors unless otherwise authorized</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Working Groups</div>
+        <span class="role-badge badge-atlarge">Open to All</span>
+      </div>
+      <ul class="role-duties">
+        <li>Formed informally or by board vote for a specific task</li>
+        <li>Temporary — dissolved when the task is complete</li>
+        <li>May be led by a board member or a designated volunteer</li>
+        <li>No independent authority — findings go to the board for action</li>
+        <li>Open to volunteers, community members, and advisors</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Elections & Vacancies -->
+  <div class="section-label" style="margin-top:44px;">
+    <h2>Elections &amp; Vacancies</h2>
+  </div>
+
+  <div class="roles-grid">
+
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Director Elections</div>
+      </div>
+      <ul class="role-duties">
+        <li>Directors serve two (2) year terms with no limit on consecutive terms</li>
+        <li>Terms are staggered where practicable so that not all seats expire in the same year</li>
+        <li>Directors are elected by majority vote of the current board at any duly held meeting</li>
+        <li>The founding board may set initial terms of one (1) and two (2) years respectively to establish staggering</li>
+      </ul>
+    </div>
+
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Officer Elections</div>
+      </div>
+      <ul class="role-duties">
+        <li>Officers serve two (2) year terms and are eligible for re-election without limit</li>
+        <li>Officers are elected at the Annual Meeting of the Board, held in the first quarter of each calendar year</li>
+        <li>Interim officer vacancies may be filled by board vote at any duly held meeting, effective until the next Annual Meeting</li>
+      </ul>
+    </div>
+
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Resignation</div>
+      </div>
+      <ul class="role-duties">
+        <li>Any director or officer may resign at any time by providing written notice to the Chair or Secretary</li>
+        <li>Resignation takes effect at the date specified in the notice, or immediately upon receipt if no date is given</li>
+        <li>No minimum notice period is required under the bylaws</li>
+      </ul>
+    </div>
+
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Vacancies</div>
+      </div>
+      <ul class="role-duties">
+        <li>Any vacancy arising from resignation, removal, death, or expansion of the board may be filled by majority vote of the remaining directors</li>
+        <li>A quorum of the full board is not required to fill a vacancy — the remaining directors may act even if fewer than a quorum remain</li>
+        <li>A director appointed to fill a vacancy serves only the remainder of the unexpired term, not a new full term</li>
+      </ul>
+    </div>
+
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-title">Removal</div>
+      </div>
+      <ul class="role-duties">
+        <li>Any director may be removed with or without cause by a two-thirds (2/3) vote of the board</li>
+        <li>Removal may only occur at a meeting called for that purpose, and the written meeting notice must state that removal is on the agenda</li>
+        <li>Any officer may be removed with or without cause by a majority vote of the board at any duly held meeting</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Fiduciary duties -->
+  <div class="section-label" style="margin-top:44px;">
+    <h2>Fiduciary Duties — All Directors</h2>
+  </div>
+  <div class="section-intro" style="margin-bottom:18px;">
+    These three duties apply equally to every board member regardless of title. They are legal obligations under Virginia law, not suggestions.
+  </div>
+  <div class="duties-grid">
+    <div class="duty-card">
+      <div class="duty-name">Duty of Care</div>
+      <p>Act in good faith and with the care a reasonably prudent person would exercise. Stay informed, attend meetings, and ask questions.</p>
+    </div>
+    <div class="duty-card">
+      <div class="duty-name">Duty of Loyalty</div>
+      <p>Put the organization's interests above personal or outside interests. Disclose and recuse from any conflict of interest.</p>
+    </div>
+    <div class="duty-card">
+      <div class="duty-name">Duty of Obedience</div>
+      <p>Ensure the organization stays true to its stated mission and complies with applicable laws, bylaws, and its own policies.</p>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
