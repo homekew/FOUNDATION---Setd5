@@ -2391,14 +2391,25 @@ function renderMentions(text) {
   return result;
 }
 
-// Extract mentioned members from text
+// Extract mentioned members from text — accepts full name or first name
 function extractMentions(text) {
   const found = [];
+  const textLower = text.toLowerCase();
   console.log('🔍 Extracting mentions from text:', text);
   for (const member of BOARD_MEMBERS) {
-    const searchFor = '@' + member.name.toLowerCase();
-    if (member.email && text.toLowerCase().includes(searchFor) && !found.includes(member)) {
-      console.log(`✓ Found mention: @${member.name}`);
+    if (!member.email) continue;
+
+    // Extract first name (everything before the first space)
+    const firstName = member.name.split(' ')[0].toLowerCase();
+    const fullName = member.name.toLowerCase();
+
+    // Match either @FirstName or @Full Name
+    const matchesFirstName = textLower.includes('@' + firstName);
+    const matchesFullName = textLower.includes('@' + fullName);
+
+    if ((matchesFirstName || matchesFullName) && !found.includes(member)) {
+      const matched = matchesFirstName ? `@${firstName}` : `@${fullName}`;
+      console.log(`✓ Found mention: ${matched} → ${member.name}`);
       found.push(member);
     }
   }
