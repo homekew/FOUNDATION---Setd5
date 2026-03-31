@@ -2247,7 +2247,7 @@ window.escapeHtml = escapeHtml;
 // ── @mention system ───────────────────────────────────────────────────────────
 // Board member registry — name, email, initials, colour
 const BOARD_MEMBERS = [
-  { name: 'Kate Carr',          email: 'kate@fourrootsranch.com',    initials: 'KC', color: '#c8922a' },
+  { name: 'Kate Carr',          email: 'katecarr@mac.com',           initials: 'KC', color: '#c8922a' },
   { name: 'Taryn Mildenhall',   email: 'tarynmildenhall@gmail.com',  initials: 'TM', color: '#7b5ea7' },
   { name: 'Laura Biazon',       email: 'laura.biazon19@gmail.com',   initials: 'LB', color: '#1a5c5a' },
   { name: 'Samantha Cotter',    email: 'scotter424@gmail.com',       initials: 'SC', color: '#5b7fa6' },
@@ -2393,11 +2393,15 @@ function renderMentions(text) {
 // Extract mentioned members from text
 function extractMentions(text) {
   const found = [];
+  console.log('🔍 Extracting mentions from text:', text);
   for (const member of BOARD_MEMBERS) {
-    if (member.email && text.toLowerCase().includes('@' + member.name.toLowerCase()) && !found.includes(member)) {
+    const searchFor = '@' + member.name.toLowerCase();
+    if (member.email && text.toLowerCase().includes(searchFor) && !found.includes(member)) {
+      console.log(`✓ Found mention: @${member.name}`);
       found.push(member);
     }
   }
+  console.log(`📌 Total mentions found: ${found.length}`, found.map(m => m.name));
   return found;
 }
 
@@ -2416,19 +2420,36 @@ async function getEmailJS() {
 }
 
 async function sendMentionEmails(mentionedMembers, senderName, messageText, channel) {
-  if (!EMAILJS_SERVICE_ID || !EMAILJS_PUBLIC_KEY) return;
-  let ejs;
-  try {
-    ejs = await getEmailJS();
-  } catch (err) {
-    console.error('EmailJS failed to load:', err);
+  console.log('📧 sendMentionEmails called with:', { memberCount: mentionedMembers.length, senderName, channel });
+
+  if (!EMAILJS_SERVICE_ID || !EMAILJS_PUBLIC_KEY) {
+    console.error('❌ EmailJS credentials missing. SERVICE_ID:', !!EMAILJS_SERVICE_ID, 'PUBLIC_KEY:', !!EMAILJS_PUBLIC_KEY);
     return;
   }
+
+  let ejs;
+  try {
+    console.log('⏳ Loading EmailJS...');
+    ejs = await getEmailJS();
+    console.log('✓ EmailJS loaded successfully');
+  } catch (err) {
+    console.error('❌ EmailJS failed to load:', err);
+    return;
+  }
+
   for (const member of mentionedMembers) {
-    if (!member.email || member.name === senderName) continue;
-    console.log(`Sending mention email to ${member.name} <${member.email}>`);
+    if (!member.email) {
+      console.log(`⊘ Skipping ${member.name} — no email address`);
+      continue;
+    }
+    if (member.name === senderName) {
+      console.log(`⊘ Skipping ${member.name} — self-mention detected`);
+      continue;
+    }
+
+    console.log(`📨 Sending mention email to ${member.name} <${member.email}>...`);
     try {
-      await ejs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      const response = await ejs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
         email:      member.email,
         to_name:    member.name,
         from_name:  senderName,
@@ -2436,9 +2457,9 @@ async function sendMentionEmails(mentionedMembers, senderName, messageText, chan
         message:    messageText,
         portal_url: 'https://setd5syndrome.org/board/'
       });
-      console.log(`Mention email sent to ${member.name}`);
+      console.log(`✅ Mention email sent to ${member.name}`, response);
     } catch (err) {
-      console.error(`Mention email to ${member.name} failed:`, err);
+      console.error(`❌ Mention email to ${member.name} FAILED:`, err.message, err);
     }
   }
 }
