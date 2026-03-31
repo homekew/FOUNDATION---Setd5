@@ -1981,7 +1981,7 @@ function nameToInitials(name) {
 }
 
 // ── State ────────────────────────────────────────────────────────────────────
-const ALL_CHANNELS  = ['announcements','admin','fundraising','general','outreach','research','website'];
+const ALL_CHANNELS  = ['announcements','admin','fundraising','general','outreach','research','website','site-updates','meetings'];
 let currentChannel  = 'general';
 let unsubscribe     = null;
 let chatUserName    = '';
@@ -2670,7 +2670,25 @@ async function chatSaveEdit(msgId, el) {
   const newText = ta.value.trim();
   if (!newText) return;
   try {
-    await updateDoc(doc(db, 'channels', currentChannel, 'messages', msgId), {
+    // Verify ownership before allowing edit
+    const msgRef = doc(db, 'channels', currentChannel, 'messages', msgId);
+    const msgSnap = await getDoc(msgRef);
+
+    if (!msgSnap.exists()) {
+      alert('Message not found.');
+      chatCancelEdit(el);
+      return;
+    }
+
+    const msgAuthor = msgSnap.data().author;
+    if (msgAuthor !== chatUserName) {
+      alert('You can only edit your own messages.');
+      console.warn(`⛔ Attempted to edit another user's message. Message by ${msgAuthor}, user is ${chatUserName}`);
+      chatCancelEdit(el);
+      return;
+    }
+
+    await updateDoc(msgRef, {
       text: newText, edited: true
     });
     // snapshot listener will re-render
@@ -2693,7 +2711,24 @@ function chatCancelEdit(el) {
 async function chatDeleteMessage(msgId) {
   if (!confirm('Delete this message? This cannot be undone.')) return;
   try {
-    await deleteDoc(doc(db, 'channels', currentChannel, 'messages', msgId));
+    // Verify ownership before allowing deletion
+    const msgRef = doc(db, 'channels', currentChannel, 'messages', msgId);
+    const msgSnap = await getDoc(msgRef);
+
+    if (!msgSnap.exists()) {
+      alert('Message not found.');
+      return;
+    }
+
+    const msgAuthor = msgSnap.data().author;
+    if (msgAuthor !== chatUserName) {
+      alert('You can only delete your own messages.');
+      console.warn(`⛔ Attempted to delete another user's message. Message by ${msgAuthor}, user is ${chatUserName}`);
+      return;
+    }
+
+    await deleteDoc(msgRef);
+    console.log(`✓ Message deleted by ${chatUserName}`);
   } catch (err) {
     console.error('Delete error:', err);
     alert('Could not delete message. Please try again.');
