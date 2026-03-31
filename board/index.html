@@ -2050,26 +2050,63 @@ window.chatSend          = chatSend;
 window.chatKeyDown       = chatKeyDown;
 window.chatUpdatePlaceholder = chatUpdatePlaceholder;
 
+// ── Authentication ────────────────────────────────────────────────────────────
+// Get authenticated user email from Cloudflare Access or Google auth headers
+function getAuthenticatedEmail() {
+  // Check Cloudflare Access headers (passed by reverse proxy)
+  const cfEmail = document.documentElement.getAttribute('data-auth-email');
+  if (cfEmail) return cfEmail.toLowerCase();
+
+  // Check for email in window context (if set by authentication layer)
+  if (window.authenticatedEmail) return window.authenticatedEmail.toLowerCase();
+
+  // Check localStorage as fallback (shouldn't rely on this for security)
+  const stored = localStorage.getItem('authenticated_email');
+  if (stored) return stored.toLowerCase();
+
+  return null;
+}
+
 // ── Member picker ─────────────────────────────────────────────────────────────
 function buildMemberPicker() {
   const container = document.getElementById('chat-member-picker');
   if (!container) return;
-  container.innerHTML = '';
-  BOARD_MEMBERS.forEach(m => {
-    const btn = document.createElement('button');
-    btn.style.cssText = 'display:flex;align-items:center;gap:12px;width:100%;padding:10px 16px;background:white;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:0.95rem;font-weight:600;color:var(--text);cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s;text-align:left;';
-    btn.onmouseenter = () => { btn.style.borderColor = 'var(--teal)'; btn.style.boxShadow = '0 2px 8px rgba(47,83,97,0.12)'; };
-    btn.onmouseleave = () => { btn.style.borderColor = 'var(--border)'; btn.style.boxShadow = 'none'; };
-    const avatar = document.createElement('div');
-    avatar.style.cssText = `width:34px;height:34px;border-radius:50%;background:${m.color};display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;color:white;flex-shrink:0;`;
-    avatar.textContent = m.initials;
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = m.name;
-    btn.appendChild(avatar);
-    btn.appendChild(nameSpan);
-    btn.addEventListener('click', () => chatSetName(m.name));
-    container.appendChild(btn);
-  });
+
+  const authEmail = getAuthenticatedEmail();
+  console.log(`🔐 Authenticated user email: ${authEmail || 'NOT DETECTED'}`);
+
+  // Find matching member for authenticated user
+  const matchedMember = authEmail ? BOARD_MEMBERS.find(m => m.email.toLowerCase() === authEmail) : null;
+
+  if (matchedMember) {
+    // Auto-login the matched member
+    console.log(`✓ Auto-authenticating as ${matchedMember.name}`);
+    chatSetName(matchedMember.name);
+    return;
+  }
+
+  // If no email detected or no match, show error
+  if (!authEmail) {
+    container.innerHTML = `
+      <div style="padding:16px;background:#fee;border:1px solid #f99;border-radius:8px;color:#c00;font-size:0.9rem;text-align:center;">
+        <strong>Authentication Error:</strong><br>
+        Unable to verify your identity. This is required to access the board messenger.
+        <br><br>
+        <button onclick="location.reload()" style="padding:8px 16px;background:#c00;color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600;">Try Again</button>
+      </div>`;
+    console.error('⛔ No authenticated email found. User cannot access messenger.');
+    return;
+  }
+
+  // Email detected but doesn't match any board member
+  container.innerHTML = `
+    <div style="padding:16px;background:#fee;border:1px solid #f99;border-radius:8px;color:#c00;font-size:0.9rem;text-align:center;">
+      <strong>Access Denied:</strong><br>
+      Your email (<code>${authEmail}</code>) is not registered as a board member.
+      <br><br>
+      Contact your administrator to add your email to the board roster.
+    </div>`;
+  console.error(`⛔ Email ${authEmail} is not a registered board member.`);
 }
 
 // ── Init ─────────────────────────────────────────────────────────────────────
