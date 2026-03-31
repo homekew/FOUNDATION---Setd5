@@ -312,6 +312,116 @@ h1, h2, h3 {
     <strong>All board members hold equal voting power regardless of title.</strong> The roles below describe governance responsibilities, not authority over one another. Every director — whether Chair, Treasurer, or at-large member — carries the same three fiduciary duties and the same legal accountability for the organization's conduct.
   </div>
 
+  <!-- Authority Structure Diagram -->
+  <div class="section-label">
+    <h2>How Authority Flows</h2>
+  </div>
+
+  <div class="section-intro" style="margin-bottom:18px;">
+    Authority in a nonprofit flows from the mission downward — the board exists to serve the people the organization was created to help. Officers are delegates of the board, not managers of it. Committees and working groups advise and prepare; the full board votes and decides.
+  </div>
+
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:28px 20px 20px;box-shadow:var(--shadow-sm);margin-bottom:36px;overflow:hidden;">
+    <svg width="100%" viewBox="0 0 800 600" style="display:block;">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#7a9bab" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Mission -->
+      <rect x="250" y="20" width="300" height="48" rx="9" fill="#d5ddde" stroke="#2F5361" stroke-width="0.75"/>
+      <text x="400" y="40" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="14" font-weight="600" fill="#1e3a45">Mission and community served</text>
+      <text x="400" y="57" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" fill="#4a6b78">Source of all authority</text>
+
+      <!-- Arrow + label -->
+      <line x1="400" y1="68" x2="400" y2="105" stroke="#7a9bab" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="416" y="90" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#7a9bab">accountability</text>
+
+      <!-- Full board -->
+      <rect x="170" y="108" width="460" height="56" rx="9" fill="#2F5361" stroke="#1e3a45" stroke-width="0.75"/>
+      <text x="400" y="130" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="14" font-weight="600" fill="#ffffff">Full board</text>
+      <text x="400" y="148" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" fill="#d5ddde">Collective authority — all members vote equally</text>
+
+      <!-- Arrow + label -->
+      <line x1="400" y1="164" x2="400" y2="200" stroke="#7a9bab" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="416" y="186" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#7a9bab">delegates to</text>
+
+      <!-- Officers row — 4 boxes, width 160 each, gaps 13px, total = 4×160+3×13=679, start x=61 -->
+      <!-- Chair/President x=61 -->
+      <rect x="42" y="203" width="168" height="56" rx="9" fill="#d5ddde" stroke="#2F5361" stroke-width="0.75"/>
+      <text x="126" y="225" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="13" font-weight="600" fill="#1e3a45">Chair / President</text>
+      <text x="126" y="243" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#4a6b78">Presides, signs docs</text>
+
+      <!-- Secretary x=223 -->
+      <rect x="223" y="203" width="168" height="56" rx="9" fill="#d5ddde" stroke="#2F5361" stroke-width="0.75"/>
+      <text x="307" y="225" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="13" font-weight="600" fill="#1e3a45">Secretary</text>
+      <text x="307" y="243" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#4a6b78">Minutes, records</text>
+
+      <!-- Treasurer x=404 -->
+      <rect x="404" y="203" width="168" height="56" rx="9" fill="#d5ddde" stroke="#2F5361" stroke-width="0.75"/>
+      <text x="488" y="225" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="13" font-weight="600" fill="#1e3a45">Treasurer</text>
+      <text x="488" y="243" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#4a6b78">Finances, 990</text>
+
+      <!-- At-large Directors x=585 -->
+      <rect x="585" y="203" width="175" height="56" rx="9" fill="#d5ddde" stroke="#2F5361" stroke-width="0.75"/>
+      <text x="672" y="225" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="13" font-weight="600" fill="#1e3a45">At-large directors</text>
+      <text x="672" y="243" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#4a6b78">Equal vote, equal duty</text>
+
+      <!-- One vote note -->
+      <text x="400" y="278" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="10.5" fill="#7a9bab">Every officer holds one vote — same as all other board members</text>
+
+      <!-- Divider -->
+      <line x1="42" y1="294" x2="758" y2="294" stroke="#dde8ec" stroke-width="1" stroke-dasharray="5 4"/>
+      <text x="400" y="310" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="10.5" fill="#7a9bab">Board may establish the following to do focused work</text>
+
+      <!-- Arrow from board down to committees -->
+      <line x1="400" y1="164" x2="400" y2="326" stroke="#7a9bab" stroke-width="0.5" stroke-dasharray="3 3"/>
+
+      <!-- Standing committees label -->
+      <text x="55" y="332" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" font-weight="600" fill="#4a6b78">Standing committees</text>
+      <text x="55" y="346" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#7a9bab">Ongoing, defined in bylaws, board members only</text>
+
+      <!-- Committee boxes — 4 boxes width 162, gap 12, total=4×162+3×12=684, start x=42 -->
+      <rect x="42" y="355" width="162" height="52" rx="8" fill="#eeebe7" stroke="#c96a38" stroke-width="0.75"/>
+      <text x="123" y="375" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="12" font-weight="600" fill="#712B13">Finance</text>
+      <text x="123" y="392" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#c96a38">Budget, audit, controls</text>
+
+      <rect x="216" y="355" width="162" height="52" rx="8" fill="#eeebe7" stroke="#c96a38" stroke-width="0.75"/>
+      <text x="297" y="375" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="12" font-weight="600" fill="#712B13">Governance</text>
+      <text x="297" y="392" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#c96a38">Recruitment, bylaws</text>
+
+      <rect x="390" y="355" width="162" height="52" rx="8" fill="#eeebe7" stroke="#c96a38" stroke-width="0.75"/>
+      <text x="471" y="375" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="12" font-weight="600" fill="#712B13">Research</text>
+      <text x="471" y="392" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#c96a38">Priorities, grants</text>
+
+      <rect x="564" y="355" width="196" height="52" rx="8" fill="#eeebe7" stroke="#c96a38" stroke-width="0.75"/>
+      <text x="662" y="375" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="12" font-weight="600" fill="#712B13">Fundraising &amp; Comms</text>
+      <text x="662" y="392" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#c96a38">Development, outreach</text>
+
+      <!-- Working groups label -->
+      <text x="55" y="430" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" font-weight="600" fill="#4a6b78">Working groups</text>
+      <text x="55" y="444" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#7a9bab">Temporary, task-specific, open to volunteers and community members</text>
+
+      <!-- Working group boxes — 3 boxes width 230, gap 22, total=3×230+2×22=734, start x=42 -->
+      <rect x="42" y="453" width="230" height="52" rx="8" fill="#F2F2F0" stroke="#D8AB67" stroke-width="0.75"/>
+      <text x="157" y="473" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="12" font-weight="600" fill="#8a6820">Website / communications</text>
+      <text x="157" y="490" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#8a6820">Launch project, then dissolved</text>
+
+      <rect x="294" y="453" width="230" height="52" rx="8" fill="#F2F2F0" stroke="#D8AB67" stroke-width="0.75"/>
+      <text x="409" y="473" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="12" font-weight="600" fill="#8a6820">Strategic planning</text>
+      <text x="409" y="490" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#8a6820">One-time deliverable</text>
+
+      <rect x="546" y="453" width="214" height="52" rx="8" fill="#F2F2F0" stroke="#D8AB67" stroke-width="0.75"/>
+      <text x="653" y="473" text-anchor="middle" dominant-baseline="central" font-family="'Source Serif 4',serif" font-size="12" font-weight="600" fill="#8a6820">Event planning</text>
+      <text x="653" y="490" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="10" fill="#8a6820">Open to non-board members</text>
+
+      <!-- Bottom note box -->
+      <rect x="42" y="524" width="718" height="44" rx="8" fill="#d5ddde" stroke="#2F5361" stroke-width="0.75"/>
+      <text x="401" y="546" text-anchor="middle" dominant-baseline="central" font-family="'Plus Jakarta Sans',sans-serif" font-size="12" font-weight="600" fill="#1e3a45">Committees advise and prepare — the full board votes and decides</text>
+    </svg>
+  </div>
+
   <!-- Required Officers -->
   <div class="section-label">
     <h2>Required Officer Positions</h2>
@@ -322,7 +432,7 @@ h1, h2, h3 {
 
     <div class="role-card">
       <div class="role-card-header">
-        <div class="role-title">Chair</div>
+        <div class="role-title">Chair / President</div>
         <span class="role-badge badge-required">Required</span>
       </div>
       <p class="role-desc">Presides over all board meetings, sets agendas, and signs official documents on behalf of the organization. Serves as the primary point of contact between the board and any staff or executive director.</p>
@@ -332,7 +442,7 @@ h1, h2, h3 {
         <li>Serve as liaison between the board and the Executive Director (if hired)</li>
         <li>May delegate signing authority to another officer with board approval</li>
       </ul>
-      <div class="role-note">The Chair holds one vote equal to all other directors. The role confers presiding authority, not supervisory authority over fellow board members.</div>
+      <div class="role-note">The Chair / President holds one vote equal to all other directors. The role confers presiding authority, not supervisory authority over fellow board members.</div>
     </div>
 
     <div class="role-card">
@@ -404,9 +514,9 @@ h1, h2, h3 {
         <div class="role-title">Vice Chair</div>
         <span class="role-badge badge-optional">Optional</span>
       </div>
-      <p class="role-desc">Steps in for the Chair when unavailable and often leads a specific area of work delegated by the Chair. In many organizations this role develops into the next Chair.</p>
+      <p class="role-desc">Steps in for the Chair / President when unavailable and often leads a specific area of work delegated by the Chair / President. In many organizations this role develops into the next Chair / President.</p>
       <ul class="role-duties">
-        <li>Fulfill Chair responsibilities during the Chair's absence or incapacitation</li>
+        <li>Fulfill Chair / President responsibilities during the Chair's absence or incapacitation</li>
         <li>Assist the Chair as directed</li>
         <li>May lead a specific committee or initiative on behalf of the board</li>
       </ul>
