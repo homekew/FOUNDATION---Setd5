@@ -2051,73 +2051,47 @@ window.chatKeyDown       = chatKeyDown;
 window.chatUpdatePlaceholder = chatUpdatePlaceholder;
 
 // ── Authentication ────────────────────────────────────────────────────────────
-// Get authenticated user email from Cloudflare Access or Google auth headers
+// Decode the Cloudflare Access JWT cookie to get the authenticated user's email.
+// Cloudflare sets a cookie named CF_Authorization containing a signed JWT.
+// We only need the payload (middle segment) — no need to verify the signature here
+// because Cloudflare has already verified it before granting access to the page.
 function getAuthenticatedEmail() {
-  // Check Cloudflare Access headers (passed by reverse proxy)
-  const cfEmail = document.documentElement.getAttribute('data-auth-email');
-  if (cfEmail) return cfEmail.toLowerCase();
-
-  // Check for email in window context (if set by authentication layer)
-  if (window.authenticatedEmail) return window.authenticatedEmail.toLowerCase();
-
-  // Check localStorage as fallback (shouldn't rely on this for security)
-  const stored = localStorage.getItem('authenticated_email');
-  if (stored) return stored.toLowerCase();
-
-  return null;
-}
-
-// ── Member picker ─────────────────────────────────────────────────────────────
-function buildMemberPicker() {
-  const container = document.getElementById('chat-member-picker');
-  if (!container) return;
-
-  const authEmail = getAuthenticatedEmail();
-  console.log(`🔐 Authenticated user email: ${authEmail || 'NOT DETECTED'}`);
-
-  // Find matching member for authenticated user
-  const matchedMember = authEmail ? BOARD_MEMBERS.find(m => m.email.toLowerCase() === authEmail) : null;
-
-  if (matchedMember) {
-    // Auto-login the matched member
-    console.log(`✓ Auto-authenticating as ${matchedMember.name}`);
-    chatSetName(matchedMember.name);
-    return;
+  const cookie = document.cookie.split(';').find(c => c.trim().startsWith('CF_Authorization='));
+  if (!cookie) return null;
+  try {
+    const token   = cookie.split('=').slice(1).join('=').trim();
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.email ? payload.email.toLowerCase() : null;
+  } catch (e) {
+    console.warn('Could not decode CF_Authorization cookie:', e);
+    return null;
   }
-
-  // If no email detected or no match, show error
-  if (!authEmail) {
-    container.innerHTML = `
-      <div style="padding:16px;background:#fee;border:1px solid #f99;border-radius:8px;color:#c00;font-size:0.9rem;text-align:center;">
-        <strong>Authentication Error:</strong><br>
-        Unable to verify your identity. This is required to access the board messenger.
-        <br><br>
-        <button onclick="location.reload()" style="padding:8px 16px;background:#c00;color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600;">Try Again</button>
-      </div>`;
-    console.error('⛔ No authenticated email found. User cannot access messenger.');
-    return;
-  }
-
-  // Email detected but doesn't match any board member
-  container.innerHTML = `
-    <div style="padding:16px;background:#fee;border:1px solid #f99;border-radius:8px;color:#c00;font-size:0.9rem;text-align:center;">
-      <strong>Access Denied:</strong><br>
-      Your email (<code>${authEmail}</code>) is not registered as a board member.
-      <br><br>
-      Contact your administrator to add your email to the board roster.
-    </div>`;
-  console.error(`⛔ Email ${authEmail} is not a registered board member.`);
 }
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
-  chatUserName = localStorage.getItem('board_chat_name') || '';
-  if (chatUserName) {
+  // Always verify identity from Cloudflare Access — never trust a saved name alone
+  const authEmail    = getAuthenticatedEmail();
+  const matchedMember = authEmail ? BOARD_MEMBERS.find(m => m.email.toLowerCase() === authEmail) : null;
+
+  if (matchedMember) {
+    // Silently auto-login — no picker needed
+    chatUserName = matchedMember.name;
+    localStorage.setItem('board_chat_name', chatUserName);
     showChatApp();
-  } else {
-    buildMemberPicker();
-    document.getElementById('chat-setup').style.display = 'block';
+    return;
   }
+
+  // Can't verify identity — show an error instead of the picker
+  const setup = document.getElementById('chat-setup');
+  setup.style.display = 'block';
+  setup.innerHTML = `
+    <div style="padding:20px;background:#fee;border:1px solid #f99;border-radius:10px;color:#c00;text-align:center;">
+      <strong>${authEmail ? 'Access Denied' : 'Authentication Error'}</strong><br><br>
+      ${authEmail
+        ? `Your email <strong>${authEmail}</strong> is not registered as a board member. Contact your administrator.`
+        : 'Unable to verify your identity. Please make sure you are signed in through the board portal login.'}
+    </div>`;
 });
 
 async function showChatApp() {
