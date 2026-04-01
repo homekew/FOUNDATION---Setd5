@@ -491,10 +491,17 @@ h1, h2, h3 {
     <p class="email-note">Recipients — edit as needed:</p>
     <textarea class="email-recipients" id="email-recipients">katecarr@mac.com, laura.biazon19@gmail.com, tarynmildenhall@gmail.com, kochismedical@gmail.com, scotter424@gmail.com, mandywittenberg1@gmail.com, jesimend84@gmail.com</textarea>
     <p class="email-note">Clicking Send Agenda will open your email app with the agenda pre-filled.</p>
-    <button class="btn btn-teal" onclick="sendAgenda()">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8L14 2l-4 12-2.5-4.5L2 8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-      Send Agenda
-    </button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <button class="btn btn-teal" onclick="sendAgenda()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8L14 2l-4 12-2.5-4.5L2 8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        Send Agenda
+      </button>
+      <button class="btn btn-outline" onclick="fileInAgendas()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2h5l2 2h5v10H2V2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        File in Meeting Agendas
+      </button>
+      <span id="file-status" style="font-size:0.8rem;color:var(--teal);display:none;"></span>
+    </div>
   </div>
 
   <!-- Footer -->
@@ -607,6 +614,95 @@ function clearAgenda() {
   });
   document.querySelectorAll('.notice input, .footer-note input').forEach(el => el.value = '');
 }
+</script>
+
+<script type="module">
+import { initializeApp }                      from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getFirestore, collection, addDoc,
+         serverTimestamp }                    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getStorage, ref,
+         uploadBytesResumable,
+         getDownloadURL }                     from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyD5imh_WikBHbTufh0os2a7nxgqEDFKmb4",
+  authDomain:        "setd5-syndrome-foundation.firebaseapp.com",
+  projectId:         "setd5-syndrome-foundation",
+  storageBucket:     "setd5-syndrome-foundation.firebasestorage.app",
+  messagingSenderId: "1041702466779",
+  appId:             "1:1041702466779:web:22d00333b4fd011e11c8fe"
+};
+
+const app     = initializeApp(firebaseConfig);
+const db      = getFirestore(app);
+const storage = getStorage(app);
+
+window.fileInAgendas = async function() {
+  const statusEl = document.getElementById('file-status');
+  const btn      = document.querySelector('button[onclick="fileInAgendas()"]');
+
+  const date     = formatDateForEmail();
+  const time     = formatTimeForEmail();
+  const location = document.getElementById('meeting-location').value || 'TBD';
+  const docName  = `Board Meeting Agenda — ${date}`;
+  const dateVal  = document.getElementById('meeting-date').value || '';
+
+  // Build agenda HTML to save
+  let agendaHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8">`;
+  agendaHtml += `<title>${docName}</title></head><body style="font-family:sans-serif;max-width:700px;margin:40px auto;color:#1A3340;">`;
+  agendaHtml += `<h2 style="color:#2F5361;">SETD5 Syndrome Foundation<br>Board of Directors Meeting Agenda</h2>`;
+  agendaHtml += `<p><strong>Date:</strong> ${date} &nbsp; <strong>Time:</strong> ${time} &nbsp; <strong>Location:</strong> ${location}</p><hr>`;
+  agendaHtml += `<ol>`;
+
+  document.querySelectorAll('.agenda-item').forEach(item => {
+    const title = item.querySelector('.item-title input')?.value || '';
+    const desc  = item.querySelector('.item-desc textarea')?.value || '';
+    const mins  = item.querySelector('.item-time input')?.value || '';
+    agendaHtml += `<li><strong>${title}</strong>`;
+    if (mins) agendaHtml += ` <em>(${mins})</em>`;
+    if (desc) agendaHtml += `<br><span style="color:#4a6b78;">${desc}</span>`;
+    agendaHtml += `</li>`;
+  });
+
+  agendaHtml += `</ol></body></html>`;
+
+  // Upload to Firebase Storage
+  btn.disabled = true;
+  statusEl.textContent = 'Saving…';
+  statusEl.style.display = 'inline';
+
+  try {
+    const fileName  = `${docName.replace(/[^a-z0-9 \-]/gi,'_')}.html`;
+    const storageRef = ref(storage, `board-documents/board-meetings/${Date.now()}_${fileName}`);
+    const blob       = new Blob([agendaHtml], { type: 'text/html' });
+
+    const fileURL = await new Promise((resolve, reject) => {
+      const task = uploadBytesResumable(storageRef, blob);
+      task.on('state_changed', null, reject, async () => resolve(await getDownloadURL(storageRef)));
+    });
+
+    // Save Firestore record — matches the board portal's document system
+    await addDoc(collection(db, 'board_documents'), {
+      section:    'board-meetings',
+      sub:        'Meeting Agendas',
+      categories: [{ section: 'board-meetings', sub: 'Meeting Agendas' }],
+      name:       docName,
+      date:       dateVal,
+      fileName:   fileName,
+      fileURL:    fileURL,
+      createdAt:  serverTimestamp()
+    });
+
+    statusEl.textContent = '✓ Filed in Meeting Agendas';
+    statusEl.style.color = 'var(--teal)';
+  } catch (err) {
+    console.error('File error:', err);
+    statusEl.textContent = 'Error — please try again.';
+    statusEl.style.color = 'var(--coral)';
+  } finally {
+    btn.disabled = false;
+  }
+};
 </script>
 </body>
 </html>
