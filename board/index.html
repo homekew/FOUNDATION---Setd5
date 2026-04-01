@@ -340,6 +340,37 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 .doc-search-result-loc { font-size:0.75rem; color:var(--text-light); }
 .doc-search-no-results { padding:12px 16px; font-size:0.85rem; color:var(--text-light); font-style:italic; }
 
+/* ===== COMMUNICATIONS TAB UI ===== */
+.comm-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 24px;
+  width: fit-content;
+}
+.comm-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: none;
+  border: none;
+  border-radius: 7px;
+  padding: 9px 20px;
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  letter-spacing: 0.01em;
+}
+.comm-tab:hover { background: var(--cream); color: var(--text); }
+.comm-tab.active { background: var(--teal); color: #fff; }
+.comm-panel { }
+
 /* ===== DIRECTORY EMAIL BUTTON ===== */
 .dir-email-btn {
   display:inline-flex; align-items:center; gap:5px;
@@ -568,9 +599,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
    =================================================== */
 @media (max-width: 640px) {
   /* ── Section preamble: hide on mobile, go straight to chat ── */
-  #board-messaging .section-header { display: none !important; }
-  #board-messaging { padding: 0 !important; }
-  #board-messaging .container { padding: 0 !important; max-width: 100% !important; }
+  #comm-panel-messenger .section-header { display: none !important; }
 
   /* ── Chat frame: fill available viewport ──
      Nav is sticky ~72px. Board sidebar is sticky 52px below nav.
@@ -728,7 +757,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   /* ── Other general mobile fixes (non-chat) ── */
   .tracker-filter-bar input { min-width: 0 !important; width: 100%; }
   .board-content a { word-break: break-all; overflow-wrap: anywhere; }
-  #board-directory [style*="1fr 1fr"] { grid-template-columns: 44px 1fr 1fr auto !important; gap: 8px !important; padding: 12px 12px !important; }
+  #comm-panel-directory [style*="1fr 1fr"] { grid-template-columns: 44px 1fr 1fr auto !important; gap: 8px !important; padding: 12px 12px !important; }
 }
   /* ===== CHAT CHANNEL BUTTONS ===== */
   .chat-channel-btn {
@@ -951,9 +980,8 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <div class="doc-search-panel" id="doc-search-panel"></div>
     </div>
     <div class="board-sidebar-links" id="board-sidebar-links">
-      <a href="#board-messaging"  onclick="boardNavClick(event,'board-messaging')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Messaging</a>
+      <a href="#board-communications" onclick="boardNavClick(event,'board-communications')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 7l10 7 10-7"/></svg> Communications</a>
       <a href="#board-inbox" onclick="boardNavClick(event,'board-inbox')" id="inbox-nav-link" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg> Doc Inbox <span id="inbox-nav-badge" style="display:none;background:var(--coral);color:white;font-size:0.65rem;font-weight:700;padding:1px 7px;border-radius:10px;line-height:1.6;"></span></a>
-      <a href="#board-directory"  onclick="boardNavClick(event,'board-directory')">Directory</a>
       <a href="#board-committees" onclick="boardNavClick(event,'board-committees')">Committees</a>
       <a href="#tracker-section"  onclick="boardNavClick(event,'tracker-section')">Outreach Log</a>
       <a href="#board-finance"    onclick="boardNavClick(event,'board-finance')">Finance</a>
@@ -982,14 +1010,133 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   <!-- Member Directory -->
 
   <!-- Board Messaging -->
-  <section class="section section--cream board-section" id="board-messaging">
+  <section class="section section--cream board-section" id="board-communications">
     <div class="container">
       <div class="section-header" style="margin-bottom:24px;">
         <span class="subhead">Internal</span>
-        <h2>Board Messaging</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Real-time messaging for board members. Messages are private and visible only to authenticated members.</p>
+        <h2>Communications</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Reach board members by email or chat. All messages are private and visible only to authenticated members.</p>
       </div>
 
+      <!-- Tab bar -->
+      <div class="comm-tabs" role="tablist">
+        <button class="comm-tab active" id="comm-tab-directory" role="tab" aria-selected="true"  aria-controls="comm-panel-directory" onclick="commTab('directory')">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 7l8 5 8-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Directory
+        </button>
+        <button class="comm-tab" id="comm-tab-messenger" role="tab" aria-selected="false" aria-controls="comm-panel-messenger" onclick="commTab('messenger')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Messenger
+        </button>
+      </div>
+
+      <!-- Directory tab panel -->
+      <div id="comm-panel-directory" class="comm-panel" role="tabpanel" aria-labelledby="comm-tab-directory">
+      <!-- Email All Board Members -->
+      <div style="margin-bottom:20px;">
+        <a href="mailto:laura.biazon19@gmail.com,katecarr@mac.com,tarynmildenhall@gmail.com,kochismedical@gmail.com,scotter424@gmail.com,jesimend84@gmail.com,mandywittenberg1@gmail.com" style="display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;font-size:0.82rem;font-weight:600;padding:9px 18px;border-radius:8px;text-decoration:none;letter-spacing:0.03em;box-shadow:0 1px 4px rgba(0,0,0,0.10);">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="white" stroke-width="1.6"/><path d="M2 7l8 5 8-5" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Email All Board Members
+        </a>
+      </div>
+      <div style="background:var(--white); border-radius:12px; border:1px solid var(--border); overflow:hidden; box-shadow:var(--shadow-sm);">
+
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:14px 24px; background:var(--teal-light); font-size:0.72rem; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--teal);">
+          <div></div>
+          <div>Name &amp; Role</div>
+          <div>Email</div>
+          <div></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <img src="../images/Laura.png" alt="Laura Biazon" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>LB</span>'">
+          </div>
+          <div>
+            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Laura Biazon</div>
+            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Founder &amp; Board Member</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--text-light);">laura.biazon19@gmail.com</div>
+          <div><a href="mailto:laura.biazon19@gmail.com" class="dir-email-btn">Email</a></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <img src="../images/kate.png" alt="Kate Carr" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>KC</span>'">
+          </div>
+          <div>
+            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Kate Carr</div>
+            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--text-light);">katecarr@mac.com</div>
+          <div><a href="mailto:katecarr@mac.com" class="dir-email-btn">Email</a></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <img src="../images/Taryn.png" alt="Taryn Mildenhall" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>TM</span>'">
+          </div>
+          <div>
+            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Taryn Mildenhall</div>
+            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--text-light);">tarynmildenhall@gmail.com</div>
+          <div><a href="mailto:tarynmildenhall@gmail.com" class="dir-email-btn">Email</a></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <img src="../images/Amy.png" alt="Amy Kreller-Kochis" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>AK</span>'">
+          </div>
+          <div>
+            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Amy Kreller-Kochis</div>
+            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--text-light);">kochismedical@gmail.com</div>
+          <div><a href="mailto:kochismedical@gmail.com" class="dir-email-btn">Email</a></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <img src="../images/Samantha.png" alt="Samantha Cotter" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>SC</span>'">
+          </div>
+          <div>
+            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Samantha Cotter</div>
+            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--text-light);">scotter424@gmail.com</div>
+          <div><a href="mailto:scotter424@gmail.com" class="dir-email-btn">Email</a></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="font-size:0.85rem;font-weight:600;color:var(--teal);">JM</span>
+          </div>
+          <div>
+            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Jesiree Mendez</div>
+            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--text-light);">jesimend84@gmail.com</div>
+          <div><a href="mailto:jesimend84@gmail.com" class="dir-email-btn">Email</a></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="font-size:0.85rem;font-weight:600;color:var(--teal);">MW</span>
+          </div>
+          <div>
+            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Mandy Wittenberg</div>
+            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--text-light);">mandywittenberg1@gmail.com</div>
+          <div><a href="mailto:mandywittenberg1@gmail.com" class="dir-email-btn">Email</a></div>
+        </div>
+
+      </div>
+      </div>
+
+      <!-- Messenger tab panel -->
+      <div id="comm-panel-messenger" class="comm-panel" role="tabpanel" aria-labelledby="comm-tab-messenger" style="display:none;">
       <!-- Name setup prompt (shown on first visit or when changing identity) -->
       <div id="chat-setup" style="display:none; max-width:520px; margin:0 auto 24px; background:var(--teal-light); border-radius:12px; padding:28px; border:1px solid var(--border); text-align:center;">
         <div style="font-size:2rem; margin-bottom:12px;">👋</div>
@@ -1111,117 +1258,6 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
           </div>
         </div>
       </div>
-
-    </div>
-  </section>
-
-  <!-- Member Directory -->
-  <section class="section section--white board-section" id="board-directory">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:24px;">
-        <span class="subhead">Contact</span>
-        <h2>Board Member Directory</h2>
-        <p>Direct contacts for all current board members. This information is private and for board use only.</p>
-      </div>
-      <!-- Email All Board Members -->
-      <div style="margin-bottom:20px;">
-        <a href="mailto:laura.biazon19@gmail.com,katecarr@mac.com,tarynmildenhall@gmail.com,kochismedical@gmail.com,scotter424@gmail.com,jesimend84@gmail.com,mandywittenberg1@gmail.com" style="display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;font-size:0.82rem;font-weight:600;padding:9px 18px;border-radius:8px;text-decoration:none;letter-spacing:0.03em;box-shadow:0 1px 4px rgba(0,0,0,0.10);">
-          <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="white" stroke-width="1.6"/><path d="M2 7l8 5 8-5" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
-          Email All Board Members
-        </a>
-      </div>
-      <div style="background:var(--white); border-radius:12px; border:1px solid var(--border); overflow:hidden; box-shadow:var(--shadow-sm);">
-
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:14px 24px; background:var(--teal-light); font-size:0.72rem; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--teal);">
-          <div></div>
-          <div>Name &amp; Role</div>
-          <div>Email</div>
-          <div></div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
-          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <img src="../images/Laura.png" alt="Laura Biazon" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>LB</span>'">
-          </div>
-          <div>
-            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Laura Biazon</div>
-            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Founder &amp; Board Member</div>
-          </div>
-          <div style="font-size:0.85rem;color:var(--text-light);">laura.biazon19@gmail.com</div>
-          <div><a href="mailto:laura.biazon19@gmail.com" class="dir-email-btn">Email</a></div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
-          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <img src="../images/kate.png" alt="Kate Carr" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>KC</span>'">
-          </div>
-          <div>
-            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Kate Carr</div>
-            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
-          </div>
-          <div style="font-size:0.85rem;color:var(--text-light);">katecarr@mac.com</div>
-          <div><a href="mailto:katecarr@mac.com" class="dir-email-btn">Email</a></div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
-          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <img src="../images/Taryn.png" alt="Taryn Mildenhall" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>TM</span>'">
-          </div>
-          <div>
-            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Taryn Mildenhall</div>
-            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
-          </div>
-          <div style="font-size:0.85rem;color:var(--text-light);">tarynmildenhall@gmail.com</div>
-          <div><a href="mailto:tarynmildenhall@gmail.com" class="dir-email-btn">Email</a></div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
-          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <img src="../images/Amy.png" alt="Amy Kreller-Kochis" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>AK</span>'">
-          </div>
-          <div>
-            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Amy Kreller-Kochis</div>
-            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
-          </div>
-          <div style="font-size:0.85rem;color:var(--text-light);">kochismedical@gmail.com</div>
-          <div><a href="mailto:kochismedical@gmail.com" class="dir-email-btn">Email</a></div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
-          <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <img src="../images/Samantha.png" alt="Samantha Cotter" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>SC</span>'">
-          </div>
-          <div>
-            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Samantha Cotter</div>
-            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
-          </div>
-          <div style="font-size:0.85rem;color:var(--text-light);">scotter424@gmail.com</div>
-          <div><a href="mailto:scotter424@gmail.com" class="dir-email-btn">Email</a></div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
-          <div style="width:44px;height:44px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <span style="font-size:0.85rem;font-weight:600;color:var(--teal);">JM</span>
-          </div>
-          <div>
-            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Jesiree Mendez</div>
-            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
-          </div>
-          <div style="font-size:0.85rem;color:var(--text-light);">jesimend84@gmail.com</div>
-          <div><a href="mailto:jesimend84@gmail.com" class="dir-email-btn">Email</a></div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
-          <div style="width:44px;height:44px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <span style="font-size:0.85rem;font-weight:600;color:var(--teal);">MW</span>
-          </div>
-          <div>
-            <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Mandy Wittenberg</div>
-            <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
-          </div>
-          <div style="font-size:0.85rem;color:var(--text-light);">mandywittenberg1@gmail.com</div>
-          <div><a href="mailto:mandywittenberg1@gmail.com" class="dir-email-btn">Email</a></div>
-        </div>
 
       </div>
     </div>
@@ -2009,7 +2045,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 
   // ===== BOARD SUB-NAV =====
   var BOARD_SECTIONS = [
-    'board-messaging','board-directory','board-committees','tracker-section',
+    'board-communications','board-committees','tracker-section',
     'board-finance','board-fundraising','board-governance','board-comms','board-meetings','board-networking','board-operations'
   ];
   var _boardObserver = null;
@@ -2161,6 +2197,19 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     const input = document.getElementById('board-search-input');
     if (input) { input.value = ''; boardSearch(''); }
   }
+
+  /* ---- Communications tab switcher ---- */
+  function commTab(tab) {
+    const tabs   = ['directory', 'messenger'];
+    tabs.forEach(function(t) {
+      const btn   = document.getElementById('comm-tab-' + t);
+      const panel = document.getElementById('comm-panel-' + t);
+      const active = (t === tab);
+      if (btn)   { btn.classList.toggle('active', active); btn.setAttribute('aria-selected', active); }
+      if (panel) { panel.style.display = active ? '' : 'none'; }
+    });
+  }
+  window.commTab = commTab;
 
   /* ---- Collapsible folder toggle ---- */
   function toggleFolder(btn) {
