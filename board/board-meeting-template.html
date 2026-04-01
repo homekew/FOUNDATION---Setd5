@@ -125,6 +125,71 @@ h1, h2, h3 {
   outline: none;
 }
 .detail-item input::placeholder { color: var(--text-light); font-style: italic; }
+.detail-item input[type="date"],
+.detail-item input[type="time"] {
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.detail-item input[type="date"]::-webkit-calendar-picker-indicator,
+.detail-item input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0.4;
+  cursor: pointer;
+}
+.time-tz-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tz-select {
+  border: none;
+  background: transparent;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--teal);
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* ── Email agenda section ── */
+.email-section {
+  margin-top: 36px;
+  padding: 24px 28px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+.email-section h3 {
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+  color: var(--teal);
+}
+.email-recipients {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.84rem;
+  color: var(--text-mid);
+  resize: vertical;
+  min-height: 72px;
+  outline: none;
+  transition: border-color 0.15s;
+  margin-bottom: 12px;
+}
+.email-recipients:focus { border-color: var(--teal); }
+.email-note {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  margin-bottom: 14px;
+}
+@media print { .email-section { display: none; } }
 
 /* ── Notice box ── */
 .notice {
@@ -321,15 +386,26 @@ h1, h2, h3 {
   <div class="meeting-details">
     <div class="detail-item">
       <label>Date</label>
-      <input type="text" placeholder="e.g. April 15, 2026">
+      <input type="date" id="meeting-date" onchange="updateDateDisplay()">
     </div>
     <div class="detail-item">
       <label>Time</label>
-      <input type="text" placeholder="e.g. 6:00 PM ET">
+      <div class="time-tz-row">
+        <input type="time" id="meeting-time" style="flex:1;" onchange="updateTimeDisplay()">
+        <select class="tz-select" id="meeting-tz" onchange="updateTimeDisplay()">
+          <option value="ET">ET</option>
+          <option value="CT">CT</option>
+          <option value="MT">MT</option>
+          <option value="PT">PT</option>
+          <option value="AKT">AKT</option>
+          <option value="HT">HT</option>
+          <option value="UTC">UTC</option>
+        </select>
+      </div>
     </div>
     <div class="detail-item">
       <label>Location / Platform</label>
-      <input type="text" placeholder="e.g. Zoom / In person">
+      <input type="text" id="meeting-location" placeholder="e.g. Zoom / In person">
     </div>
   </div>
 
@@ -409,6 +485,18 @@ h1, h2, h3 {
 
   <button class="add-item-btn" onclick="addItem()">+ Add agenda item</button>
 
+  <!-- Email Agenda -->
+  <div class="email-section">
+    <h3>Send Agenda to Board</h3>
+    <p class="email-note">Recipients — edit as needed:</p>
+    <textarea class="email-recipients" id="email-recipients">katecarr@mac.com, laura.biazon19@gmail.com, tarynmildenhall@gmail.com, kochismedical@gmail.com, scotter424@gmail.com, mandywittenberg1@gmail.com, jesimend84@gmail.com</textarea>
+    <p class="email-note">Clicking Send Agenda will open your email app with the agenda pre-filled.</p>
+    <button class="btn btn-teal" onclick="sendAgenda()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8L14 2l-4 12-2.5-4.5L2 8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      Send Agenda
+    </button>
+  </div>
+
   <!-- Footer -->
   <div class="agenda-footer">
     <div class="footer-note">
@@ -446,18 +534,78 @@ function addItem() {
   li.querySelector('input').focus();
 }
 
+function updateDateDisplay() {
+  // Date is handled natively — no extra formatting needed for editing.
+  // For print, the browser renders the date value directly.
+}
+
+function updateTimeDisplay() {
+  // Time and timezone are handled natively by the inputs.
+}
+
+function formatDateForEmail() {
+  const d = document.getElementById('meeting-date').value;
+  if (!d) return 'TBD';
+  const [y, m, day] = d.split('-');
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return `${months[parseInt(m)-1]} ${parseInt(day)}, ${y}`;
+}
+
+function formatTimeForEmail() {
+  const t = document.getElementById('meeting-time').value;
+  const tz = document.getElementById('meeting-tz').value;
+  if (!t) return 'TBD';
+  const [h, min] = t.split(':');
+  const hour = parseInt(h);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${min} ${ampm} ${tz}`;
+}
+
+function sendAgenda() {
+  const recipients = document.getElementById('email-recipients').value.trim();
+  const date       = formatDateForEmail();
+  const time       = formatTimeForEmail();
+  const location   = document.getElementById('meeting-location').value || 'TBD';
+  const subject    = encodeURIComponent(`Board Meeting Agenda — ${date}`);
+
+  let body = `SETD5 Syndrome Foundation\nBoard of Directors Meeting Agenda\n`;
+  body += `${'─'.repeat(48)}\n`;
+  body += `Date:      ${date}\n`;
+  body += `Time:      ${time}\n`;
+  body += `Location:  ${location}\n\n`;
+
+  const items = document.querySelectorAll('.agenda-item');
+  items.forEach((item, i) => {
+    const title = item.querySelector('.item-title input')?.value || '';
+    const desc  = item.querySelector('.item-desc textarea')?.value || '';
+    const mins  = item.querySelector('.item-time input')?.value || '';
+    body += `${i+1}. ${title}`;
+    if (mins) body += `  (${mins})`;
+    body += '\n';
+    if (desc) body += `   ${desc}\n`;
+    body += '\n';
+  });
+
+  body += `${'─'.repeat(48)}\n`;
+  body += `Please review materials in the board portal before the meeting.\n`;
+
+  const mailto = `mailto:${encodeURIComponent(recipients)}?subject=${subject}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+}
+
 function clearAgenda() {
   if (!confirm('Clear all fields and start a new agenda?')) return;
-  document.querySelectorAll('input[type="text"]').forEach(el => {
-    if (!el.closest('.agenda-item') || el.closest('.agenda-item').dataset.fixed) return;
-    el.value = '';
-  });
+  document.getElementById('meeting-date').value = '';
+  document.getElementById('meeting-time').value = '';
+  document.getElementById('meeting-tz').value = 'ET';
+  document.getElementById('meeting-location').value = '';
+  document.querySelectorAll('.agenda-item input[type="text"]').forEach(el => el.value = '');
   document.querySelectorAll('textarea').forEach(el => {
     el.value = '';
     el.style.height = 'auto';
   });
-  // Reset meeting detail fields only
-  document.querySelectorAll('.meeting-details input, .notice input, .footer-note input').forEach(el => el.value = '');
+  document.querySelectorAll('.notice input, .footer-note input').forEach(el => el.value = '');
 }
 </script>
 </body>
