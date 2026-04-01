@@ -258,13 +258,13 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 .doc-item {
   padding: 10px 14px; background: var(--cream); border-radius: 8px;
   border-left: 3px solid var(--teal); text-decoration: none; color: var(--teal);
-  display: flex; align-items: center; gap: 10px; font-size: 0.88rem;
+  display: grid; grid-template-columns: 20px 1fr auto auto; align-items: center;
+  gap: 10px; font-size: 0.88rem;
 }
 .doc-item:hover { color: var(--coral); }
 .doc-item-del {
-  margin-left: auto; background: none; border: none; cursor: pointer;
+  background: none; border: none; cursor: pointer;
   color: var(--text-light); font-size: 0.75rem; padding: 0 2px;
-  flex-shrink: 0;
 }
 .doc-item-del:hover { color: var(--coral); }
 /* ── Emoji picker ── */
@@ -3623,7 +3623,7 @@ function docRender() {
       const editBtn = (docObj.sub === 'Meeting Minutes' && docObj.formData)
         ? `<a href="meeting-minutes.html?edit=${docObj.id}" style="font-size:0.68rem;color:var(--teal);border:1px solid var(--border);border-radius:4px;padding:1px 7px;margin-left:6px;text-decoration:none;flex-shrink:0;" title="Edit minutes">Edit</a>`
         : '';
-      el.innerHTML = `${fileIcon}${escapeHtml(docObj.name)}${noFileBadge}${multiLocBadge}${docObj.date ? ' <span style="color:var(--text-light);font-size:0.8em;margin-left:auto;">' + docObj.date + '</span>' : ''}${editBtn}<button class="doc-item-del" onclick="docDelete('${docObj.id}',event)" title="Remove">✕</button>`;
+      el.innerHTML = `${fileIcon}${escapeHtml(docObj.name)}${noFileBadge}${multiLocBadge}${docObj.date ? '<span style="color:var(--text-light);font-size:0.8em;white-space:nowrap;">' + docObj.date + '</span>' : '<span></span>'}${editBtn}<button class="doc-item-del" onclick="docDelete('${docObj.id}',event)" title="Remove">✕</button>`;
       container.appendChild(el);
     });
     if (empty) empty.style.display = docs.length === 0 ? '' : 'none';
