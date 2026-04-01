@@ -3639,6 +3639,7 @@ function docRender() {
     if (!innerContainer) return;
     const n = innerContainer.querySelectorAll('.doc-item').length;
     countEl.textContent = n > 0 ? n : '';
+    countEl.classList.toggle('has-docs', n > 0);
     countEl.title = n === 1 ? '1 document' : `${n} documents`;
   });
 }
