@@ -3592,6 +3592,8 @@ const DOC_SECTIONS = {
 const docColRef = collection(db, 'board_documents');
 onSnapshot(query(docColRef, orderBy('createdAt', 'desc')), snap => {
   docEntries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  window.docEntries  = docEntries;
+  window.DOC_SECTIONS = DOC_SECTIONS;
   docRender();
 }, err => console.error('Doc library error:', err));
 
