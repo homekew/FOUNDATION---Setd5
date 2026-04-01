@@ -292,6 +292,65 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   font-size: 0.85rem; opacity: 0.7; font-style: italic;
 }
 
+/* ── Document Folders ── */
+.doc-folder-list { display:flex; flex-direction:column; gap:6px; }
+.doc-folder {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:10px; overflow:hidden; box-shadow:var(--shadow-sm);
+  transition:box-shadow 0.15s;
+}
+.doc-folder:hover { box-shadow:var(--shadow-md); }
+.doc-folder-header {
+  display:flex; align-items:center; gap:10px; width:100%;
+  padding:13px 16px; background:none; border:none; cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:0.9rem;
+  font-weight:600; color:var(--text); text-align:left; transition:background 0.12s;
+}
+.doc-folder-header:hover { background:var(--cream); }
+.doc-folder-icon { color:var(--gold); flex-shrink:0; transition:color 0.12s; }
+.doc-folder.open .doc-folder-icon { color:var(--teal); }
+.doc-folder-name { flex:1; }
+.doc-folder-count {
+  display:none; background:var(--teal); color:white;
+  font-size:0.68rem; font-weight:700; padding:2px 8px;
+  border-radius:10px; min-width:22px; text-align:center; flex-shrink:0;
+}
+.doc-folder-count.has-docs { display:inline-block; }
+.doc-folder-chevron { color:var(--text-light); transition:transform 0.2s; flex-shrink:0; }
+.doc-folder.open .doc-folder-chevron { transform:rotate(90deg); }
+.doc-folder-body {
+  display:none; padding:4px 16px 14px 44px;
+  border-top:1px solid var(--border); background:var(--cream);
+}
+.doc-folder.open .doc-folder-body { display:block; }
+/* ── Document search results panel ── */
+.doc-search-panel {
+  display:none; position:absolute; top:100%; left:0; right:0; z-index:200;
+  background:var(--white); border:1px solid var(--border); border-radius:10px;
+  box-shadow:var(--shadow-lg); margin-top:4px; overflow:hidden;
+}
+.doc-search-result {
+  display:flex; flex-direction:column; gap:2px;
+  padding:10px 16px; cursor:pointer; border-bottom:1px solid var(--border);
+  transition:background 0.1s;
+}
+.doc-search-result:last-child { border-bottom:none; }
+.doc-search-result:hover { background:var(--cream); }
+.doc-search-result-name { font-size:0.88rem; font-weight:600; color:var(--text); }
+.doc-search-result-loc { font-size:0.75rem; color:var(--text-light); }
+.doc-search-no-results { padding:12px 16px; font-size:0.85rem; color:var(--text-light); font-style:italic; }
+
+/* ===== DIRECTORY EMAIL BUTTON ===== */
+.dir-email-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--teal-light); color:var(--teal);
+  font-size:0.75rem; font-weight:600; padding:5px 14px;
+  border-radius:6px; text-decoration:none; letter-spacing:0.03em;
+  border:1px solid var(--border); white-space:nowrap;
+  transition:background 0.15s, color 0.15s;
+}
+.dir-email-btn:hover { background:var(--teal); color:#fff; }
+
 /* ===== UTILS ===== */
 .text-center { text-align: center; }
 .mt-8 { margin-top: 8px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; } .mt-32 { margin-top: 32px; }
@@ -669,7 +728,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   /* ── Other general mobile fixes (non-chat) ── */
   .tracker-filter-bar input { min-width: 0 !important; width: 100%; }
   .board-content a { word-break: break-all; overflow-wrap: anywhere; }
-  #board-directory [style*="1fr 1fr"] { grid-template-columns: 44px 1fr 1fr !important; gap: 8px !important; padding: 12px 12px !important; }
+  #board-directory [style*="1fr 1fr"] { grid-template-columns: 44px 1fr 1fr auto !important; gap: 8px !important; padding: 12px 12px !important; }
 }
   /* ===== CHAT CHANNEL BUTTONS ===== */
   .chat-channel-btn {
@@ -886,9 +945,10 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       </div>
       <button class="board-sidebar-toggle" aria-label="Toggle sidebar">▾</button>
     </div>
-    <div class="board-sidebar-search">
-      <input type="search" id="board-search-input" placeholder="Search sections…" oninput="boardSearch(this.value)" autocomplete="off" aria-label="Search board portal" />
+    <div class="board-sidebar-search" style="position:relative;">
+      <input type="search" id="board-search-input" placeholder="Search sections &amp; documents…" oninput="boardSearch(this.value)" autocomplete="off" aria-label="Search board portal" />
       <button class="board-search-clear" id="board-search-clear" onclick="boardSearchClear()" aria-label="Clear search" type="button">✕</button>
+      <div class="doc-search-panel" id="doc-search-panel"></div>
     </div>
     <div class="board-sidebar-links" id="board-sidebar-links">
       <a href="#board-messaging"  onclick="boardNavClick(event,'board-messaging')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Messaging</a>
@@ -1058,20 +1118,28 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   <!-- Member Directory -->
   <section class="section section--white board-section" id="board-directory">
     <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
+      <div class="section-header" style="margin-bottom:24px;">
         <span class="subhead">Contact</span>
         <h2>Board Member Directory</h2>
         <p>Direct contacts for all current board members. This information is private and for board use only.</p>
       </div>
+      <!-- Email All Board Members -->
+      <div style="margin-bottom:20px;">
+        <a href="mailto:laura.biazon19@gmail.com,katecarr@mac.com,tarynmildenhall@gmail.com,kochismedical@gmail.com,scotter424@gmail.com,jesimend84@gmail.com,mandywittenberg1@gmail.com" style="display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;font-size:0.82rem;font-weight:600;padding:9px 18px;border-radius:8px;text-decoration:none;letter-spacing:0.03em;box-shadow:0 1px 4px rgba(0,0,0,0.10);">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="white" stroke-width="1.6"/><path d="M2 7l8 5 8-5" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Email All Board Members
+        </a>
+      </div>
       <div style="background:var(--white); border-radius:12px; border:1px solid var(--border); overflow:hidden; box-shadow:var(--shadow-sm);">
 
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr; align-items:center; gap:16px; padding:14px 24px; background:var(--teal-light); font-size:0.72rem; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--teal);">
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:14px 24px; background:var(--teal-light); font-size:0.72rem; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--teal);">
           <div></div>
           <div>Name &amp; Role</div>
           <div>Email</div>
+          <div></div>
         </div>
 
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
           <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <img src="../images/Laura.png" alt="Laura Biazon" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>LB</span>'">
           </div>
@@ -1079,10 +1147,11 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Laura Biazon</div>
             <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Founder &amp; Board Member</div>
           </div>
-          <div style="font-size:0.85rem;"><a href="mailto:laura.biazon19@gmail.com" style="color:var(--teal);">laura.biazon19@gmail.com</a></div>
+          <div style="font-size:0.85rem;color:var(--text-light);">laura.biazon19@gmail.com</div>
+          <div><a href="mailto:laura.biazon19@gmail.com" class="dir-email-btn">Email</a></div>
         </div>
 
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
           <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <img src="../images/kate.png" alt="Kate Carr" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>KC</span>'">
           </div>
@@ -1090,10 +1159,11 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Kate Carr</div>
             <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
           </div>
-          <div style="font-size:0.85rem;"><a href="mailto:katecarr@mac.com" style="color:var(--teal);">katecarr@mac.com</a></div>
+          <div style="font-size:0.85rem;color:var(--text-light);">katecarr@mac.com</div>
+          <div><a href="mailto:katecarr@mac.com" class="dir-email-btn">Email</a></div>
         </div>
 
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
           <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <img src="../images/Taryn.png" alt="Taryn Mildenhall" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>TM</span>'">
           </div>
@@ -1101,10 +1171,11 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Taryn Mildenhall</div>
             <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
           </div>
-          <div style="font-size:0.85rem;"><a href="mailto:tarynmildenhall@gmail.com" style="color:var(--teal);">tarynmildenhall@gmail.com</a></div>
+          <div style="font-size:0.85rem;color:var(--text-light);">tarynmildenhall@gmail.com</div>
+          <div><a href="mailto:tarynmildenhall@gmail.com" class="dir-email-btn">Email</a></div>
         </div>
 
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
           <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <img src="../images/Amy.png" alt="Amy Kreller-Kochis" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>AK</span>'">
           </div>
@@ -1112,10 +1183,11 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Amy Kreller-Kochis</div>
             <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
           </div>
-          <div style="font-size:0.85rem;"><a href="mailto:kochismedical@gmail.com" style="color:var(--teal);">kochismedical@gmail.com</a></div>
+          <div style="font-size:0.85rem;color:var(--text-light);">kochismedical@gmail.com</div>
+          <div><a href="mailto:kochismedical@gmail.com" class="dir-email-btn">Email</a></div>
         </div>
 
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
           <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <img src="../images/Samantha.png" alt="Samantha Cotter" style="width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:0.85rem;font-weight:600;color:var(--teal)\'>SC</span>'">
           </div>
@@ -1123,10 +1195,11 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Samantha Cotter</div>
             <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
           </div>
-          <div style="font-size:0.85rem;"><a href="mailto:scotter424@gmail.com" style="color:var(--teal);">scotter424@gmail.com</a></div>
+          <div style="font-size:0.85rem;color:var(--text-light);">scotter424@gmail.com</div>
+          <div><a href="mailto:scotter424@gmail.com" class="dir-email-btn">Email</a></div>
         </div>
 
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
           <div style="width:44px;height:44px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <span style="font-size:0.85rem;font-weight:600;color:var(--teal);">JM</span>
           </div>
@@ -1134,10 +1207,11 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Jesiree Mendez</div>
             <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
           </div>
-          <div style="font-size:0.85rem;"><a href="mailto:jesimend84@gmail.com" style="color:var(--teal);">jesimend84@gmail.com</a></div>
+          <div style="font-size:0.85rem;color:var(--text-light);">jesimend84@gmail.com</div>
+          <div><a href="mailto:jesimend84@gmail.com" class="dir-email-btn">Email</a></div>
         </div>
 
-        <div style="display:grid; grid-template-columns:56px 1fr 1fr; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
+        <div style="display:grid; grid-template-columns:56px 1fr 1fr auto; align-items:center; gap:16px; padding:18px 24px; border-top:1px solid var(--border);">
           <div style="width:44px;height:44px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <span style="font-size:0.85rem;font-weight:600;color:var(--teal);">MW</span>
           </div>
@@ -1145,7 +1219,8 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Mandy Wittenberg</div>
             <div style="font-size:0.78rem;color:var(--coral);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Board Member</div>
           </div>
-          <div style="font-size:0.85rem;"><a href="mailto:mandywittenberg1@gmail.com" style="color:var(--teal);">mandywittenberg1@gmail.com</a></div>
+          <div style="font-size:0.85rem;color:var(--text-light);">mandywittenberg1@gmail.com</div>
+          <div><a href="mailto:mandywittenberg1@gmail.com" class="dir-email-btn">Email</a></div>
         </div>
 
       </div>
@@ -1161,22 +1236,44 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Working files, reports, and resources organized by each standing committee of the board.</p>
       <button class="section-upload-btn" onclick="docModalOpen('board-committees','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Research Committee</h3>
-          <div data-doc-section="board-committees" data-doc-sub="Research Committee" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+      <div class="doc-folder-list">
+        <div class="doc-folder" data-section="board-committees" data-sub="Research Committee">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Research Committee</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Research Committee"><div class="doc-empty">No documents yet</div></div></div>
         </div>
+        <div class="doc-folder" data-section="board-committees" data-sub="Finance Committee">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Finance Committee</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Finance Committee"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+        <div class="doc-folder" data-section="board-committees" data-sub="Other Committees">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Other Committees</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Other Committees"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+      </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Finance Committee</h3>
-          <div data-doc-section="board-committees" data-doc-sub="Finance Committee" >
+          <div data-doc-section="board-committees" data-doc-sub="Finance Committee" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
         <div class="card" style="padding:28px;">
           <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Other Committees</h3>
-          <div data-doc-section="board-committees" data-doc-sub="Other Committees" >
+          <div data-doc-section="board-committees" data-doc-sub="Other Committees" >
             <div class="doc-empty">No documents yet</div>
           </div>
         </div>
@@ -1342,27 +1439,35 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Budgets, annual reports, tax filings, and audit materials for board review and compliance.</p>
       <button class="section-upload-btn" onclick="docModalOpen('board-finance','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Budgets &amp; Reports</h3>
-          <div data-doc-section="board-finance" data-doc-sub="Budgets & Reports" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+      <div class="doc-folder-list">
+        <div class="doc-folder" data-section="board-finance" data-sub="Budgets & Reports">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Budgets & Reports</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-finance" data-doc-sub="Budgets & Reports"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Tax Filings</h3>
-          <div data-doc-section="board-finance" data-doc-sub="Tax Filings" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-finance" data-sub="Tax Filings">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Tax Filings</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-finance" data-doc-sub="Tax Filings"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Audit &amp; Compliance</h3>
-          <div data-doc-section="board-finance" data-doc-sub="Audit & Compliance" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-finance" data-sub="Audit & Compliance">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Audit & Compliance</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-finance" data-doc-sub="Audit & Compliance"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-      </div>
-    </div>
+      </div>/div>
   </section>
 
   <!-- Fundraising & Development -->
@@ -1374,39 +1479,53 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Donor reports, grant applications, campaign materials, and fundraising strategy documents.</p>
       <button class="section-upload-btn" onclick="docModalOpen('board-fundraising','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Donor Reports</h3>
-          <div data-doc-section="board-fundraising" data-doc-sub="Donor Reports" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+      <div class="doc-folder-list">
+        <div class="doc-folder" data-section="board-fundraising" data-sub="Donor Reports">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Donor Reports</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-fundraising" data-doc-sub="Donor Reports"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Funding Applications</h3>
-          <div data-doc-section="board-fundraising" data-doc-sub="Funding Applications" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-fundraising" data-sub="Funding Applications">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Funding Applications</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-fundraising" data-doc-sub="Funding Applications"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Campaign Materials</h3>
-          <div data-doc-section="board-fundraising" data-doc-sub="Campaign Materials" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-fundraising" data-sub="Campaign Materials">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Campaign Materials</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-fundraising" data-doc-sub="Campaign Materials"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grant Agreements</h3>
-          <div data-doc-section="board-fundraising" data-doc-sub="Grant Agreements" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-fundraising" data-sub="Grant Agreements">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Grant Agreements</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-fundraising" data-doc-sub="Grant Agreements"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Grantee Reports</h3>
-          <div data-doc-section="board-fundraising" data-doc-sub="Grantee Reports" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-fundraising" data-sub="Grantee Reports">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Grantee Reports</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-fundraising" data-doc-sub="Grantee Reports"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-      </div>
-    </div>
+      </div>/div>
   </section>
 
   <!-- Governance -->
@@ -1441,27 +1560,35 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left:auto;flex-shrink:0;color:var(--text-light);"><path d="M6 3h7v7M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
 
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Bylaws &amp; Articles</h3>
-          <div data-doc-section="board-governance" data-doc-sub="Bylaws & Articles" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+      <div class="doc-folder-list">
+        <div class="doc-folder" data-section="board-governance" data-sub="Bylaws & Articles">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Bylaws & Articles</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-governance" data-doc-sub="Bylaws & Articles"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Policies</h3>
-          <div data-doc-section="board-governance" data-doc-sub="Policies" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-governance" data-sub="Policies">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Policies</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-governance" data-doc-sub="Policies"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Conflict of Interest Forms</h3>
-          <div data-doc-section="board-governance" data-doc-sub="Conflict of Interest Forms" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-governance" data-sub="Conflict of Interest Forms">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Conflict of Interest Forms</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-governance" data-doc-sub="Conflict of Interest Forms"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-      </div>
-    </div>
+      </div>/div>
   </section>
 
   <!-- Marketing -->
@@ -1473,27 +1600,35 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Press releases, newsletter archives, social media plans, and brand assets for board awareness.</p>
       <button class="section-upload-btn" onclick="docModalOpen('board-comms','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Press Releases</h3>
-          <div data-doc-section="board-comms" data-doc-sub="Press Releases" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+      <div class="doc-folder-list">
+        <div class="doc-folder" data-section="board-comms" data-sub="Press Releases">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Press Releases</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-comms" data-doc-sub="Press Releases"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Newsletter Archives</h3>
-          <div data-doc-section="board-comms" data-doc-sub="Newsletter Archives" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-comms" data-sub="Newsletter Archives">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Newsletter Archives</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-comms" data-doc-sub="Newsletter Archives"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Brand &amp; Media Assets</h3>
-          <div data-doc-section="board-comms" data-doc-sub="Brand & Media Assets" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-comms" data-sub="Brand & Media Assets">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Brand & Media Assets</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-comms" data-doc-sub="Brand & Media Assets"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-      </div>
-    </div>
+      </div>/div>
   </section>
 
   <!-- Board Meetings -->
@@ -1526,37 +1661,44 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left:auto;flex-shrink:0;color:var(--text-light);"><path d="M6 3h7v7M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
 
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Minutes</h3>
-          <div data-doc-section="board-meetings" data-doc-sub="Meeting Minutes" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+      <div class="doc-folder-list">
+        <div class="doc-folder" data-section="board-meetings" data-sub="Meeting Minutes">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Meeting Minutes</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-meetings" data-doc-sub="Meeting Minutes"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Meeting Agendas</h3>
-          <div data-doc-section="board-meetings" data-doc-sub="Meeting Agendas" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-meetings" data-sub="Meeting Agendas">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Meeting Agendas</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-meetings" data-doc-sub="Meeting Agendas"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Presentations</h3>
-          <div data-doc-section="board-meetings" data-doc-sub="Presentations" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-meetings" data-sub="Presentations">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Presentations</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-meetings" data-doc-sub="Presentations"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-        <div class="card" style="padding:28px;">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
-            <h3 style="font-size:1rem; color:var(--teal); margin:0;">Historical Communications</h3>
-            <button class="section-upload-btn" style="flex-shrink:0;margin:0;" onclick="docModalOpen('board-meetings','Historical Communications')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload</button>
-          </div>
-          <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:12px;line-height:1.5;">Pre-portal board conversations exported from Messenger and other channels.</p>
-          <div data-doc-section="board-meetings" data-doc-sub="Historical Communications" >
-            <div class="doc-empty">No documents yet</div>
-          </div>
+        <div class="doc-folder" data-section="board-meetings" data-sub="Historical Communications">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Historical Communications</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-meetings" data-doc-sub="Historical Communications"><div class="doc-empty">No documents yet</div></div></div>
         </div>
-      </div>
-    </div>
+      </div>/div>
   </section>
 
   <!-- Networking -->
@@ -1568,29 +1710,49 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Partner organizations, conferences, research collaborations, and community connections that support the foundation's mission.</p>
       <button class="section-upload-btn" onclick="docModalOpen('board-networking','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Partner Organizations</h3>
-          <div data-doc-section="board-networking" data-doc-sub="Partner Organizations" >
-            <div class="doc-empty">No documents yet</div>
+      <div class="doc-folder-list">
+        <div class="doc-folder" data-section="board-networking" data-sub="Partner Organizations">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+            <span class="doc-folder-name">Partner Organizations</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="doc-folder-body">
+            <div data-doc-section="board-networking" data-doc-sub="Partner Organizations"><div class="doc-empty">No documents yet</div></div>
           </div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Conferences &amp; Events</h3>
-          <div data-doc-section="board-networking" data-doc-sub="Conferences & Events" >
-            <div class="doc-empty">No documents yet</div>
+        <div class="doc-folder" data-section="board-networking" data-sub="Conferences &amp; Events">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+            <span class="doc-folder-name">Conferences &amp; Events</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="doc-folder-body">
+            <div data-doc-section="board-networking" data-doc-sub="Conferences &amp; Events"><div class="doc-empty">No documents yet</div></div>
           </div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Research Collaborations</h3>
-          <div data-doc-section="board-networking" data-doc-sub="Research Collaborations" >
-            <div class="doc-empty">No documents yet</div>
+        <div class="doc-folder" data-section="board-networking" data-sub="Research Collaborations">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+            <span class="doc-folder-name">Research Collaborations</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="doc-folder-body">
+            <div data-doc-section="board-networking" data-doc-sub="Research Collaborations"><div class="doc-empty">No documents yet</div></div>
           </div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Community Connections</h3>
-          <div data-doc-section="board-networking" data-doc-sub="Community Connections" >
-            <div class="doc-empty">No documents yet</div>
+        <div class="doc-folder" data-section="board-networking" data-sub="Community Connections">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+            <span class="doc-folder-name">Community Connections</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="doc-folder-body">
+            <div data-doc-section="board-networking" data-doc-sub="Community Connections"><div class="doc-empty">No documents yet</div></div>
           </div>
         </div>
       </div>
@@ -1606,23 +1768,38 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Insurance, vendor contracts, HR documents, and day-to-day operational records for the foundation.</p>
       <button class="section-upload-btn" onclick="docModalOpen('board-operations','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
       </div>
-      <div class="grid-3" style="align-items:start;">
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Insurance &amp; Liability</h3>
-          <div data-doc-section="board-operations" data-doc-sub="Insurance & Liability" >
-            <div class="doc-empty">No documents yet</div>
+            <div class="doc-folder-list">
+        <div class="doc-folder" data-section="board-operations" data-sub="Insurance &amp; Liability">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+            <span class="doc-folder-name">Insurance &amp; Liability</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="doc-folder-body">
+            <div data-doc-section="board-operations" data-doc-sub="Insurance & Liability"><div class="doc-empty">No documents yet</div></div>
           </div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">Vendor Contracts</h3>
-          <div data-doc-section="board-operations" data-doc-sub="Vendor Contracts" >
-            <div class="doc-empty">No documents yet</div>
+        <div class="doc-folder" data-section="board-operations" data-sub="Vendor Contracts">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+            <span class="doc-folder-name">Vendor Contracts</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="doc-folder-body">
+            <div data-doc-section="board-operations" data-doc-sub="Vendor Contracts"><div class="doc-empty">No documents yet</div></div>
           </div>
         </div>
-        <div class="card" style="padding:28px;">
-          <h3 style="font-size:1rem; color:var(--teal); margin-bottom:16px;">HR &amp; Personnel</h3>
-          <div data-doc-section="board-operations" data-doc-sub="HR & Personnel" >
-            <div class="doc-empty">No documents yet</div>
+        <div class="doc-folder" data-section="board-operations" data-sub="HR &amp; Personnel">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+            <span class="doc-folder-name">HR &amp; Personnel</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="doc-folder-body">
+            <div data-doc-section="board-operations" data-doc-sub="HR & Personnel"><div class="doc-empty">No documents yet</div></div>
           </div>
         </div>
       </div>
@@ -1905,24 +2082,78 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   function boardSearch(val) {
     const clearBtn = document.getElementById('board-search-clear');
     if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
-    const sections = document.querySelectorAll('.board-section');
+    const panel = document.getElementById('doc-search-panel');
     const q = val.trim().toLowerCase();
+
+    // Clear panel
+    if (panel) { panel.innerHTML = ''; panel.style.display = 'none'; }
+
     if (!q) {
-      sections.forEach(s => s.classList.remove('bsearch-hidden'));
+      document.querySelectorAll('.board-section').forEach(s => s.classList.remove('bsearch-hidden'));
       return;
     }
-    var firstMatch = null;
+
+    // --- Search 1: section-level (show/hide whole sections) ---
+    const sections = document.querySelectorAll('.board-section');
     sections.forEach(function(section) {
       const matches = section.textContent.toLowerCase().includes(q);
       section.classList.toggle('bsearch-hidden', !matches);
-      if (matches && !firstMatch) firstMatch = section;
     });
-    if (firstMatch) {
+
+    // --- Search 2: document names from docEntries (global, set by Firebase module) ---
+    if (panel && typeof docEntries !== 'undefined') {
+      const hits = docEntries.filter(d => d.name && d.name.toLowerCase().includes(q));
+      if (hits.length > 0) {
+        panel.style.display = 'block';
+        hits.slice(0, 20).forEach(d => {
+          // Determine location label
+          let locLabel = '';
+          if (d.categories && d.categories.length) {
+            locLabel = d.categories.map(c => {
+              const secLabel = (typeof DOC_SECTIONS !== 'undefined' && DOC_SECTIONS[c.section]) ? DOC_SECTIONS[c.section].label : c.section;
+              return secLabel + (c.sub ? ' › ' + c.sub : '');
+            }).join(', ');
+          } else if (d.section) {
+            const secLabel = (typeof DOC_SECTIONS !== 'undefined' && DOC_SECTIONS[d.section]) ? DOC_SECTIONS[d.section].label : d.section;
+            locLabel = secLabel + (d.sub ? ' › ' + d.sub : '');
+          }
+          const row = document.createElement('div');
+          row.className = 'doc-search-result';
+          row.innerHTML = `<span class="doc-search-result-name">${escapeHtml(d.name)}</span>`
+            + (locLabel ? `<span class="doc-search-result-loc">${locLabel}</span>` : '');
+          row.onclick = () => jumpToDoc(d, row);
+          panel.appendChild(row);
+        });
+      }
+    }
+  }
+
+  function jumpToDoc(docObj, row) {
+    // Determine section/sub from first category or legacy fields
+    const cat = (docObj.categories && docObj.categories.length) ? docObj.categories[0] : { section: docObj.section, sub: docObj.sub };
+    if (!cat.section) return;
+
+    // Scroll to the section
+    const section = document.getElementById(cat.section);
+    if (section) {
+      section.classList.remove('bsearch-hidden');
       const mainNav = document.getElementById('site-nav');
       const offset  = (mainNav ? mainNav.offsetHeight : 88) + 16;
-      const top     = firstMatch.getBoundingClientRect().top + window.pageYOffset - offset;
+      const top     = section.getBoundingClientRect().top + window.pageYOffset - offset;
       window.scrollTo({ top: top, behavior: 'smooth' });
-      boardSetActive(firstMatch.id);
+      boardSetActive(cat.section);
+    }
+
+    // Open the matching folder if present
+    if (cat.sub) {
+      const folder = document.querySelector(`.doc-folder[data-section="${cat.section}"][data-sub="${cat.sub}"]`);
+      if (folder && !folder.classList.contains('open')) folder.classList.add('open');
+    }
+
+    // Highlight the result row briefly
+    if (row) {
+      row.style.background = '#e8f4f0';
+      setTimeout(() => { row.style.background = ''; }, 1200);
     }
   }
 
@@ -1930,6 +2161,14 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     const input = document.getElementById('board-search-input');
     if (input) { input.value = ''; boardSearch(''); }
   }
+
+  /* ---- Collapsible folder toggle ---- */
+  function toggleFolder(btn) {
+    const folder = btn.closest('.doc-folder');
+    if (!folder) return;
+    folder.classList.toggle('open');
+  }
+  window.toggleFolder = toggleFolder;
 
   // Initialize on page load
   document.addEventListener('DOMContentLoaded', function() {
@@ -3340,6 +3579,19 @@ function docRender() {
       container.appendChild(el);
     });
     if (empty) empty.style.display = docs.length === 0 ? '' : 'none';
+  });
+
+  // Update folder count badges
+  document.querySelectorAll('.doc-folder').forEach(folder => {
+    const sec = folder.dataset.section;
+    const sub = folder.dataset.sub;
+    const countEl = folder.querySelector('.doc-folder-count');
+    if (!countEl) return;
+    const innerContainer = folder.querySelector(`[data-doc-section="${sec}"]`);
+    if (!innerContainer) return;
+    const n = innerContainer.querySelectorAll('.doc-item').length;
+    countEl.textContent = n > 0 ? n : '';
+    countEl.title = n === 1 ? '1 document' : `${n} documents`;
   });
 }
 window.docRender = docRender;
