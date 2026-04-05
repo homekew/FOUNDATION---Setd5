@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta name="robots" content="noindex, nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Board Meeting Agenda | SETD5 Syndrome Foundation</title>
@@ -648,7 +649,8 @@ window.fileInAgendas = async function() {
   const dateVal  = document.getElementById('meeting-date').value || '';
 
   // Build agenda HTML to save
-  let agendaHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8">`;
+  let agendaHtml = `<!DOCTYPE html><html><head>
+  <meta name="robots" content="noindex, nofollow"><meta charset="UTF-8">`;
   agendaHtml += `<title>${docName}</title></head><body style="font-family:sans-serif;max-width:700px;margin:40px auto;color:#1A3340;">`;
   agendaHtml += `<h2 style="color:#2F5361;">SETD5 Syndrome Foundation<br>Board of Directors Meeting Agenda</h2>`;
   agendaHtml += `<p><strong>Date:</strong> ${date} &nbsp; <strong>Time:</strong> ${time} &nbsp; <strong>Location:</strong> ${location}</p><hr>`;
