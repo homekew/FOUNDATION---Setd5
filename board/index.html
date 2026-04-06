@@ -998,6 +998,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <a href="#board-meetings"    class="bsnav-active" onclick="boardNavClick(event,'board-meetings')">Meetings</a>
       <a href="#board-networking"  onclick="boardNavClick(event,'board-networking')">Networking</a>
       <a href="#board-operations"  onclick="boardNavClick(event,'board-operations')">Operations</a>
+      <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review')" style="color:var(--coral);font-weight:600;">Website Review ★</a>
     </div>
   </nav>
   <div class="board-content">
@@ -1844,6 +1845,100 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 
 
 <!-- ===== DOCUMENT INBOX ===== -->
+<section class="section section--white board-section" id="board-website-review">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:32px;">
+      <span class="subhead" style="color:var(--coral);">Action Required</span>
+      <h2>Website Review</h2>
+      <p style="color:var(--text-mid);font-size:1rem;max-width:640px;margin:12px auto 0;">Please review the live site and submit your notes below. We'll compile everyone's feedback before our board meeting so we can move through updates quickly. <a href="https://setd5syndrome.org" target="_blank" style="color:var(--teal);font-weight:600;">Open the site →</a></p>
+    </div>
+
+    <div style="background:var(--cream);border-radius:12px;padding:24px 28px;margin-bottom:32px;border-left:4px solid var(--coral);">
+      <p style="font-weight:600;color:var(--teal);margin-bottom:12px;font-size:0.95rem;">Key areas to review:</p>
+      <ul style="margin:0;padding-left:20px;color:var(--text-mid);font-size:0.93rem;line-height:2;">
+        <li><strong>Photos</strong> — We still need explicit permission from families whose photos appear on the homepage</li>
+        <li><strong>Research section</strong> — Content may need updating</li>
+        <li><strong>Resources page</strong> — Check whether any links need to be added or removed</li>
+        <li><strong>Contact emails</strong> — Make sure all contact info is current and complete</li>
+        <li><strong>Anything else</strong> — Note any copy, layout, or content issues you spot</li>
+      </ul>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:32px;max-width:680px;">
+      <h3 style="font-size:1rem;color:var(--teal);margin-bottom:20px;">Submit your notes</h3>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Your name</label>
+        <input type="text" id="wr-name" placeholder="e.g. Taryn Mildenhall" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Section</label>
+        <select id="wr-section" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;background:white;">
+          <option value="">Select a section...</option>
+          <option>Photos</option>
+          <option>Research</option>
+          <option>Resources</option>
+          <option>Contact Info</option>
+          <option>Homepage</option>
+          <option>About / Who We Are</option>
+          <option>Board Page</option>
+          <option>General / Other</option>
+        </select>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Your notes</label>
+        <textarea id="wr-notes" rows="5" placeholder="Describe what you'd like changed or added..." style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;resize:vertical;"></textarea>
+      </div>
+      <button onclick="submitWebsiteReview()" style="background:var(--teal);color:white;border:none;border-radius:8px;padding:12px 28px;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;">Submit notes →</button>
+      <p id="wr-confirm" style="display:none;color:var(--teal);font-size:0.9rem;margin-top:14px;font-weight:600;">✓ Note saved and sent to Kate.</p>
+    </div>
+
+    <div style="margin-top:36px;">
+      <h3 style="font-size:1rem;color:var(--teal);margin-bottom:16px;">Notes submitted from this device</h3>
+      <div id="wr-list" style="display:flex;flex-direction:column;gap:10px;">
+        <p id="wr-empty" style="color:var(--text-light);font-size:0.9rem;">No notes submitted yet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function submitWebsiteReview() {
+  const name    = document.getElementById('wr-name').value.trim();
+  const section = document.getElementById('wr-section').value;
+  const notes   = document.getElementById('wr-notes').value.trim();
+  if (!name || !notes) { alert('Please enter your name and notes.'); return; }
+  const label = section || 'General';
+  const entry = { name, section: label, notes, date: new Date().toLocaleDateString() };
+  const stored = JSON.parse(localStorage.getItem('websiteReviewNotes') || '[]');
+  stored.push(entry);
+  localStorage.setItem('websiteReviewNotes', JSON.stringify(stored));
+  renderWebsiteReviews();
+  const subject = encodeURIComponent('Website Review Note: ' + label);
+  const body    = encodeURIComponent('From: ' + name + '\nSection: ' + label + '\n\n' + notes);
+  window.location.href = 'mailto:kate@fourrootsranch.com?subject=' + subject + '&body=' + body;
+  document.getElementById('wr-name').value = '';
+  document.getElementById('wr-section').value = '';
+  document.getElementById('wr-notes').value = '';
+  document.getElementById('wr-confirm').style.display = 'block';
+  setTimeout(() => document.getElementById('wr-confirm').style.display = 'none', 4000);
+}
+function renderWebsiteReviews() {
+  const stored = JSON.parse(localStorage.getItem('websiteReviewNotes') || '[]');
+  const list   = document.getElementById('wr-list');
+  const empty  = document.getElementById('wr-empty');
+  if (!stored.length) { empty.style.display = ''; return; }
+  empty.style.display = 'none';
+  list.innerHTML = '<p id="wr-empty" style="display:none;color:var(--text-light);font-size:0.9rem;">No notes submitted yet.</p>';
+  stored.slice().reverse().forEach(e => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:16px 20px;';
+    div.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:0.8rem;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.05em;">' + e.section + '</span><span style="font-size:0.78rem;color:var(--text-light);">' + e.name + ' &bull; ' + e.date + '</span></div><p style="margin:0;font-size:0.93rem;color:var(--text-mid);line-height:1.6;">' + e.notes.replace(/\n/g,'<br>') + '</p>';
+    list.appendChild(div);
+  });
+}
+document.addEventListener('DOMContentLoaded', renderWebsiteReviews);
+</script>
+
 <section class="section section--cream board-section" id="board-inbox">
   <div class="container">
     <div class="section-header" style="margin-bottom:24px;">
