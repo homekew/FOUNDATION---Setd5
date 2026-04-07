@@ -2409,6 +2409,11 @@ window.submitWebsiteReview = async function () {
     notes,
     ts: serverTimestamp()
   });
+
+  // Send email notifications for any @mentions
+  const mentioned = extractMentions(notes);
+  if (mentioned.length) sendMentionEmails(mentioned, name, notes, 'Website Review');
+
   document.getElementById('wr-name').value    = '';
   document.getElementById('wr-section').value = '';
   document.getElementById('wr-notes').value   = '';
