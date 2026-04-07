@@ -3257,13 +3257,14 @@ function chatEditMessage(msgId, btn) {
   const area = document.createElement('div');
   area.className = 'chat-edit-area';
   area.innerHTML = `
-    <textarea class="chat-edit-input" rows="2">${original.replace(/</g,'&lt;')}</textarea>
+    <textarea class="chat-edit-input" rows="2"></textarea>
     <div class="chat-edit-btns">
       <button class="chat-edit-save"   onclick="chatSaveEdit('${msgId}', this)">Save</button>
       <button class="chat-edit-cancel" onclick="chatCancelEdit(this)">Cancel</button>
     </div>`;
   textDiv.after(area);
   const ta = area.querySelector('textarea');
+  ta.value = original; // Set value directly so no HTML is interpreted
   ta.focus();
   ta.setSelectionRange(ta.value.length, ta.value.length);
   ta.addEventListener('keydown', e => {
