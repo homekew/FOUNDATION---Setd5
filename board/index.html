@@ -998,7 +998,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <a href="#board-meetings"    class="bsnav-active" onclick="boardNavClick(event,'board-meetings')">Meetings</a>
       <a href="#board-networking"  onclick="boardNavClick(event,'board-networking')">Networking</a>
       <a href="#board-operations"  onclick="boardNavClick(event,'board-operations')">Operations</a>
-      <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review')" style="color:var(--coral);font-weight:600;">Website Review ★</a>
+      <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review');wrMarkSeen()" style="color:var(--coral);font-weight:600;display:inline-flex;align-items:center;gap:6px;">Website Review ★<span id="badge-website-review" style="display:none;background:var(--coral);color:white;font-size:0.62rem;font-weight:700;border-radius:20px;padding:1px 7px;min-width:18px;text-align:center;"></span></a>
     </div>
   </nav>
   <div class="board-content">
@@ -2421,12 +2421,33 @@ window.submitWebsiteReview = async function () {
   setTimeout(() => document.getElementById('wr-confirm').style.display = 'none', 4000);
 };
 
+function updateWrBadge(count) {
+  const badge = document.getElementById('badge-website-review');
+  if (!badge) return;
+  if (count > 0) { badge.textContent = count > 9 ? '9+' : count; badge.style.display = 'inline-block'; }
+  else           { badge.style.display = 'none'; }
+}
+
+window.wrMarkSeen = function() {
+  markSeen('website_review');
+  updateWrBadge(0);
+};
+
 function initWebsiteReviewListener() {
   const q = query(collection(db, 'website_reviews'), orderBy('ts', 'desc'));
   onSnapshot(q, snap => {
     const list  = document.getElementById('wr-list');
     const empty = document.getElementById('wr-empty');
     if (!list) return;
+
+    // Update unread badge — count docs newer than last seen
+    const cutoff = lastSeen('website_review');
+    const unread = snap.docs.filter(d => {
+      const ts = d.data().ts;
+      return ts && ts.toMillis() > cutoff;
+    }).length;
+    updateWrBadge(unread);
+
     if (snap.empty) { empty.style.display = ''; return; }
     empty.style.display = 'none';
     list.innerHTML = '<p id="wr-empty" style="display:none;color:var(--text-light);font-size:0.9rem;">No notes submitted yet.</p>';
