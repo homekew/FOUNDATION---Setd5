@@ -2444,6 +2444,9 @@ window.submitWebsiteReview = async function () {
   if (wrReplyingTo) docData.replyTo = { id: wrReplyingTo.id, author: wrReplyingTo.author, text: wrReplyingTo.text };
   try {
     await addDoc(collection(db, 'website_reviews'), docData);
+    // Mark seen immediately so your own submission doesn't show as unread
+    markSeen('website_review');
+    updateWrBadge(0);
   } catch (err) {
     console.error('Website Review submit error:', err);
     alert('Sorry, your note could not be saved. Error: ' + err.message);
