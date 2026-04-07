@@ -1868,7 +1868,15 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <h3 style="font-size:1rem;color:var(--teal);margin-bottom:20px;">Submit your notes</h3>
       <div style="margin-bottom:16px;">
         <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Your name</label>
-        <input type="text" id="wr-name" placeholder="e.g. Kate Carr" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;">
+        <select id="wr-name" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;background:white;">
+          <option value="">Select your name...</option>
+          <option>Laura Biazon</option>
+          <option>Kate Carr</option>
+          <option>Samantha Cotter</option>
+          <option>Amy Kreller-Kochis</option>
+          <option>Jesiree Mendez</option>
+          <option>Taryn Mildenhall</option>
+        </select>
       </div>
       <div style="margin-bottom:16px;">
         <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Section</label>
@@ -1889,7 +1897,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
         <textarea id="wr-notes" rows="5" placeholder="Describe what you'd like changed or added..." style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;resize:vertical;"></textarea>
       </div>
       <button onclick="submitWebsiteReview()" style="background:var(--teal);color:white;border:none;border-radius:8px;padding:12px 28px;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;">Submit notes →</button>
-      <p id="wr-confirm" style="display:none;color:var(--teal);font-size:0.9rem;margin-top:14px;font-weight:600;">✓ Note saved and sent to Kate.</p>
+      <p id="wr-confirm" style="display:none;color:var(--teal);font-size:0.9rem;margin-top:14px;font-weight:600;">✓ Note saved.</p>
     </div>
 
     <div style="margin-top:36px;">
@@ -1906,16 +1914,13 @@ function submitWebsiteReview() {
   const name    = document.getElementById('wr-name').value.trim();
   const section = document.getElementById('wr-section').value;
   const notes   = document.getElementById('wr-notes').value.trim();
-  if (!name || !notes) { alert('Please enter your name and notes.'); return; }
+  if (!name || !notes) { alert('Please select your name and enter notes.'); return; }
   const label = section || 'General';
   const entry = { name, section: label, notes, date: new Date().toLocaleDateString() };
   const stored = JSON.parse(localStorage.getItem('websiteReviewNotes') || '[]');
   stored.push(entry);
   localStorage.setItem('websiteReviewNotes', JSON.stringify(stored));
   renderWebsiteReviews();
-  const subject = encodeURIComponent('Website Review Note: ' + label);
-  const body    = encodeURIComponent('From: ' + name + '\nSection: ' + label + '\n\n' + notes);
-  window.location.href = 'mailto:kate@fourrootsranch.com?subject=' + subject + '&body=' + body;
   document.getElementById('wr-name').value = '';
   document.getElementById('wr-section').value = '';
   document.getElementById('wr-notes').value = '';
