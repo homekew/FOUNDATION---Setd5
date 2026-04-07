@@ -2529,6 +2529,7 @@ function initWebsiteReviewListener() {
           '<div style="display:flex;align-items:center;gap:8px;">' +
             '<span style="font-size:0.78rem;color:var(--text-light);">' + escapeHtml(e.name) + ' &bull; ' + date + '</span>' +
             '<button class="wr-reply-btn" data-doc-id="' + docId + '" data-author="' + escapeHtml(e.name) + '" data-text="' + escapeHtml((e.notes || '').replace(/\n/g,' ').slice(0, 100)) + '" onclick="wrSetReply(this.dataset.docId,this.dataset.author,this.dataset.text)">Reply</button>' +
+            (e.name === chatUserName ? '<button class="wr-reply-btn" style="color:var(--text-light);border-color:transparent;" data-doc-id="' + docId + '" onclick="wrDeleteNote(this.dataset.docId)" title="Delete note">🗑</button>' : '') +
           '</div>' +
         '</div>' +
         replyQuoteHtml +
@@ -2557,6 +2558,16 @@ window.wrSetReply = function(docId, author, text) {
 window.wrClearReply = function() {
   wrReplyingTo = null;
   document.getElementById('wr-reply-indicator').classList.remove('visible');
+};
+
+window.wrDeleteNote = async function(docId) {
+  if (!confirm('Delete this note? This cannot be undone.')) return;
+  try {
+    await deleteDoc(doc(db, 'website_reviews', docId));
+  } catch (err) {
+    console.error('WR delete error:', err);
+    alert('Could not delete the note. Error: ' + err.message);
+  }
 };
 
 // ── Website Review @mention system ───────────────────────────────────────────
