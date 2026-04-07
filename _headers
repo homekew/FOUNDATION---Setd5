@@ -1,0 +1,18 @@
+# Cloudflare Pages cache headers
+
+# Board portal — never cache, always serve fresh
+/board/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Public site — cache aggressively for performance
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable

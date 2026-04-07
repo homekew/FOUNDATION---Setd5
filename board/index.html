@@ -930,6 +930,22 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .chat-reply-ind-label { color:var(--text-light);font-size:0.72rem; }
   .chat-reply-ind-author { font-weight:700;color:var(--teal);font-size:0.78rem; }
   .chat-reply-ind-text { color:var(--text-mid);font-size:0.78rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+
+  #wr-reply-indicator {
+    display:none;align-items:center;gap:8px;
+    padding:6px 10px;margin-bottom:12px;
+    background:rgba(216,171,103,0.1);
+    border-left:3px solid var(--gold);
+    border-radius:0 6px 6px 0;
+    font-size:0.8rem;
+  }
+  #wr-reply-indicator.visible { display:flex; }
+  .wr-reply-btn {
+    font-size:0.72rem;padding:3px 10px;border:1px solid var(--border);
+    border-radius:5px;background:none;color:var(--text-light);
+    cursor:pointer;font-family:inherit;transition:all 0.15s;
+  }
+  .wr-reply-btn:hover { border-color:var(--teal);color:var(--teal);background:var(--teal-light); }
 </style>
 </head>
 <body>
@@ -1880,6 +1896,14 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
           <textarea id="wr-notes" rows="5" placeholder="Describe what you'd like changed or added... (type @ to mention someone)" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;resize:vertical;" oninput="wrMentionInput(event)" onkeydown="wrMentionKey(event)"></textarea>
         </div>
       </div>
+      <div id="wr-reply-indicator">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 00-4-4H4"/></svg>
+        <span style="color:var(--text-light);font-size:0.72rem;">Replying to&nbsp;</span>
+        <span id="wr-reply-ind-author" style="font-weight:700;color:var(--teal);font-size:0.78rem;"></span>
+        <span style="color:var(--text-light);margin:0 4px;">·</span>
+        <span id="wr-reply-ind-text" style="color:var(--text-mid);font-size:0.78rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></span>
+        <button onclick="wrClearReply()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:1px 4px;border-radius:4px;margin-left:auto;flex-shrink:0;" title="Cancel reply">✕</button>
+      </div>
       <button onclick="submitWebsiteReview()" style="background:var(--teal);color:white;border:none;border-radius:8px;padding:12px 28px;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;">Submit notes →</button>
       <p id="wr-confirm" style="display:none;color:var(--teal);font-size:0.9rem;margin-top:14px;font-weight:600;">✓ Note saved.</p>
     </div>
@@ -2396,13 +2420,10 @@ window.submitWebsiteReview = async function () {
   if (!name) { alert('Your identity could not be verified. Please reload the page and try again.'); return; }
   if (!notes) { alert('Please enter your notes before submitting.'); return; }
   const label = section || 'General';
+  const docData = { name, section: label, notes, ts: serverTimestamp() };
+  if (wrReplyingTo) docData.replyTo = { id: wrReplyingTo.id, author: wrReplyingTo.author, text: wrReplyingTo.text };
   try {
-    await addDoc(collection(db, 'website_reviews'), {
-      name,
-      section: label,
-      notes,
-      ts: serverTimestamp()
-    });
+    await addDoc(collection(db, 'website_reviews'), docData);
   } catch (err) {
     console.error('Website Review submit error:', err);
     alert('Sorry, your note could not be saved. Error: ' + err.message);
@@ -2413,10 +2434,20 @@ window.submitWebsiteReview = async function () {
   const mentioned = extractMentions(notes);
   if (mentioned.length) sendMentionEmails(mentioned, name, notes, 'Website Review');
 
+  // Auto-notify the person being replied to (if not already @mentioned)
+  if (wrReplyingTo && wrReplyingTo.author && wrReplyingTo.author !== name) {
+    const replyTarget = BOARD_MEMBERS.find(m => m.name === wrReplyingTo.author);
+    const alreadyMentioned = mentioned.some(m => m.name === wrReplyingTo.author);
+    if (replyTarget && !alreadyMentioned) {
+      sendMentionEmails([replyTarget], name, notes, 'Website Review');
+    }
+  }
+
   document.getElementById('wr-section').value = '';
   document.getElementById('wr-notes').value   = '';
   document.getElementById('wr-confirm').style.display = 'block';
   setTimeout(() => document.getElementById('wr-confirm').style.display = 'none', 4000);
+  wrClearReply();
 };
 
 function updateWrBadge(count) {
@@ -2450,15 +2481,27 @@ function initWebsiteReviewListener() {
     empty.style.display = 'none';
     list.innerHTML = '<p id="wr-empty" style="display:none;color:var(--text-light);font-size:0.9rem;">No notes submitted yet.</p>';
     snap.docs.forEach(d => {
-      const e   = d.data();
+      const e    = d.data();
+      const docId = d.id;
       const date = e.ts ? new Date(e.ts.toMillis()).toLocaleDateString() : '';
       const div  = document.createElement('div');
+      div.id = 'wr-note-' + docId;
       div.style.cssText = 'background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:16px 20px;';
+      const replyQuoteHtml = e.replyTo
+        ? '<div style="border-left:3px solid var(--gold);background:rgba(216,171,103,0.08);border-radius:0 5px 5px 0;padding:4px 10px;margin-bottom:8px;">' +
+            '<div style="font-size:0.7rem;font-weight:700;color:var(--teal);margin-bottom:1px;">&#x21A9; ' + escapeHtml(e.replyTo.author) + '</div>' +
+            '<div style="font-size:0.75rem;color:var(--text-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escapeHtml((e.replyTo.text || '').slice(0, 120)) + '</div>' +
+          '</div>'
+        : '';
       div.innerHTML =
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
           '<span style="font-size:0.8rem;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.05em;">' + e.section + '</span>' +
-          '<span style="font-size:0.78rem;color:var(--text-light);">' + e.name + ' &bull; ' + date + '</span>' +
+          '<div style="display:flex;align-items:center;gap:8px;">' +
+            '<span style="font-size:0.78rem;color:var(--text-light);">' + escapeHtml(e.name) + ' &bull; ' + date + '</span>' +
+            '<button class="wr-reply-btn" data-doc-id="' + docId + '" data-author="' + escapeHtml(e.name) + '" data-text="' + escapeHtml((e.notes || '').replace(/\n/g,' ').slice(0, 100)) + '" onclick="wrSetReply(this.dataset.docId,this.dataset.author,this.dataset.text)">Reply</button>' +
+          '</div>' +
         '</div>' +
+        replyQuoteHtml +
         '<p style="margin:0;font-size:0.93rem;color:var(--text-mid);line-height:1.6;">' + renderMentions(escapeHtml(e.notes)).replace(/\n/g,'<br>') + '</p>';
       list.appendChild(div);
     });
@@ -2467,6 +2510,24 @@ function initWebsiteReviewListener() {
   });
 }
 // initWebsiteReviewListener is called from showChatApp after loadReadState()
+
+// ── Website Review reply state ────────────────────────────────────────────────
+let wrReplyingTo = null;  // { id, author, text } or null
+
+window.wrSetReply = function(docId, author, text) {
+  wrReplyingTo = { id: docId, author, text };
+  document.getElementById('wr-reply-ind-author').textContent = author;
+  document.getElementById('wr-reply-ind-text').textContent   = text.length > 70 ? text.slice(0, 70) + '…' : text;
+  document.getElementById('wr-reply-indicator').classList.add('visible');
+  document.getElementById('wr-notes').focus();
+  // Scroll the form into view
+  document.getElementById('wr-notes').scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
+
+window.wrClearReply = function() {
+  wrReplyingTo = null;
+  document.getElementById('wr-reply-indicator').classList.remove('visible');
+};
 
 // ── Website Review @mention system ───────────────────────────────────────────
 let wrMentionQuery    = null;
