@@ -3120,6 +3120,14 @@ async function chatSend() {
       const mentioned = extractMentions(sendText);
       if (mentioned.length) sendMentionEmails(mentioned, chatUserName, sendText, currentChannel);
     }
+    // Send email notification to the person being replied to (if not already mentioned and not self)
+    if (replyingTo && replyingTo.author && replyingTo.author !== chatUserName) {
+      const replyTarget = BOARD_MEMBERS.find(m => m.name === replyingTo.author);
+      const alreadyMentioned = extractMentions(sendText || '').some(m => m.name === replyingTo.author);
+      if (replyTarget && !alreadyMentioned) {
+        sendMentionEmails([replyTarget], chatUserName, sendText, currentChannel);
+      }
+    }
   } catch (err) {
     console.error('Send error:', err);
     alert('Message failed to send. Please try again.');
