@@ -1012,6 +1012,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <a id="nav-messenger" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('messenger')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Messenger</a>
       <a id="nav-directory" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('directory')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 7l10 7 10-7"/></svg> Directory</a>
       <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review');wrMarkSeen()" style="color:var(--coral);font-weight:600;display:inline-flex;align-items:center;gap:6px;">Website Review ★<span id="badge-website-review" style="display:none;background:var(--coral);color:white;font-size:0.62rem;font-weight:700;border-radius:20px;padding:1px 7px;min-width:18px;text-align:center;"></span></a>
+      <a href="#tracker-section" onclick="boardNavClick(event,'tracker-section')">Outreach Log</a>
       <div class="board-nav-group-header">Sections</div>
       <a href="#board-inbox" onclick="boardNavClick(event,'board-inbox');markSeen('board_inbox');inboxRender();" id="inbox-nav-link" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg> Doc Inbox <span id="inbox-nav-badge" style="display:none;background:var(--coral);color:white;font-size:0.65rem;font-weight:700;padding:1px 7px;border-radius:10px;line-height:1.6;"></span></a>
       <a href="#board-committees"  onclick="boardNavClick(event,'board-committees')">Committees</a>
@@ -1022,7 +1023,6 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <a href="#board-meetings"    class="bsnav-active" onclick="boardNavClick(event,'board-meetings')">Meetings</a>
       <a href="#board-networking"  onclick="boardNavClick(event,'board-networking')">Networking</a>
       <a href="#board-operations"  onclick="boardNavClick(event,'board-operations')">Operations</a>
-      <a href="#tracker-section"   onclick="boardNavClick(event,'tracker-section')">Outreach Log</a>
     </div>
   </nav>
   <div class="board-content">
@@ -1285,57 +1285,76 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   </section>
 
   <!-- Committee Documents -->
-  <section class="section section--cream board-section" id="board-committees">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
-        <span class="subhead">Committees</span>
-        <h2>Committee Documents</h2>
-        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Working files, reports, and resources organized by each standing committee of the board.</p>
-      <button class="section-upload-btn" onclick="docModalOpen('board-committees','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
+  <section class="section section--white board-section" id="board-website-review">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:32px;">
+      <span class="subhead" style="color:var(--coral);">Action Required</span>
+      <h2>Website Review</h2>
+      <p style="color:var(--text-mid);font-size:1rem;max-width:640px;margin:12px auto 0;">Please review the live site and submit your notes below. We'll compile everyone's feedback before our board meeting so we can move through updates quickly. <a href="https://setd5syndrome.org" target="_blank" style="color:var(--teal);font-weight:600;">Open the site →</a></p>
+    </div>
+
+    <div style="background:var(--cream);border-radius:12px;padding:24px 28px;margin-bottom:32px;border-left:4px solid var(--coral);">
+      <p style="font-weight:600;color:var(--teal);margin-bottom:12px;font-size:0.95rem;">Key areas to review:</p>
+      <ul style="margin:0;padding-left:20px;color:var(--text-mid);font-size:0.93rem;line-height:2;">
+        <li><strong>Photos</strong> — We still need explicit permission from families whose photos appear on the homepage</li>
+        <li><strong>Research section</strong> — Content may need updating</li>
+        <li><strong>Resources page</strong> — Check whether any links need to be added or removed</li>
+        <li><strong>Contact emails</strong> — Make sure all contact info is current and complete</li>
+        <li><strong>Anything else</strong> — Note any copy, layout, or content issues you spot</li>
+      </ul>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:32px;max-width:680px;">
+      <h3 style="font-size:1rem;color:var(--teal);margin-bottom:20px;">Submit your notes</h3>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Your name</label>
+        <div id="wr-name-display" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;background:var(--cream);color:var(--text-mid);">Detecting...</div>
       </div>
-      <div class="doc-folder-list">
-        <div class="doc-folder" data-section="board-committees" data-sub="Research Committee">
-          <button class="doc-folder-header" onclick="toggleFolder(this)">
-            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-            <span class="doc-folder-name">Research Committee</span>
-            <span class="doc-folder-count"></span>
-            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Research Committee"><div class="doc-empty">No documents yet</div></div></div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Section</label>
+        <select id="wr-section" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;background:white;">
+          <option value="">Select a section...</option>
+          <option>Photos</option>
+          <option>Research</option>
+          <option>Resources</option>
+          <option>Contact Info</option>
+          <option>Homepage</option>
+          <option>About / Who We Are</option>
+          <option>Board Page</option>
+          <option>General / Other</option>
+        </select>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Your notes</label>
+        <div style="position:relative;">
+          <div class="mention-dropdown" id="wr-mention-dropdown"></div>
+          <textarea id="wr-notes" rows="5" placeholder="Describe what you'd like changed or added... (type @ to mention someone)" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;resize:vertical;" oninput="wrMentionInput(event)" onkeydown="wrMentionKey(event)"></textarea>
         </div>
-        <div class="doc-folder" data-section="board-committees" data-sub="Finance Committee">
-          <button class="doc-folder-header" onclick="toggleFolder(this)">
-            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-            <span class="doc-folder-name">Finance Committee</span>
-            <span class="doc-folder-count"></span>
-            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Finance Committee"><div class="doc-empty">No documents yet</div></div></div>
-        </div>
-        <div class="doc-folder" data-section="board-committees" data-sub="Other Committees">
-          <button class="doc-folder-header" onclick="toggleFolder(this)">
-            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-            <span class="doc-folder-name">Other Committees</span>
-            <span class="doc-folder-count"></span>
-            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Other Committees"><div class="doc-empty">No documents yet</div></div></div>
-        </div>
-        <div class="doc-folder" data-section="board-committees" data-sub="Other">
-          <button class="doc-folder-header" onclick="toggleFolder(this)">
-            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-            <span class="doc-folder-name">Other</span>
-            <span class="doc-folder-count"></span>
-            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Other"><div class="doc-empty">No documents yet</div></div></div>
-        </div>
+      </div>
+      <div id="wr-reply-indicator">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 00-4-4H4"/></svg>
+        <span style="color:var(--text-light);font-size:0.72rem;">Replying to&nbsp;</span>
+        <span id="wr-reply-ind-author" style="font-weight:700;color:var(--teal);font-size:0.78rem;"></span>
+        <span style="color:var(--text-light);margin:0 4px;">·</span>
+        <span id="wr-reply-ind-text" style="color:var(--text-mid);font-size:0.78rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></span>
+        <button onclick="wrClearReply()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:1px 4px;border-radius:4px;margin-left:auto;flex-shrink:0;" title="Cancel reply">✕</button>
+      </div>
+      <button onclick="submitWebsiteReview()" style="background:var(--teal);color:white;border:none;border-radius:8px;padding:12px 28px;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;">Submit notes →</button>
+      <p id="wr-confirm" style="display:none;color:var(--teal);font-size:0.9rem;margin-top:14px;font-weight:600;">✓ Note saved.</p>
+    </div>
+
+    <div style="margin-top:36px;">
+      <h3 style="font-size:1rem;color:var(--teal);margin-bottom:16px;">Notes submitted by the board</h3>
+      <div id="wr-list" style="display:flex;flex-direction:column;gap:10px;">
+        <p id="wr-empty" style="color:var(--text-light);font-size:0.9rem;">No notes submitted yet.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Outreach Log -->
-  <section class="section section--white board-section" id="tracker-section">
+<!-- Website Review functions are in the Firebase module script below -->
+
+<section class="section section--white board-section" id="tracker-section">
     <div class="container">
       <div class="section-header" style="margin-bottom:24px;">
         <span class="subhead">Relationship Management</span>
@@ -1483,7 +1502,75 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     </div>
   </section>
 
-  <!-- Finance -->
+  
+<section class="section section--cream board-section" id="board-inbox">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:24px;">
+      <span class="subhead">Internal</span>
+      <h2>Document Inbox</h2>
+      <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Not sure where a document belongs? Drop it here with a note. Pick a suggested section and it'll be filed automatically — or leave it for Kate to sort.</p>
+    </div>
+    <div style="margin-bottom:20px;">
+      <button class="section-upload-btn" onclick="inboxModalOpen()"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Add to Inbox</button>
+    </div>
+    <div id="inbox-list" style="display:flex;flex-direction:column;gap:10px;">
+      <div id="inbox-empty" style="color:var(--text-light);font-size:0.9rem;padding:16px 0;">No items in the inbox — you're all caught up!</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Finance -->
+  <section class="section section--cream board-section" id="board-committees">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Committees</span>
+        <h2>Committee Documents</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Working files, reports, and resources organized by each standing committee of the board.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-committees','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
+      </div>
+      <div class="doc-folder-list">
+        <div class="doc-folder" data-section="board-committees" data-sub="Research Committee">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Research Committee</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Research Committee"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+        <div class="doc-folder" data-section="board-committees" data-sub="Finance Committee">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Finance Committee</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Finance Committee"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+        <div class="doc-folder" data-section="board-committees" data-sub="Other Committees">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Other Committees</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Other Committees"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+        <div class="doc-folder" data-section="board-committees" data-sub="Other">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Other</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-committees" data-doc-sub="Other"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Outreach Log -->
   <section class="section section--cream board-section" id="board-finance">
     <div class="container">
       <div class="section-header" style="margin-bottom:32px;">
@@ -1930,92 +2017,6 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 
 
 <!-- ===== DOCUMENT INBOX ===== -->
-<section class="section section--white board-section" id="board-website-review">
-  <div class="container">
-    <div class="section-header" style="margin-bottom:32px;">
-      <span class="subhead" style="color:var(--coral);">Action Required</span>
-      <h2>Website Review</h2>
-      <p style="color:var(--text-mid);font-size:1rem;max-width:640px;margin:12px auto 0;">Please review the live site and submit your notes below. We'll compile everyone's feedback before our board meeting so we can move through updates quickly. <a href="https://setd5syndrome.org" target="_blank" style="color:var(--teal);font-weight:600;">Open the site →</a></p>
-    </div>
-
-    <div style="background:var(--cream);border-radius:12px;padding:24px 28px;margin-bottom:32px;border-left:4px solid var(--coral);">
-      <p style="font-weight:600;color:var(--teal);margin-bottom:12px;font-size:0.95rem;">Key areas to review:</p>
-      <ul style="margin:0;padding-left:20px;color:var(--text-mid);font-size:0.93rem;line-height:2;">
-        <li><strong>Photos</strong> — We still need explicit permission from families whose photos appear on the homepage</li>
-        <li><strong>Research section</strong> — Content may need updating</li>
-        <li><strong>Resources page</strong> — Check whether any links need to be added or removed</li>
-        <li><strong>Contact emails</strong> — Make sure all contact info is current and complete</li>
-        <li><strong>Anything else</strong> — Note any copy, layout, or content issues you spot</li>
-      </ul>
-    </div>
-
-    <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:32px;max-width:680px;">
-      <h3 style="font-size:1rem;color:var(--teal);margin-bottom:20px;">Submit your notes</h3>
-      <div style="margin-bottom:16px;">
-        <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Your name</label>
-        <div id="wr-name-display" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;background:var(--cream);color:var(--text-mid);">Detecting...</div>
-      </div>
-      <div style="margin-bottom:16px;">
-        <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Section</label>
-        <select id="wr-section" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;background:white;">
-          <option value="">Select a section...</option>
-          <option>Photos</option>
-          <option>Research</option>
-          <option>Resources</option>
-          <option>Contact Info</option>
-          <option>Homepage</option>
-          <option>About / Who We Are</option>
-          <option>Board Page</option>
-          <option>General / Other</option>
-        </select>
-      </div>
-      <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Your notes</label>
-        <div style="position:relative;">
-          <div class="mention-dropdown" id="wr-mention-dropdown"></div>
-          <textarea id="wr-notes" rows="5" placeholder="Describe what you'd like changed or added... (type @ to mention someone)" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;resize:vertical;" oninput="wrMentionInput(event)" onkeydown="wrMentionKey(event)"></textarea>
-        </div>
-      </div>
-      <div id="wr-reply-indicator">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 00-4-4H4"/></svg>
-        <span style="color:var(--text-light);font-size:0.72rem;">Replying to&nbsp;</span>
-        <span id="wr-reply-ind-author" style="font-weight:700;color:var(--teal);font-size:0.78rem;"></span>
-        <span style="color:var(--text-light);margin:0 4px;">·</span>
-        <span id="wr-reply-ind-text" style="color:var(--text-mid);font-size:0.78rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></span>
-        <button onclick="wrClearReply()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:1px 4px;border-radius:4px;margin-left:auto;flex-shrink:0;" title="Cancel reply">✕</button>
-      </div>
-      <button onclick="submitWebsiteReview()" style="background:var(--teal);color:white;border:none;border-radius:8px;padding:12px 28px;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;">Submit notes →</button>
-      <p id="wr-confirm" style="display:none;color:var(--teal);font-size:0.9rem;margin-top:14px;font-weight:600;">✓ Note saved.</p>
-    </div>
-
-    <div style="margin-top:36px;">
-      <h3 style="font-size:1rem;color:var(--teal);margin-bottom:16px;">Notes submitted by the board</h3>
-      <div id="wr-list" style="display:flex;flex-direction:column;gap:10px;">
-        <p id="wr-empty" style="color:var(--text-light);font-size:0.9rem;">No notes submitted yet.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Website Review functions are in the Firebase module script below -->
-
-<section class="section section--cream board-section" id="board-inbox">
-  <div class="container">
-    <div class="section-header" style="margin-bottom:24px;">
-      <span class="subhead">Internal</span>
-      <h2>Document Inbox</h2>
-      <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Not sure where a document belongs? Drop it here with a note. Pick a suggested section and it'll be filed automatically — or leave it for Kate to sort.</p>
-    </div>
-    <div style="margin-bottom:20px;">
-      <button class="section-upload-btn" onclick="inboxModalOpen()"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Add to Inbox</button>
-    </div>
-    <div id="inbox-list" style="display:flex;flex-direction:column;gap:10px;">
-      <div id="inbox-empty" style="color:var(--text-light);font-size:0.9rem;padding:16px 0;">No items in the inbox — you're all caught up!</div>
-    </div>
-  </div>
-</section>
-
-
 <!-- ===== DOCUMENT UPLOAD MODAL ===== -->
 <div class="doc-upload-modal-bg" id="doc-upload-modal-bg" onclick="docModalClose(event)">
   <div class="doc-upload-modal" onclick="event.stopPropagation()">
