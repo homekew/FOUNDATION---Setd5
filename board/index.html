@@ -2403,12 +2403,18 @@ window.submitWebsiteReview = async function () {
   const notes   = document.getElementById('wr-notes').value.trim();
   if (!name || !notes) { alert('Please select your name and enter notes.'); return; }
   const label = section || 'General';
-  await addDoc(collection(db, 'website_reviews'), {
-    name,
-    section: label,
-    notes,
-    ts: serverTimestamp()
-  });
+  try {
+    await addDoc(collection(db, 'website_reviews'), {
+      name,
+      section: label,
+      notes,
+      ts: serverTimestamp()
+    });
+  } catch (err) {
+    console.error('Website Review submit error:', err);
+    alert('Sorry, your note could not be saved. Error: ' + err.message);
+    return;
+  }
 
   // Send email notifications for any @mentions
   const mentioned = extractMentions(notes);
@@ -2464,6 +2470,8 @@ function initWebsiteReviewListener() {
         '<p style="margin:0;font-size:0.93rem;color:var(--text-mid);line-height:1.6;">' + renderMentions(escapeHtml(e.notes)).replace(/\n/g,'<br>') + '</p>';
       list.appendChild(div);
     });
+  }, err => {
+    console.error('Website Review listener error:', err);
   });
 }
 document.addEventListener('DOMContentLoaded', initWebsiteReviewListener);
