@@ -1883,14 +1883,17 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       </div>
       <div style="margin-bottom:20px;">
         <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Your notes</label>
-        <textarea id="wr-notes" rows="5" placeholder="Describe what you'd like changed or added..." style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;resize:vertical;"></textarea>
+        <div style="position:relative;">
+          <div class="mention-dropdown" id="wr-mention-dropdown"></div>
+          <textarea id="wr-notes" rows="5" placeholder="Describe what you'd like changed or added... (type @ to mention someone)" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;resize:vertical;" oninput="wrMentionInput(event)" onkeydown="wrMentionKey(event)"></textarea>
+        </div>
       </div>
       <button onclick="submitWebsiteReview()" style="background:var(--teal);color:white;border:none;border-radius:8px;padding:12px 28px;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;">Submit notes →</button>
       <p id="wr-confirm" style="display:none;color:var(--teal);font-size:0.9rem;margin-top:14px;font-weight:600;">✓ Note saved.</p>
     </div>
 
     <div style="margin-top:36px;">
-      <h3 style="font-size:1rem;color:var(--teal);margin-bottom:16px;">Notes submitted from this device</h3>
+      <h3 style="font-size:1rem;color:var(--teal);margin-bottom:16px;">Notes submitted by the board</h3>
       <div id="wr-list" style="display:flex;flex-direction:column;gap:10px;">
         <p id="wr-empty" style="color:var(--text-light);font-size:0.9rem;">No notes submitted yet.</p>
       </div>
@@ -2432,12 +2435,95 @@ function initWebsiteReviewListener() {
           '<span style="font-size:0.8rem;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.05em;">' + e.section + '</span>' +
           '<span style="font-size:0.78rem;color:var(--text-light);">' + e.name + ' &bull; ' + date + '</span>' +
         '</div>' +
-        '<p style="margin:0;font-size:0.93rem;color:var(--text-mid);line-height:1.6;">' + e.notes.replace(/\n/g,'<br>') + '</p>';
+        '<p style="margin:0;font-size:0.93rem;color:var(--text-mid);line-height:1.6;">' + renderMentions(escapeHtml(e.notes)).replace(/\n/g,'<br>') + '</p>';
       list.appendChild(div);
     });
   });
 }
 document.addEventListener('DOMContentLoaded', initWebsiteReviewListener);
+
+// ── Website Review @mention system ───────────────────────────────────────────
+let wrMentionQuery    = null;
+let wrMentionStart    = -1;
+let wrMentionFocusIdx = -1;
+
+window.wrMentionInput = function(e) {
+  const ta    = e.target;
+  const val   = ta.value;
+  const caret = ta.selectionStart;
+  const before = val.slice(0, caret);
+  const match  = before.match(/@(\w[\w\s]*)$/);
+  if (match) {
+    wrMentionQuery = match[1].toLowerCase();
+    wrMentionStart = before.lastIndexOf('@');
+    wrRenderMentionDropdown(wrMentionQuery);
+  } else if (before.endsWith('@')) {
+    wrMentionQuery = '';
+    wrMentionStart = caret - 1;
+    wrRenderMentionDropdown('');
+  } else {
+    wrCloseMentionDropdown();
+  }
+};
+
+window.wrMentionKey = function(e) {
+  const dropdown = document.getElementById('wr-mention-dropdown');
+  if (dropdown && dropdown.classList.contains('open')) {
+    if (e.key === 'ArrowDown') { e.preventDefault(); wrMoveFocus(1); return; }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); wrMoveFocus(-1); return; }
+    if (e.key === 'Enter' && wrMentionFocusIdx >= 0) { e.preventDefault(); wrSelectByIndex(wrMentionFocusIdx); return; }
+    if (e.key === 'Escape') { wrCloseMentionDropdown(); return; }
+  }
+};
+
+function wrRenderMentionDropdown(query) {
+  const dropdown = document.getElementById('wr-mention-dropdown');
+  if (!dropdown) return;
+  const matches = BOARD_MEMBERS.filter(m => m.name.toLowerCase().includes(query));
+  if (!matches.length) { wrCloseMentionDropdown(); return; }
+  wrMentionFocusIdx = 0;
+  dropdown.innerHTML = matches.map((m, i) => `
+    <div class="mention-option${i === 0 ? ' focused' : ''}" data-idx="${i}" onclick="wrPickMention(${i})">
+      <div class="mention-avatar-sm" style="background:${m.color};">${m.initials}</div>
+      <span class="mention-name">${m.name}</span>
+    </div>`).join('');
+  dropdown.dataset.matches = JSON.stringify(matches.map(m => m.name));
+  dropdown.classList.add('open');
+}
+
+function wrMoveFocus(dir) {
+  const opts = document.querySelectorAll('#wr-mention-dropdown .mention-option');
+  if (!opts.length) return;
+  opts[wrMentionFocusIdx]?.classList.remove('focused');
+  wrMentionFocusIdx = Math.max(0, Math.min(opts.length - 1, wrMentionFocusIdx + dir));
+  opts[wrMentionFocusIdx]?.classList.add('focused');
+}
+
+function wrSelectByIndex(idx) {
+  const names = JSON.parse(document.getElementById('wr-mention-dropdown').dataset.matches || '[]');
+  if (names[idx]) wrPickMention(idx);
+}
+
+window.wrPickMention = function(idx) {
+  const names = JSON.parse(document.getElementById('wr-mention-dropdown').dataset.matches || '[]');
+  const name  = names[idx];
+  if (!name) return;
+  const ta  = document.getElementById('wr-notes');
+  const val = ta.value;
+  ta.value  = val.slice(0, wrMentionStart) + '@' + name + ' ' + val.slice(ta.selectionStart);
+  wrCloseMentionDropdown();
+  ta.focus();
+  const pos = wrMentionStart + name.length + 2;
+  ta.setSelectionRange(pos, pos);
+};
+
+function wrCloseMentionDropdown() {
+  const d = document.getElementById('wr-mention-dropdown');
+  if (d) d.classList.remove('open');
+  wrMentionQuery    = null;
+  wrMentionStart    = -1;
+  wrMentionFocusIdx = -1;
+}
 
 // ── Authentication ────────────────────────────────────────────────────────────
 // Decode the Cloudflare Access JWT cookie to get the authenticated user's email.
