@@ -1013,7 +1013,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <a id="nav-directory" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('directory')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 7l10 7 10-7"/></svg> Directory</a>
       <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review');wrMarkSeen()" style="color:var(--coral);font-weight:600;display:inline-flex;align-items:center;gap:6px;">Website Review ★<span id="badge-website-review" style="display:none;background:var(--coral);color:white;font-size:0.62rem;font-weight:700;border-radius:20px;padding:1px 7px;min-width:18px;text-align:center;"></span></a>
       <div class="board-nav-group-header">Sections</div>
-      <a href="#board-inbox" onclick="boardNavClick(event,'board-inbox')" id="inbox-nav-link" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg> Doc Inbox <span id="inbox-nav-badge" style="display:none;background:var(--coral);color:white;font-size:0.65rem;font-weight:700;padding:1px 7px;border-radius:10px;line-height:1.6;"></span></a>
+      <a href="#board-inbox" onclick="boardNavClick(event,'board-inbox');markSeen('board_inbox');inboxRender();" id="inbox-nav-link" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg> Doc Inbox <span id="inbox-nav-badge" style="display:none;background:var(--coral);color:white;font-size:0.65rem;font-weight:700;padding:1px 7px;border-radius:10px;line-height:1.6;"></span></a>
       <a href="#board-committees"  onclick="boardNavClick(event,'board-committees')">Committees</a>
       <a href="#board-finance"     onclick="boardNavClick(event,'board-finance')">Finance</a>
       <a href="#board-fundraising" onclick="boardNavClick(event,'board-fundraising')">Fundraising</a>
@@ -4164,7 +4164,9 @@ function inboxRender() {
   const badge = document.getElementById('inbox-nav-badge');
   list.querySelectorAll('.inbox-item').forEach(el => el.remove());
   if (badge) {
-    if (inboxEntries.length > 0) { badge.style.display = ''; badge.textContent = inboxEntries.length; }
+    const cutoff = lastSeen('board_inbox');
+    const unread = inboxEntries.filter(e => e.createdAt && e.createdAt.toMillis() > cutoff).length;
+    if (unread > 0) { badge.style.display = ''; badge.textContent = unread > 9 ? '9+' : unread; }
     else { badge.style.display = 'none'; }
   }
   inboxEntries.forEach(item => {
@@ -4281,6 +4283,7 @@ async function inboxSave() {
     if (sec && sub) { docData.section = sec; docData.sub = sub; }
     if (fileURL) { docData.fileURL = fileURL; docData.fileName = fileName; }
     await addDoc(targetCol, docData);
+    markSeen('board_inbox');
     document.getElementById('inbox-upload-modal-bg').classList.remove('open');
     if (sec && sub) {
       const label = DOC_SECTIONS[sec]?.label || sec;
