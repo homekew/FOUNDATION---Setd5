@@ -1857,15 +1857,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <h3 style="font-size:1rem;color:var(--teal);margin-bottom:20px;">Submit your notes</h3>
       <div style="margin-bottom:16px;">
         <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Your name</label>
-        <select id="wr-name" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;background:white;">
-          <option value="">Select your name...</option>
-          <option>Laura Biazon</option>
-          <option>Kate Carr</option>
-          <option>Samantha Cotter</option>
-          <option>Amy Kreller-Kochis</option>
-          <option>Jesiree Mendez</option>
-          <option>Taryn Mildenhall</option>
-        </select>
+        <div id="wr-name-display" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;box-sizing:border-box;font-family:inherit;background:var(--cream);color:var(--text-mid);">Detecting...</div>
       </div>
       <div style="margin-bottom:16px;">
         <label style="display:block;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:6px;">Section</label>
@@ -2398,10 +2390,11 @@ window.chatUpdatePlaceholder = chatUpdatePlaceholder;
 
 // ── Website Review (Firestore-backed, shared across all devices) ─────────────
 window.submitWebsiteReview = async function () {
-  const name    = document.getElementById('wr-name').value;
+  const name    = chatUserName;
   const section = document.getElementById('wr-section').value;
   const notes   = document.getElementById('wr-notes').value.trim();
-  if (!name || !notes) { alert('Please select your name and enter notes.'); return; }
+  if (!name) { alert('Your identity could not be verified. Please reload the page and try again.'); return; }
+  if (!notes) { alert('Please enter your notes before submitting.'); return; }
   const label = section || 'General';
   try {
     await addDoc(collection(db, 'website_reviews'), {
@@ -2420,7 +2413,6 @@ window.submitWebsiteReview = async function () {
   const mentioned = extractMentions(notes);
   if (mentioned.length) sendMentionEmails(mentioned, name, notes, 'Website Review');
 
-  document.getElementById('wr-name').value    = '';
   document.getElementById('wr-section').value = '';
   document.getElementById('wr-notes').value   = '';
   document.getElementById('wr-confirm').style.display = 'block';
@@ -2608,6 +2600,9 @@ async function showChatApp() {
   const app = document.getElementById('chat-app');
   app.style.display = 'flex';
   document.getElementById('chat-current-name').textContent = chatUserName;
+  // Auto-fill Website Review name from authenticated identity
+  const wrNameDisplay = document.getElementById('wr-name-display');
+  if (wrNameDisplay) wrNameDisplay.textContent = chatUserName;
   // Load cross-device read state before starting watchers
   await loadReadState();
   markSeen('general');
