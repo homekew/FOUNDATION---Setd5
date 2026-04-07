@@ -2790,9 +2790,7 @@ function renderMessages(snapshot) {
         <button class="chat-action-btn delete" onclick="chatDeleteMessage('${msg.id}')">Delete</button>
       </div>` : '';
 
-    const replyAuthorSafe = (author).replace(/'/g, "\\'");
-    const replyTextSafe   = (msg.text || '').slice(0, 120).replace(/'/g, "\\'").replace(/\n/g, ' ');
-    const replyBtn = `<button class="chat-reply-btn" onclick="chatSetReply('${msg.id}','${replyAuthorSafe}','${replyTextSafe}')">↩ Reply</button>`;
+    const replyBtn = `<button class="chat-reply-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 120).replace(/\n/g, ' '))}" onclick="chatSetReply(this.dataset.msgId, this.dataset.author, this.dataset.text)">↩ Reply</button>`;
     const deleteBtn = isOwn ? `<button class="chat-delete-btn" onclick="chatDeleteMessage('${msg.id}')" title="Delete message">🗑</button>` : '';
 
     const quoteHtml = msg.replyTo ? `
