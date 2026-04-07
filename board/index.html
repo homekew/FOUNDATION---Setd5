@@ -1898,40 +1898,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   </div>
 </section>
 
-<script>
-function submitWebsiteReview() {
-  const name    = document.getElementById('wr-name').value.trim();
-  const section = document.getElementById('wr-section').value;
-  const notes   = document.getElementById('wr-notes').value.trim();
-  if (!name || !notes) { alert('Please select your name and enter notes.'); return; }
-  const label = section || 'General';
-  const entry = { name, section: label, notes, date: new Date().toLocaleDateString() };
-  const stored = JSON.parse(localStorage.getItem('websiteReviewNotes') || '[]');
-  stored.push(entry);
-  localStorage.setItem('websiteReviewNotes', JSON.stringify(stored));
-  renderWebsiteReviews();
-  document.getElementById('wr-name').value = '';
-  document.getElementById('wr-section').value = '';
-  document.getElementById('wr-notes').value = '';
-  document.getElementById('wr-confirm').style.display = 'block';
-  setTimeout(() => document.getElementById('wr-confirm').style.display = 'none', 4000);
-}
-function renderWebsiteReviews() {
-  const stored = JSON.parse(localStorage.getItem('websiteReviewNotes') || '[]');
-  const list   = document.getElementById('wr-list');
-  const empty  = document.getElementById('wr-empty');
-  if (!stored.length) { empty.style.display = ''; return; }
-  empty.style.display = 'none';
-  list.innerHTML = '<p id="wr-empty" style="display:none;color:var(--text-light);font-size:0.9rem;">No notes submitted yet.</p>';
-  stored.slice().reverse().forEach(e => {
-    const div = document.createElement('div');
-    div.style.cssText = 'background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:16px 20px;';
-    div.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-size:0.8rem;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.05em;">' + e.section + '</span><span style="font-size:0.78rem;color:var(--text-light);">' + e.name + ' &bull; ' + e.date + '</span></div><p style="margin:0;font-size:0.93rem;color:var(--text-mid);line-height:1.6;">' + e.notes.replace(/\n/g,'<br>') + '</p>';
-    list.appendChild(div);
-  });
-}
-document.addEventListener('DOMContentLoaded', renderWebsiteReviews);
-</script>
+<!-- Website Review functions are in the Firebase module script below -->
 
 <section class="section section--cream board-section" id="board-inbox">
   <div class="container">
@@ -2425,6 +2392,52 @@ window.chatSwitchChannel = chatSwitchChannel;
 window.chatSend          = chatSend;
 window.chatKeyDown       = chatKeyDown;
 window.chatUpdatePlaceholder = chatUpdatePlaceholder;
+
+// ── Website Review (Firestore-backed, shared across all devices) ─────────────
+window.submitWebsiteReview = async function () {
+  const name    = document.getElementById('wr-name').value;
+  const section = document.getElementById('wr-section').value;
+  const notes   = document.getElementById('wr-notes').value.trim();
+  if (!name || !notes) { alert('Please select your name and enter notes.'); return; }
+  const label = section || 'General';
+  await addDoc(collection(db, 'website_reviews'), {
+    name,
+    section: label,
+    notes,
+    ts: serverTimestamp()
+  });
+  document.getElementById('wr-name').value    = '';
+  document.getElementById('wr-section').value = '';
+  document.getElementById('wr-notes').value   = '';
+  document.getElementById('wr-confirm').style.display = 'block';
+  setTimeout(() => document.getElementById('wr-confirm').style.display = 'none', 4000);
+};
+
+function initWebsiteReviewListener() {
+  const q = query(collection(db, 'website_reviews'), orderBy('ts', 'desc'));
+  onSnapshot(q, snap => {
+    const list  = document.getElementById('wr-list');
+    const empty = document.getElementById('wr-empty');
+    if (!list) return;
+    if (snap.empty) { empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    list.innerHTML = '<p id="wr-empty" style="display:none;color:var(--text-light);font-size:0.9rem;">No notes submitted yet.</p>';
+    snap.docs.forEach(d => {
+      const e   = d.data();
+      const date = e.ts ? new Date(e.ts.toMillis()).toLocaleDateString() : '';
+      const div  = document.createElement('div');
+      div.style.cssText = 'background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:16px 20px;';
+      div.innerHTML =
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+          '<span style="font-size:0.8rem;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.05em;">' + e.section + '</span>' +
+          '<span style="font-size:0.78rem;color:var(--text-light);">' + e.name + ' &bull; ' + date + '</span>' +
+        '</div>' +
+        '<p style="margin:0;font-size:0.93rem;color:var(--text-mid);line-height:1.6;">' + e.notes.replace(/\n/g,'<br>') + '</p>';
+      list.appendChild(div);
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded', initWebsiteReviewListener);
 
 // ── Authentication ────────────────────────────────────────────────────────────
 // Decode the Cloudflare Access JWT cookie to get the authenticated user's email.
