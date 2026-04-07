@@ -1003,7 +1003,9 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <div class="doc-search-panel" id="doc-search-panel"></div>
     </div>
     <div class="board-sidebar-links" id="board-sidebar-links">
-      <a href="#board-communications" onclick="boardNavClick(event,'board-communications')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 7l10 7 10-7"/></svg> Communications</a>
+      <a id="nav-messenger" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('messenger')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Messenger</a>
+      <a id="nav-directory" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('directory')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 7l10 7 10-7"/></svg> Directory</a>
+      <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review');wrMarkSeen()" style="color:var(--coral);font-weight:600;display:inline-flex;align-items:center;gap:6px;">Website Review ★<span id="badge-website-review" style="display:none;background:var(--coral);color:white;font-size:0.62rem;font-weight:700;border-radius:20px;padding:1px 7px;min-width:18px;text-align:center;"></span></a>
       <a href="#board-inbox" onclick="boardNavClick(event,'board-inbox')" id="inbox-nav-link" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg> Doc Inbox <span id="inbox-nav-badge" style="display:none;background:var(--coral);color:white;font-size:0.65rem;font-weight:700;padding:1px 7px;border-radius:10px;line-height:1.6;"></span></a>
       <a href="#board-committees" onclick="boardNavClick(event,'board-committees')">Committees</a>
       <a href="#tracker-section"  onclick="boardNavClick(event,'tracker-section')">Outreach Log</a>
@@ -1014,7 +1016,6 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <a href="#board-meetings"    class="bsnav-active" onclick="boardNavClick(event,'board-meetings')">Meetings</a>
       <a href="#board-networking"  onclick="boardNavClick(event,'board-networking')">Networking</a>
       <a href="#board-operations"  onclick="boardNavClick(event,'board-operations')">Operations</a>
-      <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review');wrMarkSeen()" style="color:var(--coral);font-weight:600;display:inline-flex;align-items:center;gap:6px;">Website Review ★<span id="badge-website-review" style="display:none;background:var(--coral);color:white;font-size:0.62rem;font-weight:700;border-radius:20px;padding:1px 7px;min-width:18px;text-align:center;"></span></a>
     </div>
   </nav>
   <div class="board-content">
@@ -1038,24 +1039,24 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     <div class="container">
       <div class="section-header" style="margin-bottom:24px;">
         <span class="subhead">Internal</span>
-        <h2>Communications</h2>
+        <h2 id="comm-section-heading">Messenger</h2>
         <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Reach board members by email or chat. All messages are private and visible only to authenticated members.</p>
       </div>
 
-      <!-- Tab bar -->
+      <!-- Tab bar (used as fallback if navigating directly to section) -->
       <div class="comm-tabs" role="tablist">
-        <button class="comm-tab active" id="comm-tab-directory" role="tab" aria-selected="true"  aria-controls="comm-panel-directory" onclick="commTab('directory')">
-          <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 7l8 5 8-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          Directory
-        </button>
-        <button class="comm-tab" id="comm-tab-messenger" role="tab" aria-selected="false" aria-controls="comm-panel-messenger" onclick="commTab('messenger')">
+        <button class="comm-tab active" id="comm-tab-messenger" role="tab" aria-selected="true" aria-controls="comm-panel-messenger" onclick="commTab('messenger')">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
           Messenger
+        </button>
+        <button class="comm-tab" id="comm-tab-directory" role="tab" aria-selected="false" aria-controls="comm-panel-directory" onclick="commTab('directory')">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 7l8 5 8-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Directory
         </button>
       </div>
 
       <!-- Directory tab panel -->
-      <div id="comm-panel-directory" class="comm-panel" role="tabpanel" aria-labelledby="comm-tab-directory">
+      <div id="comm-panel-directory" class="comm-panel" role="tabpanel" aria-labelledby="comm-tab-directory" style="display:none;">
       <!-- Email All Board Members -->
       <div style="margin-bottom:20px;">
         <a href="mailto:laura.biazon19@gmail.com,katecarr@mac.com,tarynmildenhall@gmail.com,kochismedical@gmail.com,scotter424@gmail.com,jesimend84@gmail.com,mandywittenberg1@gmail.com" style="display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;font-size:0.82rem;font-weight:600;padding:9px 18px;border-radius:8px;text-decoration:none;letter-spacing:0.03em;box-shadow:0 1px 4px rgba(0,0,0,0.10);">
@@ -1149,7 +1150,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       </div>
 
       <!-- Messenger tab panel -->
-      <div id="comm-panel-messenger" class="comm-panel" role="tabpanel" aria-labelledby="comm-tab-messenger" style="display:none;">
+      <div id="comm-panel-messenger" class="comm-panel" role="tabpanel" aria-labelledby="comm-tab-messenger">
       <!-- Name setup prompt (shown on first visit or when changing identity) -->
       <div id="chat-setup" style="display:none; max-width:520px; margin:0 auto 24px; background:var(--teal-light); border-radius:12px; padding:28px; border:1px solid var(--border); text-align:center;">
         <div style="font-size:2rem; margin-bottom:12px;">👋</div>
@@ -2163,8 +2164,19 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 
   function boardSetActive(sectionId) {
     document.querySelectorAll('#board-sidebar-links a').forEach(a => {
+      // Messenger and Directory both point to #board-communications — managed by commTab
+      if (a.id === 'nav-messenger' || a.id === 'nav-directory') return;
       a.classList.toggle('bsnav-active', a.getAttribute('href') === '#' + sectionId);
     });
+    // When scrolling into the communications section, keep whichever tab is active highlighted
+    if (sectionId === 'board-communications') {
+      const activeTab = document.querySelector('.comm-tab.active');
+      const which = activeTab ? activeTab.id.replace('comm-tab-', '') : 'messenger';
+      const navMessenger = document.getElementById('nav-messenger');
+      const navDirectory = document.getElementById('nav-directory');
+      if (navMessenger) navMessenger.classList.toggle('bsnav-active', which === 'messenger');
+      if (navDirectory) navDirectory.classList.toggle('bsnav-active', which === 'directory');
+    }
   }
 
   // IntersectionObserver scrollspy
@@ -2282,6 +2294,14 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       if (btn)   { btn.classList.toggle('active', active); btn.setAttribute('aria-selected', active); }
       if (panel) { panel.style.display = active ? '' : 'none'; }
     });
+    // Update sidebar nav active state
+    const navMessenger = document.getElementById('nav-messenger');
+    const navDirectory = document.getElementById('nav-directory');
+    if (navMessenger) navMessenger.classList.toggle('bsnav-active', tab === 'messenger');
+    if (navDirectory) navDirectory.classList.toggle('bsnav-active', tab === 'directory');
+    // Update section heading
+    const heading = document.getElementById('comm-section-heading');
+    if (heading) heading.textContent = tab === 'messenger' ? 'Messenger' : 'Directory';
   }
   window.commTab = commTab;
 
