@@ -998,7 +998,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <button class="board-sidebar-toggle" aria-label="Toggle sidebar">▾</button>
     </div>
     <div class="board-sidebar-search" style="position:relative;">
-      <input type="search" id="board-search-input" placeholder="Search sections &amp; documents…" oninput="boardSearch(this.value)" autocomplete="off" aria-label="Search board portal" />
+      <input type="search" id="board-search-input" placeholder="Search the Board Portal" oninput="boardSearch(this.value)" autocomplete="off" aria-label="Search board portal" />
       <button class="board-search-clear" id="board-search-clear" onclick="boardSearchClear()" aria-label="Clear search" type="button">✕</button>
       <div class="doc-search-panel" id="doc-search-panel"></div>
     </div>
@@ -4154,12 +4154,13 @@ function inboxRender() {
       : '';
     const noteTxt = item.note ? `<div style="font-size:0.82rem;color:var(--text-light);margin-top:3px;">${escapeHtml(item.note)}</div>` : '';
     const dateTxt = item.date ? `<span style="font-size:0.78rem;color:var(--text-light);">${item.date}</span>` : '';
+    const uploaderTxt = item.uploadedBy ? `<span style="font-size:0.78rem;color:var(--text-light);">Uploaded by ${escapeHtml(item.uploadedBy)}</span>` : '';
     div.innerHTML = `
       <div style="flex:1;min-width:0;">
         <div style="font-weight:600;font-size:0.93rem;color:var(--text);">${escapeHtml(item.name)}</div>
         ${noteTxt}
         ${fileLink}
-        ${dateTxt}
+        <div style="display:flex;gap:12px;margin-top:4px;flex-wrap:wrap;">${dateTxt}${uploaderTxt}</div>
       </div>
       <div style="display:flex;gap:8px;flex-shrink:0;align-items:center;margin-top:2px;">
         <button onclick="inboxFileItOpen('${item.id}')" style="font-size:0.78rem;font-weight:600;padding:5px 12px;border-radius:6px;border:none;background:var(--teal);color:white;cursor:pointer;">File It</button>
@@ -4254,7 +4255,7 @@ async function inboxSave() {
     }
     // Auto-file if section AND sub both chosen
     const targetCol = (sec && sub) ? docColRef : inboxColRef;
-    const docData = { name, note, date, createdAt: serverTimestamp() };
+    const docData = { name, note, date, uploadedBy: chatUserName || '', createdAt: serverTimestamp() };
     if (sec && sub) { docData.section = sec; docData.sub = sub; }
     if (fileURL) { docData.fileURL = fileURL; docData.fileName = fileName; }
     await addDoc(targetCol, docData);
