@@ -2596,17 +2596,20 @@ function initWebsiteReviewListener() {
             '<div style="font-size:0.75rem;color:var(--text-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escapeHtml((e.replyTo.text || '').slice(0, 120)) + '</div>' +
           '</div>'
         : '';
+      const displayName = escapeHtml(e.name || 'Board Member');
+      const isOwn = e.name && e.name === chatUserName;
       div.innerHTML =
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
           '<span style="font-size:0.8rem;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.05em;">' + e.section + '</span>' +
           '<div style="display:flex;align-items:center;gap:8px;">' +
-            '<span style="font-size:0.78rem;color:var(--text-light);">' + escapeHtml(e.name) + ' &bull; ' + date + '</span>' +
-            '<button class="wr-reply-btn" data-doc-id="' + docId + '" data-author="' + escapeHtml(e.name) + '" data-text="' + escapeHtml((e.notes || '').replace(/\n/g,' ').slice(0, 100)) + '" onclick="wrSetReply(this.dataset.docId,this.dataset.author,this.dataset.text)">Reply</button>' +
-            (e.name === chatUserName ? '<button class="wr-reply-btn" style="color:var(--text-light);border-color:transparent;" data-doc-id="' + docId + '" onclick="wrDeleteNote(this.dataset.docId)" title="Delete note">🗑</button>' : '') +
+            '<span style="font-size:0.78rem;color:var(--text-light);">' + displayName + ' &bull; ' + date + (e.edited ? ' <em style="font-size:0.7rem;">(edited)</em>' : '') + '</span>' +
+            '<button class="wr-reply-btn" data-doc-id="' + docId + '" data-author="' + escapeHtml(e.name || '') + '" data-text="' + escapeHtml((e.notes || '').replace(/\n/g,' ').slice(0, 100)) + '" onclick="wrSetReply(this.dataset.docId,this.dataset.author,this.dataset.text)">Reply</button>' +
+            (isOwn ? '<button class="wr-reply-btn" data-doc-id="' + docId + '" data-raw="' + escapeHtml(e.notes || '') + '" onclick="wrEditNote(this.dataset.docId,this.dataset.raw)" title="Edit note">✏</button>' : '') +
+            (isOwn ? '<button class="wr-reply-btn" style="color:var(--text-light);border-color:transparent;" data-doc-id="' + docId + '" onclick="wrDeleteNote(this.dataset.docId)" title="Delete note">🗑</button>' : '') +
           '</div>' +
         '</div>' +
         replyQuoteHtml +
-        '<p style="margin:0;font-size:0.93rem;color:var(--text-mid);line-height:1.6;">' + renderMentions(escapeHtml(e.notes)).replace(/\n/g,'<br>') + '</p>';
+        '<p id="wr-body-' + docId + '" style="margin:0;font-size:0.93rem;color:var(--text-mid);line-height:1.6;">' + renderMentions(escapeHtml(e.notes)).replace(/\n/g,'<br>') + '</p>';
       list.appendChild(div);
     });
   }, err => {
@@ -2641,6 +2644,57 @@ window.wrDeleteNote = async function(docId) {
     console.error('WR delete error:', err);
     alert('Could not delete the note. Error: ' + err.message);
   }
+};
+
+// ── Website Review inline edit ────────────────────────────────────────────────
+window.wrEditNote = function(docId, rawText) {
+  const noteEl = document.getElementById('wr-note-' + docId);
+  if (!noteEl) return;
+  const bodyEl = document.getElementById('wr-body-' + docId);
+  if (!bodyEl) return;
+  if (noteEl.querySelector('.wr-edit-area')) return; // already editing
+  // Stash original so Cancel can restore it
+  noteEl.dataset.origBody = bodyEl.outerHTML;
+  const ta = document.createElement('textarea');
+  ta.className = 'wr-edit-area';
+  ta.id = 'wr-edit-ta-' + docId;
+  ta.value = rawText;
+  ta.style.cssText = 'width:100%;min-height:72px;font-family:inherit;font-size:0.93rem;padding:7px 10px;border:1.5px solid var(--teal);border-radius:6px;outline:none;color:var(--text-mid);line-height:1.6;background:var(--white);resize:vertical;';
+  const btnRow = document.createElement('div');
+  btnRow.className = 'wr-edit-btns';
+  btnRow.style.cssText = 'display:flex;gap:8px;margin-top:6px;';
+  btnRow.innerHTML =
+    '<button class="wr-reply-btn" style="color:var(--white);background:var(--teal);border-color:var(--teal);" onclick="wrSaveEdit(\'' + docId + '\')">Save</button>' +
+    '<button class="wr-reply-btn" onclick="wrCancelEdit(\'' + docId + '\')">Cancel</button>';
+  bodyEl.replaceWith(ta);
+  noteEl.appendChild(btnRow);
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+};
+
+window.wrSaveEdit = async function(docId) {
+  const ta = document.getElementById('wr-edit-ta-' + docId);
+  if (!ta) return;
+  const newText = ta.value.trim();
+  if (!newText) { alert('Note cannot be empty.'); return; }
+  try {
+    await updateDoc(doc(db, 'website_reviews', docId), { notes: newText, edited: true });
+    // onSnapshot will re-render the list automatically
+  } catch (err) {
+    console.error('WR edit error:', err);
+    alert('Could not save your edit. Error: ' + err.message);
+  }
+};
+
+window.wrCancelEdit = function(docId) {
+  const noteEl = document.getElementById('wr-note-' + docId);
+  if (!noteEl) return;
+  const ta   = noteEl.querySelector('.wr-edit-area');
+  const btns = noteEl.querySelector('.wr-edit-btns');
+  const orig = noteEl.dataset.origBody;
+  if (ta && orig) { ta.insertAdjacentHTML('beforebegin', orig); ta.remove(); }
+  if (btns) btns.remove();
+  delete noteEl.dataset.origBody;
 };
 
 // ── Website Review @mention system ───────────────────────────────────────────
