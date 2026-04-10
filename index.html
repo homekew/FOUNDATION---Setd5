@@ -1586,6 +1586,7 @@ footer {
             <li><a href="#" onclick="showPage('donate')" data-page="donate">Donate</a></li>
             <li><a href="#" onclick="showPage('fundraising')" data-page="fundraising">Fundraising</a></li>
             <li><a href="#" onclick="showPage('volunteer')" data-page="volunteer">Volunteer</a></li>
+            <li><a href="#" onclick="showPage('newsletter')" data-page="newsletter">Stay Updated</a></li>
           </ul>
         </li>
         <li><a href="#" onclick="showPage('donate')" data-page="donate" class="nav-donate">Donate</a></li>
@@ -1766,7 +1767,7 @@ footer {
     <div class="container--narrow text-center">
       <span class="subhead">Stay Connected</span>
       <h2>Join Our Community</h2>
-      <p>Get research updates, family resources, and foundation news delivered directly to your inbox. No spam, just meaningful updates.</p>
+      <p>Get research updates, family stories, advocacy news, and foundation announcements delivered to your inbox once a month.</p>
       <div class="newsletter-form" id="home-subscribe-form">
         <input type="email" id="home-subscribe-email" placeholder="Your email address" autocomplete="email">
         <button type="button" onclick="subscribeEmail('home-subscribe-email','home-subscribe-form','home-subscribe-success')">Subscribe</button>
@@ -1775,7 +1776,7 @@ footer {
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="white" fill-opacity="0.25"/><path d="M6 10l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         You're on the list! We'll be in touch.
       </div>
-      <p style="font-size:0.8rem; color:var(--text-light); margin-top:12px;">We respect your privacy. Unsubscribe anytime.</p>
+      <p style="font-size:0.8rem; color:var(--text-light); margin-top:12px;">We respect your privacy. Unsubscribe anytime. &nbsp;·&nbsp; <a href="#" onclick="showPage('newsletter'); return false;" style="color:var(--text-light); text-decoration:underline;">Learn what's in each issue →</a></p>
     </div>
   </section>
 
@@ -3130,6 +3131,115 @@ footer {
   </section>
 
 </div><!-- /volunteer -->
+
+
+<!-- ========================================================
+     PAGE: STAY UPDATED / NEWSLETTER
+======================================================== -->
+<div id="newsletter" class="page">
+
+  <div class="page-banner">
+    <div class="container">
+      <span class="subhead">Get Involved</span>
+      <h1>Stay Updated</h1>
+      <p>Sign up to receive our monthly newsletter and stay connected to the work, the families, and the science that drives us forward.</p>
+    </div>
+    <span class="helix-accent" aria-hidden="true"></span>
+  </div>
+
+  <section class="section section--white">
+    <div class="container">
+      <div class="grid-2" style="gap:64px; align-items:start;">
+
+        <!-- Left: What to expect -->
+        <div>
+          <span class="subhead">What to Expect</span>
+          <h2 style="margin-bottom:24px;">Your Monthly Connection to the Foundation</h2>
+          <p style="color:var(--text-mid); line-height:1.75; margin-bottom:32px;">Every month we send one thoughtful email to our community — no clutter, no spam. Here's what you'll find inside each issue:</p>
+
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div style="display:flex; gap:16px; align-items:flex-start;">
+              <div style="flex-shrink:0; width:40px; height:40px; background:rgba(47,83,97,0.10); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2z" stroke="var(--teal)" stroke-width="1.8"/><path d="M7 10l2 2 4-4" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <h4 style="margin:0 0 4px; font-size:1rem; color:var(--teal);">Research Updates</h4>
+                <p style="margin:0; color:var(--text-mid); font-size:0.95rem; line-height:1.65;">The latest news from the scientific community — studies, publications, and developments related to SETD5 Syndrome, explained in plain language.</p>
+              </div>
+            </div>
+            <div style="display:flex; gap:16px; align-items:flex-start;">
+              <div style="flex-shrink:0; width:40px; height:40px; background:rgba(47,83,97,0.10); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="var(--teal)" stroke-width="1.8"/><path d="M4 17c0-3 2.7-5 6-5s6 2 6 5" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </div>
+              <div>
+                <h4 style="margin:0 0 4px; font-size:1rem; color:var(--teal);">Family Stories</h4>
+                <p style="margin:0; color:var(--text-mid); font-size:0.95rem; line-height:1.65;">Voices from our global community — families sharing their experiences, milestones, and the moments that remind us why this work matters.</p>
+              </div>
+            </div>
+            <div style="display:flex; gap:16px; align-items:flex-start;">
+              <div style="flex-shrink:0; width:40px; height:40px; background:rgba(47,83,97,0.10); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10h14M10 3l7 7-7 7" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <h4 style="margin:0 0 4px; font-size:1rem; color:var(--teal);">Advocacy &amp; Policy News</h4>
+                <p style="margin:0; color:var(--text-mid); font-size:0.95rem; line-height:1.65;">Updates on rare disease advocacy efforts, policy developments, and how the Foundation is working to amplify the voices of our community.</p>
+              </div>
+            </div>
+            <div style="display:flex; gap:16px; align-items:flex-start;">
+              <div style="flex-shrink:0; width:40px; height:40px; background:rgba(47,83,97,0.10); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="var(--teal)" stroke-width="1.8"/><path d="M7 2v4M13 2v4M3 9h14" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </div>
+              <div>
+                <h4 style="margin:0 0 4px; font-size:1rem; color:var(--teal);">Upcoming Events &amp; Programs</h4>
+                <p style="margin:0; color:var(--text-mid); font-size:0.95rem; line-height:1.65;">Conferences, webinars, fundraisers, and community gatherings — so you never miss an opportunity to connect or get involved.</p>
+              </div>
+            </div>
+            <div style="display:flex; gap:16px; align-items:flex-start;">
+              <div style="flex-shrink:0; width:40px; height:40px; background:rgba(47,83,97,0.10); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2 5h5l-4 3 1.5 5L10 12l-4.5 3L7 10 3 7h5l2-5z" stroke="var(--teal)" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <h4 style="margin:0 0 4px; font-size:1rem; color:var(--teal);">Foundation News</h4>
+                <p style="margin:0; color:var(--text-mid); font-size:0.95rem; line-height:1.65;">Announcements from our team — new partnerships, grant awards, board updates, and milestones as we grow the Foundation together.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Sign up form -->
+        <div style="background:var(--gold-light); border:2px solid var(--coral); border-radius:16px; padding:40px 36px; position:sticky; top:100px;">
+          <span class="subhead">Sign Up</span>
+          <h2 style="font-size:1.8rem; margin-bottom:12px;">Get the Monthly Newsletter</h2>
+          <p style="color:var(--text-mid); font-size:0.95rem; line-height:1.65; margin-bottom:28px;">Join families, clinicians, researchers, and supporters from around the world who receive our monthly update.</p>
+
+          <div id="newsletter-page-form" style="display:flex; flex-direction:column; gap:14px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <input type="text" placeholder="First Name" style="padding:12px 16px; border:1.5px solid rgba(47,83,97,0.25); border-radius:8px; font-size:0.95rem; font-family:inherit; background:white; color:var(--text-dark); outline:none;">
+              <input type="text" placeholder="Last Name" style="padding:12px 16px; border:1.5px solid rgba(47,83,97,0.25); border-radius:8px; font-size:0.95rem; font-family:inherit; background:white; color:var(--text-dark); outline:none;">
+            </div>
+            <input type="email" id="newsletter-page-email" placeholder="Email Address" style="padding:12px 16px; border:1.5px solid rgba(47,83,97,0.25); border-radius:8px; font-size:0.95rem; font-family:inherit; background:white; color:var(--text-dark); outline:none;">
+            <select style="padding:12px 16px; border:1.5px solid rgba(47,83,97,0.25); border-radius:8px; font-size:0.95rem; font-family:inherit; background:white; color:var(--text-mid); outline:none;">
+              <option value="" disabled selected>I am a... (optional)</option>
+              <option>Parent / Caregiver</option>
+              <option>Individual with SETD5 Syndrome</option>
+              <option>Clinician or Researcher</option>
+              <option>Supporter / Donor</option>
+              <option>Other</option>
+            </select>
+            <button type="button" onclick="subscribeEmail('newsletter-page-email','newsletter-page-form','newsletter-page-success')" class="btn btn-primary" style="width:100%; padding:14px; font-size:1rem;">Subscribe to the Newsletter</button>
+          </div>
+          <div class="newsletter-success" id="newsletter-page-success">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="white" fill-opacity="0.25"/><path d="M6 10l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            You're on the list! We'll be in touch.
+          </div>
+          <p style="font-size:0.78rem; color:var(--text-light); margin-top:14px; text-align:center;">We respect your privacy. Unsubscribe anytime.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div><!-- /newsletter -->
 
 
 <!-- ========================================================
