@@ -25,6 +25,8 @@ nav-color-wash.html
 *.docx
 *.pptx
 slack-onboarding.pdf
+BYLAWS*.pdf
+*bylaws*.pdf
 
 # Internal reference documents — store in iCloud, not the repo
 _archive/
