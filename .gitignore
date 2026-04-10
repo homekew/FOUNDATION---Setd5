@@ -32,6 +32,9 @@ BYLAWS*.pdf
 _archive/
 *Tech_Reference*
 *Style_Guide*
+*Style-Guide*
+*Website-Guide*
+SETD5 Syndrome Foundation*.pdf
 
 # Internal analysis documents
 Cournoyer_Study_Board_Analysis.html
@@ -39,8 +42,11 @@ Research/
 
 # Board governance — internal strategy, communications, and legal docs
 board/governance/
+board/*.pdf
+board/Board_Portal_Guide.html
 
 # Internal foundation documents
+Foundation/
 treasurer-role.pdf
 setd5-foundation-roadmap.html
 trifold-brochure.html
