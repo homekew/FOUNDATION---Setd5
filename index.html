@@ -617,6 +617,92 @@ strong { color: var(--text); }
   transition: background 0.2s;
 }
 .newsletter-form button:hover { background: var(--teal-dark); }
+.newsletter-success {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--teal);
+  color: var(--white);
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 24px auto 0;
+  max-width: 480px;
+}
+.newsletter-success svg { flex-shrink: 0; }
+
+/* ===== FOOTER SUBSCRIBE ===== */
+.footer-subscribe {
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  padding: 32px 0;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.footer-subscribe-text .label {
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: block;
+  margin-bottom: 4px;
+}
+.footer-subscribe-text .hint {
+  color: rgba(255,255,255,0.50);
+  font-size: 0.80rem;
+}
+.footer-subscribe-form {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  max-width: 400px;
+}
+.footer-subscribe-form input {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid rgba(255,255,255,0.20);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+  color: var(--white);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.footer-subscribe-form input::placeholder { color: rgba(255,255,255,0.40); }
+.footer-subscribe-form input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(216,171,103,0.18); }
+.footer-subscribe-form button {
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.footer-subscribe-form button:hover { background: #c49650; }
+.footer-subscribe-success {
+  display: none;
+  color: var(--gold);
+  font-size: 0.90rem;
+  font-weight: 600;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+@media (max-width: 640px) {
+  .footer-subscribe { flex-direction: column; align-items: flex-start; }
+  .footer-subscribe-form { max-width: 100%; width: 100%; }
+}
 
 /* ===== PAGE BANNER ===== */
 .page-banner {
@@ -1299,7 +1385,7 @@ footer {
   .nav-dropdown-menu { position: static; box-shadow: none; border: none; background: var(--teal-light); margin: 4px 0 4px; border-radius: 6px; min-width: unset; width: 100%; }
   .nav-dropdown-menu a { padding: 10px 16px !important; font-size: 0.9rem !important; }
   .nav-dropdown-trigger { flex: 1; }
-  .nav-caret-btn { padding: 4px 8px; font-size: 0.8rem; }
+  .nav-caret-btn { padding: 12px 8px; font-size: 1rem; font-weight: 500; }
   /* Donate button: reset pill style inside mobile menu, show as coral text link */
   .nav-links.open .nav-donate { background: transparent !important; color: var(--coral) !important; font-weight: 600 !important; padding: 12px 8px !important; border-radius: 0 !important; }
   .nav-links.open .nav-donate:hover { background: var(--teal-light) !important; color: var(--coral) !important; }
@@ -1528,6 +1614,7 @@ footer {
           <div class="hero-actions">
             <a href="#" class="btn btn-primary btn-lg" onclick="showPage('donate')">Donate Now</a>
             <a href="#" class="btn btn-secondary btn-lg" onclick="showPage('about')">Learn About SETD5 Syndrome</a>
+            <a href="#" class="btn btn-lg" style="background:transparent; color:var(--white); border:2px solid rgba(255,255,255,0.50); letter-spacing:0.02em;" onmouseover="this.style.borderColor='rgba(255,255,255,0.9)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.50)'" onclick="scrollToNewsletter(); return false;">Get Updates</a>
           </div>
         </div>
         <div class="hero-card">
@@ -1675,14 +1762,18 @@ footer {
   </section>
 
   <!-- Newsletter -->
-  <section class="section section--gold-light">
+  <section class="section section--gold-light" id="newsletter-section">
     <div class="container--narrow text-center">
       <span class="subhead">Stay Connected</span>
       <h2>Join Our Community</h2>
       <p>Get research updates, family resources, and foundation news delivered directly to your inbox. No spam, just meaningful updates.</p>
-      <div class="newsletter-form">
-        <input type="email" placeholder="Your email address">
-        <button type="button">Subscribe</button>
+      <div class="newsletter-form" id="home-subscribe-form">
+        <input type="email" id="home-subscribe-email" placeholder="Your email address" autocomplete="email">
+        <button type="button" onclick="subscribeEmail('home-subscribe-email','home-subscribe-form','home-subscribe-success')">Subscribe</button>
+      </div>
+      <div class="newsletter-success" id="home-subscribe-success">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="white" fill-opacity="0.25"/><path d="M6 10l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        You're on the list! We'll be in touch.
       </div>
       <p style="font-size:0.8rem; color:var(--text-light); margin-top:12px;">We respect your privacy. Unsubscribe anytime.</p>
     </div>
@@ -2164,6 +2255,7 @@ footer {
       <h2>Help Us Fund the First Breakthrough</h2>
       <p>We are building toward our first round of research grants. Your gift today is what makes that possible.</p>
       <a href="#" class="btn btn-secondary btn-lg" onclick="showPage('donate')">Donate to Research</a>
+      <a href="#" class="btn btn-outline btn-lg" style="margin-left:12px;" onclick="showPage('home'); setTimeout(scrollToNewsletter,200); return false;">Get Research Updates</a>
     </div>
   </section>
 
@@ -3216,6 +3308,22 @@ footer {
         </ul>
       </div>
     </div>
+    <!-- Subscribe strip -->
+    <div class="footer-subscribe">
+      <div class="footer-subscribe-text">
+        <span class="label">Get foundation updates</span>
+        <span class="hint">Research news, family resources, and announcements — no spam.</span>
+      </div>
+      <div class="footer-subscribe-form" id="footer-subscribe-form">
+        <input type="email" id="footer-subscribe-email" placeholder="Your email address" autocomplete="email">
+        <button type="button" onclick="subscribeEmail('footer-subscribe-email','footer-subscribe-form','footer-subscribe-success')">Subscribe</button>
+      </div>
+      <div class="footer-subscribe-success" id="footer-subscribe-success">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="currentColor" fill-opacity="0.2"/><path d="M6 10l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        You're on the list!
+      </div>
+    </div>
+
     <div class="footer-bottom">
       <p>&copy; 2026 SETD5 Syndrome Foundation. All rights reserved. 501(c)(3) nonprofit · EIN: [Your EIN]</p>
       <div style="display:flex; gap:20px;">
@@ -3230,6 +3338,39 @@ footer {
 
 <!-- ===== JAVASCRIPT ===== -->
 <script>
+  // ===== SUBSCRIBE =====
+  function subscribeEmail(inputId, formId, successId) {
+    var input = document.getElementById(inputId);
+    var email = input ? input.value.trim() : '';
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      if (input) {
+        input.style.borderColor = 'var(--coral)';
+        input.focus();
+        setTimeout(function() { input.style.borderColor = ''; }, 2000);
+      }
+      return;
+    }
+    // Hide form, show success
+    var form = document.getElementById(formId);
+    var success = document.getElementById(successId);
+    if (form) form.style.display = 'none';
+    if (success) success.style.display = 'flex';
+    // TODO: Replace with your email service endpoint (Mailchimp, ConvertKit, etc.)
+    // Example: fetch('/subscribe', { method:'POST', body: JSON.stringify({email}) })
+    console.log('Subscribe:', email);
+  }
+
+  function scrollToNewsletter() {
+    var el = document.getElementById('newsletter-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(function() {
+        var inp = document.getElementById('home-subscribe-email');
+        if (inp) inp.focus();
+      }, 600);
+    }
+  }
+
   // Page routing
   function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));

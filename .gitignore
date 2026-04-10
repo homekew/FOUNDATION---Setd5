@@ -33,3 +33,27 @@ _archive/
 
 # Internal analysis documents
 Cournoyer_Study_Board_Analysis.html
+Research/
+
+# Board governance — internal strategy, communications, and legal docs
+board/governance/
+
+# Internal foundation documents
+treasurer-role.pdf
+setd5-foundation-roadmap.html
+trifold-brochure.html
+graphic-design-prompts.html
+"Graphic Design Prompts*"
+Graphic Design Prompts*
+
+# Internal scripts and logs
+claude-time-log.md
+update-time-log.py
+
+# Media kit — headshots contain personal information
+Media kit/Headshots/
+# Full media kit not needed in public repo
+Media kit/
+
+# Logo variants
+logo_white-helix*.png
