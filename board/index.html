@@ -2869,7 +2869,7 @@ function chatShowRefile(btn) {
     </select>
     <button class="chat-refile-save" onclick="chatSaveRefile('${msgId}')">Save</button>
     <button class="chat-refile-cancel" onclick="this.closest('.chat-refile-panel').remove()">Cancel</button>`;
-  row.appendChild(panel);
+  row.insertAdjacentElement('afterend', panel);
 }
 window.chatShowRefile = chatShowRefile;
 
@@ -2881,7 +2881,7 @@ async function chatSaveRefile(msgId) {
   const newType = typeEl.value;
   try {
     await updateDoc(doc(db, 'board_messages', msgId), { tags: [newTag], msgType: newType });
-    document.querySelector(`.chat-refile-panel[data-msg-id="${msgId}"]`)?.remove();
+    document.querySelectorAll(`.chat-refile-panel[data-msg-id="${msgId}"]`).forEach(p => p.remove());
   } catch (err) {
     console.error('Refile error:', err);
     alert('Could not save — please try again.');
