@@ -1301,7 +1301,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <div class="chat-channel-btn"        data-tag="general"      onclick="chatSetTag('general')"><span class="ch-label"># General</span></div>
             <div class="chat-channel-btn"        data-tag="announcements" onclick="chatSetTag('announcements')"><span class="ch-label">📣 Announcements</span></div>
             <div class="chat-channel-btn"        data-tag="fundraising"  onclick="chatSetTag('fundraising')"><span class="ch-label"># Fundraising</span></div>
-            <div class="chat-channel-btn"        data-tag="outreach"     onclick="chatSetTag('outreach')"><span class="ch-label"># Outreach</span></div>
+            <div class="chat-channel-btn"        data-tag="outreach"     onclick="chatSetTag('outreach')"><span class="ch-label"># Community Outreach</span></div>
             <div class="chat-channel-btn"        data-tag="research"     onclick="chatSetTag('research')"><span class="ch-label"># Research &amp; Partnerships</span></div>
             <div class="chat-channel-btn"        data-tag="meetings"     onclick="chatSetTag('meetings')"><span class="ch-label"># Meetings</span></div>
             <div class="chat-channel-btn"        data-tag="admin"        onclick="chatSetTag('admin')"><span class="ch-label"># Admin</span></div>
@@ -1367,7 +1367,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                     <option value="meetings">Meetings</option>
                     <option value="website">Website</option>
                     <option value="research">Research &amp; Partnerships</option>
-                    <option value="outreach">Outreach</option>
+                    <option value="outreach">Community Outreach</option>
                     <option value="fundraising">Fundraising</option>
                     <option value="announcements">Announcements</option>
                     <option value="site-updates">Site Updates</option>
@@ -2634,8 +2634,8 @@ const TAG_DESCRIPTIONS = {
   general:       'Use when something genuinely spans multiple areas and the main home is not obvious',
   announcements: 'Official updates from leadership',
   fundraising:   'Fundraising strategy, campaigns, and donor relationships',
-  outreach:      'Families, parent groups, family engagement, awareness-building, and community connection',
-  research:      'Researchers, studies, registries, natural history work, scientific opportunities, and conversations with rare disease organizations or external partners',
+  outreach:      'Families, parent groups, family engagement, awareness-building, community connection, welcoming new families, and outreach directed toward families or the broader public',
+  research:      'Researchers, studies, registries, natural history work, scientific opportunities, and conversations with rare disease organizations or external partners related to research, advocacy, collaboration, or learning from their model',
   meetings:      'Agendas, minutes, and follow-ups from board meetings',
   admin:         'Administrative logistics, scheduling, and operations',
   website:       'Website content, feedback, and update requests',
@@ -2758,8 +2758,8 @@ const TAG_COMPOSE_HINTS = {
   general:      'Use when something genuinely spans multiple areas and the main home is not obvious. When in doubt, post here.',
   announcements:'News or updates for the whole board.',
   fundraising:  'Campaigns, donors, grants, and fundraising strategy.',
-  outreach:     'Families, parent groups, awareness-building, and outreach directed toward families or the broader public.',
-  research:     'Researchers, studies, registries, natural history work, scientific opportunities, and conversations with rare disease organizations or external partners about research, advocacy, collaboration, or learning from their model.',
+  outreach:     'Families, parent groups, family engagement, awareness-building, community connection, welcoming new families, and outreach directed toward families or the broader public.',
+  research:     'Researchers, studies, registries, natural history work, scientific opportunities, and conversations with rare disease organizations or external partners related to research, advocacy, collaboration, or learning from their model.',
   meetings:     'Agendas, minutes, decisions, and follow-ups from board meetings.',
   admin:        'Scheduling, logistics, and internal coordination.',
   website:      'Website content, feedback, and update requests.',
@@ -3379,7 +3379,7 @@ function chatSetTag(tag) {
 
   // Update header label + description
   const labelMap = { all:'All Messages', general:'General', announcements:'Announcements',
-    fundraising:'Fundraising', outreach:'Outreach', research:'Research & Partnerships', meetings:'Meetings',
+    fundraising:'Fundraising', outreach:'Community Outreach', research:'Research & Partnerships', meetings:'Meetings',
     admin:'Admin', website:'Website', 'site-updates':'Site Updates' };
   document.getElementById('chat-channel-label').textContent = labelMap[tag] || tag;
   const descEl = document.getElementById('chat-channel-desc');
