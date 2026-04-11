@@ -2467,9 +2467,8 @@ function chatToggleUrgent() {
 }
 window.chatToggleUrgent = chatToggleUrgent;
 
-// ── SMS via TextBelt ──────────────────────────────────────────────────────────
-// Free tier: 1 text/day with key 'textbelt'. For more: textbelt.com ($1/100 texts)
-const TEXTBELT_KEY = 'textbelt';
+// ── SMS via Twilio Function ───────────────────────────────────────────────────
+const TWILIO_FUNCTION_URL = 'https://send-sms-5475.twil.io/send';
 
 async function sendUrgentSMS(senderName, messageText, channel, mentionedNames = []) {
   console.log('🚨 sendUrgentSMS called:', { senderName, channel, mentionedNames });
@@ -2488,20 +2487,19 @@ async function sendUrgentSMS(senderName, messageText, channel, mentionedNames = 
   for (const member of toText) {
     console.log(`📤 Texting ${member.name} at ${member.sms}...`);
     try {
-      const res = await fetch('https://textbelt.com/text', {
+      const res = await fetch(TWILIO_FUNCTION_URL, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          phone:   member.sms,
-          message: `URGENT from ${senderName} in #${channel}: ${messageText} — setd5syndrome.org/board/`,
-          key:     TEXTBELT_KEY
+          to:      member.sms,
+          message: `URGENT from ${senderName} in #${channel}: ${messageText} — setd5syndrome.org/board/`
         })
       });
       const data = await res.json();
       if (data.success) {
-        console.log(`✅ Text sent to ${member.name} — quota remaining: ${data.quotaRemaining}`);
+        console.log(`✅ Text sent to ${member.name} — SID: ${data.sid}`);
       } else {
-        console.error(`❌ TextBelt error for ${member.name}:`, data.error);
+        console.error(`❌ Twilio error for ${member.name}:`, data.error);
       }
     } catch (err) {
       console.error(`❌ SMS fetch failed for ${member.name}:`, err);
