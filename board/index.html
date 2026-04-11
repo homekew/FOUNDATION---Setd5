@@ -3428,7 +3428,9 @@ function chatSubscribe(tag) {
     document.getElementById('chat-status').textContent = '5 members · live';
   }, err => {
     console.error('Firestore error:', err);
-    document.getElementById('chat-status').textContent = 'Connection error';
+    document.getElementById('chat-status').textContent = 'Connection error — retrying…';
+    // Listener dies on error — resubscribe after a short delay
+    setTimeout(() => chatSubscribe(currentTag), 3000);
   });
 }
 
