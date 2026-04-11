@@ -2468,27 +2468,46 @@ function chatToggleUrgent() {
 window.chatToggleUrgent = chatToggleUrgent;
 
 async function sendUrgentSMS(senderName, messageText, channel, mentionedNames = []) {
+  console.log('🚨 sendUrgentSMS called:', { senderName, channel, mentionedNames, messageText });
+
   // Text any @mentioned board members with SMS on file
+  // Case-insensitive match in case name capitalisation differs
+  const mentionedLower = mentionedNames.map(n => n.toLowerCase());
   const toText = BOARD_MEMBERS.filter(m =>
-    m.sms &&
-    mentionedNames.includes(m.name)
+    m.sms && mentionedLower.includes(m.name.toLowerCase())
   );
-  if (!toText.length) return;
+  console.log('📱 SMS recipients resolved:', toText.map(m => `${m.name} → ${m.sms}`));
+
+  if (!toText.length) {
+    console.warn('⚠️ No SMS recipients found. mentionedNames:', mentionedNames,
+      '| Members with SMS:', BOARD_MEMBERS.filter(m => m.sms).map(m => m.name));
+    return;
+  }
+
   let ejs;
-  try { ejs = await getEmailJS(); } catch (e) { console.error('EmailJS load failed for SMS:', e); return; }
+  try {
+    ejs = await getEmailJS();
+    console.log('✅ EmailJS loaded for SMS');
+  } catch (e) {
+    console.error('❌ EmailJS load failed for SMS:', e);
+    return;
+  }
+
   for (const member of toText) {
+    const params = {
+      email:      member.sms,
+      to_name:    member.name,
+      from_name:  senderName,
+      channel:    channel,
+      message:    `URGENT from ${senderName} in #${channel}: ${messageText}`,
+      portal_url: 'https://setd5syndrome.org/board/'
+    };
+    console.log(`📤 Sending SMS to ${member.name} (${member.sms}) with params:`, params);
     try {
-      await ejs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        email:      member.sms,
-        to_name:    member.name,
-        from_name:  senderName,
-        channel:    channel,
-        message:    `🚨 URGENT from ${senderName} in #${channel}: ${messageText}`,
-        portal_url: 'https://setd5syndrome.org/board/'
-      });
-      console.log(`✅ Urgent SMS sent to ${member.name} via ${member.sms}`);
+      const result = await ejs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+      console.log(`✅ Urgent SMS sent to ${member.name} via ${member.sms} — status:`, result?.status, result?.text);
     } catch (err) {
-      console.error(`❌ Urgent SMS to ${member.name} failed:`, err.message);
+      console.error(`❌ Urgent SMS to ${member.name} failed:`, err);
     }
   }
 }
@@ -3444,7 +3463,8 @@ async function chatSend() {
     const mentioned = sendText ? extractMentions(sendText) : [];
     if (mentioned.length) sendMentionEmails(mentioned, chatUserName, sendText, currentChannel);
 
-    // Send SMS alerts if urgent — always to Kate, plus any @mentioned members
+    // Send SMS alerts if urgent
+    console.log('📨 chatSend — sendUrgent:', sendUrgent, '| mentioned:', mentioned.map(m => m.name));
     if (sendUrgent) sendUrgentSMS(chatUserName, sendText, currentChannel, mentioned.map(m => m.name));
     // Send email notification to the person being replied to (if not already mentioned and not self)
     if (replyingTo && replyingTo.author && replyingTo.author !== chatUserName) {
