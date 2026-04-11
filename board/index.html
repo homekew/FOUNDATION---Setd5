@@ -1401,7 +1401,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                 </div>
                 <!-- Always-visible hints: tag description + type description -->
                 <div id="tag-hint" class="compose-type-hint" style="color:var(--teal);"></div>
-                <div id="classify-hint" class="compose-type-hint">Use for thoughts, suggestions, or early discussion — no action required.</div>
+                <div id="classify-hint" class="compose-type-hint">Use for thoughts, suggestions, or early discussion — no action required yet.</div>
                 <div id="compose-general-nudge" class="compose-tag-subhint" style="display:none;">New messages post to General unless you choose a different topic above.</div>
               </div>
               <!-- Action item extended fields (shown only when type = action) -->
@@ -2675,8 +2675,8 @@ const MSG_TYPE_LABELS = {
 };
 const MSG_TYPE_HINTS = {
   idea:     'Use for thoughts, suggestions, or early discussion — no action required.',
-  decision: 'Use when the board needs to choose or give direction.',
-  action:   'Use only when there is a clear next step and a clear owner.',
+  decision: 'The board hasn\'t decided yet — use when you need input, a vote, or a clear direction from the group.',
+  action:   'The decision is already made — use when there\'s a specific task, a clear owner, and a next step.',
   update:   'Use for progress, status updates, or completed work.',
 };
 const MSG_TYPE_CLASSES = {
