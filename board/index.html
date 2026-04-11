@@ -3568,6 +3568,15 @@ function chatSetTag(tag) {
     pill.classList.toggle('active', pill.dataset.filter === 'all');
   });
 
+  // Pre-fill compose topic dropdown to match the current topic (skip for 'all')
+  const composeTagEl = document.getElementById('compose-tag');
+  if (composeTagEl && tag !== 'all') {
+    // Only set if the option exists in the dropdown
+    const optionExists = Array.from(composeTagEl.options).some(o => o.value === tag);
+    if (optionExists) composeTagEl.value = tag;
+    chatTagChange();
+  }
+
   // Clear messages and resubscribe
   document.getElementById('chat-messages').innerHTML = '<div class="chat-loading">Loading…</div>';
   chatSubscribe(tag);
