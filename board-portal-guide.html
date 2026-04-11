@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Board Portal Guide · SETD5 Syndrome Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;450;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.68;
+  font-size: 16px;
+  word-spacing: 0.04em;
+}
+
+:root {
+  --teal:        #2F5361;
+  --teal-dark:   #1e3a45;
+  --teal-light:  #d5ddde;
+  --coral:       #c96a38;
+  --coral-light: #eeebe7;
+  --gold:        #D8AB67;
+  --gold-light:  #F2F2F0;
+  --white:       #ffffff;
+  --cream:       #F7F3EE;
+  --text:        #1A3340;
+  --text-mid:    #4a6b78;
+  --text-light:  #7a9bab;
+  --border:      #dde8ec;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.05);
+  --shadow-md:   0 2px 6px rgba(0,0,0,0.06), 0 6px 20px rgba(0,0,0,0.07);
+  --shadow-lg:   0 4px 12px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.09);
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 600;
+  color: var(--teal);
+  line-height: 1.2;
+}
+h2 { font-size: 1.65rem; margin-bottom: 16px; }
+h3 { font-size: 1.1rem; line-height: 1.35; margin-top: 32px; margin-bottom: 10px; color: var(--teal); }
+h3:first-of-type { margin-top: 0; }
+p { color: var(--text-mid); margin-bottom: 1.3rem; font-size: 0.95rem; }
+p:last-child { margin-bottom: 0; }
+a { color: var(--teal); text-decoration: none; }
+a:hover { color: var(--coral); }
+strong { color: var(--text); font-weight: 600; }
+
+.subhead {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  color: var(--coral);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* ── Banner ── */
+.page-banner {
+  background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
+  padding: 48px 0 52px;
+  border-bottom: 4px solid var(--gold);
+  position: relative;
+  overflow: hidden;
+}
+.page-banner .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+.page-banner .subhead { color: var(--gold); }
+.page-banner h1 { color: var(--white); font-size: 2.4rem; line-height: 1.15; margin-bottom: 12px; }
+.page-banner p { color: rgba(255,255,255,0.80); font-size: 1rem; max-width: 520px; margin-bottom: 0; }
+
+/* ── Layout ── */
+.guide-body {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 32px;
+  gap: 40px;
+  align-items: flex-start;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+
+/* ── TOC sidebar ── */
+.guide-toc {
+  width: 210px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 28px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 16px;
+  box-shadow: var(--shadow-sm);
+}
+.guide-toc .toc-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 14px;
+}
+.guide-toc a {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  padding: 4px 8px;
+  border-left: 2px solid transparent;
+  border-radius: 0 4px 4px 0;
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+.guide-toc a:hover { color: var(--teal); border-left-color: var(--teal); background: var(--gold-light); }
+.guide-toc a.toc-sub { padding-left: 18px; font-size: 0.78rem; color: var(--text-light); }
+.guide-toc a.toc-sub:hover { color: var(--teal); }
+.toc-divider { height: 1px; background: var(--border); margin: 10px 0; }
+
+/* ── Content ── */
+.guide-content { flex: 1; min-width: 0; }
+
+.guide-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 36px 40px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.section-rule {
+  height: 1px;
+  background: var(--border);
+  margin: 28px 0;
+}
+
+/* ── Type cards ── */
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+  gap: 12px;
+  margin: 16px 0 20px;
+}
+.type-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  background: var(--cream);
+}
+.type-card .type-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 7px;
+}
+.type-card p { font-size: 0.83rem; margin-bottom: 0; }
+.type-card.idea   .type-label { color: var(--teal); }
+.type-card.dec    .type-label { color: #a07820; }
+.type-card.action .type-label { color: #2f7a4a; }
+.type-card.update .type-label { color: var(--coral); }
+
+/* ── Topic pills ── */
+.topic-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 20px;
+}
+.topic-pill {
+  display: inline-block;
+  background: var(--cream);
+  border: 1px solid var(--teal-light);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--teal);
+}
+
+/* ── Flag labels ── */
+.flag-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 14px 0 20px;
+}
+.flag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.flag-badge.reply  { background: #f0f5ff; color: #3b5bdb; border: 1px solid #91a7ff; }
+.flag-badge.urgent { background: #fdf6ec; color: #a07820; border: 1px solid #c8a96e; }
+
+/* ── Numbered steps ── */
+.steps { margin: 16px 0 20px; }
+.step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.step-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+.step p { margin-bottom: 0; font-size: 0.93rem; }
+
+/* ── Callouts ── */
+.callout {
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 18px 0;
+  font-size: 0.88rem;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.callout-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.callout p { margin-bottom: 0; font-size: 0.88rem; }
+.callout.warning { background: #fffbeb; border: 1px solid var(--gold); color: #7a5c00; }
+.callout.warning p { color: #7a5c00; }
+.callout.info    { background: #f0f5ff; border: 1px solid #91a7ff; color: #2c3e8c; }
+.callout.info p  { color: #2c3e8c; }
+.callout.caution { background: #fff4f0; border: 1px solid #f0a080; color: #7a2e10; }
+.callout.caution p { color: #7a2e10; }
+.callout.rule    { background: var(--teal-light); border: 1px solid var(--teal); color: var(--teal-dark); }
+.callout.rule p  { color: var(--teal-dark); }
+
+/* ── Document table ── */
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.87rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.doc-table th {
+  text-align: left;
+  padding: 9px 14px;
+  background: var(--cream);
+  border-bottom: 2px solid var(--border);
+  color: var(--text-light);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-weight: 700;
+}
+.doc-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text-mid);
+  line-height: 1.5;
+}
+.doc-table tr:last-child td { border-bottom: none; }
+.doc-table td:first-child { font-weight: 600; color: var(--teal); white-space: nowrap; font-size: 0.88rem; }
+.doc-table .sub-list { font-size: 0.8rem; color: var(--text-light); margin-top: 3px; }
+
+/* ── Footer ── */
+.guide-footer {
+  background: var(--teal-dark);
+  color: rgba(255,255,255,0.50);
+  text-align: center;
+  padding: 28px 20px;
+  font-size: 0.8rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin-top: 8px;
+}
+
+@media (max-width: 800px) {
+  .guide-toc { display: none; }
+  .guide-body { padding: 24px 20px; }
+  .guide-section { padding: 24px 22px; }
+  .type-grid { grid-template-columns: 1fr 1fr; }
+  .page-banner h1 { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="page-banner">
+  <div class="container">
+    <span class="subhead">Internal Use Only</span>
+    <h1>Board Portal Guide</h1>
+    <p>How to use the Internal Messenger and document sections of the board portal.</p>
+  </div>
+</div>
+
+<div class="guide-body">
+
+  <!-- TOC -->
+  <nav class="guide-toc">
+    <div class="toc-title">Contents</div>
+    <a href="#overview">Overview</a>
+    <a href="#navigation">Navigating the Portal</a>
+    <div class="toc-divider"></div>
+    <a href="#messenger">Internal Messenger</a>
+    <a href="#topics" class="toc-sub">Topics</a>
+    <a href="#types" class="toc-sub">Message Types</a>
+    <a href="#flags" class="toc-sub">Flags</a>
+    <a href="#sending" class="toc-sub">Sending a Message</a>
+    <a href="#replying" class="toc-sub">Replying</a>
+    <a href="#refile" class="toc-sub">Refiling</a>
+    <a href="#delete" class="toc-sub">Deleting</a>
+    <a href="#filter-sort" class="toc-sub">Filtering &amp; Sorting</a>
+    <div class="toc-divider"></div>
+    <a href="#documents">Document Sections</a>
+    <a href="#uploading" class="toc-sub">Uploading a File</a>
+    <a href="#sections" class="toc-sub">What Goes Where</a>
+    <div class="toc-divider"></div>
+    <a href="#rules">Important Rules</a>
+  </nav>
+
+  <!-- Content -->
+  <main class="guide-content">
+
+    <!-- Overview -->
+    <div class="guide-section" id="overview">
+      <span class="subhead">Overview</span>
+      <h2>Welcome to the Board Portal</h2>
+      <p>The board portal has two main areas: the <strong>Internal Messenger</strong> for board conversation and coordination, and the <strong>Document Sections</strong> for storing official files. Both are accessible from the sidebar navigation on the left side of the board page.</p>
+      <div class="callout caution">
+        <span class="callout-icon">&#x26A0;&#xFE0F;</span>
+        <p><strong>Sensitive documents must never be stored in the Messenger.</strong> Contracts, financials, legal filings, research proposals, ethics documentation, and other official records belong in the appropriate folder section. The Messenger is for discussion only.</p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="guide-section" id="navigation">
+      <span class="subhead">Navigation</span>
+      <h2>Navigating the Portal</h2>
+      <p>The left sidebar shows all sections of the board portal. Click any section name to jump directly to it. The active section is highlighted. Available sections include: Messenger, Finance, Fundraising, Governance, Marketing, Research, Meetings, Networking, Operations, and the Board Tracker for action items.</p>
+    </div>
+
+    <!-- Messenger -->
+    <div class="guide-section" id="messenger">
+      <span class="subhead">Internal Messenger</span>
+      <h2>Internal Messenger</h2>
+      <p>The Messenger is a real-time communication tool for board members. Messages are organized by <strong>topic</strong> and categorized by <strong>type</strong>. Use it to discuss ideas, flag decisions that need input, assign action items, and share updates.</p>
+
+      <!-- Topics -->
+      <div class="section-rule" id="topics"></div>
+      <h3>Topics</h3>
+      <p>Every message belongs to a topic. Use the sidebar to switch between topics. Announcements and General appear at the top of the list, followed by topic-specific channels. When you navigate to a topic, the compose area will automatically set that topic on your next message.</p>
+      <div class="topic-row">
+        <span class="topic-pill">All Messages</span>
+        <span class="topic-pill">Announcements</span>
+        <span class="topic-pill">General</span>
+        <span class="topic-pill">Finance</span>
+        <span class="topic-pill">Fundraising</span>
+        <span class="topic-pill">Governance</span>
+        <span class="topic-pill">Marketing</span>
+        <span class="topic-pill">Research &amp; Partnerships</span>
+        <span class="topic-pill">Meetings</span>
+        <span class="topic-pill">Networking</span>
+        <span class="topic-pill">Operations</span>
+      </div>
+      <p>If you're unsure which topic to use, post to <strong>General</strong>. You can always refile a message into the correct topic later.</p>
+
+      <!-- Types -->
+      <div class="section-rule" id="types"></div>
+      <h3>Message Types</h3>
+      <p>Every message has a type that signals what kind of response — if any — is expected. Choose the type that matches your intent when composing.</p>
+      <div class="type-grid">
+        <div class="type-card idea">
+          <div class="type-label">Idea / Brainstorm</div>
+          <p>Thoughts, suggestions, or early discussion. No action or decision required — just something worth sharing.</p>
+        </div>
+        <div class="type-card dec">
+          <div class="type-label">Decision Needed</div>
+          <p>The board hasn't decided yet. Use when you need input, a vote, or a clear direction from the group.</p>
+        </div>
+        <div class="type-card action">
+          <div class="type-label">Action Item</div>
+          <p>The decision is already made. Use when there's a specific task, a clear owner, and a next step to complete.</p>
+        </div>
+        <div class="type-card update">
+          <div class="type-label">Update</div>
+          <p>Progress reports, status updates, or completed work. Keeps the board informed without requiring a response.</p>
+        </div>
+      </div>
+      <div class="callout info">
+        <span class="callout-icon">&#x2139;&#xFE0F;</span>
+        <p><strong>Decision Needed vs. Action Item:</strong> If you're still asking "what should we do?" — that's Decision Needed. If the decision is made and something needs to happen — that's an Action Item.</p>
+      </div>
+
+      <!-- Flags -->
+      <div class="section-rule" id="flags"></div>
+      <h3>Flags</h3>
+      <p>Flags add urgency or accountability signals to a message. They are optional — use them when genuinely needed.</p>
+      <div class="flag-row">
+        <span class="flag-badge reply">Reply Needed</span>
+        <span class="flag-badge urgent">Urgent</span>
+      </div>
+      <p><strong>Reply Needed</strong> signals that you are waiting on a response before moving forward. <strong>Urgent</strong> signals that something is time-sensitive. Use both sparingly so they retain meaning.</p>
+
+      <!-- Sending -->
+      <div class="section-rule" id="sending"></div>
+      <h3>Sending a Message</h3>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><p>Click inside the compose area at the bottom of the Messenger. It will expand to show all options.</p></div>
+        <div class="step"><div class="step-num">2</div><p>Type your message in the text field.</p></div>
+        <div class="step"><div class="step-num">3</div><p>Confirm or change the <strong>Topic</strong> in the dropdown. If you navigated to a topic in the sidebar, it will already be selected.</p></div>
+        <div class="step"><div class="step-num">4</div><p>Choose a <strong>Type</strong> — Idea, Decision Needed, Action Item, or Update.</p></div>
+        <div class="step"><div class="step-num">5</div><p>Optionally toggle <strong>Reply Needed</strong> or <strong>Urgent</strong> if appropriate.</p></div>
+        <div class="step"><div class="step-num">6</div><p>Optionally attach a file using the attachment button. For official documents, use the document folder sections instead.</p></div>
+        <div class="step"><div class="step-num">7</div><p>Click <strong>Send</strong>. Your message appears immediately.</p></div>
+      </div>
+      <p>To cancel without sending, click the <strong>✕</strong> button to collapse the compose area.</p>
+
+      <!-- Replying -->
+      <div class="section-rule" id="replying"></div>
+      <h3>Replying to a Message</h3>
+      <p>Hover over any message to reveal action buttons. Click <strong>Reply</strong> to open a reply box directly beneath that message. Replies stay connected to the original message regardless of which topic filter is active.</p>
+
+      <!-- Refile -->
+      <div class="section-rule" id="refile"></div>
+      <h3>Refiling a Message</h3>
+      <p>If a message was sent to the wrong topic or given the wrong type, use Refile to correct it without deleting and reposting.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><p>Hover over the message to reveal action buttons.</p></div>
+        <div class="step"><div class="step-num">2</div><p>Click <strong>Refile</strong>. A panel will appear below the message.</p></div>
+        <div class="step"><div class="step-num">3</div><p>Select the correct <strong>Topic</strong> and <strong>Type</strong> from the dropdowns.</p></div>
+        <div class="step"><div class="step-num">4</div><p>Click <strong>Save</strong>. The message moves to the new topic immediately.</p></div>
+      </div>
+
+      <!-- Delete -->
+      <div class="section-rule" id="delete"></div>
+      <h3>Deleting a Message</h3>
+      <p>Hover over any message to reveal the <strong>Delete</strong> button. A confirmation prompt will appear before the message is permanently removed. Deletions cannot be undone.</p>
+      <p>To remove only a file attachment while keeping the message text, click the small <strong>✕</strong> next to the file link. The text is preserved; only the attachment is removed.</p>
+      <div class="callout warning">
+        <span class="callout-icon">&#x26A0;&#xFE0F;</span>
+        <p>If you only need to fix the topic or type, use <strong>Refile</strong> instead of deleting. Refile preserves the message and any replies attached to it.</p>
+      </div>
+
+      <!-- Filter & Sort -->
+      <div class="section-rule" id="filter-sort"></div>
+      <h3>Filtering and Sorting</h3>
+      <p>The filter bar at the top of the Messenger lets you narrow messages by type: All, Action Items, Decisions Needed, Urgent, or Assigned to Me. These filters work within whatever topic is currently selected in the sidebar.</p>
+      <p>Use the <strong>Oldest first / Newest first</strong> toggle button in the filter bar to change the sort order. The setting persists as you browse between topics.</p>
+    </div>
+
+    <!-- Documents -->
+    <div class="guide-section" id="documents">
+      <span class="subhead">Document Sections</span>
+      <h2>Document Sections</h2>
+      <p>Each section of the board portal has its own document library organized into folders. Files stored here are accessible to all board members at any time. This is where official, permanent records should live — not in the Messenger.</p>
+
+      <!-- Uploading -->
+      <div class="section-rule" id="uploading"></div>
+      <h3>Uploading a Document</h3>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><p>Navigate to the correct section in the sidebar (Finance, Governance, Research, etc.).</p></div>
+        <div class="step"><div class="step-num">2</div><p>Click the <strong>Upload Document</strong> button near the top of that section.</p></div>
+        <div class="step"><div class="step-num">3</div><p>In the upload panel, confirm the <strong>Section</strong> and choose the correct <strong>Subfolder</strong>.</p></div>
+        <div class="step"><div class="step-num">4</div><p>Enter a clear <strong>document title</strong> and the <strong>date</strong> of the document.</p></div>
+        <div class="step"><div class="step-num">5</div><p>Click <strong>Choose File</strong> and select the file from your computer.</p></div>
+        <div class="step"><div class="step-num">6</div><p>Click <strong>Save Document</strong>. The file appears in the correct folder immediately.</p></div>
+      </div>
+
+      <!-- What goes where -->
+      <div class="section-rule" id="sections"></div>
+      <h3>What Goes Where</h3>
+      <table class="doc-table">
+        <thead>
+          <tr>
+            <th>Section</th>
+            <th>What belongs here</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Meetings</td>
+            <td>
+              Minutes, agendas, and presentation decks from board meetings and special sessions.
+              <div class="sub-list">Meeting Minutes &nbsp;·&nbsp; Meeting Agendas &nbsp;·&nbsp; Presentations &nbsp;·&nbsp; Historical Communications</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Finance</td>
+            <td>
+              Budgets, annual reports, tax filings, and audit materials.
+              <div class="sub-list">Budgets &amp; Reports &nbsp;·&nbsp; Tax Filings &nbsp;·&nbsp; Audit &amp; Compliance</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Governance</td>
+            <td>
+              Bylaws, organizational policies, and conflict of interest forms.
+              <div class="sub-list">Bylaws &amp; Articles &nbsp;·&nbsp; Policies &nbsp;·&nbsp; Conflict of Interest Forms</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Committees</td>
+            <td>
+              Working files, reports, and resources organized by standing committee.
+              <div class="sub-list">Research Committee &nbsp;·&nbsp; Finance Committee &nbsp;·&nbsp; Other Committees</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Fundraising</td>
+            <td>
+              Donor reports, grant applications, campaign materials, grant agreements, and grantee reports.
+              <div class="sub-list">Donor Reports &nbsp;·&nbsp; Funding Applications &nbsp;·&nbsp; Campaign Materials &nbsp;·&nbsp; Grant Agreements &nbsp;·&nbsp; Grantee Reports</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Marketing</td>
+            <td>
+              Press releases, newsletter archives, social media plans, and brand assets.
+              <div class="sub-list">Press Releases &nbsp;·&nbsp; Newsletter Archives &nbsp;·&nbsp; Brand &amp; Media Assets</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Research</td>
+            <td>
+              Research proposals, published studies, ethics and IRB documentation, and correspondence with research partners. Official files only — use the Messenger for discussion.
+              <div class="sub-list">Research Proposals &nbsp;·&nbsp; Studies &amp; Papers &nbsp;·&nbsp; Ethics &amp; IRB &nbsp;·&nbsp; Partner Correspondence</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Networking</td>
+            <td>
+              Partner organization agreements, conference materials, and community connection records.
+              <div class="sub-list">Partner Organizations &nbsp;·&nbsp; Conferences &amp; Events &nbsp;·&nbsp; Community Connections</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Operations</td>
+            <td>
+              Insurance and liability documents, vendor contracts, and HR or personnel records.
+              <div class="sub-list">Insurance &amp; Liability &nbsp;·&nbsp; Vendor Contracts &nbsp;·&nbsp; HR &amp; Personnel</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Rules -->
+    <div class="guide-section" id="rules">
+      <span class="subhead">Important Rules</span>
+      <h2>Important Rules</h2>
+
+      <h3>Keep Sensitive Documents Out of the Messenger</h3>
+      <p>The Messenger is designed for discussion and coordination — not for storing official records. Anything that is a formal document should be uploaded to the appropriate folder section, not attached to a chat message.</p>
+      <p>This includes: contracts, legal filings, financial statements, tax documents, research proposals, ethics documentation, grant agreements, insurance policies, HR records, and governance documents.</p>
+      <div class="callout rule">
+        <span class="callout-icon">&#x1F512;</span>
+        <p>If you're unsure whether something belongs in the Messenger or a folder section, ask yourself: <em>Is this a record the foundation needs to keep?</em> If yes — it goes in a folder section, not the chat.</p>
+      </div>
+
+      <h3>Use the Right Type</h3>
+      <p>Selecting the correct message type helps the whole board quickly understand what is needed from them. A message marked Decision Needed signals that input is required. An Action Item signals that something needs to be done. Using these correctly reduces confusion and keeps work moving.</p>
+
+      <h3>Refile Instead of Delete</h3>
+      <p>If a message was posted to the wrong topic or given the wrong type, use Refile to correct it rather than deleting and reposting. Refile preserves the message history and any replies that have been added to it.</p>
+
+      <h3>Use Flags Sparingly</h3>
+      <p>Flags only work when they are meaningful. If every message is marked Urgent, none of them are. Reserve Urgent for genuinely time-sensitive situations, and Reply Needed for cases where you truly need a response before moving forward.</p>
+    </div>
+
+  </main>
+</div>
+
+<div class="guide-footer">
+  SETD5 Syndrome Foundation &nbsp;&nbsp;·&nbsp;&nbsp; Board Portal &nbsp;&nbsp;·&nbsp;&nbsp; Internal Use Only &nbsp;&nbsp;·&nbsp;&nbsp; April 2026
+</div>
+
+</body>
+</html>
