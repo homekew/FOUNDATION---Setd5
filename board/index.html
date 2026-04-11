@@ -3622,10 +3622,11 @@ function renderFilteredMessages() {
     const currentTag  = (msg.tags && msg.tags[0]) || 'general';
     const currentType = msg.msgType || 'idea';
     const refileBtn   = `<button class="chat-action-btn" data-msg-id="${msg.id}" data-tag="${currentTag}" data-type="${currentType}" onclick="chatShowRefile(this)">📁 Refile</button>`;
-    const actions = `<div class="chat-msg-actions">${convertActionBtn}${convertDecisionBtn}${refileBtn}${isOwn ? `<button class="chat-action-btn" onclick="chatEditMessage('${msg.id}', this)">Edit</button><button class="chat-action-btn delete" onclick="chatDeleteMessage('${msg.id}')">Delete</button>` : ''}</div>`;
+    const adminDelBtn = `<button class="chat-action-btn delete" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" onclick="chatAdminDelete(this)">Delete</button>`;
+    const actions = `<div class="chat-msg-actions">${convertActionBtn}${convertDecisionBtn}${refileBtn}${isOwn ? `<button class="chat-action-btn" onclick="chatEditMessage('${msg.id}', this)">Edit</button>` : ''}${adminDelBtn}</div>`;
 
     const replyBtn = `<button class="chat-reply-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 120).replace(/\n/g, ' '))}" onclick="chatSetReply(this.dataset.msgId, this.dataset.author, this.dataset.text)">↩ Reply</button>`;
-    const deleteBtn = isOwn ? `<button class="chat-delete-btn" onclick="chatDeleteMessage('${msg.id}')" title="Delete message">🗑</button>` : '';
+    const deleteBtn = isOwn ? `<button class="chat-delete-btn" onclick="chatAdminDelete(this)" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" title="Delete message">🗑</button>` : '';
 
     const quoteHtml = msg.replyTo ? `
       <div class="chat-reply-quote" onclick="chatScrollToMsg('${msg.replyTo.id}')">
@@ -4239,6 +4240,20 @@ async function chatDeleteMessage(msgId) {
     alert('Could not delete message. Please try again.');
   }
 }
+
+// ── Admin delete — removes any message regardless of author ──────────────────
+async function chatAdminDelete(btn) {
+  const msgId  = btn.dataset.msgId;
+  const author = btn.dataset.author || 'Unknown';
+  if (!confirm(`Delete this message by ${author}?\n\nThis cannot be undone.`)) return;
+  try {
+    await deleteDoc(doc(db, 'board_messages', msgId));
+  } catch (err) {
+    console.error('Delete error:', err);
+    alert('Could not delete message. Please try again.');
+  }
+}
+window.chatAdminDelete = chatAdminDelete;
 
 // ── Expand / collapse chat to full window (desktop) ──────────────────────────
 let chatIsExpanded = false;
