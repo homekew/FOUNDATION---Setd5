@@ -1275,7 +1275,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-left:2px;">
                 <div class="chat-keyboard-hint" style="font-size:0.67rem;color:var(--text-light);">Enter for new line · ↑ to send · 📎 to attach a file</div>
-                <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will send a text alert to all board members" style="display:inline-flex;align-items:center;gap:5px;font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1.5px solid #e0e0e0;background:none;color:var(--text-light);cursor:pointer;transition:all 0.15s;font-family:inherit;">🚨 Urgent</button>
+                <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will send a text alert to @mentioned board members" style="display:inline-flex;align-items:center;gap:5px;font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1.5px solid #e0e0e0;background:none;color:var(--text-light);cursor:pointer;transition:all 0.15s;font-family:inherit;"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1a5 5 0 015 5v3l1.5 2H1.5L3 9V6a5 5 0 015-5z"/><path d="M6.5 13a1.5 1.5 0 003 0"/><line x1="8" y1="1" x2="8" y2="0"/><circle cx="13" cy="3" r="2.5" fill="#c0392b" stroke="none"/><text x="13" y="4.2" text-anchor="middle" font-size="3.5" fill="white" font-weight="bold" stroke="none">!</text></svg> Urgent</button>
               </div>
             </div>
 
@@ -3010,7 +3010,7 @@ function renderMessages(snapshot) {
     const text    = linkifyUrls(renderMentions(escapeHtml(msg.text || '')));
     const isOwn   = author === chatUserName;
     const edited  = msg.edited ? '<span class="chat-msg-edited">(edited)</span>' : '';
-    const urgentBadge = msg.urgent ? '<span style="display:inline-flex;align-items:center;gap:3px;background:#fff0f0;color:#c0392b;font-size:0.65rem;font-weight:700;padding:2px 7px;border-radius:10px;border:1px solid #f5c6c6;margin-left:6px;letter-spacing:0.03em;">🚨 URGENT</span>' : '';
+    const urgentBadge = msg.urgent ? '<span style="display:inline-flex;align-items:center;gap:4px;background:#fff0f0;color:#c0392b;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid #f5c6c6;margin-left:6px;letter-spacing:0.03em;"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1a5 5 0 015 5v3l1.5 2H1.5L3 9V6a5 5 0 015-5z"/><path d="M6.5 13a1.5 1.5 0 003 0"/><circle cx="13" cy="3" r="2.5" fill="#c0392b" stroke="none"/><text x="13" y="4.2" text-anchor="middle" font-size="3.5" fill="white" font-weight="bold" stroke="none">!</text></svg> URGENT</span>' : '';
 
     if (dateStr !== lastDate) {
       lastDate = dateStr;
