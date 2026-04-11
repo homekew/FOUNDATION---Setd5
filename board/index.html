@@ -2468,12 +2468,11 @@ function chatToggleUrgent() {
 window.chatToggleUrgent = chatToggleUrgent;
 
 async function sendUrgentSMS(senderName, messageText, channel, mentionedNames = []) {
-  // Always text Kate Carr; also text any @mentioned members with SMS on file
-  const alwaysText = ['Kate Carr'];
+  // Text any @mentioned board members with SMS on file (excluding sender)
   const toText = BOARD_MEMBERS.filter(m =>
     m.sms &&
     m.name !== senderName &&
-    (alwaysText.includes(m.name) || mentionedNames.includes(m.name))
+    mentionedNames.includes(m.name)
   );
   if (!toText.length) return;
   let ejs;
