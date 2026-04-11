@@ -830,6 +830,19 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   /* ── Reply Needed button ── */
   #reply-needed-toggle { display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #c5d3f6;background:#f0f5ff;color:#3b5bdb;cursor:pointer;transition:all 0.15s;font-family:inherit; }
   #reply-needed-toggle.active { background:#dbe4ff;color:#2f4bbd;border-color:#91a7ff; }
+  /* ── Bring to Meeting button ── */
+  #meeting-toggle { display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #b8ddc0;background:#f0faf2;color:#2d7a47;cursor:pointer;transition:all 0.15s;font-family:inherit; }
+  #meeting-toggle.active { background:#d3f0db;color:#1e5c34;border-color:#74c48a; }
+  /* ── Bring to meeting badge on messages ── */
+  .bring-to-meeting-badge { display:inline-flex;align-items:center;gap:4px;background:#f0faf2;color:#2d7a47;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid #b8ddc0;margin-left:6px;letter-spacing:0.03em; }
+  /* ── Compose hint always visible ── */
+  .compose-type-hint { font-size:0.67rem;color:var(--text-light);margin-bottom:7px;padding:3px 4px;line-height:1.4; }
+  /* ── Tag subhint ── */
+  .compose-tag-subhint { font-size:0.65rem;color:var(--text-light);margin-top:-4px;margin-bottom:6px;padding:0 2px;font-style:italic; }
+  /* ── Reply mode: hide top-level-only fields ── */
+  .compose-toplevel-only.reply-mode { display:none !important; }
+  /* ── Reply Needed helper ── */
+  #reply-needed-hint { display:none;font-size:0.66rem;color:#3b5bdb;margin-top:3px;padding:0 2px; }
   /* Inline edit */
   .chat-edit-area { margin-top:4px; }
   .chat-edit-input { width:100%;padding:6px 10px;border:1.5px solid var(--teal);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;outline:none;resize:none;line-height:1.5;min-height:36px; }
@@ -1313,6 +1326,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
               <button class="chat-filter-pill active" data-filter="all"       onclick="chatSetFilter('all')">All</button>
               <button class="chat-filter-pill"        data-filter="actions"   onclick="chatSetFilter('actions')">Action Items <span class="pill-count" id="fcount-actions"></span></button>
               <button class="chat-filter-pill"        data-filter="decisions" onclick="chatSetFilter('decisions')">Decisions Needed <span class="pill-count" id="fcount-decisions"></span></button>
+              <button class="chat-filter-pill"        data-filter="meeting"   onclick="chatSetFilter('meeting')">Bring to Meeting <span class="pill-count" id="fcount-meeting"></span></button>
               <button class="chat-filter-pill"        data-filter="urgent"    onclick="chatSetFilter('urgent')">Urgent <span class="pill-count" id="fcount-urgent"></span></button>
               <button class="chat-filter-pill"        data-filter="mine"      onclick="chatSetFilter('mine')">Assigned to Me</button>
             </div>
@@ -1340,29 +1354,33 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                 <span class="chat-reply-ind-text" id="chat-reply-ind-text"></span>
                 <button onclick="chatClearReply()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:1px 4px;border-radius:4px;margin-left:auto;flex-shrink:0;" title="Cancel reply">✕</button>
               </div>
-              <!-- Compose meta row: Tag + Classification -->
-              <div class="compose-meta-row">
-                <span class="compose-meta-label">Tag</span>
-                <select id="compose-tag" class="compose-tag-select" title="Choose the topic this message belongs to">
-                  <option value="general">General</option>
-                  <option value="announcements">Announcements</option>
-                  <option value="fundraising">Fundraising</option>
-                  <option value="outreach">Outreach</option>
-                  <option value="research">Research</option>
-                  <option value="meetings">Meetings</option>
-                  <option value="admin">Admin</option>
-                  <option value="website">Website</option>
-                  <option value="site-updates">Site Updates</option>
-                </select>
-                <span class="compose-meta-label" style="margin-left:6px;">Type</span>
-                <select id="chat-msg-type" onchange="chatTypeChange()" class="compose-tag-select" title="What kind of message is this?">
-                  <option value="idea" title="Sharing a thought or exploring an idea — no action required">💡 Idea / Update</option>
-                  <option value="decision" title="The group needs to weigh in and make a call on this">🗳 Decision Needed — group needs to weigh in</option>
-                  <option value="action" title="A specific task that needs to be done, with a clear owner">✅ Action Item — specific task with an owner</option>
-                </select>
+              <!-- Compose meta: Tag + Type (top-level posts only — hidden in reply mode) -->
+              <div id="compose-toplevel" class="compose-toplevel-only">
+                <div class="compose-meta-row">
+                  <span class="compose-meta-label">Where</span>
+                  <select id="compose-tag" class="compose-tag-select" title="Choose the main area this message belongs in">
+                    <option value="general">General — broad discussion &amp; brainstorming</option>
+                    <option value="announcements">Announcements — news for the whole board</option>
+                    <option value="fundraising">Fundraising — campaigns &amp; donor relations</option>
+                    <option value="outreach">Outreach — community &amp; family connections</option>
+                    <option value="research">Research — SETD5 science &amp; studies</option>
+                    <option value="meetings">Meetings — agendas, minutes &amp; follow-ups</option>
+                    <option value="admin">Admin — scheduling &amp; logistics</option>
+                    <option value="website">Website — content &amp; site feedback</option>
+                    <option value="site-updates">Site Updates — change log</option>
+                  </select>
+                  <span class="compose-meta-label" style="margin-left:8px;">Type</span>
+                  <select id="chat-msg-type" onchange="chatTypeChange()" class="compose-tag-select">
+                    <option value="idea">Idea / Brainstorm</option>
+                    <option value="decision">Decision Needed</option>
+                    <option value="action">Action Item</option>
+                    <option value="update">Update</option>
+                  </select>
+                </div>
+                <!-- Always-visible type hint + tag nudge -->
+                <div id="classify-hint" class="compose-type-hint">Use for thoughts, suggestions, or early discussion — no action required.</div>
+                <div class="compose-tag-subhint">When in doubt, post in General.</div>
               </div>
-              <!-- Classification hint (shown below selects) -->
-              <div id="classify-hint" style="font-size:0.67rem;color:var(--text-light);margin-bottom:7px;padding:0 2px;display:none;"></div>
               <!-- Action item extended fields (shown only when type = action) -->
               <div class="ai-extended-form" id="ai-extended-form">
                 <div class="ai-field-row">
@@ -1421,11 +1439,16 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                   <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
                 </div>
               </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-left:2px;gap:6px;flex-wrap:wrap;">
-                <div class="chat-keyboard-hint" style="font-size:0.67rem;color:var(--text-light);">↑ to send · Enter for new line · 📎 to attach</div>
-                <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-                  <button id="reply-needed-toggle" onclick="chatToggleReplyNeeded()" title="Request a reply — will email @mentioned members that a response is needed">↩ Reply Needed</button>
-                  <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will send an email alert to @mentioned board members" style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #c8a96e;background:#fdf6ec;color:#a07830;cursor:pointer;transition:all 0.15s;font-family:inherit;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/><line x1="12" y1="2" x2="12" y2="1"/></svg><svg width="7" height="13" viewBox="0 0 8 16" fill="currentColor"><text x="4" y="13" text-anchor="middle" font-size="14" font-weight="900">!</text></svg> Urgent</button>
+              <!-- Flags row: Reply Needed · Urgent · Bring to Meeting -->
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-top:6px;padding-left:2px;gap:6px;flex-wrap:wrap;">
+                <div class="chat-keyboard-hint" style="font-size:0.67rem;color:var(--text-light);padding-top:6px;">↑ to send · Enter for new line · 📎 to attach</div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+                  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
+                    <button id="reply-needed-toggle" onclick="chatToggleReplyNeeded()" title="Notifies @mentioned people that a reply is expected">↩ Reply Needed</button>
+                    <button id="meeting-toggle" onclick="chatToggleMeeting()" title="Mark this as needing meeting discussion">📅 Bring to Meeting</button>
+                    <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will email @mentioned board members" style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #c8a96e;background:#fdf6ec;color:#a07830;cursor:pointer;transition:all 0.15s;font-family:inherit;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/><line x1="12" y1="2" x2="12" y2="1"/></svg><svg width="7" height="13" viewBox="0 0 8 16" fill="currentColor"><text x="4" y="13" text-anchor="middle" font-size="14" font-weight="900">!</text></svg> Urgent</button>
+                  </div>
+                  <div id="reply-needed-hint" style="font-size:0.66rem;color:#3b5bdb;padding:0 2px;">Notifies the @mentioned person/people that a reply is needed.</div>
                 </div>
               </div>
             </div>
@@ -2616,20 +2639,22 @@ const TAG_DESCRIPTIONS = {
 let currentTag      = 'all';  // sidebar filter (not the compose tag)
 let isUrgent        = false;
 let isReplyNeeded   = false;
+let isBringToMeeting = false;
 let chatAllMessages = [];   // cache of latest snapshot docs for re-filtering
 let chatFilter      = 'all'; // active filter (by message type/urgency)
 
 // ── Message type helpers ──────────────────────────────────────────────────────
 const MSG_TYPE_LABELS = {
-  idea:'Idea', question:'Question', decision:'Decision Needed', action:'Action Item', update:'Update'
+  idea:'Idea', decision:'Decision Needed', action:'Action Item', update:'Update'
 };
 const MSG_TYPE_HINTS = {
-  idea:     'Sharing a thought or update — no action required.',
-  decision: 'The group needs to weigh in and make a call on this.',
-  action:   'A specific task that needs to be done, with a clear owner and deadline.',
+  idea:     'Use for thoughts, suggestions, or early discussion — no action required.',
+  decision: 'Use when the board needs to choose or give direction.',
+  action:   'Use only when there is a clear next step and a clear owner.',
+  update:   'Use for progress, status updates, or completed work.',
 };
 const MSG_TYPE_CLASSES = {
-  idea:'mt-idea', question:'mt-question', decision:'mt-decision', action:'mt-action', update:'mt-update'
+  idea:'mt-idea', decision:'mt-decision', action:'mt-action', update:'mt-update'
 };
 
 function buildTypeBadge(msg) {
@@ -2656,6 +2681,7 @@ function applyMsgFilter(docs) {
   if (chatFilter === 'actions')   return docs.filter(m => m.msgType === 'action');
   if (chatFilter === 'decisions') return docs.filter(m => m.msgType === 'decision');
   if (chatFilter === 'urgent')    return docs.filter(m => m.urgent || m.msgType === 'urgent');
+  if (chatFilter === 'meeting')   return docs.filter(m => m.bringToMeeting);
   if (chatFilter === 'mine')      return docs.filter(m => m.msgType === 'action' && m.aiOwner === chatUserName);
   return docs;
 }
@@ -2676,11 +2702,13 @@ function updateChatSummary(docs) {
   const urgentCount   = docs.filter(m => m.urgent || m.msgType === 'urgent').length;
   const actionCount   = docs.filter(m => m.msgType === 'action').length;
   const decisionCount = docs.filter(m => m.msgType === 'decision').length;
+  const meetingCount  = docs.filter(m => m.bringToMeeting).length;
   const setCount = (id, n) => { const el = document.getElementById(id); if (el) el.textContent = n > 0 ? n : ''; };
-  setCount('fcount-actions', actionCount);
+  setCount('fcount-actions',  actionCount);
   setCount('fcount-decisions', decisionCount);
-  setCount('fcount-urgent', urgentCount);
-  if (urgentCount === 0 && actionCount === 0 && decisionCount === 0) {
+  setCount('fcount-urgent',   urgentCount);
+  setCount('fcount-meeting',  meetingCount);
+  if (urgentCount === 0 && actionCount === 0 && decisionCount === 0 && meetingCount === 0) {
     bar.classList.add('clean'); bar.innerHTML = ''; return;
   }
   bar.classList.remove('clean');
@@ -2688,17 +2716,18 @@ function updateChatSummary(docs) {
   if (urgentCount   > 0) chips += `<button class="summary-chip sc-urgent"   onclick="chatSetFilter('urgent')"   title="Show urgent"><span class="sc-count">${urgentCount}</span> urgent</button>`;
   if (actionCount   > 0) chips += `<button class="summary-chip sc-actions"  onclick="chatSetFilter('actions')"  title="Show action items"><span class="sc-count">${actionCount}</span> action item${actionCount !== 1 ? 's' : ''}</button>`;
   if (decisionCount > 0) chips += `<button class="summary-chip sc-decisions" onclick="chatSetFilter('decisions')" title="Show decisions needed"><span class="sc-count">${decisionCount}</span> decision${decisionCount !== 1 ? 's' : ''} needed</button>`;
+  if (meetingCount  > 0) chips += `<button class="summary-chip" onclick="chatSetFilter('meeting')" title="Show items for meeting" style="background:#f0faf2;color:#2d7a47;border:1px solid #b8ddc0;"><span class="sc-count" style="color:#2d7a47;">${meetingCount}</span> for meeting</button>`;
   if (chips) chips += `<button class="summary-chip" onclick="chatSetFilter('all')" style="color:var(--text-light);font-weight:400;">View all</button>`;
   bar.innerHTML = chips;
 }
 
 // ── Type selector change ───────────────────────────────────────────────────────
 function chatTypeChange() {
-  const type = document.getElementById('chat-msg-type') ? document.getElementById('chat-msg-type').value : '';
+  const type = document.getElementById('chat-msg-type') ? document.getElementById('chat-msg-type').value : 'idea';
   const form = document.getElementById('ai-extended-form');
   if (form) form.classList.toggle('visible', type === 'action');
 
-  // Show live type badge in compose box for non-default types
+  // Badge inside textarea: only for Decision/Action/Update (not the default Idea)
   const badgeEl = document.getElementById('compose-type-badge');
   if (badgeEl) {
     if (type && type !== 'idea') {
@@ -2712,12 +2741,10 @@ function chatTypeChange() {
     }
   }
 
-  // Show classification hint
+  // Always-visible hint text
   const hintEl = document.getElementById('classify-hint');
   if (hintEl) {
-    const hint = MSG_TYPE_HINTS[type] || '';
-    if (hint) { hintEl.textContent = hint; hintEl.style.display = 'block'; }
-    else       { hintEl.style.display = 'none'; }
+    hintEl.textContent = MSG_TYPE_HINTS[type] || '';
   }
 }
 window.chatTypeChange = chatTypeChange;
@@ -2742,6 +2769,21 @@ function chatConvertToAction(btn) {
 }
 window.chatConvertToAction = chatConvertToAction;
 
+function chatConvertToDecision(btn) {
+  const typeSelect = document.getElementById('chat-msg-type');
+  if (typeSelect) { typeSelect.value = 'decision'; chatTypeChange(); }
+  const input = document.getElementById('chat-input');
+  if (input && !input.value.trim()) {
+    input.value = 'From ' + btn.dataset.author + ': ' + btn.dataset.text;
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+  }
+  const box = document.getElementById('chat-input-box');
+  if (box) box.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  setTimeout(function() { if (input) input.focus(); }, 200);
+}
+window.chatConvertToDecision = chatConvertToDecision;
+
 function chatToggleUrgent() {
   isUrgent = !isUrgent;
   const btn = document.getElementById('urgent-toggle');
@@ -2761,11 +2803,20 @@ window.chatToggleUrgent = chatToggleUrgent;
 // ── Reply Needed toggle ───────────────────────────────────────────────────────
 function chatToggleReplyNeeded() {
   isReplyNeeded = !isReplyNeeded;
-  const btn = document.getElementById('reply-needed-toggle');
-  if (!btn) return;
-  btn.classList.toggle('active', isReplyNeeded);
+  const btn     = document.getElementById('reply-needed-toggle');
+  const hintEl  = document.getElementById('reply-needed-hint');
+  if (btn)    btn.classList.toggle('active', isReplyNeeded);
+  if (hintEl) hintEl.style.display = isReplyNeeded ? 'block' : 'none';
 }
 window.chatToggleReplyNeeded = chatToggleReplyNeeded;
+
+// ── Bring to Meeting toggle ───────────────────────────────────────────────────
+function chatToggleMeeting() {
+  isBringToMeeting = !isBringToMeeting;
+  const btn = document.getElementById('meeting-toggle');
+  if (btn) btn.classList.toggle('active', isBringToMeeting);
+}
+window.chatToggleMeeting     = chatToggleMeeting;
 
 async function sendReplyNeededEmail(senderName, messageText, tag, mentionedNames = []) {
   const mentionedLower = mentionedNames.map(n => n.toLowerCase());
@@ -3402,10 +3453,13 @@ function renderFilteredMessages() {
 
     // Reply Needed badge
     const replyNeededBadge = msg.replyNeeded ? `<span class="reply-needed-badge">↩ Reply Needed</span>` : '';
+    // Bring to Meeting badge
+    const meetingBadge = msg.bringToMeeting ? `<span class="bring-to-meeting-badge">📅 Bring to Meeting</span>` : '';
 
-    // Use data-* attributes for convert button so message content never touches onclick
-    const convertBtn = `<button class="chat-action-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 200).replace(/\n/g, ' '))}" onclick="chatConvertToAction(this)">→ Action</button>`;
-    const actions = `<div class="chat-msg-actions">${convertBtn}${isOwn ? `<button class="chat-action-btn" onclick="chatEditMessage('${msg.id}', this)">Edit</button><button class="chat-action-btn delete" onclick="chatDeleteMessage('${msg.id}')">Delete</button>` : ''}</div>`;
+    // Use data-* attributes for convert buttons so message content never touches onclick
+    const convertActionBtn   = `<button class="chat-action-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 200).replace(/\n/g, ' '))}" onclick="chatConvertToAction(this)">→ Action Item</button>`;
+    const convertDecisionBtn = `<button class="chat-action-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 200).replace(/\n/g, ' '))}" onclick="chatConvertToDecision(this)">→ Decision Needed</button>`;
+    const actions = `<div class="chat-msg-actions">${convertActionBtn}${convertDecisionBtn}${isOwn ? `<button class="chat-action-btn" onclick="chatEditMessage('${msg.id}', this)">Edit</button><button class="chat-action-btn delete" onclick="chatDeleteMessage('${msg.id}')">Delete</button>` : ''}</div>`;
 
     const replyBtn = `<button class="chat-reply-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 120).replace(/\n/g, ' '))}" onclick="chatSetReply(this.dataset.msgId, this.dataset.author, this.dataset.text)">↩ Reply</button>`;
     const deleteBtn = isOwn ? `<button class="chat-delete-btn" onclick="chatDeleteMessage('${msg.id}')" title="Delete message">🗑</button>` : '';
@@ -3440,7 +3494,7 @@ function renderFilteredMessages() {
       <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}${urgentClass}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''} ondblclick="chatShowReactPopup('${msg.id}',event)">
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
-          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${typeBadge}${urgentBadge}${replyNeededBadge}${tagPills ? `<span style="margin-left:6px;">${tagPills}</span>` : ''}${replyBtn}${deleteBtn}</div>
+          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${typeBadge}${urgentBadge}${replyNeededBadge}${meetingBadge}${tagPills ? `<span style="margin-left:6px;">${tagPills}</span>` : ''}${replyBtn}${deleteBtn}</div>
           ${quoteHtml}
           ${text ? `<div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>` : ''}
           ${aiCard}
@@ -3484,6 +3538,9 @@ function chatSetReply(msgId, author, text) {
   document.getElementById('chat-reply-ind-author').textContent = author;
   document.getElementById('chat-reply-ind-text').textContent   = text.length > 70 ? text.slice(0, 70) + '…' : text;
   document.getElementById('chat-reply-indicator').classList.add('visible');
+  // Replies are lightweight — hide Tag + Type fields
+  const topLevel = document.getElementById('compose-toplevel');
+  if (topLevel) topLevel.classList.add('reply-mode');
   document.getElementById('chat-input').focus();
 }
 window.chatSetReply = chatSetReply;
@@ -3491,6 +3548,9 @@ window.chatSetReply = chatSetReply;
 function chatClearReply() {
   replyingTo = null;
   document.getElementById('chat-reply-indicator').classList.remove('visible');
+  // Restore Tag + Type fields for top-level posts
+  const topLevel = document.getElementById('compose-toplevel');
+  if (topLevel) topLevel.classList.remove('reply-mode');
 }
 window.chatClearReply = chatClearReply;
 
@@ -3832,17 +3892,19 @@ async function chatSend() {
     const statusEl = document.getElementById('ai-status'); if (statusEl) statusEl.value = 'open';
     if (input) delete input.dataset.linkedMsg;
 
-    const sendUrgent      = isUrgent;
-    const sendReplyNeeded = isReplyNeeded;
-    // Compose tag — what the user selected in the tag picker
+    const sendUrgent       = isUrgent;
+    const sendReplyNeeded  = isReplyNeeded;
+    const sendMeeting      = isBringToMeeting;
+    // Compose tag — what the user selected in the tag picker (only for top-level posts)
     const composeTagEl = document.getElementById('compose-tag');
-    const composeTag   = composeTagEl ? (composeTagEl.value || 'general') : 'general';
+    const composeTag   = (!replyingTo && composeTagEl) ? (composeTagEl.value || 'general') : 'general';
 
     const msgData = { text: sendText, author: chatUserName, ts: serverTimestamp(), msgType, tags: [composeTag] };
-    if (fileData) msgData.file = fileData;
-    if (replyingTo) msgData.replyTo = { id: replyingTo.id, author: replyingTo.author, text: replyingTo.text };
-    if (sendUrgent)      msgData.urgent      = true;
-    if (sendReplyNeeded) msgData.replyNeeded = true;
+    if (fileData)        msgData.file          = fileData;
+    if (replyingTo)      msgData.replyTo       = { id: replyingTo.id, author: replyingTo.author, text: replyingTo.text };
+    if (sendUrgent)      msgData.urgent        = true;
+    if (sendReplyNeeded) msgData.replyNeeded   = true;
+    if (sendMeeting)     msgData.bringToMeeting = true;
     // Store action item fields only if type is action
     if (msgType === 'action') {
       if (aiTitle)  msgData.aiTitle  = aiTitle;
@@ -3853,9 +3915,10 @@ async function chatSend() {
     }
     chatClearReply();
 
-    // Reset urgent and reply-needed flags after capturing
-    if (isUrgent)       chatToggleUrgent();
-    if (isReplyNeeded)  chatToggleReplyNeeded();
+    // Reset flags after capturing
+    if (isUrgent)        chatToggleUrgent();
+    if (isReplyNeeded)   chatToggleReplyNeeded();
+    if (isBringToMeeting) chatToggleMeeting();
 
     await addDoc(collection(db, 'board_messages'), msgData);
     markSeen('board');
