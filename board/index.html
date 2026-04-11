@@ -3112,7 +3112,8 @@ let pendingFile     = null;   // file selected for attachment
 const bgUnsubs      = {};     // background listeners for unread tracking
 
 // ── Unread helpers (Firestore-synced across devices) ─────────────────────────
-const readStateCache = {};   // { channel: timestampMillis } — in-memory cache
+const readStateCache = {};   // { channel: timestampMillis } — in-memory cache, kept live
+let   lastMsgSnap    = null; // latest board_messages snapshot — shared between both watchers
 
 function updateBadge(ch, count) {
   const badge = document.getElementById(`badge-${ch}`);
@@ -3121,59 +3122,67 @@ function updateBadge(ch, count) {
   else           { badge.textContent = ''; badge.classList.remove('visible'); }
 }
 
+// Recompute and paint the Messenger unread badge from whatever snapshots we have
+function recomputeUnreadBadge() {
+  if (!lastMsgSnap) return;
+  const cutoff = lastSeen('board');
+  const count  = lastMsgSnap.docs.filter(d => {
+    const data = d.data();
+    if (data.author === chatUserName) return false;  // never count own messages
+    const ts = data.ts;
+    return ts && ts.toMillis() > cutoff;
+  }).length;
+  const badge = document.getElementById('badge-messenger');
+  if (!badge) return;
+  if (count > 0) { badge.textContent = count > 9 ? '9+' : count; badge.classList.add('visible'); }
+  else           { badge.textContent = ''; badge.classList.remove('visible'); }
+}
+
 async function markSeen(ch) {
   const now = Date.now();
   readStateCache[ch] = now;
+  // Also persist to localStorage so the badge is instant on next page load
+  try { localStorage.setItem(`chat_last_seen_${ch}`, now); } catch(_) {}
   if (!chatUserName) return;
   try {
-    // setDoc with merge creates the doc if it doesn't exist, updates if it does
     await setDoc(doc(db, 'read_state', chatUserName), { [ch]: now }, { merge: true });
   } catch (err) {
     console.warn('markSeen error:', err);
   }
-}
-
-async function loadReadState() {
-  if (!chatUserName) return;
-  try {
-    const snap = await getDoc(doc(db, 'read_state', chatUserName));
-    if (snap.exists()) {
-      Object.assign(readStateCache, snap.data());
-    }
-  } catch (err) {
-    console.warn('loadReadState error:', err);
-  }
+  // Immediately clear badge for the channel we just viewed
+  if (ch === 'board') recomputeUnreadBadge();
 }
 
 function lastSeen(ch) {
-  // Fall back to localStorage for first-load before Firestore resolves
+  // readStateCache is kept live by watchReadState(); localStorage is the cold-start fallback
   const local = parseInt(localStorage.getItem(`chat_last_seen_${ch}`) || '0', 10);
   return readStateCache[ch] || local;
 }
 
+// ── watchReadState: real-time listener on the user's read_state doc ───────────
+// Replaces the one-shot loadReadState() fetch so read/unread syncs across devices.
+function watchReadState() {
+  if (!chatUserName) return;
+  if (bgUnsubs['readState']) return;  // already watching
+  const docRef = doc(db, 'read_state', chatUserName);
+  bgUnsubs['readState'] = onSnapshot(docRef, snap => {
+    if (snap.exists()) {
+      Object.assign(readStateCache, snap.data());
+    }
+    // Re-evaluate badge whenever read state changes (e.g. user marked seen on another device)
+    recomputeUnreadBadge();
+  }, err => {
+    console.warn('watchReadState error:', err);
+  });
+}
+
+// ── watchUnread: real-time listener on board_messages ─────────────────────────
 function watchUnread() {
-  // Watch board_messages for unread count badge on the Messenger nav link
   if (bgUnsubs['board']) return;
   const q = query(collection(db, 'board_messages'), orderBy('ts', 'desc'), limit(50));
   bgUnsubs['board'] = onSnapshot(q, snap => {
-    const cutoff = lastSeen('board');
-    const unreadCount = snap.docs.filter(d => {
-      const data = d.data();
-      // Don't count own messages as unread
-      if (data.author === chatUserName) return false;
-      const ts = data.ts;
-      return ts && ts.toMillis() > cutoff;
-    }).length;
-    const badge = document.getElementById('badge-messenger');
-    if (badge) {
-      if (unreadCount > 0) {
-        badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
-        badge.classList.add('visible');
-      } else {
-        badge.textContent = '';
-        badge.classList.remove('visible');
-      }
-    }
+    lastMsgSnap = snap;        // keep latest snapshot for cross-listener reuse
+    recomputeUnreadBadge();    // re-evaluate badge with current read state
   });
 }
 
@@ -3542,11 +3551,10 @@ async function showChatApp() {
   // Auto-fill Website Review name from authenticated identity
   const wrNameDisplay = document.getElementById('wr-name-display');
   if (wrNameDisplay) wrNameDisplay.textContent = chatUserName;
-  // Load cross-device read state before starting watchers
-  await loadReadState();
   markSeen('board');
   chatSubscribe('all');  // Start with unified "All Messages" view
-  watchUnread();         // Single background watcher for unread indicator
+  watchReadState();      // Real-time read-state listener — syncs seen timestamps across devices
+  watchUnread();         // Real-time message listener — drives unread badge count
   // Start website review listener after read state is loaded so badge is accurate
   initWebsiteReviewListener();
 }
