@@ -2467,47 +2467,44 @@ function chatToggleUrgent() {
 }
 window.chatToggleUrgent = chatToggleUrgent;
 
-async function sendUrgentSMS(senderName, messageText, channel, mentionedNames = []) {
-  console.log('🚨 sendUrgentSMS called:', { senderName, channel, mentionedNames, messageText });
+// ── SMS via TextBelt ──────────────────────────────────────────────────────────
+// Free tier: 1 text/day with key 'textbelt'. For more: textbelt.com ($1/100 texts)
+const TEXTBELT_KEY = 'textbelt';
 
-  // Text any @mentioned board members with SMS on file
-  // Case-insensitive match in case name capitalisation differs
+async function sendUrgentSMS(senderName, messageText, channel, mentionedNames = []) {
+  console.log('🚨 sendUrgentSMS called:', { senderName, channel, mentionedNames });
+
   const mentionedLower = mentionedNames.map(n => n.toLowerCase());
   const toText = BOARD_MEMBERS.filter(m =>
     m.sms && mentionedLower.includes(m.name.toLowerCase())
   );
-  console.log('📱 SMS recipients resolved:', toText.map(m => `${m.name} → ${m.sms}`));
+  console.log('📱 SMS recipients:', toText.map(m => `${m.name} → ${m.sms}`));
 
   if (!toText.length) {
-    console.warn('⚠️ No SMS recipients found. mentionedNames:', mentionedNames,
-      '| Members with SMS:', BOARD_MEMBERS.filter(m => m.sms).map(m => m.name));
-    return;
-  }
-
-  let ejs;
-  try {
-    ejs = await getEmailJS();
-    console.log('✅ EmailJS loaded for SMS');
-  } catch (e) {
-    console.error('❌ EmailJS load failed for SMS:', e);
+    console.warn('⚠️ No SMS recipients — mentionedNames:', mentionedNames);
     return;
   }
 
   for (const member of toText) {
-    const params = {
-      email:      member.sms,
-      to_name:    member.name,
-      from_name:  senderName,
-      channel:    channel,
-      message:    `URGENT from ${senderName} in #${channel}: ${messageText}`,
-      portal_url: 'https://setd5syndrome.org/board/'
-    };
-    console.log(`📤 Sending SMS to ${member.name} (${member.sms}) with params:`, params);
+    console.log(`📤 Texting ${member.name} at ${member.sms}...`);
     try {
-      const result = await ejs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
-      console.log(`✅ Urgent SMS sent to ${member.name} via ${member.sms} — status:`, result?.status, result?.text);
+      const res = await fetch('https://textbelt.com/text', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone:   member.sms,
+          message: `URGENT from ${senderName} in #${channel}: ${messageText} — setd5syndrome.org/board/`,
+          key:     TEXTBELT_KEY
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        console.log(`✅ Text sent to ${member.name} — quota remaining: ${data.quotaRemaining}`);
+      } else {
+        console.error(`❌ TextBelt error for ${member.name}:`, data.error);
+      }
     } catch (err) {
-      console.error(`❌ Urgent SMS to ${member.name} failed:`, err);
+      console.error(`❌ SMS fetch failed for ${member.name}:`, err);
     }
   }
 }
@@ -3097,7 +3094,7 @@ window.escapeHtml = escapeHtml;
 // ── @mention system ───────────────────────────────────────────────────────────
 // Board member registry — name, email, initials, colour
 const BOARD_MEMBERS = [
-  { name: 'Kate Carr',          email: 'katecarr@mac.com',           initials: 'KC', color: '#c8922a', sms: '5417978331@mms.att.net' },
+  { name: 'Kate Carr',          email: 'katecarr@mac.com',           initials: 'KC', color: '#c8922a', sms: '+15417978331' },
   { name: 'Taryn Mildenhall',   email: 'tarynmildenhall@gmail.com',  initials: 'TM', color: '#7b5ea7', sms: null },
   { name: 'Laura Biazon',       email: 'laura.biazon19@gmail.com',   initials: 'LB', color: '#1a5c5a', sms: null },
   { name: 'Samantha Cotter',    email: 'scotter424@gmail.com',       initials: 'SC', color: '#5b7fa6', sms: null },
