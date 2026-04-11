@@ -2493,6 +2493,7 @@ async function sendUrgentSMS(senderName, messageText, channel, mentionedNames = 
         to_name:    member.name,
         from_name:  senderName,
         channel:    channel,
+        subject:    `🚨 URGENT — Board Portal Alert from ${senderName}`,
         message:    `🚨 URGENT MESSAGE from ${senderName} in #${channel}:\n\n${messageText}\n\nLog in to respond: https://setd5syndrome.org/board/`,
         portal_url: 'https://setd5syndrome.org/board/'
       });
@@ -3315,6 +3316,7 @@ async function sendMentionEmails(mentionedMembers, senderName, messageText, chan
         to_name:    member.name,
         from_name:  senderName,
         channel:    channel,
+        subject:    `SETD5F: You were tagged in #${channel} in board messaging`,
         message:    messageText,
         portal_url: 'https://setd5syndrome.org/board/'
       });
