@@ -2499,7 +2499,7 @@ async function sendUrgentSMS(senderName, messageText, channel, mentionedNames = 
       if (data.success) {
         console.log(`✅ Text sent to ${member.name} — SID: ${data.sid}`);
       } else {
-        console.error(`❌ Twilio error for ${member.name}:`, data.error);
+        console.error(`❌ Twilio error for ${member.name}:`, data.error, '| code:', data.code, '| info:', data.moreInfo, '| full response:', data);
       }
     } catch (err) {
       console.error(`❌ SMS fetch failed for ${member.name}:`, err);
