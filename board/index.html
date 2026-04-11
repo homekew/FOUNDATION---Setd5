@@ -1358,16 +1358,16 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
               <div id="compose-toplevel" class="compose-toplevel-only">
                 <div class="compose-meta-row">
                   <span class="compose-meta-label">Where</span>
-                  <select id="compose-tag" class="compose-tag-select" title="Choose the main area this message belongs in">
-                    <option value="general">General — broad discussion &amp; brainstorming</option>
-                    <option value="announcements">Announcements — news for the whole board</option>
-                    <option value="fundraising">Fundraising — campaigns &amp; donor relations</option>
-                    <option value="outreach">Outreach — community &amp; family connections</option>
-                    <option value="research">Research — SETD5 science &amp; studies</option>
-                    <option value="meetings">Meetings — agendas, minutes &amp; follow-ups</option>
-                    <option value="admin">Admin — scheduling &amp; logistics</option>
-                    <option value="website">Website — content &amp; site feedback</option>
-                    <option value="site-updates">Site Updates — change log</option>
+                  <select id="compose-tag" class="compose-tag-select" onchange="chatTagChange()" title="Choose the main area this message belongs in">
+                    <option value="general">General</option>
+                    <option value="announcements">Announcements</option>
+                    <option value="fundraising">Fundraising</option>
+                    <option value="outreach">Outreach</option>
+                    <option value="research">Research</option>
+                    <option value="meetings">Meetings</option>
+                    <option value="admin">Admin</option>
+                    <option value="website">Website</option>
+                    <option value="site-updates">Site Updates</option>
                   </select>
                   <span class="compose-meta-label" style="margin-left:8px;">Type</span>
                   <select id="chat-msg-type" onchange="chatTypeChange()" class="compose-tag-select">
@@ -1377,9 +1377,9 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                     <option value="update">Update</option>
                   </select>
                 </div>
-                <!-- Always-visible type hint + tag nudge -->
+                <!-- Always-visible hints: tag description + type description -->
+                <div id="tag-hint" class="compose-type-hint" style="color:var(--teal);"></div>
                 <div id="classify-hint" class="compose-type-hint">Use for thoughts, suggestions, or early discussion — no action required.</div>
-                <div class="compose-tag-subhint">When in doubt, post in General.</div>
               </div>
               <!-- Action item extended fields (shown only when type = action) -->
               <div class="ai-extended-form" id="ai-extended-form">
@@ -2749,6 +2749,26 @@ function chatTypeChange() {
 }
 window.chatTypeChange = chatTypeChange;
 
+const TAG_COMPOSE_HINTS = {
+  general:      'Broad board discussion and brainstorming. When in doubt, post here.',
+  announcements:'News or updates for the whole board.',
+  fundraising:  'Campaigns, donors, grants, and fundraising strategy.',
+  outreach:     'Community outreach, family connections, and awareness efforts.',
+  research:     'SETD5 science, studies, and research collaboration.',
+  meetings:     'Agendas, minutes, decisions, and follow-ups from board meetings.',
+  admin:        'Scheduling, logistics, and internal coordination.',
+  website:      'Website content, feedback, and update requests.',
+  'site-updates':'Log of changes made to the live site.',
+};
+
+function chatTagChange() {
+  const el  = document.getElementById('compose-tag');
+  const tag = el ? el.value : 'general';
+  const hintEl = document.getElementById('tag-hint');
+  if (hintEl) hintEl.textContent = TAG_COMPOSE_HINTS[tag] || '';
+}
+window.chatTagChange = chatTagChange;
+
 // ── Convert message to action item ────────────────────────────────────────────
 function chatConvertToAction(btn) {
   const msgId  = btn.dataset.msgId;
@@ -3366,6 +3386,8 @@ function chatSwitchChannel(ch) { chatSetTag(ch); }
 function chatUpdatePlaceholder() {
   const input = document.getElementById('chat-input');
   if (input) input.placeholder = 'Message the board… (type @ to mention someone)';
+  // Also refresh the tag hint in case compose was reset
+  chatTagChange();
 }
 
 // ── Firestore subscription ────────────────────────────────────────────────────
