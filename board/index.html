@@ -1468,7 +1468,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                   </div>
                   <input type="file" id="chat-file-input" style="display:none;" onchange="chatFileSelected(this)" accept="*/*" />
                   <button id="compose-clear-btn" onclick="chatClearCompose()" style="display:none;width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:0.85rem;display:none;align-items:center;justify-content:center;transition:background 0.12s;" title="Clear message">✕</button>
-                  <button onclick="chatToggleEmoji(event)" style="width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.12s;" title="Emoji">😊</button>
+                  <button onclick="chatToggleEmoji(event)" style="width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:0.78rem;display:flex;align-items:center;justify-content:center;transition:background 0.12s;" title="Emoji">😊</button>
                   <button onclick="document.getElementById('chat-file-input').click()" style="width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.12s;" title="Attach file">📎</button>
                   <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
                 </div>
@@ -3704,13 +3704,9 @@ function renderFilteredMessages() {
     const meetingBadge = msg.bringToMeeting ? `<span class="bring-to-meeting-badge">📅 Bring to Meeting</span>` : '';
 
     // Use data-* attributes for convert buttons so message content never touches onclick
-    const convertActionBtn   = `<button class="chat-action-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 200).replace(/\n/g, ' '))}" onclick="chatConvertToAction(this)">→ Action Item</button>`;
-    const convertDecisionBtn = `<button class="chat-action-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 200).replace(/\n/g, ' '))}" onclick="chatConvertToDecision(this)">→ Decision Needed</button>`;
     const currentTag  = (msg.tags && msg.tags[0]) || 'general';
     const currentType = msg.msgType || 'idea';
-    const refileBtn   = `<button class="chat-action-btn" data-msg-id="${msg.id}" data-tag="${currentTag}" data-type="${currentType}" onclick="chatShowRefile(this)">📁 Refile</button>`;
-    const adminDelBtn = `<button class="chat-action-btn delete" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" onclick="chatAdminDelete(this)">Delete</button>`;
-    const actions = `<div class="chat-msg-actions">${convertActionBtn}${convertDecisionBtn}${refileBtn}${isOwn ? `<button class="chat-action-btn" onclick="chatEditMessage('${msg.id}', this)">Edit</button>` : ''}${adminDelBtn}</div>`;
+    const actions = ``; // action buttons hidden for now
 
     const replyBtn = `<button class="chat-reply-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 120).replace(/\n/g, ' '))}" onclick="chatSetReply(this.dataset.msgId, this.dataset.author, this.dataset.text)">↩ Reply</button>`;
     const deleteBtn = isOwn ? `<button class="chat-delete-btn" onclick="chatAdminDelete(this)" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" title="Delete message">🗑</button>` : '';
@@ -4246,7 +4242,8 @@ function chatEditMessage(msgId, btn) {
   if (!textDiv || row.querySelector('.chat-edit-area')) return; // already editing
   const original = textDiv.dataset.original || textDiv.textContent;
   textDiv.style.display = 'none';
-  row.querySelector('.chat-msg-actions').style.display = 'none';
+  const actionsEl = row.querySelector('.chat-msg-actions');
+  if (actionsEl) actionsEl.style.display = 'none';
   const area = document.createElement('div');
   area.className = 'chat-edit-area';
   area.innerHTML = `
