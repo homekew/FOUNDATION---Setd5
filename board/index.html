@@ -1437,7 +1437,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                   <div id="compose-type-badge" style="display:none;margin-bottom:5px;"></div>
                   <textarea id="chat-input" rows="1" placeholder="Message the board… (type @ to mention someone)"
                   style="width:100%;border:none;outline:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;color:var(--text);resize:none;min-height:22px;max-height:100px;line-height:1.5;"
-                  oninput="chatMentionInput(event)"
+                  oninput="chatMentionInput(event);chatUpdateClearBtn()"
                   onkeydown="chatMentionKey(event)"></textarea>
                 </div>
                 <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;position:relative;align-self:flex-end;">
@@ -1446,6 +1446,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                     <div class="emoji-picker-grid" id="emoji-picker-grid"></div>
                   </div>
                   <input type="file" id="chat-file-input" style="display:none;" onchange="chatFileSelected(this)" accept="*/*" />
+                  <button id="compose-clear-btn" onclick="chatClearCompose()" style="display:none;width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:0.85rem;display:none;align-items:center;justify-content:center;transition:background 0.12s;" title="Clear message">✕</button>
                   <button onclick="chatToggleEmoji(event)" style="width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.12s;" title="Emoji">😊</button>
                   <button onclick="document.getElementById('chat-file-input').click()" style="width:30px;height:30px;border:none;border-radius:7px;background:none;color:var(--text-light);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.12s;" title="Attach file">📎</button>
                   <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
@@ -2825,6 +2826,7 @@ function chatToggleUrgent() {
   const btn = document.getElementById('urgent-toggle');
   if (!btn) return;
   btn.classList.toggle('active', isUrgent);
+  chatUpdateClearBtn();
 }
 window.chatToggleUrgent = chatToggleUrgent;
 
@@ -2844,6 +2846,7 @@ function chatToggleReplyNeeded() {
   const hintEl  = document.getElementById('reply-needed-hint');
   if (btn)    btn.classList.toggle('active', isReplyNeeded);
   if (hintEl) hintEl.style.display = isReplyNeeded ? 'block' : 'none';
+  chatUpdateClearBtn();
 }
 window.chatToggleReplyNeeded = chatToggleReplyNeeded;
 
@@ -2852,8 +2855,36 @@ function chatToggleMeeting() {
   isBringToMeeting = !isBringToMeeting;
   const btn = document.getElementById('meeting-toggle');
   if (btn) btn.classList.toggle('active', isBringToMeeting);
+  chatUpdateClearBtn();
 }
-window.chatToggleMeeting     = chatToggleMeeting;
+window.chatToggleMeeting = chatToggleMeeting;
+
+// ── Clear compose ─────────────────────────────────────────────────────────────
+function chatUpdateClearBtn() {
+  const input = document.getElementById('chat-input');
+  const btn   = document.getElementById('compose-clear-btn');
+  if (!btn) return;
+  const hasContent = (input && input.value.trim()) || pendingFile || isUrgent || isReplyNeeded || isBringToMeeting || replyingTo;
+  btn.style.display = hasContent ? 'flex' : 'none';
+}
+window.chatUpdateClearBtn = chatUpdateClearBtn;
+
+function chatClearCompose() {
+  const input = document.getElementById('chat-input');
+  if (input) { input.value = ''; input.style.height = 'auto'; }
+  chatClearFile();
+  chatClearReply();
+  if (isUrgent)        chatToggleUrgent();
+  if (isReplyNeeded)   { isReplyNeeded = false; const b = document.getElementById('reply-needed-toggle'); if (b) b.classList.remove('active'); const h = document.getElementById('reply-needed-hint'); if (h) h.style.display = 'none'; }
+  if (isBringToMeeting) chatToggleMeeting();
+  const typeEl = document.getElementById('chat-msg-type');
+  if (typeEl) { typeEl.value = 'idea'; chatTypeChange(); }
+  const tagEl = document.getElementById('compose-tag');
+  if (tagEl) { tagEl.value = 'general'; chatTagChange(); }
+  chatUpdateClearBtn();
+  if (input) input.focus();
+}
+window.chatClearCompose = chatClearCompose;
 
 async function sendReplyNeededEmail(senderName, messageText, tag, mentionedNames = []) {
   const mentionedLower = mentionedNames.map(n => n.toLowerCase());
@@ -3963,6 +3994,7 @@ async function chatSend() {
 
     await addDoc(collection(db, 'board_messages'), msgData);
     markSeen('board');
+    chatUpdateClearBtn();
 
     // Send email notifications for @mentions
     const mentioned = sendText ? extractMentions(sendText) : [];
