@@ -1273,7 +1273,10 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                   <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
                 </div>
               </div>
-              <div class="chat-keyboard-hint" style="font-size:0.67rem;color:var(--text-light);margin-top:5px;padding-left:2px;">Enter for new line · ↑ to send · 📎 to attach a file</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-left:2px;">
+                <div class="chat-keyboard-hint" style="font-size:0.67rem;color:var(--text-light);">Enter for new line · ↑ to send · 📎 to attach a file</div>
+                <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will send a text alert to all board members" style="display:inline-flex;align-items:center;gap:5px;font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1.5px solid #e0e0e0;background:none;color:var(--text-light);cursor:pointer;transition:all 0.15s;font-family:inherit;">🚨 Urgent</button>
+              </div>
             </div>
 
           </div>
@@ -2446,6 +2449,45 @@ function nameToInitials(name) {
 // ── State ────────────────────────────────────────────────────────────────────
 const ALL_CHANNELS  = ['announcements','admin','fundraising','general','outreach','research','website','site-updates','meetings'];
 let currentChannel  = 'general';
+let isUrgent        = false;
+
+function chatToggleUrgent() {
+  isUrgent = !isUrgent;
+  const btn = document.getElementById('urgent-toggle');
+  if (!btn) return;
+  if (isUrgent) {
+    btn.style.background    = '#fff0f0';
+    btn.style.color         = '#c0392b';
+    btn.style.borderColor   = '#f5c6c6';
+  } else {
+    btn.style.background    = 'none';
+    btn.style.color         = 'var(--text-light)';
+    btn.style.borderColor   = '#e0e0e0';
+  }
+}
+window.chatToggleUrgent = chatToggleUrgent;
+
+async function sendUrgentSMS(senderName, messageText, channel) {
+  const recipients = BOARD_MEMBERS.filter(m => m.sms && m.name !== senderName);
+  if (!recipients.length) return;
+  let ejs;
+  try { ejs = await getEmailJS(); } catch (e) { console.error('EmailJS load failed for SMS:', e); return; }
+  for (const member of recipients) {
+    try {
+      await ejs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        email:      member.sms,
+        to_name:    member.name,
+        from_name:  senderName,
+        channel:    channel,
+        message:    `🚨 URGENT from ${senderName} in #${channel}: ${messageText}`,
+        portal_url: 'https://setd5syndrome.org/board/'
+      });
+      console.log(`✅ Urgent SMS sent to ${member.name} via ${member.sms}`);
+    } catch (err) {
+      console.error(`❌ Urgent SMS to ${member.name} failed:`, err.message);
+    }
+  }
+}
 let unsubscribe     = null;
 let chatUserName    = '';
 let pendingFile     = null;   // file selected for attachment
@@ -2963,6 +3005,7 @@ function renderMessages(snapshot) {
     const text    = linkifyUrls(renderMentions(escapeHtml(msg.text || '')));
     const isOwn   = author === chatUserName;
     const edited  = msg.edited ? '<span class="chat-msg-edited">(edited)</span>' : '';
+    const urgentBadge = msg.urgent ? '<span style="display:inline-flex;align-items:center;gap:3px;background:#fff0f0;color:#c0392b;font-size:0.65rem;font-weight:700;padding:2px 7px;border-radius:10px;border:1px solid #f5c6c6;margin-left:6px;letter-spacing:0.03em;">🚨 URGENT</span>' : '';
 
     if (dateStr !== lastDate) {
       lastDate = dateStr;
@@ -3007,7 +3050,7 @@ function renderMessages(snapshot) {
       <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''} ondblclick="chatShowReactPopup('${msg.id}',event)">
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
-          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${replyBtn}${deleteBtn}</div>
+          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${urgentBadge}${replyBtn}${deleteBtn}</div>
           ${quoteHtml}
           ${text ? `<div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>` : ''}
           ${fileHtml}
@@ -3031,13 +3074,12 @@ window.escapeHtml = escapeHtml;
 // ── @mention system ───────────────────────────────────────────────────────────
 // Board member registry — name, email, initials, colour
 const BOARD_MEMBERS = [
-  { name: 'Kate Carr',          email: 'katecarr@mac.com',           initials: 'KC', color: '#c8922a' },
-  { name: 'Taryn Mildenhall',   email: 'tarynmildenhall@gmail.com',  initials: 'TM', color: '#7b5ea7' },
-  { name: 'Laura Biazon',       email: 'laura.biazon19@gmail.com',   initials: 'LB', color: '#1a5c5a' },
-  { name: 'Samantha Cotter',    email: 'scotter424@gmail.com',       initials: 'SC', color: '#5b7fa6' },
-  { name: 'Amy Kreller-Kochis', email: 'kochismedical@gmail.com',    initials: 'AK', color: '#c0555a' },
-
-  { name: 'Jesiree Mendez',     email: 'jesimend84@gmail.com',       initials: 'JM', color: '#5b7fa6' },
+  { name: 'Kate Carr',          email: 'katecarr@mac.com',           initials: 'KC', color: '#c8922a', sms: '5417978331@txt.att.net' },
+  { name: 'Taryn Mildenhall',   email: 'tarynmildenhall@gmail.com',  initials: 'TM', color: '#7b5ea7', sms: null },
+  { name: 'Laura Biazon',       email: 'laura.biazon19@gmail.com',   initials: 'LB', color: '#1a5c5a', sms: null },
+  { name: 'Samantha Cotter',    email: 'scotter424@gmail.com',       initials: 'SC', color: '#5b7fa6', sms: null },
+  { name: 'Amy Kreller-Kochis', email: 'kochismedical@gmail.com',    initials: 'AK', color: '#c0555a', sms: null },
+  { name: 'Jesiree Mendez',     email: 'jesimend84@gmail.com',       initials: 'JM', color: '#5b7fa6', sms: null },
 ];
 window.BOARD_MEMBERS = BOARD_MEMBERS;   // expose for config
 
@@ -3380,14 +3422,22 @@ async function chatSend() {
       fileData = { name: fileToSend.name, size: fileToSend.size, url };
     }
 
+    const sendUrgent = isUrgent;
     const msgData = { text: sendText, author: chatUserName, ts: serverTimestamp() };
     if (fileData) msgData.file = fileData;
     if (replyingTo) msgData.replyTo = { id: replyingTo.id, author: replyingTo.author, text: replyingTo.text };
+    if (sendUrgent) msgData.urgent = true;
     chatClearReply();
+
+    // Reset urgent flag immediately after capturing state
+    if (isUrgent) chatToggleUrgent();
 
     await addDoc(collection(db, 'channels', currentChannel, 'messages'), msgData);
     markSeen(currentChannel);
     updateBadge(currentChannel, 0);
+
+    // Send SMS alerts if urgent
+    if (sendUrgent) sendUrgentSMS(chatUserName, sendText, currentChannel);
 
     // Send email notifications for @mentions
     if (sendText) {
