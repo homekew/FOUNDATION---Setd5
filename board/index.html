@@ -1275,7 +1275,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-left:2px;">
                 <div class="chat-keyboard-hint" style="font-size:0.67rem;color:var(--text-light);">Enter for new line · ↑ to send · 📎 to attach a file</div>
-                <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will send a text alert to @mentioned board members" style="display:inline-flex;align-items:center;gap:5px;font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:20px;border:1.5px solid #e0e0e0;background:none;color:var(--text-light);cursor:pointer;transition:all 0.15s;font-family:inherit;"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1a5 5 0 015 5v3l1.5 2H1.5L3 9V6a5 5 0 015-5z"/><path d="M6.5 13a1.5 1.5 0 003 0"/><line x1="8" y1="1" x2="8" y2="0"/><circle cx="13" cy="3" r="2.5" fill="#c0392b" stroke="none"/><text x="13" y="4.2" text-anchor="middle" font-size="3.5" fill="white" font-weight="bold" stroke="none">!</text></svg> Urgent</button>
+                <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will send an email alert to @mentioned board members" style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #e0e0e0;background:none;color:var(--text-light);cursor:pointer;transition:all 0.15s;font-family:inherit;"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1a5 5 0 015 5v3l1.5 2H1.5L3 9V6a5 5 0 015-5z"/><path d="M6.5 13a1.5 1.5 0 003 0"/><line x1="8" y1="1" x2="8" y2="0"/><circle cx="13" cy="3" r="2.5" fill="#c0392b" stroke="none"/><text x="13" y="4.2" text-anchor="middle" font-size="3.5" fill="white" font-weight="bold" stroke="none">!</text></svg> Urgent</button>
               </div>
             </div>
 
@@ -2467,45 +2467,38 @@ function chatToggleUrgent() {
 }
 window.chatToggleUrgent = chatToggleUrgent;
 
-// ── SMS via Twilio Function ───────────────────────────────────────────────────
-const TWILIO_FUNCTION_URL = 'https://send-sms-5475.twil.io/send';
-
+// ── Urgent email alerts ───────────────────────────────────────────────────────
 async function sendUrgentSMS(senderName, messageText, channel, mentionedNames = []) {
-  console.log('🚨 sendUrgentSMS called:', { senderName, channel, mentionedNames });
+  console.log('🚨 sendUrgentAlert called:', { senderName, channel, mentionedNames });
 
   const mentionedLower = mentionedNames.map(n => n.toLowerCase());
-  const toText = BOARD_MEMBERS.filter(m =>
-    m.sms && mentionedLower.includes(m.name.toLowerCase())
+  // Send urgent alert to all @mentioned members (including self-mentions)
+  const toAlert = BOARD_MEMBERS.filter(m =>
+    m.email && mentionedLower.includes(m.name.toLowerCase())
   );
-  console.log('📱 SMS recipients:', toText.map(m => `${m.name} → ${m.sms}`));
+  console.log('📧 Urgent alert recipients:', toAlert.map(m => m.name));
 
-  if (!toText.length) {
-    console.warn('⚠️ No SMS recipients — mentionedNames:', mentionedNames);
+  if (!toAlert.length) {
+    console.warn('⚠️ No urgent alert recipients — mentionedNames:', mentionedNames);
     return;
   }
 
-  for (const member of toText) {
-    console.log(`📤 Texting ${member.name} at ${member.sms}...`);
+  let ejs;
+  try { ejs = await getEmailJS(); } catch (e) { console.error('EmailJS load failed:', e); return; }
+
+  for (const member of toAlert) {
     try {
-      const res = await fetch(TWILIO_FUNCTION_URL, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          to:      member.sms,
-          message: `URGENT from ${senderName} in #${channel}: ${messageText} — setd5syndrome.org/board/`
-        }).toString()
+      await ejs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        email:      member.email,
+        to_name:    member.name,
+        from_name:  senderName,
+        channel:    channel,
+        message:    `🚨 URGENT MESSAGE from ${senderName} in #${channel}:\n\n${messageText}\n\nLog in to respond: https://setd5syndrome.org/board/`,
+        portal_url: 'https://setd5syndrome.org/board/'
       });
-      const rawText = await res.text();
-      console.log(`📨 Twilio Function response (${res.status}):`, rawText);
-      let data = {};
-      try { data = JSON.parse(rawText); } catch(e) {}
-      if (data.success) {
-        console.log(`✅ Text sent to ${member.name} — SID: ${data.sid}`);
-      } else {
-        console.error(`❌ Twilio error for ${member.name}:`, data.error, '| code:', data.code, '| full:', data);
-      }
+      console.log(`✅ Urgent alert email sent to ${member.name}`);
     } catch (err) {
-      console.error(`❌ SMS fetch failed for ${member.name}:`, err);
+      console.error(`❌ Urgent alert to ${member.name} failed:`, err.message);
     }
   }
 }
