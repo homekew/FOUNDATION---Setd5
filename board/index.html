@@ -1322,7 +1322,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <div class="chat-channel-btn"        data-tag="outreach"     onclick="chatSetTag('outreach')"><span class="ch-label"># Community Outreach</span></div>
             <div class="chat-channel-btn"        data-tag="research"     onclick="chatSetTag('research')"><span class="ch-label"># Research &amp; Partnerships</span></div>
             <div class="chat-channel-btn"        data-tag="meetings"     onclick="chatSetTag('meetings')"><span class="ch-label"># Meetings</span></div>
-            <div class="chat-channel-btn"        data-tag="admin"        onclick="chatSetTag('admin')"><span class="ch-label"># Admin</span></div>
+            <div class="chat-channel-btn"        data-tag="admin"        onclick="chatSetTag('admin')"><span class="ch-label"># Governance</span></div>
             <div class="chat-channel-btn"        data-tag="website"      onclick="chatSetTag('website')"><span class="ch-label"># Website</span></div>
             <div class="chat-channel-btn"        data-tag="site-updates" onclick="chatSetTag('site-updates')"><span class="ch-label"># Site Updates</span></div>
           </div>
@@ -1350,6 +1350,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
               <button class="chat-filter-pill"        data-filter="meeting"   onclick="chatSetFilter('meeting')">Bring to Meeting <span class="pill-count" id="fcount-meeting"></span></button>
               <button class="chat-filter-pill"        data-filter="urgent"    onclick="chatSetFilter('urgent')">Urgent <span class="pill-count" id="fcount-urgent"></span></button>
               <button class="chat-filter-pill"        data-filter="mine"      onclick="chatSetFilter('mine')">Assigned to Me</button>
+              <button id="chat-sort-btn" onclick="chatToggleSort()" style="margin-left:8px;display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:600;white-space:nowrap;border:1.5px solid var(--border);background:var(--white);color:var(--text-light);cursor:pointer;font-family:inherit;transition:all 0.15s;flex-shrink:0;" title="Toggle sort order">↑ Oldest first</button>
             </div>
             <!-- Mobile search bar (hidden by default) -->
             <div id="chat-mobile-search" style="display:none;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg);">
@@ -1381,7 +1382,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                   <span class="compose-meta-label">Topic</span>
                   <select id="compose-tag" class="compose-tag-select" onchange="chatTagChange()" title="Choose the topic this message belongs in">
                     <option value="general">General</option>
-                    <option value="admin">Admin</option>
+                    <option value="admin">Governance</option>
                     <option value="meetings">Meetings</option>
                     <option value="website">Website</option>
                     <option value="research">Research &amp; Partnerships</option>
@@ -2658,11 +2659,12 @@ const TAG_DESCRIPTIONS = {
   outreach:      'Families, parent groups, family engagement, awareness-building, community connection, welcoming new families, and outreach directed toward families or the broader public',
   research:      'Researchers, studies, registries, natural history work, scientific opportunities, and conversations with rare disease organizations or external partners related to research, advocacy, collaboration, or learning from their model',
   meetings:      'Agendas, minutes, and follow-ups from board meetings',
-  admin:         'Administrative logistics, scheduling, and operations',
+  admin:         'Governance, bylaws, board structure, policies, and internal operations',
   website:       'Website content, feedback, and update requests',
   'site-updates':'Log of changes made to the live site',
 };
 let currentTag      = 'all';  // sidebar filter (not the compose tag)
+let chatSortOrder   = 'asc';  // 'asc' = oldest first, 'desc' = newest first
 let isUrgent        = false;
 let isReplyNeeded   = false;
 let isBringToMeeting = false;
@@ -2782,7 +2784,7 @@ const TAG_COMPOSE_HINTS = {
   outreach:     'Families, parent groups, family engagement, awareness-building, community connection, welcoming new families, and outreach directed toward families or the broader public.',
   research:     'Researchers, studies, registries, natural history work, scientific opportunities, and conversations with rare disease organizations or external partners related to research, advocacy, collaboration, or learning from their model.',
   meetings:     'Agendas, minutes, decisions, and follow-ups from board meetings.',
-  admin:        'Scheduling, logistics, and internal coordination.',
+  admin:        'Bylaws, board structure, policies, and internal operations.',
   website:      'Website content, feedback, and update requests.',
   'site-updates':'Log of changes made to the live site.',
 };
@@ -2849,7 +2851,7 @@ function chatShowRefile(btn) {
     <span style="font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.06em;font-size:0.6rem;">Move to</span>
     <select id="refile-tag-${msgId}">
       <option value="general"${curTag==='general'?' selected':''}>General</option>
-      <option value="admin"${curTag==='admin'?' selected':''}>Admin</option>
+      <option value="admin"${curTag==='admin'?' selected':''}>Governance</option>
       <option value="meetings"${curTag==='meetings'?' selected':''}>Meetings</option>
       <option value="website"${curTag==='website'?' selected':''}>Website</option>
       <option value="research"${curTag==='research'?' selected':''}>Research &amp; Partnerships</option>
@@ -3499,7 +3501,7 @@ function chatSetTag(tag) {
   // Update header label + description
   const labelMap = { all:'All Messages', general:'General', announcements:'Announcements',
     fundraising:'Fundraising', outreach:'Community Outreach', research:'Research & Partnerships', meetings:'Meetings',
-    admin:'Admin', website:'Website', 'site-updates':'Site Updates' };
+    admin:'Governance', website:'Website', 'site-updates':'Site Updates' };
   document.getElementById('chat-channel-label').textContent = labelMap[tag] || tag;
   const descEl = document.getElementById('chat-channel-desc');
   if (descEl) descEl.textContent = TAG_DESCRIPTIONS[tag] || '';
@@ -3532,12 +3534,12 @@ function chatSubscribe(tag) {
 
   let q;
   if (!tag || tag === 'all') {
-    q = query(collection(db, 'board_messages'), orderBy('ts', 'asc'), limit(150));
+    q = query(collection(db, 'board_messages'), orderBy('ts', chatSortOrder), limit(150));
   } else {
     q = query(
       collection(db, 'board_messages'),
       where('tags', 'array-contains', tag),
-      orderBy('ts', 'asc'),
+      orderBy('ts', chatSortOrder),
       limit(150)
     );
   }
@@ -4495,6 +4497,15 @@ window.migrateWebsiteReviews = async function() {
 };
 
 window.chatToggleMobileSearch = chatToggleMobileSearch;
+
+// ── Sort order toggle ─────────────────────────────────────────────────────────
+function chatToggleSort() {
+  chatSortOrder = chatSortOrder === 'asc' ? 'desc' : 'asc';
+  const btn = document.getElementById('chat-sort-btn');
+  if (btn) btn.textContent = chatSortOrder === 'asc' ? '↑ Oldest first' : '↓ Newest first';
+  chatSubscribe(currentTag);
+}
+window.chatToggleSort = chatToggleSort;
 
 function chatToggleMobileSearch() {
   const bar = document.getElementById('chat-mobile-search');
