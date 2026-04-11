@@ -1102,7 +1102,8 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <div class="board-nav-group-header">Communications</div>
       <a id="nav-messenger" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('messenger');markSeen('board');" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Messenger</a>
       <a id="nav-directory" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('directory')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 7l10 7 10-7"/></svg> Directory</a>
-      <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review');wrMarkSeen()" style="color:var(--coral);font-weight:600;display:inline-flex;align-items:center;gap:6px;">Website Review ★<span id="badge-website-review" style="display:none;background:var(--coral);color:white;font-size:0.62rem;font-weight:700;border-radius:20px;padding:1px 7px;min-width:18px;text-align:center;"></span></a>
+      <!-- Website Review nav link hidden — section retired; content migrated to Website topic in Messenger -->
+      <!-- <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review');wrMarkSeen()" style="color:var(--coral);font-weight:600;display:inline-flex;align-items:center;gap:6px;">Website Review ★<span id="badge-website-review" style="display:none;background:var(--coral);color:white;font-size:0.62rem;font-weight:700;border-radius:20px;padding:1px 7px;min-width:18px;text-align:center;"></span></a> -->
       <a href="#tracker-section" onclick="boardNavClick(event,'tracker-section')">Outreach Log</a>
       <div class="board-nav-group-header">Sections</div>
       <a href="#board-inbox" onclick="boardNavClick(event,'board-inbox');markSeen('board_inbox');inboxRender();" id="inbox-nav-link" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg> Doc Inbox <span id="inbox-nav-badge" style="display:none;background:var(--coral);color:white;font-size:0.65rem;font-weight:700;padding:1px 7px;border-radius:10px;line-height:1.6;"></span></a>
@@ -1465,7 +1466,8 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   </section>
 
   <!-- Committee Documents -->
-  <section class="section section--white board-section" id="board-website-review">
+  <!-- Website Review section retired — content migrated to Website topic in Messenger. HTML preserved for rollback. -->
+  <section class="section section--white board-section" id="board-website-review" style="display:none;">
   <div class="container">
     <div class="section-header" style="margin-bottom:32px;">
       <span class="subhead" style="color:var(--coral);">Action Required</span>
@@ -4300,6 +4302,56 @@ window.chatMigrateChannels = async function() {
   }
   console.log(`✅ Migration complete — ${total} messages copied to board_messages.`);
 };
+
+// ── One-time migration: copy website_reviews → board_messages (Website topic) ─
+// Run once from the browser console: migrateWebsiteReviews()
+// Safe to run multiple times — checks legacyId before writing.
+window.migrateWebsiteReviews = async function() {
+  console.log('🌐 Migrating website_reviews → board_messages [website]…');
+  let total = 0;
+  try {
+    const snap = await getDocs(query(
+      collection(db, 'website_reviews'),
+      orderBy('ts', 'asc'),
+      limit(500)
+    ));
+    for (const d of snap.docs) {
+      const data = d.data();
+      // Skip if already migrated
+      const existing = await getDocs(query(
+        collection(db, 'board_messages'),
+        where('legacyId', '==', d.id),
+        limit(1)
+      ));
+      if (!existing.empty) { console.log(`  ↷ Already migrated: ${d.id}`); continue; }
+
+      // Build message text — prepend section label if present
+      const sectionPrefix = data.section && data.section !== 'General / Other' && data.section !== 'General'
+        ? `[${data.section}] ` : '';
+      const text = sectionPrefix + (data.notes || '').trim();
+
+      const msgData = {
+        author:         data.name  || 'Unknown',
+        text,
+        ts:             data.ts    || null,
+        tags:           ['website'],
+        msgType:        'update',
+        legacyId:       d.id,
+        legacySource:   'website_reviews',
+      };
+      if (data.replyTo) msgData.replyTo = data.replyTo;
+      if (data.edited)  msgData.edited  = true;
+
+      await addDoc(collection(db, 'board_messages'), msgData);
+      total++;
+      console.log(`  ✓ Migrated: "${text.slice(0, 60)}…"`);
+    }
+    console.log(`✅ Done — ${total} website review note${total !== 1 ? 's' : ''} moved to Website topic in Messenger.`);
+  } catch (err) {
+    console.error('Migration error:', err);
+  }
+};
+
 window.chatToggleMobileSearch = chatToggleMobileSearch;
 
 function chatToggleMobileSearch() {
