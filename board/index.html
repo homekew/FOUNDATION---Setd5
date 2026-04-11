@@ -2615,7 +2615,7 @@ import { initializeApp }                          from 'https://www.gstatic.com/
 import { getFirestore, collection, addDoc,
          query, orderBy, limit, where, onSnapshot, getDocs,
          serverTimestamp, doc, getDoc, setDoc, updateDoc,
-         deleteDoc }                              from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+         deleteDoc, deleteField }                from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getStorage, ref, uploadBytesResumable,
          getDownloadURL }                         from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
 
@@ -3528,10 +3528,10 @@ function chatSubscribe(tag) {
   if (!tag || tag === 'all') {
     q = query(collection(db, 'board_messages'), orderBy('ts', chatSortOrder), limit(150));
   } else {
+    // No orderBy on filtered queries — avoids composite index requirement; sorted client-side in renderMessages
     q = query(
       collection(db, 'board_messages'),
       where('tags', 'array-contains', tag),
-      orderBy('ts', chatSortOrder),
       limit(150)
     );
   }
@@ -3559,7 +3559,12 @@ function renderMessages(snapshot) {
     return;
   }
 
-  chatAllMessages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+  chatAllMessages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => {
+      const ta = a.ts?.toMillis?.() ?? 0;
+      const tb = b.ts?.toMillis?.() ?? 0;
+      return chatSortOrder === 'asc' ? ta - tb : tb - ta;
+    });
   updateChatSummary(chatAllMessages);
   renderFilteredMessages();
 }
@@ -3629,12 +3634,15 @@ function renderFilteredMessages() {
       </div>` : '';
 
     const fileHtml = msg.file ? `
-      <a href="${msg.file.url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-top:6px;padding:7px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--teal);font-size:0.78rem;font-weight:500;transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--border)'">
-        <span style="font-size:1rem;">${fileIcon(msg.file.name)}</span>
-        <span>${escapeHtml(msg.file.name)}</span>
-        <span style="color:var(--text-light);font-size:0.68rem;">${formatBytes(msg.file.size)}</span>
-        <span style="font-size:0.72rem;opacity:0.6;">↓</span>
-      </a>` : '';
+      <div style="display:inline-flex;align-items:center;gap:6px;margin-top:6px;">
+        <a href="${msg.file.url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:7px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--teal);font-size:0.78rem;font-weight:500;transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--border)'">
+          <span style="font-size:1rem;">${fileIcon(msg.file.name)}</span>
+          <span>${escapeHtml(msg.file.name)}</span>
+          <span style="color:var(--text-light);font-size:0.68rem;">${formatBytes(msg.file.size)}</span>
+          <span style="font-size:0.72rem;opacity:0.6;">↓</span>
+        </a>
+        <button onclick="chatDeleteAttachment('${msg.id}')" title="Remove attachment" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.8rem;padding:4px;border-radius:4px;line-height:1;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='var(--text-light)'">✕</button>
+      </div>` : '';
 
     const aiCard = (msg.msgType === 'action' && msg.aiTitle) ? buildAiCard(msg) : '';
 
@@ -4231,6 +4239,18 @@ async function chatDeleteMessage(msgId) {
     alert('Could not delete message. Please try again.');
   }
 }
+
+// ── Delete attachment from a message ─────────────────────────────────────────
+async function chatDeleteAttachment(msgId) {
+  if (!confirm('Remove this attachment? The file link will be deleted but the message text will remain.')) return;
+  try {
+    await updateDoc(doc(db, 'board_messages', msgId), { file: deleteField() });
+  } catch (err) {
+    console.error('Attachment delete error:', err);
+    alert('Could not remove attachment. Please try again.');
+  }
+}
+window.chatDeleteAttachment = chatDeleteAttachment;
 
 // ── Admin delete — removes any message regardless of author ──────────────────
 async function chatAdminDelete(btn) {
