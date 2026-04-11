@@ -827,13 +827,21 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .compose-meta-row { display:flex;align-items:center;gap:10px;margin-bottom:7px;flex-wrap:wrap; }
   .compose-meta-label { font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-light);flex-shrink:0; }
   .compose-tag-select { padding:4px 22px 4px 10px;border:1.5px solid var(--border);border-radius:20px;font-family:inherit;font-size:0.72rem;font-weight:600;color:var(--text);background:var(--white);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 0l5 6 5-6%22 fill=%22%237a9bab%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 8px center;transition:border-color 0.15s; }
-  /* ── Reply Needed button ── */
-  #reply-needed-toggle { display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #c5d3f6;background:#f0f5ff;color:#3b5bdb;cursor:pointer;transition:all 0.15s;font-family:inherit; }
-  #reply-needed-toggle.active { background:#dbe4ff;color:#2f4bbd;border-color:#91a7ff; }
-  /* ── Bring to Meeting — minimal optional flag, visually quieter than other buttons ── */
-  #meeting-toggle { display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:400;padding:3px 10px;border-radius:20px;border:1px dashed var(--border);background:none;color:var(--text-light);cursor:pointer;transition:all 0.15s;font-family:inherit; }
-  #meeting-toggle:hover { border-color:#b8ddc0;color:#2d7a47;border-style:solid; }
-  #meeting-toggle.active { background:#f0faf2;color:#2d7a47;border-color:#b8ddc0;border-style:solid;font-weight:600; }
+  /* ── Flag buttons — unified ghost style at rest, color reveals on hover/active ── */
+  #reply-needed-toggle, #meeting-toggle, #urgent-toggle {
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:0.72rem;font-weight:500;
+    padding:3px 10px;border-radius:20px;
+    border:1px solid var(--border);background:none;
+    color:var(--text-light);cursor:pointer;
+    transition:all 0.15s;font-family:inherit;
+  }
+  #reply-needed-toggle:hover { border-color:#91a7ff;color:#3b5bdb; }
+  #reply-needed-toggle.active { background:#f0f5ff;color:#3b5bdb;border-color:#91a7ff;font-weight:600; }
+  #meeting-toggle:hover { border-color:#b8ddc0;color:#2d7a47; }
+  #meeting-toggle.active { background:#f0faf2;color:#2d7a47;border-color:#b8ddc0;font-weight:600; }
+  #urgent-toggle:hover { border-color:#c8a96e;color:#a07830; }
+  #urgent-toggle.active { background:#fdf6ec;color:#a07830;border-color:#c8a96e;font-weight:600; }
   /* ── Bring to meeting badge on messages ── */
   .bring-to-meeting-badge { display:inline-flex;align-items:center;gap:4px;background:#f0faf2;color:#2d7a47;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid #b8ddc0;margin-left:6px;letter-spacing:0.03em; }
   /* ── Compose hint always visible ── */
@@ -1427,7 +1435,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                 <div style="flex:1;min-width:0;">
                   <!-- Live type badge shown when a non-default type is chosen -->
                   <div id="compose-type-badge" style="display:none;margin-bottom:5px;"></div>
-                  <textarea id="chat-input" rows="1" placeholder="Message #general… (type @ to mention someone)"
+                  <textarea id="chat-input" rows="1" placeholder="Message the board… (type @ to mention someone)"
                   style="width:100%;border:none;outline:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;color:var(--text);resize:none;min-height:22px;max-height:100px;line-height:1.5;"
                   oninput="chatMentionInput(event)"
                   onkeydown="chatMentionKey(event)"></textarea>
@@ -1450,7 +1458,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
                     <button id="reply-needed-toggle" onclick="chatToggleReplyNeeded()" title="Notifies @mentioned people that a reply is expected">↩ Reply Needed</button>
                     <button id="meeting-toggle" onclick="chatToggleMeeting()" title="Mark this for discussion at the next board meeting">Bring to Meeting</button>
-                    <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will email @mentioned board members" style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #c8a96e;background:#fdf6ec;color:#a07830;cursor:pointer;transition:all 0.15s;font-family:inherit;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/><line x1="12" y1="2" x2="12" y2="1"/></svg><svg width="7" height="13" viewBox="0 0 8 16" fill="currentColor"><text x="4" y="13" text-anchor="middle" font-size="14" font-weight="900">!</text></svg> Urgent</button>
+                    <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will email @mentioned board members">! Urgent</button>
                   </div>
                   <div id="reply-needed-hint" style="font-size:0.66rem;color:#3b5bdb;padding:0 2px;">Notifies the @mentioned person/people that a reply is needed.</div>
                 </div>
@@ -2816,15 +2824,7 @@ function chatToggleUrgent() {
   isUrgent = !isUrgent;
   const btn = document.getElementById('urgent-toggle');
   if (!btn) return;
-  if (isUrgent) {
-    btn.style.background    = '#fff0f0';
-    btn.style.color         = '#c0392b';
-    btn.style.borderColor   = '#f5c6c6';
-  } else {
-    btn.style.background    = 'none';
-    btn.style.color         = 'var(--text-light)';
-    btn.style.borderColor   = '#e0e0e0';
-  }
+  btn.classList.toggle('active', isUrgent);
 }
 window.chatToggleUrgent = chatToggleUrgent;
 
