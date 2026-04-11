@@ -828,7 +828,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .compose-meta-label { font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-light);flex-shrink:0; }
   .compose-tag-select { padding:4px 22px 4px 10px;border:1.5px solid var(--border);border-radius:20px;font-family:inherit;font-size:0.72rem;font-weight:600;color:var(--text);background:var(--white);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 0l5 6 5-6%22 fill=%22%237a9bab%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 8px center;transition:border-color 0.15s; }
   /* ── Flag buttons — unified ghost style at rest, color reveals on hover/active ── */
-  #reply-needed-toggle, #meeting-toggle, #urgent-toggle {
+  #reply-needed-toggle, #urgent-toggle {
     display:inline-flex;align-items:center;gap:5px;
     font-size:0.72rem;font-weight:500;
     padding:3px 10px;border-radius:20px;
@@ -838,12 +838,10 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   }
   #reply-needed-toggle:hover { border-color:#91a7ff;color:#3b5bdb; }
   #reply-needed-toggle.active { background:#f0f5ff;color:#3b5bdb;border-color:#91a7ff;font-weight:600; }
-  #meeting-toggle:hover { border-color:#b8ddc0;color:#2d7a47; }
-  #meeting-toggle.active { background:#f0faf2;color:#2d7a47;border-color:#b8ddc0;font-weight:600; }
   #urgent-toggle:hover { border-color:#c8a96e;color:#a07830; }
   #urgent-toggle.active { background:#fdf6ec;color:#a07830;border-color:#c8a96e;font-weight:600; }
   /* ── Bring to meeting badge on messages ── */
-  .bring-to-meeting-badge { display:inline-flex;align-items:center;gap:4px;background:#f0faf2;color:#2d7a47;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid #b8ddc0;margin-left:6px;letter-spacing:0.03em; }
+  .bring-to-meeting-badge { display:none; }
   /* ── Compose hint always visible ── */
   .compose-type-hint { font-size:0.67rem;color:var(--text-light);margin-bottom:7px;padding:3px 4px;line-height:1.4; }
   /* ── Tag subhint ── */
@@ -1347,7 +1345,6 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
               <button class="chat-filter-pill active" data-filter="all"       onclick="chatSetFilter('all')">All</button>
               <button class="chat-filter-pill"        data-filter="actions"   onclick="chatSetFilter('actions')">Action Items <span class="pill-count" id="fcount-actions"></span></button>
               <button class="chat-filter-pill"        data-filter="decisions" onclick="chatSetFilter('decisions')">Decisions Needed <span class="pill-count" id="fcount-decisions"></span></button>
-              <button class="chat-filter-pill"        data-filter="meeting"   onclick="chatSetFilter('meeting')">Bring to Meeting <span class="pill-count" id="fcount-meeting"></span></button>
               <button class="chat-filter-pill"        data-filter="urgent"    onclick="chatSetFilter('urgent')">Urgent <span class="pill-count" id="fcount-urgent"></span></button>
               <button class="chat-filter-pill"        data-filter="mine"      onclick="chatSetFilter('mine')">Assigned to Me</button>
               <button id="chat-sort-btn" onclick="chatToggleSort()" style="margin-left:8px;display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:600;white-space:nowrap;border:1.5px solid var(--border);background:var(--white);color:var(--text-light);cursor:pointer;font-family:inherit;transition:all 0.15s;flex-shrink:0;" title="Toggle sort order">↑ Oldest first</button>
@@ -1471,7 +1468,6 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                 <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
                   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
                     <button id="reply-needed-toggle" onclick="chatToggleReplyNeeded()" title="Notifies @mentioned people that a reply is expected">↩ Reply Needed</button>
-                    <button id="meeting-toggle" onclick="chatToggleMeeting()" title="Mark this for discussion at the next board meeting">Bring to Meeting</button>
                     <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will email @mentioned board members">! Urgent</button>
                   </div>
                   <div id="reply-needed-hint" style="font-size:0.66rem;color:#3b5bdb;padding:0 2px;">Notifies the @mentioned person/people that a reply is needed.</div>
@@ -2667,7 +2663,6 @@ let currentTag      = 'all';  // sidebar filter (not the compose tag)
 let chatSortOrder   = 'asc';  // 'asc' = oldest first, 'desc' = newest first
 let isUrgent        = false;
 let isReplyNeeded   = false;
-let isBringToMeeting = false;
 let chatAllMessages = [];   // cache of latest snapshot docs for re-filtering
 let chatFilter      = 'all'; // active filter (by message type/urgency)
 
@@ -2730,13 +2725,12 @@ function updateChatSummary(docs) {
   const urgentCount   = docs.filter(m => m.urgent || m.msgType === 'urgent').length;
   const actionCount   = docs.filter(m => m.msgType === 'action').length;
   const decisionCount = docs.filter(m => m.msgType === 'decision').length;
-  const meetingCount  = docs.filter(m => m.bringToMeeting).length;
+  const meetingCount  = 0;
   const setCount = (id, n) => { const el = document.getElementById(id); if (el) el.textContent = n > 0 ? n : ''; };
   setCount('fcount-actions',  actionCount);
   setCount('fcount-decisions', decisionCount);
   setCount('fcount-urgent',   urgentCount);
-  setCount('fcount-meeting',  meetingCount);
-  if (urgentCount === 0 && actionCount === 0 && decisionCount === 0 && meetingCount === 0) {
+  if (urgentCount === 0 && actionCount === 0 && decisionCount === 0) {
     bar.classList.add('clean'); bar.innerHTML = ''; return;
   }
   bar.classList.remove('clean');
@@ -2744,7 +2738,6 @@ function updateChatSummary(docs) {
   if (urgentCount   > 0) chips += `<button class="summary-chip sc-urgent"   onclick="chatSetFilter('urgent')"   title="Show urgent"><span class="sc-count">${urgentCount}</span> urgent</button>`;
   if (actionCount   > 0) chips += `<button class="summary-chip sc-actions"  onclick="chatSetFilter('actions')"  title="Show action items"><span class="sc-count">${actionCount}</span> action item${actionCount !== 1 ? 's' : ''}</button>`;
   if (decisionCount > 0) chips += `<button class="summary-chip sc-decisions" onclick="chatSetFilter('decisions')" title="Show decisions needed"><span class="sc-count">${decisionCount}</span> decision${decisionCount !== 1 ? 's' : ''} needed</button>`;
-  if (meetingCount  > 0) chips += `<button class="summary-chip" onclick="chatSetFilter('meeting')" title="Show items for meeting" style="background:#f0faf2;color:#2d7a47;border:1px solid #b8ddc0;"><span class="sc-count" style="color:#2d7a47;">${meetingCount}</span> for meeting</button>`;
   if (chips) chips += `<button class="summary-chip" onclick="chatSetFilter('all')" style="color:var(--text-light);font-weight:400;">View all</button>`;
   bar.innerHTML = chips;
 }
@@ -2932,7 +2925,7 @@ function chatUpdateClearBtn() {
   const input = document.getElementById('chat-input');
   const btn   = document.getElementById('compose-clear-btn');
   if (!btn) return;
-  const hasContent = (input && input.value.trim()) || pendingFile || isUrgent || isReplyNeeded || isBringToMeeting || replyingTo;
+  const hasContent = (input && input.value.trim()) || pendingFile || isUrgent || isReplyNeeded || replyingTo;
   btn.style.display = hasContent ? 'flex' : 'none';
 }
 window.chatUpdateClearBtn = chatUpdateClearBtn;
@@ -2944,7 +2937,6 @@ function chatClearCompose() {
   chatClearReply();
   if (isUrgent)        chatToggleUrgent();
   if (isReplyNeeded)   { isReplyNeeded = false; const b = document.getElementById('reply-needed-toggle'); if (b) b.classList.remove('active'); const h = document.getElementById('reply-needed-hint'); if (h) h.style.display = 'none'; }
-  if (isBringToMeeting) chatToggleMeeting();
   const typeEl = document.getElementById('chat-msg-type');
   if (typeEl) { typeEl.value = 'idea'; chatTypeChange(); }
   const tagEl = document.getElementById('compose-tag');
@@ -2961,7 +2953,7 @@ function chatExpandCompose() {
 }
 function chatMaybeCollapseCompose() {
   const input = document.getElementById('chat-input');
-  const hasContent = (input && input.value.trim()) || pendingFile || isUrgent || isReplyNeeded || isBringToMeeting || replyingTo;
+  const hasContent = (input && input.value.trim()) || pendingFile || isUrgent || isReplyNeeded || replyingTo;
   if (!hasContent) {
     // Small delay so clicks on flag buttons don't trigger a collapse
     setTimeout(() => {
@@ -3660,7 +3652,7 @@ function renderFilteredMessages() {
       <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}${urgentClass}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''} ondblclick="chatShowReactPopup('${msg.id}',event)">
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
-          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${typeBadge}${urgentBadge}${replyNeededBadge}${meetingBadge}${tagPills ? `<span style="margin-left:6px;">${tagPills}</span>` : ''}${replyBtn}${deleteBtn}</div>
+          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${typeBadge}${urgentBadge}${replyNeededBadge}${tagPills ? `<span style="margin-left:6px;">${tagPills}</span>` : ''}${replyBtn}${deleteBtn}</div>
           ${quoteHtml}
           ${text ? `<div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>` : ''}
           ${aiCard}
@@ -4061,7 +4053,6 @@ async function chatSend() {
 
     const sendUrgent       = isUrgent;
     const sendReplyNeeded  = isReplyNeeded;
-    const sendMeeting      = isBringToMeeting;
     // Compose tag — what the user selected in the tag picker (only for top-level posts)
     const composeTagEl = document.getElementById('compose-tag');
     const composeTag   = (!replyingTo && composeTagEl) ? (composeTagEl.value || 'general') : 'general';
@@ -4071,7 +4062,6 @@ async function chatSend() {
     if (replyingTo)      msgData.replyTo       = { id: replyingTo.id, author: replyingTo.author, text: replyingTo.text };
     if (sendUrgent)      msgData.urgent        = true;
     if (sendReplyNeeded) msgData.replyNeeded   = true;
-    if (sendMeeting)     msgData.bringToMeeting = true;
     // Store action item fields only if type is action
     if (msgType === 'action') {
       if (aiTitle)  msgData.aiTitle  = aiTitle;
@@ -4085,8 +4075,7 @@ async function chatSend() {
     // Reset flags after capturing
     if (isUrgent)        chatToggleUrgent();
     if (isReplyNeeded)   chatToggleReplyNeeded();
-    if (isBringToMeeting) chatToggleMeeting();
-
+  
     await addDoc(collection(db, 'board_messages'), msgData);
     markSeen('board');
     chatUpdateClearBtn();
