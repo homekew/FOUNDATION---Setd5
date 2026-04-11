@@ -3500,7 +3500,7 @@ footer {
   // On load, restore page from URL hash
   (function() {
     const hash = window.location.hash.replace('#', '');
-    const validPages = ['home','about','research','donate','who','resources','partners','fundraising','volunteer'];
+    const validPages = ['home','about','research','donate','who','resources','partners','fundraising','volunteer','newsletter'];
     if (hash && validPages.includes(hash)) {
       showPage(hash);
     }
