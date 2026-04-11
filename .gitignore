@@ -65,3 +65,5 @@ Media kit/
 
 # Logo variants
 logo_white-helix*.png
+.github_token
+.ssh/
