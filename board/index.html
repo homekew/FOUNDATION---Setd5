@@ -819,6 +819,17 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .chat-action-btn { font-size:0.72rem;padding:3px 8px;border:none;background:none;border-radius:5px;cursor:pointer;font-family:inherit;color:var(--text-light);transition:background 0.12s,color 0.12s;white-space:nowrap; }
   .chat-action-btn:hover { background:var(--teal-light);color:var(--teal); }
   .chat-action-btn.delete:hover { background:#fef2f2;color:#dc2626; }
+  /* ── Tag pills on messages ── */
+  .msg-tag-pill { display:inline-flex;align-items:center;font-size:0.62rem;font-weight:600;padding:1px 7px;border-radius:10px;background:var(--teal-light);color:var(--teal);border:1px solid rgba(42,115,107,0.15);letter-spacing:0.02em;cursor:default; }
+  /* ── Reply Needed badge ── */
+  .reply-needed-badge { display:inline-flex;align-items:center;gap:4px;background:#f0f5ff;color:#3b5bdb;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid #c5d3f6;margin-left:6px;letter-spacing:0.03em; }
+  /* ── Compose tag + action row ── */
+  .compose-meta-row { display:flex;align-items:center;gap:10px;margin-bottom:7px;flex-wrap:wrap; }
+  .compose-meta-label { font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-light);flex-shrink:0; }
+  .compose-tag-select { padding:4px 22px 4px 10px;border:1.5px solid var(--border);border-radius:20px;font-family:inherit;font-size:0.72rem;font-weight:600;color:var(--text);background:var(--white);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 0l5 6 5-6%22 fill=%22%237a9bab%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 8px center;transition:border-color 0.15s; }
+  /* ── Reply Needed button ── */
+  #reply-needed-toggle { display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #c5d3f6;background:#f0f5ff;color:#3b5bdb;cursor:pointer;transition:all 0.15s;font-family:inherit; }
+  #reply-needed-toggle.active { background:#dbe4ff;color:#2f4bbd;border-color:#91a7ff; }
   /* Inline edit */
   .chat-edit-area { margin-top:4px; }
   .chat-edit-input { width:100%;padding:6px 10px;border:1.5px solid var(--teal);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;outline:none;resize:none;line-height:1.5;min-height:36px; }
@@ -968,6 +979,11 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     .chat-reply-btn, .chat-delete-btn { opacity:1; }
   }
 
+  /* ── Desktop: viewport-aware height (not fixed 560px) ── */
+  .chat-app-frame {
+    height: clamp(560px, calc(100vh - 300px), 800px);
+  }
+
   /* ── Expanded / full-window chat (desktop only) ── */
   #chat-app.chat-expanded {
     position: fixed !important;
@@ -1070,7 +1086,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     </div>
     <div class="board-sidebar-links" id="board-sidebar-links">
       <div class="board-nav-group-header">Communications</div>
-      <a id="nav-messenger" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('messenger');markSeen(currentChannel);updateBadge(currentChannel,0);" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Messenger</a>
+      <a id="nav-messenger" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('messenger');markSeen('board');" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Messenger</a>
       <a id="nav-directory" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('directory')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 7l10 7 10-7"/></svg> Directory</a>
       <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review');wrMarkSeen()" style="color:var(--coral);font-weight:600;display:inline-flex;align-items:center;gap:6px;">Website Review ★<span id="badge-website-review" style="display:none;background:var(--coral);color:white;font-size:0.62rem;font-weight:700;border-radius:20px;padding:1px 7px;min-width:18px;text-align:center;"></span></a>
       <a href="#tracker-section" onclick="boardNavClick(event,'tracker-section')">Outreach Log</a>
@@ -1228,7 +1244,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       </div>
 
       <!-- Chat interface -->
-      <div id="chat-app" class="chat-app-frame" style="display:none; border-radius:16px; border:1px solid var(--border); overflow:hidden; box-shadow:var(--shadow-sm); height:560px; display:none; flex-direction:column;">
+      <div id="chat-app" class="chat-app-frame" style="display:none; border-radius:16px; border:1px solid var(--border); overflow:hidden; box-shadow:var(--shadow-sm); flex-direction:column;">
 
         <!-- Chat header -->
         <div style="background:var(--teal-dark); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0;">
@@ -1254,37 +1270,40 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 
           <!-- Channel list -->
           <div class="chat-channel-list" style="width:185px;flex-shrink:0;background:var(--teal-dark);display:flex;flex-direction:column;padding:10px 0;overflow-y:auto;">
-            <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.4);padding:8px 14px 6px;">Channels</div>
-            <div class="chat-channel-btn"        data-channel="announcements" onclick="chatSwitchChannel('announcements')"><span class="ch-label">📣 Announcements</span><span class="chat-unread-badge" id="badge-announcements"></span></div>
-            <div class="chat-channel-btn"        data-channel="admin"         onclick="chatSwitchChannel('admin')"><span class="ch-label"># Admin</span><span class="chat-unread-badge" id="badge-admin"></span></div>
-            <div class="chat-channel-btn"        data-channel="fundraising"   onclick="chatSwitchChannel('fundraising')"><span class="ch-label"># Fundraising</span><span class="chat-unread-badge" id="badge-fundraising"></span></div>
-            <div class="chat-channel-btn active" data-channel="general"       onclick="chatSwitchChannel('general')"><span class="ch-label"># General</span><span class="chat-unread-badge" id="badge-general"></span></div>
-            <div class="chat-channel-btn"        data-channel="outreach"      onclick="chatSwitchChannel('outreach')"><span class="ch-label"># Outreach</span><span class="chat-unread-badge" id="badge-outreach"></span></div>
-            <div class="chat-channel-btn"        data-channel="research"      onclick="chatSwitchChannel('research')"><span class="ch-label"># Research</span><span class="chat-unread-badge" id="badge-research"></span></div>
-            <div class="chat-channel-btn"        data-channel="website"       onclick="chatSwitchChannel('website')"><span class="ch-label"># Website</span><span class="chat-unread-badge" id="badge-website"></span></div>
-            <div class="chat-channel-btn"        data-channel="site-updates"  onclick="chatSwitchChannel('site-updates')"><span class="ch-label"># Site Updates</span><span class="chat-unread-badge" id="badge-site-updates"></span></div>
-            <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.4);padding:8px 14px 6px;margin-top:8px;border-top:1px solid rgba(255,255,255,0.1);">Meetings</div>
-            <div class="chat-channel-btn"        data-channel="meetings"      onclick="chatSwitchChannel('meetings')"><span class="ch-label"># Meetings</span><span class="chat-unread-badge" id="badge-meetings"></span></div>
-            <!-- Search -->
-            <div style="padding:10px 10px 6px; border-top:1px solid rgba(255,255,255,0.1); margin-top:8px;">
+            <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.4);padding:8px 14px 4px;">Channels</div>
+            <!-- Search — top of sidebar, before channel list -->
+            <div style="padding:5px 10px 8px;">
               <div style="position:relative;">
                 <input type="text" id="chat-channel-search" placeholder="Search messages…"
                   oninput="chatSearchMessages(this.value)"
                   onkeydown="if(event.key==='Enter'){chatSearchMessages(this.value);} if(event.key==='Escape'){this.value='';chatSearchMessages('');}"
-                  style="width:100%;padding:6px 26px 6px 10px;border:1.5px solid rgba(255,255,255,0.18);border-radius:7px;font-family:inherit;font-size:0.75rem;background:rgba(255,255,255,0.08);color:white;outline:none;transition:border-color 0.2s;"
+                  style="width:100%;padding:6px 26px 6px 10px;border:1.5px solid rgba(255,255,255,0.18);border-radius:7px;font-family:inherit;font-size:0.75rem;background:rgba(255,255,255,0.08);color:white;outline:none;transition:border-color 0.2s;box-sizing:border-box;"
                   autocomplete="off" />
-                <button type="button" onclick="chatSearchMessages(document.getElementById('chat-channel-search').value)" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:0.85rem;color:rgba(255,255,255,0.55);cursor:pointer;padding:4px 6px;line-height:1;" title="Search">🔍</button>
+                <svg style="position:absolute;right:8px;top:50%;transform:translateY(-50%);opacity:0.45;pointer-events:none;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
               </div>
             </div>
+            <div class="chat-channel-btn active" data-tag="all"          onclick="chatSetTag('all')"><span class="ch-label">📋 All Messages</span></div>
+            <div class="chat-channel-btn"        data-tag="general"      onclick="chatSetTag('general')"><span class="ch-label"># General</span></div>
+            <div class="chat-channel-btn"        data-tag="announcements" onclick="chatSetTag('announcements')"><span class="ch-label">📣 Announcements</span></div>
+            <div class="chat-channel-btn"        data-tag="fundraising"  onclick="chatSetTag('fundraising')"><span class="ch-label"># Fundraising</span></div>
+            <div class="chat-channel-btn"        data-tag="outreach"     onclick="chatSetTag('outreach')"><span class="ch-label"># Outreach</span></div>
+            <div class="chat-channel-btn"        data-tag="research"     onclick="chatSetTag('research')"><span class="ch-label"># Research</span></div>
+            <div class="chat-channel-btn"        data-tag="meetings"     onclick="chatSetTag('meetings')"><span class="ch-label"># Meetings</span></div>
+            <div class="chat-channel-btn"        data-tag="admin"        onclick="chatSetTag('admin')"><span class="ch-label"># Admin</span></div>
+            <div class="chat-channel-btn"        data-tag="website"      onclick="chatSetTag('website')"><span class="ch-label"># Website</span></div>
+            <div class="chat-channel-btn"        data-tag="site-updates" onclick="chatSetTag('site-updates')"><span class="ch-label"># Site Updates</span></div>
           </div>
 
           <!-- Messages + input -->
           <div class="chat-main" style="flex:1;display:flex;flex-direction:column;min-width:0;">
 
-            <!-- Channel header -->
-            <div style="padding:10px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-shrink:0;">
-              <span style="font-size:0.95rem;opacity:0.4;">#</span>
-              <span id="chat-channel-label" style="font-size:0.88rem;font-weight:700;color:var(--teal);flex:1;">general</span>
+            <!-- Tag header -->
+            <div style="padding:8px 18px 7px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <span style="font-size:0.8rem;opacity:0.4;">🏷</span>
+              <div style="flex:1;min-width:0;">
+                <span id="chat-channel-label" style="font-size:0.88rem;font-weight:700;color:var(--teal);">All Messages</span>
+                <div id="chat-channel-desc" style="font-size:0.7rem;color:var(--text-light);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Showing all board messages — use the sidebar to filter by topic</div>
+              </div>
               <button id="chat-search-toggle" onclick="chatToggleMobileSearch()" style="display:none;background:none;border:none;cursor:pointer;font-size:1rem;padding:4px;color:var(--text-light);" title="Search messages">🔍</button>
             </div>
             <!-- Summary bar: urgent / action items / decisions counts -->
@@ -1306,7 +1325,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             </div>
 
             <!-- Messages scroll area -->
-            <div id="chat-messages" style="flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:1px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;touch-action:pan-y;-webkit-overflow-scrolling:touch;"></div>
+            <div id="chat-messages" style="flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:6px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;touch-action:pan-y;-webkit-overflow-scrolling:touch;"></div>
 
             <!-- Compose -->
             <div style="padding:12px 16px;border-top:1px solid var(--border);background:var(--white);flex-shrink:0;position:relative;">
@@ -1321,17 +1340,29 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                 <span class="chat-reply-ind-text" id="chat-reply-ind-text"></span>
                 <button onclick="chatClearReply()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:1px 4px;border-radius:4px;margin-left:auto;flex-shrink:0;" title="Cancel reply">✕</button>
               </div>
-              <!-- Message type selector -->
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">
-                <label style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-light);flex-shrink:0;">Type</label>
-                <select id="chat-msg-type" onchange="chatTypeChange()" style="padding:4px 22px 4px 10px;border:1.5px solid var(--border);border-radius:20px;font-family:inherit;font-size:0.72rem;font-weight:600;color:var(--text);background:var(--white);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 0l5 6 5-6%22 fill=%22%237a9bab%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 8px center;transition:border-color 0.15s;">
-                  <option value="idea">Idea / Brainstorm</option>
-                  <option value="question">Question</option>
-                  <option value="decision">Decision Needed</option>
-                  <option value="action">Action Item</option>
-                  <option value="update">Update</option>
+              <!-- Compose meta row: Tag + Classification -->
+              <div class="compose-meta-row">
+                <span class="compose-meta-label">Tag</span>
+                <select id="compose-tag" class="compose-tag-select" title="Choose the topic this message belongs to">
+                  <option value="general">General</option>
+                  <option value="announcements">Announcements</option>
+                  <option value="fundraising">Fundraising</option>
+                  <option value="outreach">Outreach</option>
+                  <option value="research">Research</option>
+                  <option value="meetings">Meetings</option>
+                  <option value="admin">Admin</option>
+                  <option value="website">Website</option>
+                  <option value="site-updates">Site Updates</option>
+                </select>
+                <span class="compose-meta-label" style="margin-left:6px;">Type</span>
+                <select id="chat-msg-type" onchange="chatTypeChange()" class="compose-tag-select" title="What kind of message is this?">
+                  <option value="idea" title="Sharing a thought or exploring an idea — no action required">💡 Idea / Update</option>
+                  <option value="decision" title="The group needs to weigh in and make a call on this">🗳 Decision Needed — group needs to weigh in</option>
+                  <option value="action" title="A specific task that needs to be done, with a clear owner">✅ Action Item — specific task with an owner</option>
                 </select>
               </div>
+              <!-- Classification hint (shown below selects) -->
+              <div id="classify-hint" style="font-size:0.67rem;color:var(--text-light);margin-bottom:7px;padding:0 2px;display:none;"></div>
               <!-- Action item extended fields (shown only when type = action) -->
               <div class="ai-extended-form" id="ai-extended-form">
                 <div class="ai-field-row">
@@ -1371,11 +1402,15 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                 <button onclick="chatClearFile()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:2px 4px;border-radius:4px;" title="Remove file">✕</button>
               </div>
               <div id="chat-input-box" style="display:flex;align-items:flex-end;gap:8px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:8px 10px 8px 14px;transition:border-color 0.2s;">
-                <textarea id="chat-input" rows="1" placeholder="Message #general… (type @ to mention someone)"
-                  style="flex:1;border:none;outline:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;color:var(--text);resize:none;min-height:22px;max-height:100px;line-height:1.5;"
+                <div style="flex:1;min-width:0;">
+                  <!-- Live type badge shown when a non-default type is chosen -->
+                  <div id="compose-type-badge" style="display:none;margin-bottom:5px;"></div>
+                  <textarea id="chat-input" rows="1" placeholder="Message #general… (type @ to mention someone)"
+                  style="width:100%;border:none;outline:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;color:var(--text);resize:none;min-height:22px;max-height:100px;line-height:1.5;"
                   oninput="chatMentionInput(event)"
                   onkeydown="chatMentionKey(event)"></textarea>
-                <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;position:relative;">
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;position:relative;align-self:flex-end;">
                   <!-- Emoji picker panel -->
                   <div id="emoji-picker">
                     <div class="emoji-picker-grid" id="emoji-picker-grid"></div>
@@ -1386,9 +1421,12 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                   <button onclick="chatSend()" style="width:32px;height:32px;border:none;border-radius:8px;background:var(--teal);color:white;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s;flex-shrink:0;" title="Send message">↑</button>
                 </div>
               </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-left:2px;">
-                <div class="chat-keyboard-hint" style="font-size:0.67rem;color:var(--text-light);">Enter for new line · ↑ to send · 📎 to attach a file</div>
-                <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will send an email alert to @mentioned board members" style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #c8a96e;background:#fdf6ec;color:#a07830;cursor:pointer;transition:all 0.15s;font-family:inherit;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/><line x1="12" y1="2" x2="12" y2="1"/></svg><svg width="7" height="13" viewBox="0 0 8 16" fill="currentColor"><text x="4" y="13" text-anchor="middle" font-size="14" font-weight="900">!</text></svg> Urgent</button>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-left:2px;gap:6px;flex-wrap:wrap;">
+                <div class="chat-keyboard-hint" style="font-size:0.67rem;color:var(--text-light);">↑ to send · Enter for new line · 📎 to attach</div>
+                <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                  <button id="reply-needed-toggle" onclick="chatToggleReplyNeeded()" title="Request a reply — will email @mentioned members that a response is needed">↩ Reply Needed</button>
+                  <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will send an email alert to @mentioned board members" style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #c8a96e;background:#fdf6ec;color:#a07830;cursor:pointer;transition:all 0.15s;font-family:inherit;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/><line x1="12" y1="2" x2="12" y2="1"/></svg><svg width="7" height="13" viewBox="0 0 8 16" fill="currentColor"><text x="4" y="13" text-anchor="middle" font-size="14" font-weight="900">!</text></svg> Urgent</button>
+                </div>
               </div>
             </div>
 
@@ -2529,7 +2567,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
 <script type="module">
 import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getFirestore, collection, addDoc,
-         query, orderBy, limit, onSnapshot, getDocs,
+         query, orderBy, limit, where, onSnapshot, getDocs,
          serverTimestamp, doc, getDoc, setDoc, updateDoc,
          deleteDoc }                              from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getStorage, ref, uploadBytesResumable,
@@ -2560,15 +2598,35 @@ function nameToInitials(name) {
 }
 
 // ── State ────────────────────────────────────────────────────────────────────
+// Legacy channel list kept for migration only — not used in new tag UI
 const ALL_CHANNELS  = ['announcements','admin','fundraising','general','outreach','research','website','site-updates','meetings'];
-let currentChannel  = 'general';
+const ALL_TAGS      = ['general','announcements','fundraising','outreach','research','meetings','admin','website','site-updates'];
+const TAG_DESCRIPTIONS = {
+  all:           'Showing all board messages — use the sidebar to filter by topic',
+  general:       'General board conversation — good default for most topics',
+  announcements: 'Official updates from leadership',
+  fundraising:   'Fundraising strategy, campaigns, and donor relationships',
+  outreach:      'Community outreach, partners, and awareness efforts',
+  research:      'SETD5 research updates and scientific collaboration',
+  meetings:      'Agendas, minutes, and follow-ups from board meetings',
+  admin:         'Administrative logistics, scheduling, and operations',
+  website:       'Website content, feedback, and update requests',
+  'site-updates':'Log of changes made to the live site',
+};
+let currentTag      = 'all';  // sidebar filter (not the compose tag)
 let isUrgent        = false;
+let isReplyNeeded   = false;
 let chatAllMessages = [];   // cache of latest snapshot docs for re-filtering
-let chatFilter      = 'all'; // active filter
+let chatFilter      = 'all'; // active filter (by message type/urgency)
 
 // ── Message type helpers ──────────────────────────────────────────────────────
 const MSG_TYPE_LABELS = {
-  idea:'Idea', question:'Question', decision:'Decision', action:'Action Item', update:'Update'
+  idea:'Idea', question:'Question', decision:'Decision Needed', action:'Action Item', update:'Update'
+};
+const MSG_TYPE_HINTS = {
+  idea:     'Sharing a thought or update — no action required.',
+  decision: 'The group needs to weigh in and make a call on this.',
+  action:   'A specific task that needs to be done, with a clear owner and deadline.',
 };
 const MSG_TYPE_CLASSES = {
   idea:'mt-idea', question:'mt-question', decision:'mt-decision', action:'mt-action', update:'mt-update'
@@ -2639,6 +2697,28 @@ function chatTypeChange() {
   const type = document.getElementById('chat-msg-type') ? document.getElementById('chat-msg-type').value : '';
   const form = document.getElementById('ai-extended-form');
   if (form) form.classList.toggle('visible', type === 'action');
+
+  // Show live type badge in compose box for non-default types
+  const badgeEl = document.getElementById('compose-type-badge');
+  if (badgeEl) {
+    if (type && type !== 'idea') {
+      const label = MSG_TYPE_LABELS[type] || type;
+      const cls   = MSG_TYPE_CLASSES[type] || 'mt-update';
+      badgeEl.innerHTML = `<span class="msg-type-badge ${cls}" style="cursor:default;">${label}</span>`;
+      badgeEl.style.display = 'block';
+    } else {
+      badgeEl.style.display = 'none';
+      badgeEl.innerHTML = '';
+    }
+  }
+
+  // Show classification hint
+  const hintEl = document.getElementById('classify-hint');
+  if (hintEl) {
+    const hint = MSG_TYPE_HINTS[type] || '';
+    if (hint) { hintEl.textContent = hint; hintEl.style.display = 'block'; }
+    else       { hintEl.style.display = 'none'; }
+  }
 }
 window.chatTypeChange = chatTypeChange;
 
@@ -2677,6 +2757,40 @@ function chatToggleUrgent() {
   }
 }
 window.chatToggleUrgent = chatToggleUrgent;
+
+// ── Reply Needed toggle ───────────────────────────────────────────────────────
+function chatToggleReplyNeeded() {
+  isReplyNeeded = !isReplyNeeded;
+  const btn = document.getElementById('reply-needed-toggle');
+  if (!btn) return;
+  btn.classList.toggle('active', isReplyNeeded);
+}
+window.chatToggleReplyNeeded = chatToggleReplyNeeded;
+
+async function sendReplyNeededEmail(senderName, messageText, tag, mentionedNames = []) {
+  const mentionedLower = mentionedNames.map(n => n.toLowerCase());
+  const toAlert = BOARD_MEMBERS.filter(m =>
+    m.email && mentionedLower.includes(m.name.toLowerCase())
+  );
+  if (!toAlert.length) return;
+  let ejs;
+  try { ejs = await getEmailJS(); } catch (e) { console.error('EmailJS load failed:', e); return; }
+  for (const member of toAlert) {
+    try {
+      await ejs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        email:      member.email,
+        to_name:    member.name,
+        from_name:  senderName,
+        channel:    tag,
+        subject:    `↩ Reply Requested — Message from ${senderName}`,
+        message:    `${senderName} has requested a reply on this message (tagged #${tag}):\n\n"${messageText}"\n\nLog in to reply: https://setd5syndrome.org/board/`,
+        portal_url: 'https://setd5syndrome.org/board/'
+      });
+    } catch (err) {
+      console.error(`Reply Needed email to ${member.name} failed:`, err.message);
+    }
+  }
+}
 
 // ── Urgent email alerts ───────────────────────────────────────────────────────
 async function sendUrgentSMS(senderName, messageText, channel, mentionedNames = []) {
@@ -2759,17 +2873,19 @@ function lastSeen(ch) {
   return readStateCache[ch] || local;
 }
 
-function watchUnread(ch) {
-  if (bgUnsubs[ch]) return;   // already watching
-  const q = query(collection(db, 'channels', ch, 'messages'), orderBy('ts', 'desc'), limit(20));
-  bgUnsubs[ch] = onSnapshot(q, snap => {
-    if (ch === currentChannel) { updateBadge(ch, 0); return; }
-    const cutoff = lastSeen(ch);
-    const count  = snap.docs.filter(d => {
+function watchUnread() {
+  // Simplified: watch the unified board_messages collection for recent activity
+  if (bgUnsubs['board']) return;
+  const q = query(collection(db, 'board_messages'), orderBy('ts', 'desc'), limit(30));
+  bgUnsubs['board'] = onSnapshot(q, snap => {
+    // Unread count not displayed per-tag in new UI — just mark badge on nav link if new messages exist
+    const cutoff = lastSeen('board');
+    const hasNew = snap.docs.some(d => {
       const ts = d.data().ts;
       return ts && ts.toMillis() > cutoff;
-    }).length;
-    updateBadge(ch, count);
+    });
+    const navLink = document.getElementById('nav-messenger');
+    if (navLink) navLink.style.fontWeight = hasNew ? '800' : '';
   });
 }
 
@@ -2777,6 +2893,7 @@ function watchUnread(ch) {
 window.chatSetName       = chatSetName;
 window.chatChangeName    = chatChangeName;
 window.chatSwitchChannel = chatSwitchChannel;
+window.chatSetTag        = chatSetTag;
 window.chatSend          = chatSend;
 window.chatKeyDown       = chatKeyDown;
 window.chatUpdatePlaceholder = chatUpdatePlaceholder;
@@ -3139,10 +3256,9 @@ async function showChatApp() {
   if (wrNameDisplay) wrNameDisplay.textContent = chatUserName;
   // Load cross-device read state before starting watchers
   await loadReadState();
-  markSeen('general');
-  chatSubscribe('general');
-  // Start background listeners for unread counts on all other channels
-  ALL_CHANNELS.forEach(ch => { if (ch !== 'general') watchUnread(ch); });
+  markSeen('board');
+  chatSubscribe('all');  // Start with unified "All Messages" view
+  watchUnread();         // Single background watcher for unread indicator
   // Start website review listener after read state is loaded so badge is accurate
   initWebsiteReviewListener();
 }
@@ -3163,22 +3279,26 @@ function chatChangeName() {
 }
 
 // ── Channel switching ─────────────────────────────────────────────────────────
-function chatSwitchChannel(channel) {
-  if (channel === currentChannel) return;
-  currentChannel = channel;
-  markSeen(channel);
-  updateBadge(channel, 0);
+function chatSetTag(tag) {
+  if (tag === currentTag) return;
+  currentTag = tag;
+  markSeen('board');
 
   // Update sidebar active state
   document.querySelectorAll('.chat-channel-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.channel === channel);
+    btn.classList.toggle('active', btn.dataset.tag === tag);
   });
 
-  // Update channel label & placeholder
-  document.getElementById('chat-channel-label').textContent = channel;
+  // Update header label + description
+  const labelMap = { all:'All Messages', general:'General', announcements:'Announcements',
+    fundraising:'Fundraising', outreach:'Outreach', research:'Research', meetings:'Meetings',
+    admin:'Admin', website:'Website', 'site-updates':'Site Updates' };
+  document.getElementById('chat-channel-label').textContent = labelMap[tag] || tag;
+  const descEl = document.getElementById('chat-channel-desc');
+  if (descEl) descEl.textContent = TAG_DESCRIPTIONS[tag] || '';
   chatUpdatePlaceholder();
 
-  // Reset filter to "all" on channel switch
+  // Reset type filter to "all" on tag switch
   chatFilter = 'all';
   document.querySelectorAll('.chat-filter-pill').forEach(pill => {
     pill.classList.toggle('active', pill.dataset.filter === 'all');
@@ -3186,23 +3306,32 @@ function chatSwitchChannel(channel) {
 
   // Clear messages and resubscribe
   document.getElementById('chat-messages').innerHTML = '<div class="chat-loading">Loading…</div>';
-  chatSubscribe(channel);
+  chatSubscribe(tag);
 }
+
+// Alias for backwards compat with nav link
+function chatSwitchChannel(ch) { chatSetTag(ch); }
 
 function chatUpdatePlaceholder() {
   const input = document.getElementById('chat-input');
-  if (input) input.placeholder = `Message #${currentChannel}…`;
+  if (input) input.placeholder = 'Message the board… (type @ to mention someone)';
 }
 
 // ── Firestore subscription ────────────────────────────────────────────────────
-function chatSubscribe(channel) {
+function chatSubscribe(tag) {
   if (unsubscribe) { unsubscribe(); unsubscribe = null; }
 
-  const q = query(
-    collection(db, 'channels', channel, 'messages'),
-    orderBy('ts', 'asc'),
-    limit(100)
-  );
+  let q;
+  if (!tag || tag === 'all') {
+    q = query(collection(db, 'board_messages'), orderBy('ts', 'asc'), limit(150));
+  } else {
+    q = query(
+      collection(db, 'board_messages'),
+      where('tags', 'array-contains', tag),
+      orderBy('ts', 'asc'),
+      limit(150)
+    );
+  }
 
   unsubscribe = onSnapshot(q, snapshot => {
     renderMessages(snapshot);
@@ -3221,7 +3350,7 @@ function renderMessages(snapshot) {
   if (snapshot.empty) {
     chatAllMessages = [];
     updateChatSummary([]);
-    container.innerHTML = `<div class="chat-empty">No messages yet in #${currentChannel}.<br>Be the first to say something!</div>`;
+    container.innerHTML = `<div class="chat-empty">No messages here yet. Be the first to say something!</div>`;
     return;
   }
 
@@ -3239,11 +3368,11 @@ function renderFilteredMessages() {
   let   lastDate = '';
 
   if (docs.length === 0 && chatAllMessages.length > 0) {
-    container.innerHTML = `<div class="chat-empty">No messages match this filter in #${currentChannel}.</div>`;
+    container.innerHTML = `<div class="chat-empty">No messages match this filter.</div>`;
     return;
   }
   if (docs.length === 0) {
-    container.innerHTML = `<div class="chat-empty">No messages yet in #${currentChannel}.<br>Be the first to say something!</div>`;
+    container.innerHTML = `<div class="chat-empty">No messages here yet. Be the first to say something!</div>`;
     return;
   }
 
@@ -3266,6 +3395,13 @@ function renderFilteredMessages() {
       lastDate = dateStr;
       html += `<div class="chat-date-divider"><span>${dateStr}</span></div>`;
     }
+
+    // Tag pills — show the message's topic tag(s), skip 'general' to reduce noise
+    const msgTags = Array.isArray(msg.tags) ? msg.tags.filter(t => t && t !== 'general') : [];
+    const tagPills = msgTags.map(t => `<span class="msg-tag-pill">${t}</span>`).join(' ');
+
+    // Reply Needed badge
+    const replyNeededBadge = msg.replyNeeded ? `<span class="reply-needed-badge">↩ Reply Needed</span>` : '';
 
     // Use data-* attributes for convert button so message content never touches onclick
     const convertBtn = `<button class="chat-action-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 200).replace(/\n/g, ' '))}" onclick="chatConvertToAction(this)">→ Action</button>`;
@@ -3304,7 +3440,7 @@ function renderFilteredMessages() {
       <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}${urgentClass}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''} ondblclick="chatShowReactPopup('${msg.id}',event)">
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
-          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${typeBadge}${urgentBadge}${replyBtn}${deleteBtn}</div>
+          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${typeBadge}${urgentBadge}${replyNeededBadge}${tagPills ? `<span style="margin-left:6px;">${tagPills}</span>` : ''}${replyBtn}${deleteBtn}</div>
           ${quoteHtml}
           ${text ? `<div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>` : ''}
           ${aiCard}
@@ -3696,11 +3832,17 @@ async function chatSend() {
     const statusEl = document.getElementById('ai-status'); if (statusEl) statusEl.value = 'open';
     if (input) delete input.dataset.linkedMsg;
 
-    const sendUrgent = isUrgent;
-    const msgData = { text: sendText, author: chatUserName, ts: serverTimestamp(), msgType };
+    const sendUrgent      = isUrgent;
+    const sendReplyNeeded = isReplyNeeded;
+    // Compose tag — what the user selected in the tag picker
+    const composeTagEl = document.getElementById('compose-tag');
+    const composeTag   = composeTagEl ? (composeTagEl.value || 'general') : 'general';
+
+    const msgData = { text: sendText, author: chatUserName, ts: serverTimestamp(), msgType, tags: [composeTag] };
     if (fileData) msgData.file = fileData;
     if (replyingTo) msgData.replyTo = { id: replyingTo.id, author: replyingTo.author, text: replyingTo.text };
-    if (sendUrgent) msgData.urgent = true;
+    if (sendUrgent)      msgData.urgent      = true;
+    if (sendReplyNeeded) msgData.replyNeeded = true;
     // Store action item fields only if type is action
     if (msgType === 'action') {
       if (aiTitle)  msgData.aiTitle  = aiTitle;
@@ -3711,26 +3853,27 @@ async function chatSend() {
     }
     chatClearReply();
 
-    // Reset urgent flag immediately after capturing state
-    if (isUrgent) chatToggleUrgent();
+    // Reset urgent and reply-needed flags after capturing
+    if (isUrgent)       chatToggleUrgent();
+    if (isReplyNeeded)  chatToggleReplyNeeded();
 
-    await addDoc(collection(db, 'channels', currentChannel, 'messages'), msgData);
-    markSeen(currentChannel);
-    updateBadge(currentChannel, 0);
+    await addDoc(collection(db, 'board_messages'), msgData);
+    markSeen('board');
 
     // Send email notifications for @mentions
     const mentioned = sendText ? extractMentions(sendText) : [];
-    if (mentioned.length) sendMentionEmails(mentioned, chatUserName, sendText, currentChannel);
+    if (mentioned.length) sendMentionEmails(mentioned, chatUserName, sendText, composeTag);
 
-    // Send SMS alerts if urgent
-    console.log('📨 chatSend — sendUrgent:', sendUrgent, '| mentioned:', mentioned.map(m => m.name));
-    if (sendUrgent) sendUrgentSMS(chatUserName, sendText, currentChannel, mentioned.map(m => m.name));
+    console.log('📨 chatSend — sendUrgent:', sendUrgent, '| sendReplyNeeded:', sendReplyNeeded, '| mentioned:', mentioned.map(m => m.name));
+    if (sendUrgent)      sendUrgentSMS(chatUserName, sendText, composeTag, mentioned.map(m => m.name));
+    if (sendReplyNeeded) sendReplyNeededEmail(chatUserName, sendText, composeTag, mentioned.map(m => m.name));
+
     // Send email notification to the person being replied to (if not already mentioned and not self)
     if (replyingTo && replyingTo.author && replyingTo.author !== chatUserName) {
       const replyTarget = BOARD_MEMBERS.find(m => m.name === replyingTo.author);
       const alreadyMentioned = extractMentions(sendText || '').some(m => m.name === replyingTo.author);
       if (replyTarget && !alreadyMentioned) {
-        sendMentionEmails([replyTarget], chatUserName, sendText, currentChannel);
+        sendMentionEmails([replyTarget], chatUserName, sendText, composeTag);
       }
     }
   } catch (err) {
@@ -3804,7 +3947,7 @@ async function chatSaveEdit(msgId, el) {
   if (!newText) return;
   try {
     // Verify ownership before allowing edit
-    const msgRef = doc(db, 'channels', currentChannel, 'messages', msgId);
+    const msgRef = doc(db, 'board_messages', msgId);
     const msgSnap = await getDoc(msgRef);
 
     if (!msgSnap.exists()) {
@@ -3845,7 +3988,7 @@ async function chatDeleteMessage(msgId) {
   if (!confirm('Delete this message? This cannot be undone.')) return;
   try {
     // Verify ownership before allowing deletion
-    const msgRef = doc(db, 'channels', currentChannel, 'messages', msgId);
+    const msgRef = doc(db, 'board_messages', msgId);
     const msgSnap = await getDoc(msgRef);
 
     if (!msgSnap.exists()) {
@@ -3947,7 +4090,7 @@ window.chatAddReaction = async function(emoji) {
   const msgId = reactTargetMsgId;
   reactTargetMsgId = null;
 
-  const msgRef = doc(db, 'channels', currentChannel, 'messages', msgId);
+  const msgRef = doc(db, 'board_messages', msgId);
   // Read current reactions, toggle this user's entry
   try {
     const { getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
@@ -4019,6 +4162,44 @@ window.chatWrToggle = async function() {
 
 // ── Message search ────────────────────────────────────────────────────────────
 window.chatSearchMessages = chatSearchMessages;
+
+// ── One-time migration: copy existing channel messages → board_messages ───────
+// Run once from the browser console: chatMigrateChannels()
+// Safe to run multiple times — checks for existing docs before writing.
+window.chatMigrateChannels = async function() {
+  console.log('🚀 Starting migration of channel messages → board_messages…');
+  let total = 0;
+  for (const ch of ALL_CHANNELS) {
+    try {
+      const snap = await getDocs(query(
+        collection(db, 'channels', ch, 'messages'),
+        orderBy('ts', 'asc'),
+        limit(500)
+      ));
+      for (const d of snap.docs) {
+        const data = d.data();
+        // Check if already migrated (by original doc id stored as legacyId)
+        const existing = await getDocs(query(
+          collection(db, 'board_messages'),
+          where('legacyId', '==', d.id),
+          limit(1)
+        ));
+        if (!existing.empty) continue; // skip already migrated
+        await addDoc(collection(db, 'board_messages'), {
+          ...data,
+          tags: [ch],
+          legacyId: d.id,
+          legacyChannel: ch
+        });
+        total++;
+      }
+      console.log(`  ✓ Migrated channel: ${ch}`);
+    } catch (err) {
+      console.error(`  ✗ Error migrating channel ${ch}:`, err);
+    }
+  }
+  console.log(`✅ Migration complete — ${total} messages copied to board_messages.`);
+};
 window.chatToggleMobileSearch = chatToggleMobileSearch;
 
 function chatToggleMobileSearch() {
@@ -4036,37 +4217,36 @@ async function chatSearchMessages(val) {
   const container = document.getElementById('chat-messages');
   if (!container) return;
 
-  // Clear search — restore normal channel view
+  // Clear search — restore normal view
   if (!q) {
-    chatSubscribe(currentChannel);
+    chatSubscribe(currentTag);
     return;
   }
 
   // Pause the live listener while showing search results
   if (unsubscribe) { unsubscribe(); unsubscribe = null; }
-  container.innerHTML = '<div class="chat-loading">Searching all channels…</div>';
+  container.innerHTML = '<div class="chat-loading">Searching all messages…</div>';
 
   try {
     const results = [];
-    await Promise.all(ALL_CHANNELS.map(async ch => {
-      const snap = await getDocs(query(
-        collection(db, 'channels', ch, 'messages'),
-        orderBy('ts', 'asc'),
-        limit(200)
-      ));
-      snap.docs.forEach(d => {
-        const data = d.data();
-        const msgText   = (data.text   || '').toLowerCase();
-        const msgAuthor = (data.author || '').toLowerCase();
-        const msgFile   = (data.file   ? data.file.name.toLowerCase() : '');
-        if (msgText.includes(q) || msgAuthor.includes(q) || msgFile.includes(q)) {
-          results.push({ id: d.id, channel: ch, ...data });
-        }
-      });
-    }));
+    const snap = await getDocs(query(
+      collection(db, 'board_messages'),
+      orderBy('ts', 'asc'),
+      limit(300)
+    ));
+    snap.docs.forEach(d => {
+      const data = d.data();
+      const msgText   = (data.text   || '').toLowerCase();
+      const msgAuthor = (data.author || '').toLowerCase();
+      const msgFile   = (data.file   ? data.file.name.toLowerCase() : '');
+      if (msgText.includes(q) || msgAuthor.includes(q) || msgFile.includes(q)) {
+        const primaryTag = Array.isArray(data.tags) ? (data.tags[0] || 'general') : 'general';
+        results.push({ id: d.id, channel: primaryTag, ...data });
+      }
+    });
 
     if (results.length === 0) {
-      container.innerHTML = `<div class="chat-empty">No messages found for "<strong>${escapeHtml(val)}</strong>" in any channel.<br><span style="font-size:0.8rem;color:var(--text-light);">Clear the search to return to ${currentChannel}.</span></div>`;
+      container.innerHTML = `<div class="chat-empty">No messages found for "<strong>${escapeHtml(val)}</strong>".<br><span style="font-size:0.8rem;color:var(--text-light);">Clear the search to return to All Messages.</span></div>`;
       return;
     }
 
@@ -4112,7 +4292,7 @@ async function chatSearchMessages(val) {
   } catch(err) {
     console.error('Search error:', err);
     container.innerHTML = '<div class="chat-empty">Search failed. Please try again.</div>';
-    chatSubscribe(currentChannel); // restore live view on error
+    chatSubscribe(currentTag); // restore live view on error
   }
 }
 
