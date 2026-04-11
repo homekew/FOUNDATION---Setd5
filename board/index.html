@@ -875,6 +875,67 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   #chat-who-reacted .wr-toggle:hover { border-color:var(--teal);color:var(--teal);background:var(--teal-light); }
   #chat-who-reacted .wr-toggle.mine { border-color:var(--teal);color:var(--teal);background:rgba(47,83,97,0.08); }
 
+  /* ── Message type badges ── */
+  .msg-type-badge { display:inline-flex;align-items:center;font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:0.04em;text-transform:uppercase;vertical-align:middle;margin-left:4px;line-height:1.5; }
+  .mt-idea     { background:var(--teal-light);color:var(--teal-dark); }
+  .mt-question { background:#fdf5e4;color:#7a4d00; }
+  .mt-decision { background:var(--terra-light);color:#9e4a1e; }
+  .mt-action   { background:var(--teal);color:#fff; }
+  .mt-update   { background:var(--gold-light);color:var(--text-mid);border:1px solid var(--border); }
+
+  /* ── Filter pills ── */
+  .chat-filter-bar { display:flex;gap:4px;padding:7px 14px;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;flex-shrink:0;background:var(--cream); }
+  .chat-filter-bar::-webkit-scrollbar { display:none; }
+  .chat-filter-pill { display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:20px;font-size:0.72rem;font-weight:600;white-space:nowrap;border:1.5px solid var(--border);background:var(--white);color:var(--text-light);cursor:pointer;font-family:inherit;transition:all 0.15s;flex-shrink:0; }
+  .chat-filter-pill:hover { border-color:var(--teal);color:var(--teal); }
+  .chat-filter-pill.active { background:var(--teal);color:#fff;border-color:var(--teal); }
+  .pill-count { font-size:0.6rem;font-weight:700;padding:0 4px;border-radius:8px;min-width:14px;text-align:center; }
+  .chat-filter-pill.active .pill-count { background:rgba(255,255,255,0.22); }
+  .chat-filter-pill:not(.active) .pill-count { background:var(--teal-light);color:var(--teal); }
+
+  /* ── Summary bar ── */
+  .chat-summary-bar { display:flex;align-items:stretch;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;scrollbar-width:none;background:var(--white); }
+  .chat-summary-bar:empty,.chat-summary-bar.clean { display:none; }
+  .chat-summary-bar::-webkit-scrollbar { display:none; }
+  .summary-chip { display:inline-flex;align-items:center;gap:5px;padding:6px 14px;font-size:0.72rem;font-weight:600;color:var(--text-mid);cursor:pointer;border-right:1px solid var(--border);transition:background 0.12s;white-space:nowrap;flex-shrink:0;background:none;border-top:none;border-left:none;border-bottom:none;font-family:inherit; }
+  .summary-chip:last-child { border-right:none; }
+  .summary-chip:hover { background:var(--cream);color:var(--teal); }
+  .sc-count { font-size:0.88rem;font-weight:700; }
+  .summary-chip.sc-urgent  .sc-count { color:#c0392b; }
+  .summary-chip.sc-actions .sc-count { color:var(--teal); }
+  .summary-chip.sc-decisions .sc-count { color:var(--coral); }
+
+  /* ── Action item composer form ── */
+  .ai-extended-form { display:none;background:var(--cream);border:1.5px solid var(--border);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:8px; }
+  .ai-extended-form.visible { display:block; }
+  .ai-field-row { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px; }
+  .ai-field-row.ai-single { grid-template-columns:1fr;margin-bottom:0; }
+  .ai-field { display:flex;flex-direction:column;gap:3px; }
+  .ai-field label { font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--teal); }
+  .ai-field input,.ai-field select { width:100%;padding:6px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:inherit;font-size:0.82rem;color:var(--text);background:var(--white);outline:none; }
+  .ai-field input:focus,.ai-field select:focus { border-color:var(--teal); }
+
+  /* ── Action item message card ── */
+  .action-item-card { background:var(--cream);border:1.5px solid var(--border);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:10px 14px;margin-top:5px; }
+  .ai-card-title { font-weight:700;color:var(--teal);font-size:0.88rem;margin-bottom:5px; }
+  .ai-card-meta  { display:flex;flex-wrap:wrap;gap:10px;font-size:0.75rem;color:var(--text-light); }
+  .ai-card-meta span { display:flex;align-items:center;gap:3px; }
+  .ai-status-pill { display:inline-block;font-size:0.6rem;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:0.04em; }
+  .ais-open     { background:#e4eeeb;color:#2F5361; }
+  .ais-progress { background:#fdf5e4;color:#7a4d00; }
+  .ais-done     { background:#e8f4e8;color:#2a6b2a; }
+  .ais-blocked  { background:#fef2f2;color:#c0392b; }
+
+  /* ── Urgent message row ── */
+  .chat-msg-row.is-urgent { background:rgba(192,57,43,0.04) !important;border-left:3px solid rgba(192,57,43,0.45) !important;padding-left:3px !important;border-radius:0 8px 8px 0;margin-left:-3px; }
+
+  @media (max-width:640px) {
+    .chat-filter-bar  { padding:6px 8px !important; }
+    .chat-filter-pill { padding:5px 10px !important;font-size:0.78rem !important;min-height:34px; }
+    .summary-chip     { padding:8px 12px !important;font-size:0.75rem !important;min-height:36px; }
+    .ai-field-row     { grid-template-columns:1fr !important; }
+  }
+
   /* ── Reply threading ── */
   .chat-reply-quote {
     border-left:3px solid var(--gold);
@@ -1226,6 +1287,16 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
               <span id="chat-channel-label" style="font-size:0.88rem;font-weight:700;color:var(--teal);flex:1;">general</span>
               <button id="chat-search-toggle" onclick="chatToggleMobileSearch()" style="display:none;background:none;border:none;cursor:pointer;font-size:1rem;padding:4px;color:var(--text-light);" title="Search messages">🔍</button>
             </div>
+            <!-- Summary bar: urgent / action items / decisions counts -->
+            <div class="chat-summary-bar clean" id="chat-summary-bar"></div>
+            <!-- Filter pills -->
+            <div class="chat-filter-bar" id="chat-filter-bar">
+              <button class="chat-filter-pill active" data-filter="all"       onclick="chatSetFilter('all')">All</button>
+              <button class="chat-filter-pill"        data-filter="actions"   onclick="chatSetFilter('actions')">Action Items <span class="pill-count" id="fcount-actions"></span></button>
+              <button class="chat-filter-pill"        data-filter="decisions" onclick="chatSetFilter('decisions')">Decisions Needed <span class="pill-count" id="fcount-decisions"></span></button>
+              <button class="chat-filter-pill"        data-filter="urgent"    onclick="chatSetFilter('urgent')">Urgent <span class="pill-count" id="fcount-urgent"></span></button>
+              <button class="chat-filter-pill"        data-filter="mine"      onclick="chatSetFilter('mine')">Assigned to Me</button>
+            </div>
             <!-- Mobile search bar (hidden by default) -->
             <div id="chat-mobile-search" style="display:none;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg);">
               <input type="text" id="chat-mobile-search-input" placeholder="Search messages…"
@@ -1249,6 +1320,48 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                 <span style="color:var(--text-light);margin:0 4px;">·</span>
                 <span class="chat-reply-ind-text" id="chat-reply-ind-text"></span>
                 <button onclick="chatClearReply()" style="border:none;background:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:1px 4px;border-radius:4px;margin-left:auto;flex-shrink:0;" title="Cancel reply">✕</button>
+              </div>
+              <!-- Message type selector -->
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">
+                <label style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-light);flex-shrink:0;">Type</label>
+                <select id="chat-msg-type" onchange="chatTypeChange()" style="padding:4px 22px 4px 10px;border:1.5px solid var(--border);border-radius:20px;font-family:inherit;font-size:0.72rem;font-weight:600;color:var(--text);background:var(--white);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22%3E%3Cpath d=%22M0 0l5 6 5-6%22 fill=%22%237a9bab%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 8px center;transition:border-color 0.15s;">
+                  <option value="idea">Idea / Brainstorm</option>
+                  <option value="question">Question</option>
+                  <option value="decision">Decision Needed</option>
+                  <option value="action">Action Item</option>
+                  <option value="update">Update</option>
+                </select>
+              </div>
+              <!-- Action item extended fields (shown only when type = action) -->
+              <div class="ai-extended-form" id="ai-extended-form">
+                <div class="ai-field-row">
+                  <div class="ai-field"><label>Action title</label><input type="text" id="ai-title" placeholder="What needs to happen?" /></div>
+                  <div class="ai-field"><label>Owner</label>
+                    <select id="ai-owner">
+                      <option value="">Assign to…</option>
+                      <option>Kate Carr</option>
+                      <option>Taryn Mildenhall</option>
+                      <option>Laura Biazon</option>
+                      <option>Samantha Cotter</option>
+                      <option>Amy Kreller-Kochis</option>
+                      <option>Jesiree Mendez</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="ai-field-row">
+                  <div class="ai-field"><label>Due date</label><input type="date" id="ai-due" /></div>
+                  <div class="ai-field"><label>Status</label>
+                    <select id="ai-status">
+                      <option value="open">Open</option>
+                      <option value="progress">In Progress</option>
+                      <option value="done">Done</option>
+                      <option value="blocked">Blocked</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="ai-field-row ai-single">
+                  <div class="ai-field"><label>Topic / Committee</label><input type="text" id="ai-topic" placeholder="e.g. Finance, Fundraising, Governance…" /></div>
+                </div>
               </div>
               <!-- File preview -->
               <div id="chat-file-preview" style="display:none;align-items:center;gap:8px;margin-bottom:8px;padding:8px 12px;background:var(--teal-light);border-radius:8px;border:1px solid var(--border);">
@@ -2450,6 +2563,104 @@ function nameToInitials(name) {
 const ALL_CHANNELS  = ['announcements','admin','fundraising','general','outreach','research','website','site-updates','meetings'];
 let currentChannel  = 'general';
 let isUrgent        = false;
+let chatAllMessages = [];   // cache of latest snapshot docs for re-filtering
+let chatFilter      = 'all'; // active filter
+
+// ── Message type helpers ──────────────────────────────────────────────────────
+const MSG_TYPE_LABELS = {
+  idea:'Idea', question:'Question', decision:'Decision', action:'Action Item', update:'Update'
+};
+const MSG_TYPE_CLASSES = {
+  idea:'mt-idea', question:'mt-question', decision:'mt-decision', action:'mt-action', update:'mt-update'
+};
+
+function buildTypeBadge(msg) {
+  const t = msg.msgType;
+  if (!t || t === 'idea') return '';
+  const label = MSG_TYPE_LABELS[t] || t;
+  const cls   = MSG_TYPE_CLASSES[t] || 'mt-update';
+  return `<span class="msg-type-badge ${cls}">${label}</span>`;
+}
+
+function buildAiCard(msg) {
+  const ownerStr = msg.aiOwner  ? `<span>👤 ${escapeHtml(msg.aiOwner)}</span>` : '';
+  const dueStr   = msg.aiDue    ? `<span>📅 ${escapeHtml(msg.aiDue)}</span>` : '';
+  const topicStr = msg.aiTopic  ? `<span>🏷 ${escapeHtml(msg.aiTopic)}</span>` : '';
+  const status   = msg.aiStatus || 'open';
+  const statusLabels = { open:'Open', progress:'In Progress', done:'Done', blocked:'Blocked' };
+  const statusPill   = `<span class="ai-status-pill ais-${status}">${statusLabels[status] || status}</span>`;
+  return `<div class="action-item-card"><div class="ai-card-title">${escapeHtml(msg.aiTitle || '')}</div><div class="ai-card-meta">${ownerStr}${dueStr}${topicStr}<span>${statusPill}</span></div></div>`;
+}
+
+// ── Filter logic ──────────────────────────────────────────────────────────────
+function applyMsgFilter(docs) {
+  if (chatFilter === 'all')       return docs;
+  if (chatFilter === 'actions')   return docs.filter(m => m.msgType === 'action');
+  if (chatFilter === 'decisions') return docs.filter(m => m.msgType === 'decision');
+  if (chatFilter === 'urgent')    return docs.filter(m => m.urgent || m.msgType === 'urgent');
+  if (chatFilter === 'mine')      return docs.filter(m => m.msgType === 'action' && m.aiOwner === chatUserName);
+  return docs;
+}
+
+function chatSetFilter(f) {
+  chatFilter = f;
+  document.querySelectorAll('.chat-filter-pill').forEach(pill => {
+    pill.classList.toggle('active', pill.dataset.filter === f);
+  });
+  renderFilteredMessages();
+}
+window.chatSetFilter = chatSetFilter;
+
+// ── Summary bar ───────────────────────────────────────────────────────────────
+function updateChatSummary(docs) {
+  const bar = document.getElementById('chat-summary-bar');
+  if (!bar) return;
+  const urgentCount   = docs.filter(m => m.urgent || m.msgType === 'urgent').length;
+  const actionCount   = docs.filter(m => m.msgType === 'action').length;
+  const decisionCount = docs.filter(m => m.msgType === 'decision').length;
+  const setCount = (id, n) => { const el = document.getElementById(id); if (el) el.textContent = n > 0 ? n : ''; };
+  setCount('fcount-actions', actionCount);
+  setCount('fcount-decisions', decisionCount);
+  setCount('fcount-urgent', urgentCount);
+  if (urgentCount === 0 && actionCount === 0 && decisionCount === 0) {
+    bar.classList.add('clean'); bar.innerHTML = ''; return;
+  }
+  bar.classList.remove('clean');
+  let chips = '';
+  if (urgentCount   > 0) chips += `<button class="summary-chip sc-urgent"   onclick="chatSetFilter('urgent')"   title="Show urgent"><span class="sc-count">${urgentCount}</span> urgent</button>`;
+  if (actionCount   > 0) chips += `<button class="summary-chip sc-actions"  onclick="chatSetFilter('actions')"  title="Show action items"><span class="sc-count">${actionCount}</span> action item${actionCount !== 1 ? 's' : ''}</button>`;
+  if (decisionCount > 0) chips += `<button class="summary-chip sc-decisions" onclick="chatSetFilter('decisions')" title="Show decisions needed"><span class="sc-count">${decisionCount}</span> decision${decisionCount !== 1 ? 's' : ''} needed</button>`;
+  if (chips) chips += `<button class="summary-chip" onclick="chatSetFilter('all')" style="color:var(--text-light);font-weight:400;">View all</button>`;
+  bar.innerHTML = chips;
+}
+
+// ── Type selector change ───────────────────────────────────────────────────────
+function chatTypeChange() {
+  const type = document.getElementById('chat-msg-type') ? document.getElementById('chat-msg-type').value : '';
+  const form = document.getElementById('ai-extended-form');
+  if (form) form.classList.toggle('visible', type === 'action');
+}
+window.chatTypeChange = chatTypeChange;
+
+// ── Convert message to action item ────────────────────────────────────────────
+function chatConvertToAction(btn) {
+  const msgId  = btn.dataset.msgId;
+  const author = btn.dataset.author;
+  const text   = btn.dataset.text;
+  const typeSelect = document.getElementById('chat-msg-type');
+  if (typeSelect) { typeSelect.value = 'action'; chatTypeChange(); }
+  const input = document.getElementById('chat-input');
+  if (input && !input.value.trim()) {
+    input.value = 'From ' + author + ': ' + text;
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+  }
+  if (input) input.dataset.linkedMsg = msgId;
+  const box = document.getElementById('chat-input-box');
+  if (box) box.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  setTimeout(function() { if (input) input.focus(); }, 200);
+}
+window.chatConvertToAction = chatConvertToAction;
 
 function chatToggleUrgent() {
   isUrgent = !isUrgent;
@@ -2967,6 +3178,12 @@ function chatSwitchChannel(channel) {
   document.getElementById('chat-channel-label').textContent = channel;
   chatUpdatePlaceholder();
 
+  // Reset filter to "all" on channel switch
+  chatFilter = 'all';
+  document.querySelectorAll('.chat-filter-pill').forEach(pill => {
+    pill.classList.toggle('active', pill.dataset.filter === 'all');
+  });
+
   // Clear messages and resubscribe
   document.getElementById('chat-messages').innerHTML = '<div class="chat-loading">Loading…</div>';
   chatSubscribe(channel);
@@ -3002,13 +3219,33 @@ function renderMessages(snapshot) {
   if (!container) return;
 
   if (snapshot.empty) {
+    chatAllMessages = [];
+    updateChatSummary([]);
     container.innerHTML = `<div class="chat-empty">No messages yet in #${currentChannel}.<br>Be the first to say something!</div>`;
     return;
   }
 
-  const docs     = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+  chatAllMessages = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+  updateChatSummary(chatAllMessages);
+  renderFilteredMessages();
+}
+
+function renderFilteredMessages() {
+  const container = document.getElementById('chat-messages');
+  if (!container) return;
+
+  const docs     = applyMsgFilter(chatAllMessages);
   let   html     = '';
   let   lastDate = '';
+
+  if (docs.length === 0 && chatAllMessages.length > 0) {
+    container.innerHTML = `<div class="chat-empty">No messages match this filter in #${currentChannel}.</div>`;
+    return;
+  }
+  if (docs.length === 0) {
+    container.innerHTML = `<div class="chat-empty">No messages yet in #${currentChannel}.<br>Be the first to say something!</div>`;
+    return;
+  }
 
   docs.forEach(msg => {
     const ts      = msg.ts ? msg.ts.toDate() : new Date();
@@ -3020,18 +3257,19 @@ function renderMessages(snapshot) {
     const text    = linkifyUrls(renderMentions(escapeHtml(msg.text || '')));
     const isOwn   = author === chatUserName;
     const edited  = msg.edited ? '<span class="chat-msg-edited">(edited)</span>' : '';
-    const urgentBadge = msg.urgent ? '<span style="display:inline-flex;align-items:center;gap:4px;background:#fff0f0;color:#c0392b;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid #f5c6c6;margin-left:6px;letter-spacing:0.03em;"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1a5 5 0 015 5v3l1.5 2H1.5L3 9V6a5 5 0 015-5z"/><path d="M6.5 13a1.5 1.5 0 003 0"/><circle cx="13" cy="3" r="2.5" fill="#c0392b" stroke="none"/><text x="13" y="4.2" text-anchor="middle" font-size="3.5" fill="white" font-weight="bold" stroke="none">!</text></svg> URGENT</span>' : '';
+    const isUrgentMsg = msg.urgent || msg.msgType === 'urgent';
+    const urgentBadge = isUrgentMsg ? '<span style="display:inline-flex;align-items:center;gap:4px;background:#fff0f0;color:#c0392b;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid #f5c6c6;margin-left:6px;letter-spacing:0.03em;"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1a5 5 0 015 5v3l1.5 2H1.5L3 9V6a5 5 0 015-5z"/><path d="M6.5 13a1.5 1.5 0 003 0"/><circle cx="13" cy="3" r="2.5" fill="#c0392b" stroke="none"/><text x="13" y="4.2" text-anchor="middle" font-size="3.5" fill="white" font-weight="bold" stroke="none">!</text></svg> URGENT</span>' : '';
+    const typeBadge   = buildTypeBadge(msg);
+    const urgentClass = isUrgentMsg ? ' is-urgent' : '';
 
     if (dateStr !== lastDate) {
       lastDate = dateStr;
       html += `<div class="chat-date-divider"><span>${dateStr}</span></div>`;
     }
 
-    const actions = isOwn ? `
-      <div class="chat-msg-actions">
-        <button class="chat-action-btn" onclick="chatEditMessage('${msg.id}', this)">Edit</button>
-        <button class="chat-action-btn delete" onclick="chatDeleteMessage('${msg.id}')">Delete</button>
-      </div>` : '';
+    // Use data-* attributes for convert button so message content never touches onclick
+    const convertBtn = `<button class="chat-action-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 200).replace(/\n/g, ' '))}" onclick="chatConvertToAction(this)">→ Action</button>`;
+    const actions = `<div class="chat-msg-actions">${convertBtn}${isOwn ? `<button class="chat-action-btn" onclick="chatEditMessage('${msg.id}', this)">Edit</button><button class="chat-action-btn delete" onclick="chatDeleteMessage('${msg.id}')">Delete</button>` : ''}</div>`;
 
     const replyBtn = `<button class="chat-reply-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 120).replace(/\n/g, ' '))}" onclick="chatSetReply(this.dataset.msgId, this.dataset.author, this.dataset.text)">↩ Reply</button>`;
     const deleteBtn = isOwn ? `<button class="chat-delete-btn" onclick="chatDeleteMessage('${msg.id}')" title="Delete message">🗑</button>` : '';
@@ -3050,24 +3288,26 @@ function renderMessages(snapshot) {
         <span style="font-size:0.72rem;opacity:0.6;">↓</span>
       </a>` : '';
 
+    const aiCard = (msg.msgType === 'action' && msg.aiTitle) ? buildAiCard(msg) : '';
+
     // Build reaction pills
     const reactions = msg.reactions || {};
     const reactionPills = Object.entries(reactions)
       .filter(([, users]) => users.length > 0)
       .map(([emoji, users]) => {
         const isMine = users.includes(chatUserName);
-        const names  = users.join(', ');
         return `<button class="chat-reaction-pill${isMine ? ' mine' : ''}" onclick="chatShowWhoReacted(event,'${msg.id}','${emoji.replace(/'/g,"\\'")}',${JSON.stringify(users)},${isMine})" ondblclick="event.stopPropagation()">${emoji} <span class="react-count">${users.length}</span></button>`;
       }).join('');
     const reactionsHtml = reactionPills ? `<div class="chat-reactions">${reactionPills}</div>` : '';
 
     html += `
-      <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''} ondblclick="chatShowReactPopup('${msg.id}',event)">
+      <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}${urgentClass}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''} ondblclick="chatShowReactPopup('${msg.id}',event)">
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
-          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${urgentBadge}${replyBtn}${deleteBtn}</div>
+          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${typeBadge}${urgentBadge}${replyBtn}${deleteBtn}</div>
           ${quoteHtml}
           ${text ? `<div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>` : ''}
+          ${aiCard}
           ${fileHtml}
           ${reactionsHtml}
         </div>
@@ -3438,11 +3678,37 @@ async function chatSend() {
       fileData = { name: fileToSend.name, size: fileToSend.size, url };
     }
 
+    // Capture message type and action item fields before resetting form
+    const msgType  = document.getElementById('chat-msg-type') ? document.getElementById('chat-msg-type').value || 'idea' : 'idea';
+    const aiTitle  = document.getElementById('ai-title')  ? (document.getElementById('ai-title').value || '').trim()  : '';
+    const aiOwner  = document.getElementById('ai-owner')  ? document.getElementById('ai-owner').value  || '' : '';
+    const aiDue    = document.getElementById('ai-due')    ? document.getElementById('ai-due').value    || '' : '';
+    const aiStatus = document.getElementById('ai-status') ? document.getElementById('ai-status').value || 'open' : 'open';
+    const aiTopic  = document.getElementById('ai-topic')  ? (document.getElementById('ai-topic').value || '').trim()  : '';
+
+    // Reset type selector and hide AI form
+    const typeSelectEl = document.getElementById('chat-msg-type');
+    if (typeSelectEl) typeSelectEl.value = 'idea';
+    const aiFormEl = document.getElementById('ai-extended-form');
+    if (aiFormEl) aiFormEl.classList.remove('visible');
+    ['ai-title','ai-due','ai-topic'].forEach(function(id) { const el = document.getElementById(id); if (el) el.value = ''; });
+    const ownerEl  = document.getElementById('ai-owner');  if (ownerEl)  ownerEl.value  = '';
+    const statusEl = document.getElementById('ai-status'); if (statusEl) statusEl.value = 'open';
+    if (input) delete input.dataset.linkedMsg;
+
     const sendUrgent = isUrgent;
-    const msgData = { text: sendText, author: chatUserName, ts: serverTimestamp() };
+    const msgData = { text: sendText, author: chatUserName, ts: serverTimestamp(), msgType };
     if (fileData) msgData.file = fileData;
     if (replyingTo) msgData.replyTo = { id: replyingTo.id, author: replyingTo.author, text: replyingTo.text };
     if (sendUrgent) msgData.urgent = true;
+    // Store action item fields only if type is action
+    if (msgType === 'action') {
+      if (aiTitle)  msgData.aiTitle  = aiTitle;
+      if (aiOwner)  msgData.aiOwner  = aiOwner;
+      if (aiDue)    msgData.aiDue    = aiDue;
+      if (aiStatus) msgData.aiStatus = aiStatus;
+      if (aiTopic)  msgData.aiTopic  = aiTopic;
+    }
     chatClearReply();
 
     // Reset urgent flag immediately after capturing state
