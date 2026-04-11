@@ -1129,6 +1129,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
       <a href="#board-fundraising" onclick="boardNavClick(event,'board-fundraising')">Fundraising</a>
       <a href="#board-governance"  onclick="boardNavClick(event,'board-governance')">Governance</a>
       <a href="#board-comms"       onclick="boardNavClick(event,'board-comms')">Marketing</a>
+      <a href="#board-research"    onclick="boardNavClick(event,'board-research')">Research</a>
       <a href="#board-meetings"    class="bsnav-active" onclick="boardNavClick(event,'board-meetings')">Meetings</a>
       <a href="#board-networking"  onclick="boardNavClick(event,'board-networking')">Networking</a>
       <a href="#board-operations"  onclick="boardNavClick(event,'board-operations')">Operations</a>
@@ -1960,6 +1961,65 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
             <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <div class="doc-folder-body"><div data-doc-section="board-governance" data-doc-sub="Other"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research Documents -->
+  <section class="section section--white board-section" id="board-research">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:32px;">
+        <span class="subhead">Research &amp; Partnerships</span>
+        <h2>Research Documents</h2>
+        <p style="color:var(--text-light);font-size:0.95rem;margin-top:8px;">Research proposals, studies, ethics documentation, and correspondence with research partners. Sensitive files only — use the Messenger for discussion.</p>
+      <button class="section-upload-btn" onclick="docModalOpen('board-research','')"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Upload Document</button>
+      </div>
+      <div class="doc-folder-list">
+        <div class="doc-folder" data-section="board-research" data-sub="Research Proposals">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Research Proposals</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-research" data-doc-sub="Research Proposals"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+        <div class="doc-folder" data-section="board-research" data-sub="Studies &amp; Papers">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Studies &amp; Papers</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-research" data-doc-sub="Studies &amp; Papers"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+        <div class="doc-folder" data-section="board-research" data-sub="Ethics &amp; IRB">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Ethics &amp; IRB</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-research" data-doc-sub="Ethics &amp; IRB"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+        <div class="doc-folder" data-section="board-research" data-sub="Partner Correspondence">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Partner Correspondence</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-research" data-doc-sub="Partner Correspondence"><div class="doc-empty">No documents yet</div></div></div>
+        </div>
+        <div class="doc-folder" data-section="board-research" data-sub="Other">
+          <button class="doc-folder-header" onclick="toggleFolder(this)">
+            <svg class="doc-folder-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 4h5l2 2h7v9H1V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="doc-folder-name">Other</span>
+            <span class="doc-folder-count"></span>
+            <svg class="doc-folder-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="doc-folder-body"><div data-doc-section="board-research" data-doc-sub="Other"><div class="doc-empty">No documents yet</div></div></div>
         </div>
       </div>
     </div>
