@@ -830,10 +830,10 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   /* ── Reply Needed button ── */
   #reply-needed-toggle { display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #c5d3f6;background:#f0f5ff;color:#3b5bdb;cursor:pointer;transition:all 0.15s;font-family:inherit; }
   #reply-needed-toggle.active { background:#dbe4ff;color:#2f4bbd;border-color:#91a7ff; }
-  /* ── Bring to Meeting button — visually lighter than Urgent/Reply Needed ── */
-  #meeting-toggle { display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;font-weight:500;padding:4px 11px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--text-light);cursor:pointer;transition:all 0.15s;font-family:inherit; }
-  #meeting-toggle:hover { border-color:#b8ddc0;color:#2d7a47; }
-  #meeting-toggle.active { background:#f0faf2;color:#2d7a47;border-color:#b8ddc0;font-weight:600; }
+  /* ── Bring to Meeting — minimal optional flag, visually quieter than other buttons ── */
+  #meeting-toggle { display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:400;padding:3px 10px;border-radius:20px;border:1px dashed var(--border);background:none;color:var(--text-light);cursor:pointer;transition:all 0.15s;font-family:inherit; }
+  #meeting-toggle:hover { border-color:#b8ddc0;color:#2d7a47;border-style:solid; }
+  #meeting-toggle.active { background:#f0faf2;color:#2d7a47;border-color:#b8ddc0;border-style:solid;font-weight:600; }
   /* ── Bring to meeting badge on messages ── */
   .bring-to-meeting-badge { display:inline-flex;align-items:center;gap:4px;background:#f0faf2;color:#2d7a47;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid #b8ddc0;margin-left:6px;letter-spacing:0.03em; }
   /* ── Compose hint always visible ── */
@@ -1359,16 +1359,16 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
               <!-- Compose meta: Tag + Type (top-level posts only — hidden in reply mode) -->
               <div id="compose-toplevel" class="compose-toplevel-only">
                 <div class="compose-meta-row">
-                  <span class="compose-meta-label">Where</span>
-                  <select id="compose-tag" class="compose-tag-select" onchange="chatTagChange()" title="Choose the main area this message belongs in">
+                  <span class="compose-meta-label">Topic</span>
+                  <select id="compose-tag" class="compose-tag-select" onchange="chatTagChange()" title="Choose the topic this message belongs in">
                     <option value="general">General</option>
-                    <option value="announcements">Announcements</option>
-                    <option value="fundraising">Fundraising</option>
-                    <option value="outreach">Outreach</option>
-                    <option value="research">Research</option>
-                    <option value="meetings">Meetings</option>
                     <option value="admin">Admin</option>
+                    <option value="meetings">Meetings</option>
                     <option value="website">Website</option>
+                    <option value="research">Research</option>
+                    <option value="outreach">Outreach</option>
+                    <option value="fundraising">Fundraising</option>
+                    <option value="announcements">Announcements</option>
                     <option value="site-updates">Site Updates</option>
                   </select>
                   <span class="compose-meta-label" style="margin-left:8px;">Type</span>
@@ -1448,7 +1448,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
                 <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
                   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
                     <button id="reply-needed-toggle" onclick="chatToggleReplyNeeded()" title="Notifies @mentioned people that a reply is expected">↩ Reply Needed</button>
-                    <button id="meeting-toggle" onclick="chatToggleMeeting()" title="Mark this as needing meeting discussion">📅 Bring to Meeting</button>
+                    <button id="meeting-toggle" onclick="chatToggleMeeting()" title="Mark this for discussion at the next board meeting">Bring to Meeting</button>
                     <button id="urgent-toggle" onclick="chatToggleUrgent()" title="Mark as urgent — will email @mentioned board members" style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid #c8a96e;background:#fdf6ec;color:#a07830;cursor:pointer;transition:all 0.15s;font-family:inherit;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/><line x1="12" y1="2" x2="12" y2="1"/></svg><svg width="7" height="13" viewBox="0 0 8 16" fill="currentColor"><text x="4" y="13" text-anchor="middle" font-size="14" font-weight="900">!</text></svg> Urgent</button>
                   </div>
                   <div id="reply-needed-hint" style="font-size:0.66rem;color:#3b5bdb;padding:0 2px;">Notifies the @mentioned person/people that a reply is needed.</div>
