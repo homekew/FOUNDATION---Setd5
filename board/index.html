@@ -1123,7 +1123,7 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     </div>
     <div class="board-sidebar-links" id="board-sidebar-links">
       <div class="board-nav-group-header">Communications</div>
-      <a id="nav-messenger" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('messenger');markSeen('board');" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Messenger</a>
+      <a id="nav-messenger" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('messenger');markSeen('board');" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Messenger <span id="badge-messenger" class="chat-unread-badge"></span></a>
       <a id="nav-directory" href="#board-communications" onclick="boardNavClick(event,'board-communications');commTab('directory')" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 7l10 7 10-7"/></svg> Directory</a>
       <!-- Website Review nav link hidden — section retired; content migrated to Website topic in Messenger -->
       <!-- <a href="#board-website-review" onclick="boardNavClick(event,'board-website-review');wrMarkSeen()" style="color:var(--coral);font-weight:600;display:inline-flex;align-items:center;gap:6px;">Website Review ★<span id="badge-website-review" style="display:none;background:var(--coral);color:white;font-size:0.62rem;font-weight:700;border-radius:20px;padding:1px 7px;min-width:18px;text-align:center;"></span></a> -->
@@ -3152,18 +3152,28 @@ function lastSeen(ch) {
 }
 
 function watchUnread() {
-  // Simplified: watch the unified board_messages collection for recent activity
+  // Watch board_messages for unread count badge on the Messenger nav link
   if (bgUnsubs['board']) return;
-  const q = query(collection(db, 'board_messages'), orderBy('ts', 'desc'), limit(30));
+  const q = query(collection(db, 'board_messages'), orderBy('ts', 'desc'), limit(50));
   bgUnsubs['board'] = onSnapshot(q, snap => {
-    // Unread count not displayed per-tag in new UI — just mark badge on nav link if new messages exist
     const cutoff = lastSeen('board');
-    const hasNew = snap.docs.some(d => {
-      const ts = d.data().ts;
+    const unreadCount = snap.docs.filter(d => {
+      const data = d.data();
+      // Don't count own messages as unread
+      if (data.author === chatUserName) return false;
+      const ts = data.ts;
       return ts && ts.toMillis() > cutoff;
-    });
-    const navLink = document.getElementById('nav-messenger');
-    if (navLink) navLink.style.fontWeight = hasNew ? '800' : '';
+    }).length;
+    const badge = document.getElementById('badge-messenger');
+    if (badge) {
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+        badge.classList.add('visible');
+      } else {
+        badge.textContent = '';
+        badge.classList.remove('visible');
+      }
+    }
   });
 }
 
