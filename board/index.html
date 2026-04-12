@@ -1090,6 +1090,26 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     .chat-reply-btn, .chat-delete-btn { opacity:1; }
   }
 
+  /* ── Double-click to react hint ── */
+  /* Small smiley appears on message hover — signals the double-click gesture */
+  .chat-msg-row { position: relative; }
+  .chat-react-hint {
+    position: absolute;
+    top: 6px; right: 8px;
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.15s;
+    pointer-events: none;
+    color: var(--text-light);
+    user-select: none;
+    white-space: nowrap;
+  }
+  .chat-msg-row:hover .chat-react-hint { opacity: 1; }
+  /* Don't show hint when actions are already visible */
+  .chat-msg-row.actions-open .chat-react-hint { opacity: 0; }
+  /* Hide on touch devices — they use double-tap, no hover state */
+  @media (hover: none) { .chat-react-hint { display: none; } }
+
   /* ── Desktop: viewport-aware height (not fixed 560px) ── */
   .chat-app-frame {
     height: clamp(560px, calc(100vh - 300px), 800px);
@@ -3840,6 +3860,7 @@ function renderFilteredMessages() {
 
     html += `
       <div class="chat-msg-row ${isOwn ? 'mine' : 'other'}${urgentClass} ${threadClass}" data-msg-id="${msg.id}"${isOwn ? ' onclick="chatToggleActions(this,event)"' : ''} ondblclick="chatShowReactPopup('${msg.id}',event)">
+        <span class="chat-react-hint" title="Double-click to react">😊 react</span>
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
           <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${typeBadge}${urgentBadge}${replyNeededBadge}${tagPills ? `<span style="margin-left:6px;">${tagPills}</span>` : ''}${replyBtn}${deleteBtn}</div>
