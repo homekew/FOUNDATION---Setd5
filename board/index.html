@@ -770,6 +770,84 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
   .tracker-filter-bar input { min-width: 0 !important; width: 100%; }
   .board-content a { word-break: break-all; overflow-wrap: anywhere; }
   #comm-panel-directory [style*="1fr 1fr"] { grid-template-columns: 44px 1fr 1fr auto !important; gap: 8px !important; padding: 12px 12px !important; }
+
+  /* ── Compose: stack Topic + Type onto separate rows ── */
+  .compose-meta-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+  .compose-meta-row .compose-meta-label { margin-left: 0 !important; }
+  .compose-meta-row .compose-tag-select { width: 100% !important; box-sizing: border-box !important; }
+
+  /* ── Compose flags row: right-align buttons, no gap on empty left ── */
+  #compose-flags-row {
+    justify-content: flex-end !important;
+    padding-left: 0 !important;
+  }
+
+  /* ── Reply Needed + Urgent: roomier tap targets ── */
+  #reply-needed-toggle, #urgent-toggle {
+    min-height: 36px !important;
+    padding: 6px 14px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* ── Chat reply + delete buttons: always visible, easier to tap ── */
+  .chat-reply-btn, .chat-delete-btn {
+    min-height: 32px !important;
+    padding: 4px 12px !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* ── Emoji picker: prevent off-screen bleed ── */
+  #emoji-picker {
+    width: min(248px, calc(100vw - 32px)) !important;
+    right: 0 !important;
+    left: auto !important;
+  }
+
+  /* ── Doc upload modal: reduce padding so content has room ── */
+  .doc-upload-modal {
+    padding: 24px 20px !important;
+    border-radius: 10px !important;
+  }
+
+  /* ── Doc item: simplify to 3-col on mobile (icon | name | delete) ── */
+  .doc-item {
+    grid-template-columns: 18px 1fr auto !important;
+    font-size: 0.82rem !important;
+  }
+  /* Date and uploader tags: smaller text, wrap gracefully under name */
+  .doc-item span[style*="0.8em"],
+  .doc-item span[style*="0.75em"] { font-size: 0.68rem !important; }
+
+  /* ── Board sidebar nav links: min tap target when sidebar is open ── */
+  .board-sidebar-links a {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* ── Upload button: 44px tap target ── */
+  .section-upload-btn {
+    min-height: 44px !important;
+    padding: 10px 20px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* ── Filter pills: ensure tap target ── */
+  .chat-filter-pill { min-height: 36px !important; }
+
+  /* ── Board section: reduce horizontal container padding on narrow screens ── */
+  .board-section .container { padding: 0 12px !important; }
+
+  /* ── Chat compose area: reduce side padding so it's not cramped ── */
+  #chat-compose-area { padding: 10px 12px !important; }
+
+  /* ── Reply quote: cap max-width to viewport ── */
+  .chat-reply-quote { max-width: calc(100vw - 80px) !important; }
+  .chat-reply-quote-text { max-width: 100% !important; }
 }
   /* ===== CHAT CHANNEL BUTTONS ===== */
   .chat-channel-btn {
