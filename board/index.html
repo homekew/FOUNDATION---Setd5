@@ -1111,9 +1111,16 @@ footer { background: var(--teal-dark); color: rgba(255,255,255,0.75); padding: 6
     font-family:inherit;
   }
   .chat-msg-row:hover .chat-delete-btn { opacity:1; }
+  .chat-edit-msg-btn {
+    font-size:0.68rem;padding:2px 8px;border:1px solid var(--border);
+    border-radius:5px;background:none;color:var(--text-light);
+    cursor:pointer;opacity:0;transition:opacity 0.12s;margin-left:4px;
+    font-family:inherit;
+  }
+  .chat-msg-row:hover .chat-edit-msg-btn { opacity:1; }
   /* Always visible on touch devices */
   @media (hover: none) {
-    .chat-reply-btn, .chat-delete-btn { opacity:1; }
+    .chat-reply-btn, .chat-delete-btn, .chat-edit-msg-btn { opacity:1; }
   }
 
   /* ── Double-click to react hint ── */
@@ -3848,7 +3855,8 @@ function renderFilteredMessages() {
     const currentType = msg.msgType || 'idea';
     const actions = ``; // action buttons hidden for now
 
-    const replyBtn = `<button class="chat-reply-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 120).replace(/\n/g, ' '))}" onclick="chatSetReply(this.dataset.msgId, this.dataset.author, this.dataset.text)">↩ Reply</button>`;
+    const replyBtn  = `<button class="chat-reply-btn" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" data-text="${escapeHtml((msg.text || '').slice(0, 120).replace(/\n/g, ' '))}" onclick="chatSetReply(this.dataset.msgId, this.dataset.author, this.dataset.text)">↩ Reply</button>`;
+    const editMsgBtn = isOwn ? `<button class="chat-edit-msg-btn" data-msg-id="${msg.id}" onclick="chatEditMessage('${msg.id}', this)" title="Edit message">✎ Edit</button>` : '';
     const deleteBtn = isOwn ? `<button class="chat-delete-btn" onclick="chatAdminDelete(this)" data-msg-id="${msg.id}" data-author="${escapeHtml(author)}" title="Delete message">🗑</button>` : '';
 
     const quoteHtml = msg.replyTo ? `
@@ -3889,7 +3897,7 @@ function renderFilteredMessages() {
         <span class="chat-react-hint" title="Double-click to react">😊 react</span>
         <div class="chat-avatar" style="background:${color};">${initials}</div>
         <div style="flex:1;min-width:0;">
-          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${typeBadge}${urgentBadge}${replyNeededBadge}${tagPills ? `<span style="margin-left:6px;">${tagPills}</span>` : ''}${replyBtn}${deleteBtn}</div>
+          <div><span class="chat-msg-author">${escapeHtml(author)}</span><span class="chat-msg-time">${timeStr}</span>${edited}${typeBadge}${urgentBadge}${replyNeededBadge}${tagPills ? `<span style="margin-left:6px;">${tagPills}</span>` : ''}${replyBtn}${editMsgBtn}${deleteBtn}</div>
           ${quoteHtml}
           ${text ? `<div class="chat-msg-text" data-original="${escapeHtml(msg.text || '')}">${text}</div>` : ''}
           ${aiCard}
