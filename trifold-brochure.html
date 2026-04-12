@@ -497,7 +497,17 @@ body{
 .cta-card.gold{border-left-color:var(--gold);}
 .cta-card-head{
   font-size:8.5pt;font-weight:700;color:var(--teal-dark);margin-bottom:3pt;
+  display:flex;align-items:center;gap:6pt;
 }
+.cta-icon{
+  width:20pt;height:20pt;flex-shrink:0;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+}
+.cta-icon.coral{background:var(--coral);}
+.cta-icon.teal{background:var(--teal);}
+.cta-icon.gold{background:var(--gold);}
+.cta-icon.teal-dark{background:var(--teal-dark);}
+.cta-icon svg{width:11pt;height:11pt;}
 .cta-card p{
   font-size:8pt;color:var(--text-mid);line-height:1.45;
 }
@@ -540,6 +550,13 @@ body{
 
       <div class="res-group">
         <div class="res-group-head">Community</div>
+        <div class="res-item">
+          <div class="res-dot"></div>
+          <div class="res-item-body">
+            <strong>SETD5 Syndrome Foundation</strong>
+            <span class="res-item-url">setd5syndrome.org</span>
+          </div>
+        </div>
         <div class="res-item">
           <div class="res-dot"></div>
           <div class="res-item-body">
@@ -855,19 +872,31 @@ body{
       <p class="intro">Every contribution — of time, expertise, or funding — helps us accelerate research and support the families who need it most.</p>
 
       <div class="cta-card">
-        <div class="cta-card-head">💛 Donate</div>
+        <div class="cta-card-head">
+          <span class="cta-icon coral"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
+          Donate
+        </div>
         <p>Your gift funds research grants, family programs, and the infrastructure that keeps the Foundation running. Every dollar matters.</p>
       </div>
       <div class="cta-card teal">
-        <div class="cta-card-head">🔬 Support Research</div>
+        <div class="cta-card-head">
+          <span class="cta-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v11m0 0a4 4 0 108 0M9 14h8"/><path d="M7 21h10"/></svg></span>
+          Support Research
+        </div>
         <p>Are you a researcher or clinician? We want to connect. Reach out to discuss partnerships and grant opportunities.</p>
       </div>
       <div class="cta-card gold">
-        <div class="cta-card-head">🤝 Volunteer</div>
+        <div class="cta-card-head">
+          <span class="cta-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></span>
+          Volunteer
+        </div>
         <p>Join a committee, help plan events, or contribute your professional skills to the Foundation's growing programs.</p>
       </div>
       <div class="cta-card" style="border-left-color:var(--teal-dark);">
-        <div class="cta-card-head">📢 Spread the Word</div>
+        <div class="cta-card-head">
+          <span class="cta-icon teal-dark"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg></span>
+          Spread the Word
+        </div>
         <p>Share our story. Help us reach undiagnosed families, clinicians, and researchers who need to know we exist.</p>
       </div>
 
