@@ -22,9 +22,11 @@
 @page{size:11in 8.5in landscape;margin:0;}
 *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important;}
 @media print{
-  html,body{margin:0!important;padding:0!important;background:none!important;height:100%;}
-  .sheet-wrapper{margin:0!important;padding:0!important;box-shadow:none!important;width:11in;height:8.5in;overflow:hidden;}
-  .sheet-wrapper+.sheet-wrapper{page-break-before:always;}
+  @page{size:11in 8.5in landscape;margin:0;}
+  html{margin:0!important;padding:0!important;background:none!important;width:11in!important;height:8.5in!important;}
+  body{margin:0!important;padding:0!important;background:none!important;display:block!important;width:11in!important;min-height:unset!important;}
+  .sheet-wrapper{margin:0!important;padding:0!important;box-shadow:none!important;width:11in!important;height:8.5in!important;overflow:hidden!important;display:flex!important;}
+  .sheet-wrapper+.sheet-wrapper{page-break-before:always;break-before:page;}
   .fold-line,.sheet-label,.preview-note{display:none!important;}
 }
 
